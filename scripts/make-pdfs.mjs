@@ -16,6 +16,11 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
 
 for (const doc of data.docs) {
+  // 원본 PDF가 이미 배치된 문서(PPTX 변환)는 건너뛴다 — 원본이 항상 더 정확하다
+  if (doc.pdfSource === "original") {
+    console.log(`PDF 건너뜀(원본 사용): ${doc.id}.pdf`);
+    continue;
+  }
   const fileUrl = "file:///" + path.join(SITE, doc.file).replace(/\\/g, "/");
   await page.goto(fileUrl, { waitUntil: "networkidle" });
   // 인쇄 시 각 슬라이드를 한 페이지씩, 16:9 크기로

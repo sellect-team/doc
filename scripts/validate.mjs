@@ -4,9 +4,20 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-export function validateDoc(html, filename) {
+export function validateDoc(html, filename, docDir) {
   const errors = [];
   const warnings = [];
+
+  // 0. 참조한 로컬 이미지가 실제로 있는지 (변환 문서의 깨진 이미지 방지)
+  if (docDir) {
+    for (const m of html.matchAll(/<img[^>]*\ssrc=["']([^"']+)["']/gi)) {
+      const src = m[1];
+      if (/^(https?:|data:)/i.test(src)) continue;
+      if (!fs.existsSync(path.join(docDir, decodeURIComponent(src)))) {
+        errors.push(`이미지 파일이 없음: ${src}`);
+      }
+    }
+  }
 
   // 1. 파일명: 영문 소문자/숫자/하이픈
   if (!/^[a-z0-9][a-z0-9-]*\.html$/.test(filename)) {
@@ -96,8 +107,9 @@ export function validateAll(docsDir) {
     if (!catDir.isDirectory() || catDir.name.startsWith("_")) continue;
     for (const f of fs.readdirSync(path.join(docsDir, catDir.name))) {
       if (!f.endsWith(".html") || f.startsWith("_")) continue;
-      const html = fs.readFileSync(path.join(docsDir, catDir.name, f), "utf8");
-      const { errors, warnings } = validateDoc(html, f);
+      const catPath = path.join(docsDir, catDir.name);
+      const html = fs.readFileSync(path.join(catPath, f), "utf8");
+      const { errors, warnings } = validateDoc(html, f, catPath);
       if (errors.length || warnings.length) {
         console.log(`\ndocs/${catDir.name}/${f}`);
         errors.forEach((e) => console.log(`  ✗ [오류] ${e}`));

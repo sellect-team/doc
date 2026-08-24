@@ -1,0 +1,166 @@
+"""PPTX → 포털 HTML 변환 도우미.
+
+convert-pptx.ps1 이 호출한다. 두 개의 서브커맨드:
+
+  titles  <source.pptx> <out.txt>
+      슬라이드별 제목 후보를 추출해 텍스트 파일로 저장한다 (사람이 다듬어 쓰는 초안).
+
+  build   --png <dir> --assets <dir> --html <file> --rel <경로> --titles <file>
+          --title <문서제목> --desc <설명> --version <1.0>
+      PNG를 WebP로 변환하고 포털 규격 HTML을 생성한다.
+"""
+import argparse
+import html as htmlmod
+import pathlib
+import re
+import sys
+import xml.etree.ElementTree as ET
+import zipfile
+
+A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
+P = "{http://schemas.openxmlformats.org/presentationml/2006/main}"
+R = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
+
+WEBP_QUALITY = 88
+
+
+def slide_parts(z):
+    """<p:sldIdLst> 순서대로 슬라이드 XML 경로를 돌려준다."""
+    rels = ET.fromstring(z.read("ppt/_rels/presentation.xml.rels"))
+    rid = {r.get("Id"): r.get("Target") for r in rels}
+    pres = ET.fromstring(z.read("ppt/presentation.xml"))
+    out = []
+    for sid in pres.find(f"{P}sldIdLst"):
+        t = rid[sid.get(f"{R}id")]
+        t = t[3:] if t.startswith("../") else t
+        out.append(t if t.startswith("ppt/") else "ppt/" + t)
+    return out
+
+
+def cmd_titles(src, out):
+    """각 슬라이드의 첫 번째 의미 있는 텍스트를 제목 후보로 뽑는다."""
+    z = zipfile.ZipFile(src)
+    lines = []
+    for i, part in enumerate(slide_parts(z), 1):
+        root = ET.fromstring(z.read(part))
+        cand = ""
+        for para in root.iter(f"{A}p"):
+            text = "".join(t.text or "" for t in para.iter(f"{A}t")).strip()
+            # 섹션 머리표(01 · Who We Are)나 숫자만 있는 줄은 건너뛴다
+            if not text or re.fullmatch(r"[\d\s.·|-]+", text):
+                continue
+            cand = text
+            break
+        lines.append(f"{cand[:60]}" if cand else f"페이지 {i}")
+    pathlib.Path(out).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"제목 초안 {len(lines)}줄 저장: {out}")
+
+
+HTML_TEMPLATE = """<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>{title}</title>
+  <meta name="doc-version" content="{version}">
+  <meta name="doc-description" content="{desc}">
+  <meta name="doc-source" content="{source}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <style>
+    * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+    html {{ font-size: clamp(8px, 1.25vw, 20px); }}
+    body {{
+      font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      background: #ffffff; color: #1d1d1f;
+    }}
+    /* 원본 슬라이드를 그대로 담는 컨테이너 — 16:9 비율 유지 */
+    .slide {{
+      width: 100vw; height: 100vh; overflow: hidden; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      background: #ffffff;
+    }}
+    .slide img {{
+      width: 100%; height: 100%; object-fit: contain; display: block;
+    }}
+    @media print {{
+      .slide img {{ width: 100%; height: 100%; object-fit: contain; }}
+    }}
+  </style>
+</head>
+<body>
+{sections}
+</body>
+</html>
+"""
+
+SECTION_TEMPLATE = (
+    '  <section class="slide" data-title="{title}">\n'
+    '    <img src="{rel}/{file}" alt="{alt}" decoding="async">\n'
+    "  </section>"
+)
+
+
+def cmd_build(a):
+    from PIL import Image
+
+    png_dir = pathlib.Path(a.png)
+    assets = pathlib.Path(a.assets)
+    assets.mkdir(parents=True, exist_ok=True)
+    for old in assets.glob("*.webp"):
+        old.unlink()
+
+    pngs = sorted(png_dir.glob("*.png"))
+    if not pngs:
+        sys.exit(f"PNG이 없습니다: {png_dir}")
+
+    titles = []
+    tf = pathlib.Path(a.titles)
+    if tf.exists():
+        titles = [ln.strip() for ln in tf.read_text(encoding="utf-8").splitlines()]
+
+    total = 0
+    sections = []
+    for i, p in enumerate(pngs):
+        img = Image.open(p).convert("RGB")
+        out = assets / (p.stem + ".webp")
+        img.save(out, "WEBP", quality=WEBP_QUALITY, method=6)
+        total += out.stat().st_size
+
+        title = titles[i] if i < len(titles) and titles[i] else f"페이지 {i + 1}"
+        esc = htmlmod.escape(title, quote=True)
+        sections.append(
+            SECTION_TEMPLATE.format(title=esc, rel=a.rel, file=out.name, alt=esc)
+        )
+
+    doc = HTML_TEMPLATE.format(
+        title=htmlmod.escape(a.title, quote=True),
+        version=htmlmod.escape(a.version, quote=True),
+        desc=htmlmod.escape(a.desc, quote=True),
+        source=htmlmod.escape(a.source, quote=True),
+        sections="\n".join(sections),
+    )
+    pathlib.Path(a.html).write_text(doc, encoding="utf-8")
+    print(f"WebP {len(pngs)}장 ({total / 1024 / 1024:.1f} MB) → {assets}")
+    print(f"HTML 생성: {a.html}")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    sub = ap.add_subparsers(dest="cmd", required=True)
+
+    t = sub.add_parser("titles")
+    t.add_argument("source")
+    t.add_argument("out")
+
+    b = sub.add_parser("build")
+    for flag in ("png", "assets", "html", "rel", "titles", "title", "desc", "version", "source"):
+        b.add_argument(f"--{flag}", required=True)
+
+    args = ap.parse_args()
+    if args.cmd == "titles":
+        cmd_titles(args.source, args.out)
+    else:
+        cmd_build(args)
+
+
+if __name__ == "__main__":
+    main()

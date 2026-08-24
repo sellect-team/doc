@@ -79,7 +79,11 @@ for (const catDir of fs.readdirSync(DOCS, { withFileTypes: true })) {
   // 카테고리 폴더 전체(assets 포함)를 사이트로 복사
   fs.cpSync(catPath, path.join(OUT_DOCS, catDir.name), {
     recursive: true,
-    filter: (src) => !path.basename(src).startsWith("_"),
+    filter: (src) => {
+      const base = path.basename(src);
+      // 작업용 파일과 원본 PDF는 사이트로 복사하지 않는다 (PDF는 site/pdf/로 따로 배치)
+      return !base.startsWith("_") && !base.endsWith(".titles.txt") && !base.endsWith(".pdf");
+    },
   });
 
   for (const f of fs.readdirSync(catPath)) {
@@ -103,8 +107,18 @@ for (const catDir of fs.readdirSync(DOCS, { withFileTypes: true })) {
       oldVersions.push({ ...h, file: `docs/_versions/${id}/${vfile}` });
     }
 
+    // 원본 PDF가 같은 이름으로 있으면(PPTX 변환 문서) 그것을 그대로 배포한다.
+    // PowerPoint가 만든 PDF라 텍스트 선택이 되고 재현도가 완벽하다.
+    const srcPdf = abs.replace(/\.html$/, ".pdf");
+    const hasSrcPdf = fs.existsSync(srcPdf);
+    if (hasSrcPdf) {
+      fs.mkdirSync(path.join(SITE, "pdf"), { recursive: true });
+      fs.copyFileSync(srcPdf, path.join(SITE, "pdf", `${id}.pdf`));
+    }
+
     const stat = fs.statSync(abs);
     docs.push({
+      pdfSource: hasSrcPdf ? "original" : "generated",
       id,
       category: catDir.name,
       categoryLabel: categories[catDir.name] || catDir.name,

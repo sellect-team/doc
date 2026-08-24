@@ -3,9 +3,10 @@
 > 이 문서는 문서 포털에 올라가는 모든 HTML 슬라이드 문서의 표준 양식입니다.
 > **이 규격은 빌드 시 자동 검증되며, 위반한 문서는 사이트에 올라가지 않습니다.** (`node scripts/validate.mjs`로 미리 확인 가능)
 >
-> 문서를 만드는 방법 두 가지:
+> 문서를 만드는 방법 세 가지:
 > - 이 프로젝트에서 Claude Code에게: **"AUTHORING.md 지침대로 만들어줘"**
 > - 다른 클로드(claude.ai 등)에서: **PROMPT.md 내용을 복사해 붙여넣고** 요청 — 규격에 맞는 완성 파일이 나옵니다
+> - **이미 만들어둔 PPT가 있으면 변환**합니다 (아래 10절) — 원본과 100% 동일하게 올라갑니다
 >
 > 지침이 바뀌면 이 파일과 PROMPT.md를 함께 수정하고 커밋하세요. 사이트의 "작성 지침" 메뉴에 자동 반영됩니다.
 
@@ -116,7 +117,23 @@ docs/
 규격 위반이 있으면 빌드가 실패하며 무엇이 틀렸는지 한글 오류 메시지로 알려줍니다.
 올리기 전에 로컬에서 미리 확인하려면: `node scripts/validate.mjs`
 
-## 9. 체크리스트
+## 9. 기존 PPT 변환해서 올리기
+
+완성된 PPTX가 있으면 새로 만들지 말고 변환합니다. PowerPoint 자체 렌더링을 쓰므로 **원본과 100% 동일**하고, 텍스트가 선택되는 원본 PDF도 함께 배포됩니다.
+
+```bash
+powershell -File "scripts/convert-pptx.ps1" -Source "C:\경로\원본.pptx" -Category company -Name company-intro-2026 -TitlesOnly
+```
+
+먼저 위 명령으로 페이지 제목 초안(`<이름>.titles.txt`)을 만들고, 목차에 쓸 이름으로 다듬은 뒤 아래를 실행합니다.
+
+```bash
+powershell -File "scripts/convert-pptx.ps1" -Source "C:\경로\원본.pptx" -Category company -Name company-intro-2026 -DocTitle "문서 제목" -Description "한 줄 요약" -Version "1.0"
+```
+
+자세한 절차, 원본 PPT의 디자인 시스템 분석, 동급 품질 문서를 만드는 지침은 **CONVERSION-GUIDE.md**에 정리되어 있습니다.
+
+## 10. 체크리스트
 
 - [ ] 파일명이 영문 소문자-하이픈인가?
 - [ ] `title`, `doc-version`, `doc-description` 메타가 있는가?
