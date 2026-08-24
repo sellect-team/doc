@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>문서 뷰어</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body { overflow: hidden; background: #f5f5f7; }
+    .viewer { display: grid; grid-template-rows: var(--nav-h) 1fr; height: 100vh; }
+
+    /* ── 상단 바 ── */
+    .vbar {
+      display: flex; align-items: center; gap: 14px;
+      padding: 0 20px;
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      z-index: 20;
+    }
+    .vbar .back {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--ink-2); cursor: pointer; white-space: nowrap;
+    }
+    .vbar .back:hover { color: var(--ink); }
+    .vbar .title {
+      font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;
+    }
+    .vbar .chip {
+      background: var(--accent-soft); color: var(--accent);
+      font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; white-space: nowrap;
+    }
+    .vbar .chip.old { background: #fff3e8; color: var(--citrus); }
+    .vbar button {
+      border: none; cursor: pointer; font-size: 13px; font-weight: 500;
+      padding: 8px 16px; border-radius: 10px; white-space: nowrap;
+      background: var(--bg-soft); color: var(--ink); transition: background 0.2s;
+    }
+    .vbar button:hover { background: #e8e8ed; }
+    .vbar button.dark { background: var(--ink); color: #fff; }
+    .vbar button.dark:hover { background: #3a3a3c; }
+
+    /* ── 본문: 사이드바 + 스테이지 ── */
+    .body { display: grid; grid-template-columns: 264px 1fr; min-height: 0; }
+
+    .side {
+      background: #fff; border-right: 1px solid rgba(0,0,0,0.07);
+      display: flex; flex-direction: column; min-height: 0;
+    }
+    .side .sec-label {
+      font-size: 11px; font-weight: 700; color: var(--ink-3);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 18px 20px 8px;
+    }
+    .pages { overflow-y: auto; flex: 1; padding: 0 10px 10px; }
+    .pages .pg {
+      display: flex; gap: 12px; align-items: baseline;
+      padding: 9px 12px; border-radius: 10px; cursor: pointer;
+      font-size: 13.5px; color: var(--ink-2);
+      transition: background 0.15s;
+    }
+    .pages .pg:hover { background: var(--bg-soft); }
+    .pages .pg.on { background: var(--ink); color: #fff; font-weight: 600; }
+    .pages .pg .no {
+      font-size: 11px; font-variant-numeric: tabular-nums;
+      color: var(--ink-3); min-width: 16px;
+    }
+    .pages .pg.on .no { color: rgba(255,255,255,0.6); }
+
+    .hist {
+      border-top: 1px solid rgba(0,0,0,0.07);
+      max-height: 34%; display: flex; flex-direction: column; min-height: 0;
+    }
+    .hist .list { overflow-y: auto; padding: 0 10px 12px; }
+    .hist .h-item {
+      padding: 8px 12px; border-radius: 10px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .hist .h-item:hover { background: var(--bg-soft); }
+    .hist .h-item.on { background: var(--accent-soft); }
+    .hist .h-msg {
+      font-size: 12.5px; color: var(--ink); line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .hist .h-date { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+    .hist .h-cur { font-size: 10px; font-weight: 700; color: var(--accent); margin-right: 6px; }
+
+    /* ── 스테이지 ── */
+    .stage {
+      position: relative; min-width: 0; min-height: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 28px 84px;
+      background: radial-gradient(1200px 600px at 50% -10%, #ffffff 0%, #f5f5f7 60%);
+    }
+    .frame-wrap {
+      position: relative;
+      width: 100%; max-width: calc((100vh - var(--nav-h) - 56px) * 16 / 9);
+      aspect-ratio: 16 / 9;
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08);
+      background: #fff;
+    }
+    .frame-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+    .oldbanner {
+      position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+      background: #1d1d1f; color: #fff; font-size: 12.5px;
+      padding: 8px 16px; border-radius: 999px; z-index: 10;
+      display: none; align-items: center; gap: 12px; white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    .oldbanner.show { display: flex; }
+    .oldbanner button {
+      background: #fff; color: var(--ink); border: none; cursor: pointer;
+      font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px;
+    }
+
+    /* ── 넘김 버튼 & 카운터 ── */
+    .navbtn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 52px; height: 52px; border-radius: 50%;
+      border: none; cursor: pointer; font-size: 20px;
+      background: rgba(255,255,255,0.9); color: var(--ink);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+      transition: all 0.2s; z-index: 5;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .navbtn:hover { background: var(--ink); color: #fff; transform: translateY(-50%) scale(1.06); }
+    .navbtn:disabled { opacity: 0.25; pointer-events: none; }
+    .navbtn.prev { left: 18px; }
+    .navbtn.next { right: 18px; }
+    .counter {
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      font-size: 12.5px; font-variant-numeric: tabular-nums;
+      color: var(--ink-2); background: rgba(255,255,255,0.9);
+      padding: 6px 16px; border-radius: 999px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    @media (max-width: 860px) {
+      .body { grid-template-columns: 1fr; }
+      .side { display: none; }
+      .stage { padding: 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+<div class="viewer">
+  <div class="vbar">
+    <a class="back" href="index.html">← 목록</a>
+    <div class="title" id="docTitle">불러오는 중…</div>
+    <span class="chip" id="verChip"></span>
+    <button id="pdfBtn" class="dark">PDF 다운로드</button>
+  </div>
+  <div class="body">
+    <aside class="side">
+      <div class="sec-label">페이지</div>
+      <div class="pages" id="pageList"></div>
+      <div class="hist">
+        <div class="sec-label">버전 기록</div>
+        <div class="list" id="histList"></div>
+      </div>
+    </aside>
+    <div class="stage">
+      <div class="oldbanner" id="oldBanner">
+        <span id="oldBannerText">이전 버전을 보고 있습니다</span>
+        <button id="backToLatest">최신 버전으로</button>
+      </div>
+      <button class="navbtn prev" id="prevBtn" title="이전 페이지 (←)">‹</button>
+      <div class="frame-wrap"><iframe id="frame" title="문서"></iframe></div>
+      <button class="navbtn next" id="nextBtn" title="다음 페이지 (→)">›</button>
+      <div class="counter" id="counter"></div>
+    </div>
+  </div>
+</div>
+<script src="assets/viewer.js"></script>
+</body>
+</html>

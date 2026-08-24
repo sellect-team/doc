@@ -1,0 +1,38 @@
+name: 사이트 빌드 & 배포
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 버전 기록 추출에 전체 Git 이력 필요
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 사이트 데이터 빌드 (문서 목록 + 버전 이력)
+        run: node scripts/build.mjs
+
+      - name: Playwright 설치
+        run: |
+          npm install playwright@1.49.0
+          npx playwright install --with-deps chromium
+
+      - name: PDF 생성
+        run: node scripts/make-pdfs.mjs
+
+      - name: Azure Static Web Apps 배포
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: upload
+          app_location: site
+          skip_app_build: true
+          skip_api_build: true

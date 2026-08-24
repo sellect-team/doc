@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>문서 라이브러리</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="index.html">Docs<span class="dot">.</span></a>
+  <div class="links">
+    <a href="index.html">문서</a>
+    <a href="guide.html">작성 지침</a>
+    <span class="user" id="userName"></span>
+    <button class="logout" id="logoutBtn" hidden onclick="location.href='/.auth/logout'">로그아웃</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">Sales Document Portal</div>
+  <h1>필요한 문서를,<br><span class="grad">가장 빠르게.</span></h1>
+  <p>회사소개서부터 제안서까지 — 언제나 최신 버전으로 열람하고 PDF로 받아가세요.</p>
+</header>
+
+<div class="filters" id="filters"></div>
+
+<main class="grid" id="grid"></main>
+
+<footer class="footer" id="footer"></footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

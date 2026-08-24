@@ -1,0 +1,15 @@
+{
+  "name": "docs-portal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "사내 문서 포털 — HTML 슬라이드 열람/버전관리/PDF",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "pdf": "node scripts/make-pdfs.mjs",
+    "serve": "npx http-server site -p 8123 -c-1"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  }
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>접근 권한 필요</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .center { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; }
+    .center h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 700; letter-spacing: -0.03em; }
+    .center p { margin-top: 16px; color: var(--ink-2); font-size: 17px; max-width: 440px; line-height: 1.6; }
+    .center a.btn { margin-top: 32px; background: var(--ink); color: #fff; padding: 13px 28px; border-radius: 999px; font-size: 15px; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <h1>접근 권한이 필요합니다</h1>
+    <p>로그인은 되었지만 아직 문서 열람 권한이 부여되지 않은 계정입니다.<br>관리자에게 초대를 요청해 주세요.</p>
+    <a class="btn" href="/.auth/logout?post_logout_redirect_uri=/">다른 계정으로 로그인</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "routes": [
+    {
+      "route": "/unauthorized.html",
+      "allowedRoles": ["anonymous", "authenticated"]
+    },
+    {
+      "route": "/.auth/login/github",
+      "statusCode": 404
+    },
+    {
+      "route": "/.auth/login/twitter",
+      "statusCode": 404
+    },
+    {
+      "route": "/*",
+      "allowedRoles": ["employee"]
+    }
+  ],
+  "responseOverrides": {
+    "401": {
+      "redirect": "/.auth/login/aad?post_login_redirect_uri=.referrer",
+      "statusCode": 302
+    },
+    "403": {
+      "rewrite": "/unauthorized.html"
+    }
+  },
+  "mimeTypes": {
+    ".json": "application/json",
+    ".md": "text/markdown; charset=utf-8"
+  }
+}
