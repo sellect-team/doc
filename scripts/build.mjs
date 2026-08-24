@@ -5,6 +5,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { validateAll } from "./validate.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DOCS = path.join(ROOT, "docs");
@@ -60,6 +61,8 @@ if (!fs.existsSync(DOCS)) {
   console.error("docs/ 폴더가 없습니다.");
   process.exit(1);
 }
+// 규격 검증 — 위반 문서가 있으면 빌드 중단 (AUTHORING.md 강제)
+if (!validateAll(DOCS)) process.exit(1);
 fs.rmSync(OUT_DOCS, { recursive: true, force: true });
 fs.rmSync(OUT_DATA, { recursive: true, force: true });
 fs.mkdirSync(OUT_DATA, { recursive: true });

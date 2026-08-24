@@ -4,8 +4,8 @@
     {
       "name": "docs-portal",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["http-server", "site", "-p", "8123", "-c-1"],
-      "port": 8123
+      "runtimeArgs": ["http-server", "site", "-p", "8787", "-c-1"],
+      "port": 8787
     }
   ]
 }
