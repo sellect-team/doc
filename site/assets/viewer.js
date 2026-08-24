@@ -25,9 +25,20 @@
 <script>(function(){
   var slides = Array.prototype.slice.call(document.querySelectorAll("section.slide"));
   var cur = 0;
+  // 지연 로딩된 이미지는 display:none 상태에서 받아오지 않는다.
+  // 현재 위치 앞뒤를 eager로 승격시켜 이동 전에 미리 받아둔다.
+  function preload(i) {
+    for (var j = i - 1; j <= i + 2; j++) {
+      var s = slides[j];
+      if (!s) continue;
+      var img = s.querySelector("img[loading='lazy']");
+      if (img) img.loading = "eager";
+    }
+  }
   function show(i, quiet) {
     cur = Math.max(0, Math.min(slides.length - 1, i));
     slides.forEach(function(s, j) { s.style.display = j === cur ? "" : "none"; });
+    preload(cur);
     if (!quiet) parent.postMessage({ __viewer: true, t: "cur", i: cur }, "*");
   }
   window.addEventListener("message", function(e) {

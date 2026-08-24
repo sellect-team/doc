@@ -92,9 +92,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 </html>
 """
 
+# 앞 2장은 즉시, 나머지는 지연 로딩한다. 뷰어가 이동할 때 앞뒤 슬라이드를
+# eager로 승격시켜 미리 받으므로, 큰 문서도 초기 로딩이 2장분으로 끝난다.
+EAGER_SLIDES = 2
+
 SECTION_TEMPLATE = (
     '  <section class="slide" data-title="{title}">\n'
-    '    <img src="{rel}/{file}" alt="{alt}" decoding="async">\n'
+    '    <img src="{rel}/{file}" alt="{alt}" decoding="async"{loading}>\n'
     "  </section>"
 )
 
@@ -105,12 +109,18 @@ def cmd_build(a):
     png_dir = pathlib.Path(a.png)
     assets = pathlib.Path(a.assets)
     assets.mkdir(parents=True, exist_ok=True)
-    for old in assets.glob("*.webp"):
-        old.unlink()
 
-    pngs = sorted(png_dir.glob("*.png"))
-    if not pngs:
-        sys.exit(f"PNG이 없습니다: {png_dir}")
+    if a.skip_images:
+        # 이미 만들어진 WebP를 그대로 쓴다 (HTML만 재생성)
+        pngs = sorted(assets.glob("*.webp"))
+        if not pngs:
+            sys.exit(f"WebP가 없습니다: {assets}")
+    else:
+        for old in assets.glob("*.webp"):
+            old.unlink()
+        pngs = sorted(png_dir.glob("*.png"))
+        if not pngs:
+            sys.exit(f"PNG이 없습니다: {png_dir}")
 
     titles = []
     tf = pathlib.Path(a.titles)
@@ -120,15 +130,20 @@ def cmd_build(a):
     total = 0
     sections = []
     for i, p in enumerate(pngs):
-        img = Image.open(p).convert("RGB")
         out = assets / (p.stem + ".webp")
-        img.save(out, "WEBP", quality=WEBP_QUALITY, method=6)
+        if not a.skip_images:
+            Image.open(p).convert("RGB").save(out, "WEBP", quality=WEBP_QUALITY, method=6)
+        elif not out.exists():
+            sys.exit(f"--skip-images 인데 WebP가 없습니다: {out}")
         total += out.stat().st_size
 
         title = titles[i] if i < len(titles) and titles[i] else f"페이지 {i + 1}"
         esc = htmlmod.escape(title, quote=True)
         sections.append(
-            SECTION_TEMPLATE.format(title=esc, rel=a.rel, file=out.name, alt=esc)
+            SECTION_TEMPLATE.format(
+                title=esc, rel=a.rel, file=out.name, alt=esc,
+                loading="" if i < EAGER_SLIDES else ' loading="lazy"',
+            )
         )
 
     doc = HTML_TEMPLATE.format(
@@ -154,6 +169,8 @@ def main():
     b = sub.add_parser("build")
     for flag in ("png", "assets", "html", "rel", "titles", "title", "desc", "version", "source"):
         b.add_argument(f"--{flag}", required=True)
+    # 이미지는 그대로 두고 HTML만 다시 만든다 (템플릿이 바뀌었을 때)
+    b.add_argument("--skip-images", action="store_true")
 
     args = ap.parse_args()
     if args.cmd == "titles":
