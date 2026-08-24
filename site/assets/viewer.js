@@ -99,7 +99,11 @@
   });
 
   function goto(i) {
-    frame.contentWindow.postMessage({ __viewer: true, t: "goto", i }, "*");
+    // iframe 왕복을 기다리지 않고 위치를 먼저 확정한다.
+    // 그러지 않으면 방향키를 빠르게 연속 입력할 때 같은 cur 값이 재사용돼 단계가 누락된다.
+    const target = Math.max(0, Math.min(total - 1, i));
+    update(target);
+    frame.contentWindow.postMessage({ __viewer: true, t: "goto", i: target }, "*");
   }
 
   function update(i) {
