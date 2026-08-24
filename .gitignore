@@ -1,4 +1,6 @@
 node_modules/
+__pycache__/
+*.pyc
 site/data/
 site/docs/
 site/pdf/
