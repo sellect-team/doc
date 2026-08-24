@@ -2,9 +2,10 @@
 // 선행: node scripts/build.mjs  |  사용법: node scripts/make-pdfs.mjs
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
-const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1")), "..");
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = path.join(ROOT, "site");
 const OUT = path.join(SITE, "pdf");
 
