@@ -500,6 +500,76 @@
     .ben p { font-size: 0.95rem; color: var(--s500); line-height: 1.6; }
     .ben p b { color: var(--t700); }
 
+    /* ── 비용 효율 AI 운영 (기능 4 v3) ── */
+    .k3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+    .k3 .kc { border: 1px solid var(--s200); border-radius: 0.8rem; background: #fff;
+              padding: 0.7rem 1.05rem; display: flex; align-items: center; gap: 0.85rem;
+              box-shadow: 0 5px 14px rgba(15,23,42,0.05); }
+    .k3 .kv { font-size: 1.75rem; font-weight: 800; color: var(--t600);
+              letter-spacing: -0.03em; white-space: nowrap; }
+    .k3 .kt b { display: flex; align-items: center; gap: 0.35rem; font-size: 0.95rem;
+                color: var(--s900); }
+    .k3 .kt b .i { color: var(--t600); }
+    .k3 .kt small { display: block; font-size: 0.78rem; color: var(--s500); margin-top: 0.12rem;
+                    line-height: 1.4; }
+    .cost { flex: 1; min-height: 0; display: grid; grid-template-columns: 0.85fr 1.5fr;
+            gap: 1.4rem; }
+    .panel { border: 1px solid var(--s200); border-radius: 0.9rem; background: #fff;
+             padding: 0.85rem 1rem; display: flex; flex-direction: column;
+             box-shadow: 0 6px 16px rgba(15,23,42,0.05); }
+    .panel.asis { border-top: 2px solid #FDA4AF; }
+    .panel.tobe { border-top: 2px solid var(--t400); }
+    .panel .ph3 { display: flex; align-items: center; gap: 0.45rem; font-size: 1.05rem;
+                  font-weight: 800; padding-bottom: 0.5rem; }
+    .panel.asis .ph3 { color: #E11D48; }
+    .panel.tobe .ph3 { color: var(--t700); }
+    .asis .ai { flex: 1; display: flex; gap: 0.7rem; align-items: center;
+                padding: 0.42rem 0; border-top: 1px solid var(--s100); }
+    .asis .ai .ric { width: 1.9rem; height: 1.9rem; border-radius: 0.5rem; background: #FFF1F2;
+                     border: 1px solid #FECDD3; color: #E11D48; display: flex; flex-shrink: 0;
+                     align-items: center; justify-content: center; font-size: 0.9rem; }
+    .asis .ai b { display: block; font-size: 0.92rem; color: var(--s900); }
+    .asis .ai small { display: block; font-size: 0.78rem; color: var(--s500); line-height: 1.4; }
+    .tobe .flowbox { flex: 1; min-height: 0; display: grid;
+                     grid-template-columns: 0.9fr 1.3rem 1.25fr 1.3rem 1.35fr;
+                     gap: 0.5rem; align-items: stretch; }
+    .tobe .reqs { border: 1px solid var(--s200); border-radius: 0.7rem; background: var(--s50);
+                  padding: 0.7rem 0.85rem; display: flex; flex-direction: column;
+                  justify-content: center; align-self: center; width: 100%;
+                  max-height: 13.5rem; min-height: 12rem; }
+    .tobe .reqs b { font-size: 0.9rem; color: var(--s900); display: block;
+                    margin-bottom: 0.35rem; }
+    .tobe .reqs li { list-style: none; font-size: 0.82rem; color: var(--s500);
+                     padding-left: 0.8rem; position: relative; margin-top: 0.25rem; }
+    .tobe .reqs li::before { content: "·"; position: absolute; left: 0.05rem;
+                             color: var(--t600); font-weight: 700; }
+    .tobe .harr { color: var(--s400); text-align: center; font-size: 0.95rem; align-self: center; }
+    .tobe .router { background: var(--s900); border-radius: 0.8rem; padding: 0.85rem 0.9rem;
+                    text-align: center; box-shadow: 0 10px 24px rgba(15,23,42,0.22);
+                    display: flex; flex-direction: column; justify-content: center;
+                    align-self: center; width: 100%; max-height: 13.5rem; min-height: 12rem; }
+    .tobe .router .ri { color: var(--t400); font-size: 1.3rem; margin-bottom: 0.3rem; }
+    .tobe .router b { display: block; color: #fff; font-size: 0.98rem; line-height: 1.3; }
+    .tobe .router b em { color: var(--t400); font-style: normal; }
+    .tobe .router small { display: block; color: var(--s400); font-size: 0.74rem;
+                          line-height: 1.45; margin-top: 0.35rem; }
+    .tobe .outs { display: flex; flex-direction: column; gap: 1rem; justify-content: center; }
+    .tobe .out2 { flex: 1; max-height: 8rem; border: 1px solid var(--s200);
+                  border-left: 3px solid var(--t400);
+                  border-radius: 0.6rem; background: #fff; padding: 0.55rem 0.75rem;
+                  position: relative; display: flex; flex-direction: column;
+                  justify-content: center; }
+    .tobe .out2.api { border-left-color: #93C5FD; }
+    .tobe .out2 b { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem;
+                    color: var(--s900); }
+    .tobe .out2 b .i { color: var(--t600); }
+    .tobe .out2 small { display: block; font-size: 0.76rem; color: var(--s500);
+                        line-height: 1.4; margin-top: 0.15rem; }
+    .tobe .bdg { position: absolute; top: -0.65rem; right: 0.6rem; font-size: 0.7rem;
+                 font-weight: 800; border-radius: 99rem; padding: 0.1rem 0.55rem; }
+    .tobe .bdg.g { background: var(--t50); border: 1px solid var(--t100); color: var(--t700); }
+    .tobe .bdg.r { background: #FFF1F2; border: 1px solid #FECDD3; color: #E11D48; }
+
     /* ── 엑셀 그리드 목업 ── */
     .xl { width: 100%; border-collapse: collapse; font-size: 0.84rem; background: #fff; }
     .xl th { background: var(--s100); color: var(--s500); font-weight: 700;
@@ -1028,35 +1098,51 @@
   <!-- 기능 4: 스마트 LLM 운용 -->
   <section class="slide" data-title="기능 ④ 하이브리드 AI 운용">
     <header class="s-head">
-      <h2><span class="bullet"></span>④ 하이브리드 AI 운용 - <em>질문만 하세요, 선택은 aisight가</em></h2>
+      <h2><span class="bullet"></span>④ 하이브리드 AI 운용 - <em>비용 효율적 운영 전략</em></h2>
       <div class="s-right"><span class="sec">02 · Key Features</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <div class="s-band"><p>사용자는 어떤 AI를 쓸지 고를 필요가 없습니다. 질문의 <strong>보안 · 난이도 · 비용</strong>을 aisight가 판단해 사내 LLM과 상용 LLM에 자동 배분합니다.</p></div>
+    <div class="s-band"><p>작업의 <strong>난이도와 보안 등급</strong>에 따라 최적의 AI 모델을 실시간 매칭합니다. 품질 타협 없이 인프라 운영 비용을 최소화합니다.</p></div>
     <div class="content">
-      <div class="rt fill">
-        <div class="hh">현업의 질문</div><div></div><div class="hh">aisight의 판단</div><div></div><div class="hh">자동 배정</div>
-
-        <div class="qq">"우리 팀 인사평가 결과 분석해줘"</div>
-        <div class="ar">→</div>
-        <div class="jd"><b>민감 정보 포함</b><small>보안 기준</small></div>
-        <div class="ar">→</div>
-        <div class="as inh"><b><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>사내 LLM</b><small>폐쇄망에서만 처리 · 데이터 외부 반출 없음</small></div>
-
-        <div class="qq">"어제 매출 얼마였지?"</div>
-        <div class="ar">→</div>
-        <div class="jd"><b>단순 조회</b><small>속도 · 비용 기준</small></div>
-        <div class="ar">→</div>
-        <div class="as inh"><b><svg class="i" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>사내 LLM</b><small>즉시 응답 · 운영 비용 최소화</small></div>
-
-        <div class="qq">"3개년 추세로 내년 시나리오 뽑아줘"</div>
-        <div class="ar">→</div>
-        <div class="jd"><b>고난도 추론</b><small>품질 기준</small></div>
-        <div class="ar">→</div>
-        <div class="as ext"><b><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 15h3"/><path d="M1 9h3"/><path d="M1 15h3"/></svg>상용 LLM</b><small>Claude · GPT 등 고성능 모델로 승격</small></div>
+      <div class="k3">
+        <div class="kc"><span class="kv">~80%</span><span class="kt"><b><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>일상 대화 GPU 오프로딩</b><small>대규모 트래픽의 한계비용 제로화</small></span></div>
+        <div class="kc"><span class="kv">60%↓</span><span class="kt"><b><svg class="i" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>API 인프라 비용 절감 여력</b><small>사용량 비례 과금 폭증 리스크 헷지</small></span></div>
+        <div class="kc"><span class="kv">1 system</span><span class="kt"><b><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>통합 라우팅 아키텍처</b><small>GPU와 API를 단일 인프라에서 통제</small></span></div>
       </div>
-      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span>모델 선택과 비용 걱정은 aisight의 일 - 현업에게는 그저 <b>하나의 똑똑한 동료</b>입니다.</span></div>
+      <div class="cost fill">
+        <div class="panel asis">
+          <div class="ph3">AS-IS · 단일 API 의존의 한계</div>
+          <div class="ai"><span class="ric"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 6v2"/><path d="M12 16v2"/></svg></span><span><b>리소스 할당 비효율</b><small>단순 질의응답에도 고비용 API가 쓰여 핵심 예산이 빠르게 소진됩니다.</small></span></div>
+          <div class="ai"><span class="ric"><svg class="i" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span><span><b>선형적인 과금 리스크</b><small>사용자가 늘수록 청구서가 비례 폭증해 예산 통제력을 잃습니다.</small></span></div>
+          <div class="ai"><span class="ric"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span><b>데이터 컴플라이언스</b><small>사내 기밀이 외부망으로 전송되어 유출 위험에 노출됩니다.</small></span></div>
+          <div class="ai"><span class="ric"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span><b>품질과 비용의 트레이드오프</b><small>저렴한 모델 일괄 도입은 핵심 분석의 품질을 무너뜨립니다.</small></span></div>
+        </div>
+        <div class="panel tobe">
+          <div class="ph3">TO-BE · 작업 성격 기반 동적 라우팅</div>
+          <div class="flowbox">
+            <div class="reqs">
+              <b>사용자 요청</b>
+              <li>단순 질의응답</li>
+              <li>사내 지식 검색</li>
+              <li>복합 분석 · 요약</li>
+              <li>대시보드 생성</li>
+            </div>
+            <div class="harr">→</div>
+            <div class="router">
+              <div class="ri"><svg class="i" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4l5 5"/></svg></div>
+              <b>aisight<br><em>Intelligent Router</em></b>
+              <small>의도(Intent) · 연산 복잡도 · 보안 등급(PII)을 판별해 실시간 최적 경로 배분</small>
+            </div>
+            <div class="harr">→</div>
+            <div class="outs">
+              <div class="out2"><span class="bdg g">~80% 흡수</span><b><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>사내 GPU 기반 sLLM</b><small>민감 데이터 격리 · 일상 대화 오프로딩 · 고정비 운영 확립</small></div>
+              <div class="out2 api"><span class="bdg r">20% 선별 과금</span><b><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 15h3"/><path d="M1 9h3"/><path d="M1 15h3"/></svg>외부 상용 LLM (API)</b><small>고난도 추론 · 생성이 필요한 핵심 작업에만 선별적 예산 투입</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <footer class="s-foot"><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
+  
   
   </section>
 
