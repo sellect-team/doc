@@ -8,10 +8,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { font-size: clamp(8px, 1.25vw, 20px); }
-    body { font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif; color: #1d1d1f; }
+    /* 16:9 고정 캔버스 - 창 크기가 변해도 전체가 같은 비율로 확대·축소된다 */
+    html { font-size: min(1.25vw, 2.2222vh); }
+    body {
+      font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif; color: #1d1d1f;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
+    }
     .slide {
-      width: 100vw; height: 100vh; overflow: hidden; position: relative;
+      width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh);
+      overflow: hidden; position: relative; flex-shrink: 0;
       padding: 4rem 5rem; display: flex; flex-direction: column; justify-content: center;
     }
     .eyebrow { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #4f46e5; margin-bottom: 1.2rem; }
@@ -60,9 +65,9 @@
     <h2>일정과 비용</h2>
     <table>
       <tr><th>단계</th><th>기간</th><th>비용</th></tr>
-      <tr><td>1단계 — 진단</td><td>2주</td><td>0,000만 원</td></tr>
-      <tr><td>2단계 — 구축</td><td>6주</td><td>0,000만 원</td></tr>
-      <tr><td>3단계 — 확산</td><td>4주</td><td>0,000만 원</td></tr>
+      <tr><td>1단계 - 진단</td><td>2주</td><td>0,000만 원</td></tr>
+      <tr><td>2단계 - 구축</td><td>6주</td><td>0,000만 원</td></tr>
+      <tr><td>3단계 - 확산</td><td>4주</td><td>0,000만 원</td></tr>
     </table>
   </section>
 

@@ -85,9 +85,16 @@ export function validateDoc(html, filename, docDir) {
     errors.push("문서 자체 페이지 내비게이션(키보드 이벤트 등) 금지 — 뷰어가 자동 주입함");
   }
 
-  // 권장 사항 (경고 — 빌드는 통과)
-  if (!/font-size:\s*clamp\(/i.test(html)) {
-    warnings.push("html { font-size: clamp(8px, 1.25vw, 20px) } 반응형 글자 기준이 없음 — 창 크기에 따라 레이아웃이 깨질 수 있음");
+  // 권장 사항 (경고 - 빌드는 통과)
+  // 루트 글자 크기는 뷰포트에 비례해야 슬라이드가 통째로 확대·축소된다.
+  const rootFs = html.match(/html\s*\{[^}]*font-size:\s*([^;}]+)/i)?.[1] || "";
+  if (!/\d(vw|vh)/i.test(rootFs)) {
+    warnings.push("html의 font-size가 뷰포트 기준(vw/vh)이 아님 - 16:9 고정 캔버스 CSS를 넣으세요 (AUTHORING.md 4절)");
+  } else if (/clamp\([^)]*\d+(px|rem)\s*\)/i.test(rootFs)) {
+    warnings.push("html의 font-size에 상한이 있음 - 화면이 커지면 글자만 멈추고 여백만 벌어집니다. min(1.25vw, 2.2222vh) 사용");
+  }
+  if (!/width:\s*min\(100vw/i.test(html)) {
+    warnings.push("슬라이드가 16:9 고정 캔버스가 아님 - .slide { width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh) }");
   }
   const px = noComments.match(/font-size:\s*\d+px/gi);
   if (px) {
