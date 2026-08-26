@@ -94,7 +94,11 @@
                    letter-spacing: 0.22em; font-weight: 600; }
 
     /* ── 2단 레이아웃: 좌우 모두 높이를 꽉 채움 ── */
-    .two { display: grid; grid-template-columns: 1fr 1.15fr; gap: 2.6rem; align-items: stretch; }
+    .two { display: flex; gap: 2.6rem; align-items: stretch; }
+    .two > :first-child { flex: 1; min-width: 0; min-height: 0; }
+    .two > :last-child { flex: 1.15; min-width: 0; min-height: 0; }
+    .two.wide > :first-child { flex: 0.8; }
+    .two.wide > :last-child { flex: 1.6; }
     .krows { display: flex; flex-direction: column; gap: 1.5rem; height: 100%; }
     .krow { flex: 1; display: flex; gap: 1rem; align-items: center;
             background: var(--s50); border: 1px solid var(--s200); border-radius: 0.85rem;
@@ -106,7 +110,7 @@
     .krow p { font-size: 0.97rem; line-height: 1.52; color: var(--s500); }
 
     /* ── 목업 윈도우 (컬럼 높이를 꽉 채움) ── */
-    .mockcol { display: flex; flex-direction: column; height: 100%; }
+    .mockcol { display: flex; flex-direction: column; height: 100%; min-height: 0; }
     .mockcol .win { flex: 1; min-height: 0; }
     .win { background: #fff; border: 1px solid var(--s200); border-radius: 0.9rem;
            box-shadow: 0 14px 34px rgba(15,23,42,0.10); overflow: hidden;
@@ -117,13 +121,13 @@
     .win .bar .t { margin-left: 0.4rem; font-size: 0.84rem; font-weight: 600; color: var(--s500); }
     .win .bar .live { margin-left: auto; font-size: 0.7rem; font-weight: 700; color: var(--t600);
                       background: var(--t50); border-radius: 99rem; padding: 0.14rem 0.6rem; }
-    .win .body { flex: 1; padding: 0.95rem 1.05rem; display: flex; flex-direction: column;
-                 gap: 0.7rem; justify-content: space-between; }
+    .win .body { flex: 1; min-height: 0; padding: 0.85rem 1rem; display: flex; flex-direction: column;
+                 gap: 0.6rem; justify-content: space-between; }
     .cap { font-size: 0.76rem; color: var(--s400); text-align: right; margin-top: 0.35rem; }
 
     /* 챗 목업 */
-    .msg { max-width: 84%; padding: 0.72rem 0.95rem; border-radius: 0.85rem;
-           font-size: 0.97rem; line-height: 1.5; }
+    .msg { max-width: 84%; padding: 0.6rem 0.9rem; border-radius: 0.85rem;
+           font-size: 0.94rem; line-height: 1.48; }
     .msg.q { align-self: flex-end; background: var(--s900); color: #fff;
              border-bottom-right-radius: 0.2rem; }
     .msg.a { align-self: flex-start; background: var(--s50); border: 1px solid var(--s200);
@@ -163,9 +167,11 @@
                 font-weight: 700; border-radius: 99rem; padding: 0.28rem 0.75rem; }
 
     /* ── 단색 라인 아이콘 ── */
-    .i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2;
+    .i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6;
          stroke-linecap: round; stroke-linejoin: round; display: inline-block;
          vertical-align: -0.12em; }
+    .card .ico .i { stroke-width: 1.3; }
+    .krow .kico .i { stroke-width: 1.5; }
     .card .ico { color: var(--t600); }
     .krow .kico { color: var(--t700); }
     .stripe .sicon { color: var(--t400); display: flex; align-items: center; }
@@ -176,13 +182,14 @@
     .msg.a .i { color: var(--t600); }
 
     /* ── 대시보드 + 에이전트 복합 목업 ── */
-    .duo { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.2fr 1fr; }
-    .dpane { padding: 0.8rem 0.85rem; border-right: 1px solid var(--s200); background: #fff;
-             display: flex; flex-direction: column; gap: 0.7rem; justify-content: space-between; }
+    .duo { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.2fr 1fr; overflow: hidden; }
+    .dpane { padding: 0.7rem 0.8rem; border-right: 1px solid var(--s200); background: #fff;
+             display: flex; flex-direction: column; gap: 0.5rem; justify-content: space-between;
+             min-height: 0; overflow: hidden; }
     .dpane .dh { font-size: 0.92rem; font-weight: 800; color: var(--s900); }
     .dpane .dh small { color: var(--s400); font-weight: 600; margin-left: 0.3rem; }
-    .apane { display: flex; flex-direction: column; gap: 0.55rem; padding: 0.8rem 0.85rem;
-             background: var(--s50); }
+    .apane { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.7rem 0.8rem;
+             background: var(--s50); min-height: 0; overflow: hidden; }
     .apane .ah { display: flex; align-items: center; gap: 0.45rem; font-weight: 800;
                  font-size: 0.95rem; color: var(--s900); padding-bottom: 0.2rem; }
     .apane .ah img { width: 1.2rem; height: auto; }
@@ -194,8 +201,8 @@
     .mtable tr:last-child td { border-bottom: none; }
     .mtable td:last-child { text-align: right; font-weight: 700; color: var(--s900); }
     .donuts { display: flex; gap: 1rem; align-items: center; }
-    .donut { width: 3.5rem; height: 3.5rem; border-radius: 50%; position: relative; flex-shrink: 0; }
-    .donut::after { content: ""; position: absolute; inset: 0.6rem; background: #fff; border-radius: 50%; }
+    .donut { width: 3rem; height: 3rem; border-radius: 50%; position: relative; flex-shrink: 0; }
+    .donut::after { content: ""; position: absolute; inset: 0.52rem; background: #fff; border-radius: 50%; }
     .donut .dl { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
                  justify-content: center; font-size: 0.56rem; font-weight: 700; color: var(--s700); z-index: 1; }
     .donut .dl b { font-size: 0.7rem; color: var(--s900); }
@@ -214,8 +221,8 @@
     .anode.hl small { color: var(--s300); }
     .anode.tt { background: var(--t50); border-color: var(--t100); color: var(--t800); }
     .anode.tt small { color: var(--t700); font-weight: 500; }
-    .adown { text-align: center; color: var(--t600); font-weight: 700; font-size: 1rem; line-height: 1; }
-    .onprem { flex: 1; border: 2px dashed var(--s300); border-radius: 1rem;
+    .adown { text-align: center; color: var(--s400); font-weight: 400; font-size: 0.85rem; line-height: 1; }
+    .onprem { flex: 1; border: 1px dashed var(--s300); border-radius: 1rem;
               padding: 1.1rem 1.3rem 1rem; display: flex; flex-direction: column; gap: 0.45rem;
               position: relative; margin-top: 0.4rem; }
     .onprem .tag { position: absolute; top: -0.85rem; right: 1.2rem; background: #fff;
@@ -227,6 +234,46 @@
                 font-weight: 800; color: var(--s900); font-size: 1.08rem; }
     .plat .ph img { width: 1.35rem; height: auto; }
 
+    /* ── 리포트 페이지 목업 (생성된 PPT 한 장) ── */
+    .rpage { background: #fff; border: 1px solid var(--s200); border-radius: 0.5rem;
+             box-shadow: 0 10px 26px rgba(15,23,42,0.10); padding: 0.9rem 1.05rem 0.7rem;
+             display: flex; flex-direction: column; gap: 0.55rem; }
+    .rp-head { display: flex; align-items: baseline; justify-content: space-between;
+               border-bottom: 1px solid var(--s200); padding-bottom: 0.45rem; }
+    .rp-head .t { font-size: 1.02rem; font-weight: 800; color: var(--s900); letter-spacing: -0.01em; }
+    .rp-head .t::before { content: ""; display: inline-block; width: 0.4rem; height: 0.4rem;
+                          background: var(--t400); margin-right: 0.45rem; vertical-align: middle; }
+    .rp-head .d { font-size: 0.7rem; color: var(--s400); }
+    .rp-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+    .rp-kpi { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.45rem;
+              padding: 0.45rem 0.55rem; }
+    .rp-kpi .k { font-size: 0.62rem; color: var(--s500); }
+    .rp-kpi .v { font-size: 0.98rem; font-weight: 800; color: var(--s900); }
+    .rp-kpi .v small { font-size: 0.62rem; font-weight: 700; color: var(--t600); margin-left: 0.2rem; }
+    .rp-body { display: grid; grid-template-columns: 1.05fr 1fr; gap: 0.7rem; align-items: stretch; }
+    .rp-chart { border: 1px solid var(--s100); border-radius: 0.45rem; padding: 0.5rem 0.55rem 0.35rem;
+                display: flex; flex-direction: column; justify-content: flex-end; }
+    .rp-chart .ct { font-size: 0.64rem; font-weight: 700; color: var(--s500); margin-bottom: 0.25rem; }
+    .rp-ins { display: flex; flex-direction: column; gap: 0.4rem; justify-content: center; }
+    .rp-ins .it { font-size: 0.62rem; font-weight: 700; color: var(--s500); }
+    .rp-ins li { list-style: none; font-size: 0.74rem; color: var(--s600); line-height: 1.45;
+                 padding-left: 0.95rem; position: relative; }
+    .rp-ins li::before { content: "✓"; position: absolute; left: 0; color: var(--t600); font-weight: 700; }
+    .rp-foot { display: flex; justify-content: space-between; align-items: center;
+               border-top: 1px solid var(--s100); padding-top: 0.35rem;
+               font-size: 0.6rem; color: var(--s400); letter-spacing: 0.08em; }
+    .rp-stack { position: relative; }
+    .rp-stack::before, .rp-stack::after { content: ""; position: absolute; inset: 0;
+               background: #fff; border: 1px solid var(--s200); border-radius: 0.5rem; z-index: -1; }
+    .rp-stack::before { transform: translate(0.45rem, 0.45rem); opacity: 0.7; }
+    .rp-stack::after { transform: translate(0.9rem, 0.9rem); opacity: 0.4; }
+    .rp-flow { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;
+               font-size: 0.8rem; color: var(--s500); }
+    .rp-flow .st { background: var(--s50); border: 1px solid var(--s200); border-radius: 99rem;
+                   padding: 0.28rem 0.75rem; font-weight: 600; color: var(--s600); }
+    .rp-flow .st.on { background: var(--t50); border-color: var(--t100); color: var(--t700); }
+    .rp-flow .ar { color: var(--s400); font-size: 0.8rem; }
+
     /* ── 플로우(가로 흐름) ── */
     .flow { display: flex; align-items: stretch; gap: 1.1rem; }
     .fnode { flex: 1; background: var(--s50); border: 1px solid var(--s200); border-radius: 0.8rem;
@@ -237,7 +284,7 @@
     .fnode.hl .ft { color: var(--t400); }
     .fnode .fd { font-size: 0.82rem; color: var(--s500); margin-top: 0.22rem; line-height: 1.45; }
     .fnode.hl .fd { color: var(--s300); }
-    .farrow { display: flex; align-items: center; font-size: 1.2rem; color: var(--t600); font-weight: 700; }
+    .farrow { display: flex; align-items: center; font-size: 1.1rem; color: var(--s400); font-weight: 400; }
 
     /* ── 비교 (컬럼·리스트 모두 높이 채움) ── */
     .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 2.6rem; }
@@ -270,7 +317,7 @@
                 align-items: center; justify-content: center; margin-bottom: 0.75rem; }
     .step h3 { font-size: 1.22rem; font-weight: 700; margin-bottom: 0.4rem; }
     .step p { font-size: 0.98rem; line-height: 1.55; color: var(--s500); }
-    .sarrow { display: flex; align-items: center; font-size: 1.3rem; color: var(--t600); font-weight: 700; }
+    .sarrow { display: flex; align-items: center; font-size: 1.15rem; color: var(--s400); font-weight: 400; }
 
     /* ── 숫자 하이라이트 ── */
     .nums { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 2.6rem; grid-auto-rows: 1fr;
@@ -318,7 +365,7 @@
 
   <!-- 1. 표지 -->
   <section class="slide dark" data-title="표지">
-    <div class="glow"></div>
+    <div class="glow" data-bleed></div>
     <img class="logo" src="assets/aisight-marketing/logo.png" alt="aisight 로고">
     <div class="top">
       <span class="pillbadge">SAILINGSTONE — AISIGHT 2026</span>
@@ -481,7 +528,7 @@
     </header>
     <div class="s-band"><p>차트 만드는 법이 아니라 <strong>궁금한 것</strong>만 있으면 됩니다. 보고 있는 대시보드 위에서 바로 묻고, 바로 확인합니다.</p></div>
     <div class="content">
-      <div class="two fill" style="grid-template-columns: 0.8fr 1.6fr;">
+      <div class="two fill wide">
         <div class="krows">
           <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><h4>자연어 질문</h4><p>"이번 달 실적 어때?"처럼 평소 쓰는 말로 물어보면 AI가 의도를 파악해 분석합니다.</p></div></div>
           <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></div><div><h4>즉시 시각화</h4><p>답변은 숫자 나열이 아니라 이해하기 쉬운 차트와 표로 함께 제공됩니다.</p></div></div>
@@ -500,7 +547,7 @@
                   <div class="kpi"><div class="k">목표 달성률</div><div class="v">91.3%</div><div class="d up">▲ 진행 중</div></div>
                 </div>
                 <div>
-                  <div class="bars" style="height:4rem"><i style="height:38%"></i><i style="height:52%"></i><i style="height:47%"></i><i style="height:64%"></i><i style="height:58%"></i><i class="hl" style="height:88%"></i></div>
+                  <div class="bars" style="height:3.2rem"><i style="height:38%"></i><i style="height:52%"></i><i style="height:47%"></i><i style="height:64%"></i><i style="height:58%"></i><i class="hl" style="height:88%"></i></div>
                   <div class="bars-x"><span>21W</span><span>22W</span><span>23W</span><span>24W</span><span>25W</span><span>26W</span></div>
                 </div>
                 <div class="donuts">
@@ -546,18 +593,39 @@
         <div class="mockcol">
           <div class="win">
             <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">주간 매출 분석 리포트</span><span class="live">자동 생성됨</span></div>
-            <div class="body">
-              <div class="doc">
-                <div class="dt"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> 6월 2주차 매출 분석 요약</div>
-                <div class="line w85"></div><div class="line w70"></div><div class="line w50"></div>
-                <div class="bars" style="height:3.2rem"><i style="height:45%"></i><i style="height:70%"></i><i class="hl" style="height:95%"></i><i style="height:60%"></i></div>
+            <div class="body" style="background: var(--s100); gap: 0.65rem;">
+              <div class="rp-flow">
+                <span class="st on">대화 인사이트</span><span class="ar">→</span>
+                <span class="st on">초안 생성</span><span class="ar">→</span>
+                <span class="st on">표준 양식 적용</span><span class="ar">→</span>
+                <span class="st">자동 발송</span>
               </div>
-              <div class="doc">
-                <div class="dt"><svg class="i" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.68.68 1.15 1.45 1.41 2.5"/></svg> 핵심 인사이트 3가지</div>
-                <div class="line w85"></div><div class="line w70"></div>
+              <div class="rp-stack">
+                <div class="rpage">
+                  <div class="rp-head"><span class="t">6월 2주차 매출 분석 리포트</span><span class="d">2026. 06. 15 · aisight 자동 생성</span></div>
+                  <div class="rp-kpis">
+                    <div class="rp-kpi"><div class="k">주간 매출</div><div class="v">128.4억<small>▲ 8.5%</small></div></div>
+                    <div class="rp-kpi"><div class="k">주문 수</div><div class="v">35,367<small>▲ 18.1%</small></div></div>
+                    <div class="rp-kpi"><div class="k">목표 달성률</div><div class="v">91.3%<small>▲</small></div></div>
+                  </div>
+                  <div class="rp-body">
+                    <div class="rp-chart">
+                      <div class="ct">주차별 매출 추이</div>
+                      <div class="bars" style="height:2.6rem; gap:0.35rem;"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:66%"></i><i style="height:60%"></i><i class="hl" style="height:90%"></i></div>
+                      <div class="bars-x" style="gap:0.35rem;"><span>21W</span><span>22W</span><span>23W</span><span>24W</span><span>25W</span><span>26W</span></div>
+                    </div>
+                    <ul class="rp-ins">
+                      <div class="it">핵심 인사이트</div>
+                      <li>신제품 출시 효과로 26주차 매출 반등</li>
+                      <li>온라인 채널 비중 62%로 확대 지속</li>
+                      <li>다음 주 프로모션 물량 점검 필요</li>
+                    </ul>
+                  </div>
+                  <div class="rp-foot"><span>– 1 –</span><span>SAILINGSTONE · CONFIDENTIAL</span></div>
+                </div>
               </div>
               <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
-                <span class="badge-ok">✓ 매주 월 09:00 자동 발송</span>
+                <span class="badge-ok">매주 월 09:00 자동 발송</span>
                 <span class="badge-ok">수신 3명</span>
                 <span class="badge-ok">메일 · 메신저</span>
               </div>
@@ -598,9 +666,9 @@
               <div style="display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
                 <span class="chip">PDF</span><span class="chip">Word</span><span class="chip">Excel</span><span class="chip">PPT</span><span class="chip">매뉴얼</span>
               </div>
-              <div style="text-align:center; color:var(--t600); font-weight:700; font-size:1.02rem;">▼ AI가 읽고 정리</div>
+              <div style="text-align:center; color:var(--s400); font-weight:400; font-size:0.85rem;">▼ AI가 읽고 정리</div>
               <div class="fnode hl" style="padding:0.85rem;"><div class="ft"><svg class="i" viewBox="0 0 24 24"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg> 전사 지식 위키</div><div class="fd">부서·주제별로 구조화된 회사 공용 지식</div></div>
-              <div style="text-align:center; color:var(--t600); font-weight:700; font-size:1.02rem;">▼ 대화로 검색</div>
+              <div style="text-align:center; color:var(--s400); font-weight:400; font-size:0.85rem;">▼ 대화로 검색</div>
               <div class="msg q" style="align-self:center; max-width:100%;">작년에 정한 품질 검사 기준이 뭐였지?</div>
               <div class="msg a" style="max-width:100%;">기준 문서를 찾았습니다. <span class="pt">요약</span>과 <span class="pt">원문 위치</span>를 함께 드릴게요.</div>
             </div>
@@ -725,7 +793,7 @@
 
   <!-- 12. 맺음 -->
   <section class="slide dark" data-title="POC 신청">
-    <div class="glow"></div>
+    <div class="glow" data-bleed></div>
     <img class="logo" src="assets/aisight-marketing/logo.png" alt="aisight 로고">
     <div class="top">
       <span class="pillbadge">PROOF OF CONCEPT</span>

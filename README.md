@@ -15,6 +15,7 @@ site/                  웹사이트 (index/viewer/guide + 빌드 산출물)
 scripts/build.mjs      문서 스캔 + Git 이력 → site/data/docs.json 생성 (규격 검증 포함)
 scripts/validate.mjs   규격 검증기 — 위반 시 빌드 실패
 scripts/make-pdfs.mjs  문서별 PDF 생성 (Playwright). 원본 PDF가 있으면 건너뜀
+scripts/check-overflow.mjs  슬라이드 전수검사 — 영역 이탈·내부 잘림 검출 (CI에서도 실행)
 scripts/convert-pptx.ps1  기존 PPTX → 포털 HTML 변환 (PowerPoint 렌더링, 100% 동일)
 AUTHORING.md           ★ 문서 작성 지침 (사이트 "작성 지침" 메뉴에 자동 반영)
 PROMPT.md              클로드에 복사해 붙여넣는 문서 제작 프롬프트

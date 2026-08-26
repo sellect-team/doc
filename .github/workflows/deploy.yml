@@ -25,6 +25,9 @@ jobs:
           npm install playwright@1.49.0
           npx playwright install --with-deps chromium
 
+      - name: 슬라이드 전수검사 (영역 이탈·잘림)
+        run: node scripts/check-overflow.mjs
+
       - name: PDF 생성
         run: node scripts/make-pdfs.mjs
 
