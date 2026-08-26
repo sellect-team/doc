@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>aisight 소개 (고객 배포용)</title>
-  <meta name="doc-version" content="1.0">
+  <meta name="doc-version" content="1.1">
   <meta name="doc-description" content="일반 고객 배포용 aisight 마케팅 소개 자료 — 핵심 가치와 활용 장면 중심의 12장 요약본">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
@@ -14,111 +14,218 @@
       background: #fff; color: #0F172A;
     }
     :root {
-      --s900: #0F172A; --s800: #1E293B; --s600: #475569; --s500: #64748B;
-      --s400: #94A3B8; --s300: #CBD5E1; --s200: #E2E8F0; --s50: #F8FAFC;
-      --t800: #115E59; --t600: #0D9488; --t400: #2DD4BF; --t100: #CCFBF1;
+      --s900: #0F172A; --s800: #1E293B; --s700: #334155; --s600: #475569; --s500: #64748B;
+      --s400: #94A3B8; --s300: #CBD5E1; --s200: #E2E8F0; --s100: #F1F5F9; --s50: #F8FAFC;
+      --t800: #115E59; --t700: #0F766E; --t600: #0D9488; --t400: #2DD4BF; --t100: #CCFBF1; --t50: #F0FDFA;
     }
     .slide {
       width: 100vw; height: 100vh; overflow: hidden; position: relative;
-      padding: 2.2rem 2.8rem; display: flex; flex-direction: column;
+      padding: 1.7rem 2.6rem 1rem; display: flex; flex-direction: column;
       background: #fff;
     }
 
-    /* ── 공통 골격 ── */
-    .s-head { display: flex; align-items: baseline; justify-content: space-between;
-              border-bottom: 1px solid var(--s200); padding-bottom: 0.9rem; }
-    .s-head h2 { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em; color: var(--s900); }
+    /* ── 기존 템플릿 공통 골격: 헤더(제목+섹션·워드마크) / 리드 밴드 / 중앙 페이지 푸터 ── */
+    .s-head { display: flex; align-items: center; justify-content: space-between;
+              padding-bottom: 0.85rem; }
+    .s-head h2 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; color: var(--s900); }
     .s-head h2 em { color: var(--t600); font-style: normal; }
-    .bullet { display: inline-block; width: 0.6rem; height: 0.6rem;
-              background: var(--t400); margin-right: 0.8rem; vertical-align: middle; }
-    .s-mark { font-size: 1.15rem; font-weight: 700; color: var(--t600); letter-spacing: 0.01em; }
-    .s-lead { font-size: 1.25rem; line-height: 1.65; color: var(--s600); margin: 1.3rem 0 1.6rem; }
-    .s-lead strong { color: var(--t600); font-weight: 700; }
-    .s-foot { display: flex; justify-content: space-between; align-items: center;
-              font-size: 0.78rem; color: var(--s400); margin-top: auto; padding-top: 1rem; }
-    .s-foot .mark { letter-spacing: 0.12em; }
+    .bullet { display: inline-block; width: 0.55rem; height: 0.55rem;
+              background: var(--t400); margin-right: 0.75rem; vertical-align: middle; }
+    .s-right { display: flex; align-items: center; gap: 0.75rem; }
+    .s-right .sec { font-size: 0.95rem; color: var(--s400); letter-spacing: 0.04em; }
+    .s-right .sep { width: 1px; height: 1.2rem; background: var(--s300); }
+    .s-right .mk { width: 1.45rem; height: auto; }
+    .s-right .mkt { font-size: 1.3rem; font-weight: 700; color: var(--s700); letter-spacing: -0.01em; }
+
+    .s-band { margin: 0 -2.6rem; background: var(--s50);
+              border-top: 1px solid var(--s200); border-bottom: 1px solid var(--s200);
+              padding: 0.85rem 2.6rem; }
+    .s-band p { font-size: 1.13rem; line-height: 1.62; color: var(--s600); }
+    .s-band strong { color: var(--t600); font-weight: 700; }
+
+    .s-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+              font-size: 0.78rem; color: var(--s400); margin-top: 0.85rem; }
+    .s-foot .pg { grid-column: 2; }
+    .s-foot .mark { grid-column: 3; justify-self: end; letter-spacing: 0.14em; color: var(--s400); }
     .grow { flex: 1; min-height: 0; }
+    .content { flex: 1; min-height: 0; display: flex; flex-direction: column;
+               justify-content: center; gap: 1rem; padding-top: 1rem; }
+
+    /* ── 하단 요약 스트라이프 ── */
+    .stripe { background: var(--s900); color: #E2E8F0; border-radius: 0.7rem;
+              padding: 0.8rem 1.4rem; font-size: 1.03rem;
+              display: flex; align-items: center; gap: 0.8rem; }
+    .stripe b { color: var(--t400); font-weight: 700; }
+    .stripe .sicon { font-size: 1.15rem; }
 
     /* ── 카드 ── */
-    .cards { display: grid; gap: 1.1rem; align-content: center; }
+    .cards { display: grid; gap: 1rem; }
     .c3 { grid-template-columns: repeat(3, 1fr); }
     .c4 { grid-template-columns: repeat(4, 1fr); }
     .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
-            padding: 1.5rem 1.4rem; display: flex; flex-direction: column; }
-    .card .ico { font-size: 1.9rem; line-height: 1; margin-bottom: 0.9rem; }
-    .card h3 { font-size: 1.35rem; font-weight: 700; color: var(--s900); margin-bottom: 0.55rem;
+            padding: 1.2rem 1.15rem 1.05rem; display: flex; flex-direction: column;
+            box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
+    .card .no { font-size: 0.78rem; font-weight: 800; color: var(--t600); letter-spacing: 0.1em;
+                margin-bottom: 0.55rem; }
+    .card .ico { font-size: 1.65rem; line-height: 1; margin-bottom: 0.65rem; }
+    .card h3 { font-size: 1.26rem; font-weight: 700; color: var(--s900); margin-bottom: 0.4rem;
                letter-spacing: -0.01em; }
-    .card p { font-size: 1.05rem; line-height: 1.6; color: var(--s500); }
-    .card .label { font-size: 0.78rem; font-weight: 700; color: var(--t600);
-                   letter-spacing: 0.09em; margin-bottom: 0.7rem; }
+    .card p { font-size: 0.99rem; line-height: 1.55; color: var(--s500); }
+    .card .quote { margin-top: auto; padding-top: 0.85rem; font-size: 0.9rem; color: var(--s400);
+                   font-style: italic; border-top: 1px dashed var(--s200); }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: auto; padding-top: 0.85rem; }
+    .chip { background: var(--t50); border: 1px solid var(--t100); color: var(--t700);
+            font-size: 0.84rem; font-weight: 600; padding: 0.28rem 0.7rem; border-radius: 99rem; }
 
-    /* ── 다크 슬라이드 ── */
-    .dark { background: var(--s900); color: #fff; justify-content: center; align-items: flex-start; }
-    .dark .glow { position: absolute; right: -12rem; top: 50%; transform: translateY(-50%);
-                  width: 46rem; height: 46rem; border-radius: 50%;
-                  background: radial-gradient(circle, rgba(45,212,191,0.20) 0%, rgba(45,212,191,0.06) 45%, transparent 70%); }
-    .dark .logo { position: absolute; right: 7rem; top: 50%; transform: translateY(-50%);
-                  width: 17rem; z-index: 1; }
-    .dark .badge { display: inline-block; border: 1px solid var(--t400); color: var(--t400);
-                   font-size: 0.88rem; letter-spacing: 0.22em; padding: 0.55rem 1.5rem;
-                   border-radius: 99rem; margin-bottom: 2.4rem; }
-    .dark h1 { font-size: 3.6rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.18; }
-    .dark h1 em { color: var(--t400); font-style: normal; }
-    .dark .sub { font-size: 1.3rem; color: var(--s400); margin-top: 1.6rem; line-height: 1.7; }
-    .dark .corner { position: absolute; left: 2.8rem; bottom: 1.6rem; right: 2.8rem;
-                    display: flex; justify-content: space-between;
-                    font-size: 0.85rem; color: var(--s500); letter-spacing: 0.14em; }
-    .dark .corner b { color: var(--t400); font-weight: 600; }
+    /* ── 2단 레이아웃 & 기능 행 ── */
+    .two { display: grid; grid-template-columns: 1fr 1.15fr; gap: 1.4rem; align-items: center; }
+    .krows { display: flex; flex-direction: column; gap: 0.8rem; }
+    .krow { display: flex; gap: 0.9rem; align-items: flex-start;
+            background: var(--s50); border: 1px solid var(--s200); border-radius: 0.85rem;
+            padding: 0.95rem 1.05rem; }
+    .krow .kico { width: 2.4rem; height: 2.4rem; border-radius: 0.7rem; background: var(--t100);
+                  display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+                  flex-shrink: 0; }
+    .krow h4 { font-size: 1.1rem; font-weight: 700; color: var(--s900); margin-bottom: 0.22rem; }
+    .krow p { font-size: 0.95rem; line-height: 1.5; color: var(--s500); }
 
-    /* ── 채팅 목업 ── */
-    .chat { background: var(--s50); border: 1px solid var(--s200); border-radius: 1.1rem;
-            padding: 1.6rem 1.8rem; display: flex; flex-direction: column; gap: 1rem; justify-content: center; }
-    .msg { max-width: 72%; padding: 0.95rem 1.25rem; border-radius: 1rem;
-           font-size: 1.08rem; line-height: 1.55; }
+    /* ── 목업 윈도우 ── */
+    .win { background: #fff; border: 1px solid var(--s200); border-radius: 0.9rem;
+           box-shadow: 0 14px 34px rgba(15,23,42,0.10); overflow: hidden;
+           display: flex; flex-direction: column; }
+    .win .bar { display: flex; align-items: center; gap: 0.45rem; background: var(--s100);
+                border-bottom: 1px solid var(--s200); padding: 0.5rem 0.9rem; }
+    .win .dot { width: 0.52rem; height: 0.52rem; border-radius: 50%; background: var(--s300); }
+    .win .bar .t { margin-left: 0.4rem; font-size: 0.84rem; font-weight: 600; color: var(--s500); }
+    .win .bar .live { margin-left: auto; font-size: 0.7rem; font-weight: 700; color: var(--t600);
+                      background: var(--t50); border-radius: 99rem; padding: 0.14rem 0.6rem; }
+    .win .body { padding: 0.95rem 1.05rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .cap { font-size: 0.76rem; color: var(--s400); text-align: right; margin-top: 0.4rem; }
+
+    /* 챗 목업 */
+    .msg { max-width: 84%; padding: 0.72rem 0.95rem; border-radius: 0.85rem;
+           font-size: 0.96rem; line-height: 1.5; }
     .msg.q { align-self: flex-end; background: var(--s900); color: #fff;
-             border-bottom-right-radius: 0.25rem; }
-    .msg.a { align-self: flex-start; background: #fff; border: 1px solid var(--s200);
-             color: var(--s600); border-bottom-left-radius: 0.25rem; }
+             border-bottom-right-radius: 0.2rem; }
+    .msg.a { align-self: flex-start; background: var(--s50); border: 1px solid var(--s200);
+             color: var(--s600); border-bottom-left-radius: 0.2rem; }
     .msg.a b { color: var(--s900); }
     .msg.a .pt { color: var(--t600); font-weight: 700; }
-    .chat .hint { font-size: 0.82rem; color: var(--s400); text-align: right; }
+    .input { display: flex; align-items: center; gap: 0.6rem; border: 1px solid var(--s300);
+             border-radius: 99rem; padding: 0.5rem 1rem; font-size: 0.88rem; color: var(--s400); }
+    .input .send { margin-left: auto; width: 1.6rem; height: 1.6rem; border-radius: 50%;
+                   background: var(--t600); color: #fff; display: flex; align-items: center;
+                   justify-content: center; font-size: 0.8rem; }
 
-    /* ── 비교(As-Is / To-Be) ── */
-    .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; align-content: center; }
-    .vs .col { border-radius: 1rem; padding: 1.5rem 1.6rem; }
+    /* KPI + 바 차트 목업 */
+    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem; }
+    .kpi { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.7rem;
+           padding: 0.65rem 0.75rem; }
+    .kpi .k { font-size: 0.73rem; color: var(--s500); }
+    .kpi .v { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; color: var(--s900);
+              margin-top: 0.12rem; }
+    .kpi .d { font-size: 0.73rem; font-weight: 700; margin-top: 0.08rem; }
+    .kpi .up { color: var(--t600); } .kpi .down { color: #E11D48; }
+    .bars { display: flex; align-items: flex-end; gap: 0.5rem; height: 5.6rem;
+            padding: 0.35rem 0.2rem 0; }
+    .bars i { flex: 1; background: var(--s200); border-radius: 0.3rem 0.3rem 0 0; }
+    .bars i.hl { background: linear-gradient(180deg, var(--t400), var(--t600)); }
+    .bars-x { display: flex; gap: 0.5rem; font-size: 0.66rem; color: var(--s400); }
+    .bars-x span { flex: 1; text-align: center; }
+
+    /* 리포트 목업 */
+    .doc { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.6rem;
+           padding: 0.85rem 0.95rem; }
+    .doc .dt { font-size: 0.93rem; font-weight: 700; color: var(--s900); margin-bottom: 0.45rem; }
+    .line { height: 0.4rem; border-radius: 99rem; background: var(--s200); margin: 0.36rem 0; }
+    .line.w70 { width: 70%; } .line.w50 { width: 50%; } .line.w85 { width: 85%; }
+    .badge-ok { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--t50);
+                border: 1px solid var(--t100); color: var(--t700); font-size: 0.8rem;
+                font-weight: 700; border-radius: 99rem; padding: 0.28rem 0.75rem; }
+
+    /* ── 플로우(가로 흐름) ── */
+    .flow { display: flex; align-items: stretch; gap: 0.6rem; }
+    .fnode { flex: 1; background: var(--s50); border: 1px solid var(--s200); border-radius: 0.8rem;
+             padding: 0.8rem 1rem; text-align: center; display: flex; flex-direction: column;
+             justify-content: center; }
+    .fnode.hl { background: var(--s900); border-color: var(--s900); color: #fff; }
+    .fnode .ft { font-size: 1rem; font-weight: 700; }
+    .fnode.hl .ft { color: var(--t400); }
+    .fnode .fd { font-size: 0.8rem; color: var(--s500); margin-top: 0.22rem; line-height: 1.45; }
+    .fnode.hl .fd { color: var(--s300); }
+    .farrow { display: flex; align-items: center; font-size: 1.2rem; color: var(--t600); font-weight: 700; }
+
+    /* ── 비교 ── */
+    .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    .vs .col { border-radius: 0.95rem; padding: 1.15rem 1.3rem; }
     .vs .before { background: var(--s50); border: 1px solid var(--s200); }
-    .vs .after { background: var(--s900); color: #fff; }
-    .vs h3 { font-size: 1.15rem; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 1.1rem; }
+    .vs .after { background: var(--s900); }
+    .vs h3 { font-size: 1.08rem; font-weight: 700; letter-spacing: 0.03em; margin-bottom: 0.85rem; }
     .vs .before h3 { color: var(--s500); }
     .vs .after h3 { color: var(--t400); }
-    .vs ul { list-style: none; display: flex; flex-direction: column; gap: 0.95rem; }
-    .vs li { font-size: 1.08rem; line-height: 1.55; padding-left: 1.5rem; position: relative; }
+    .vs ul { list-style: none; display: flex; flex-direction: column; gap: 0.68rem; }
+    .vs li { font-size: 0.99rem; line-height: 1.5; padding-left: 1.4rem; position: relative; }
     .vs .before li { color: var(--s500); }
     .vs .before li::before { content: "✕"; position: absolute; left: 0; color: var(--s400); }
     .vs .after li { color: var(--s200); }
     .vs .after li::before { content: "✓"; position: absolute; left: 0; color: var(--t400); font-weight: 700; }
     .vs .after li b { color: #fff; }
+    .vs .tag { display: inline-block; font-size: 0.76rem; font-weight: 700; border-radius: 99rem;
+               padding: 0.1rem 0.55rem; margin-left: 0.4rem; vertical-align: 0.05rem; }
+    .vs .before .tag { background: var(--s200); color: var(--s500); }
+    .vs .after .tag { background: var(--t400); color: var(--s900); }
 
-    /* ── 스텝 ── */
-    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; align-content: center; }
-    .step { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
-            padding: 1.5rem 1.4rem; position: relative; }
-    .step .no { width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--t600);
-                color: #fff; font-weight: 700; font-size: 1.1rem; display: flex;
-                align-items: center; justify-content: center; margin-bottom: 1rem; }
-    .step h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .step p { font-size: 1.02rem; line-height: 1.6; color: var(--s500); }
-
-    .note { background: var(--t100); border-radius: 0.8rem; padding: 1.05rem 1.4rem;
-            font-size: 1.05rem; color: var(--t800); margin-top: 1.2rem; }
-    .note b { font-weight: 700; }
+    /* ── 도입 스텝 ── */
+    .steps { display: flex; align-items: stretch; gap: 0.55rem; }
+    .step { flex: 1; background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
+            padding: 1.1rem 1.1rem 0.95rem; display: flex; flex-direction: column;
+            box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
+    .step .no { width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--t600);
+                color: #fff; font-weight: 700; font-size: 0.95rem; display: flex;
+                align-items: center; justify-content: center; margin-bottom: 0.7rem; }
+    .step h3 { font-size: 1.18rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .step p { font-size: 0.95rem; line-height: 1.55; color: var(--s500); }
+    .sarrow { display: flex; align-items: center; font-size: 1.3rem; color: var(--t600); font-weight: 700; }
 
     /* ── 숫자 하이라이트 ── */
-    .nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; align-content: center; }
-    .num { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
-           padding: 1.7rem 1.4rem; text-align: center; }
-    .num .v { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; color: var(--t600); }
-    .num .k { font-size: 1rem; color: var(--s500); margin-top: 0.5rem; line-height: 1.5; }
+    .nums { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .num { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.85rem;
+           padding: 1rem 1.05rem; }
+    .num .v { font-size: 1.85rem; font-weight: 800; letter-spacing: -0.03em; color: var(--t600); }
+    .num .k { font-size: 0.9rem; color: var(--s500); margin-top: 0.28rem; line-height: 1.45; }
+
+    /* ── 다크 슬라이드 (표지·맺음) — 기존 표지 템플릿 구성 ── */
+    .dark { background:
+              linear-gradient(rgba(148,163,184,0.055) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(148,163,184,0.055) 1px, transparent 1px),
+              var(--s900);
+            background-size: 3.4rem 3.4rem, 3.4rem 3.4rem, auto;
+            color: #fff; justify-content: center; align-items: flex-start;
+            padding: 2.2rem 2.8rem; }
+    .dark .glow { position: absolute; right: -12rem; top: 50%; transform: translateY(-50%);
+                  width: 46rem; height: 46rem; border-radius: 50%;
+                  background: radial-gradient(circle, rgba(45,212,191,0.22) 0%, rgba(45,212,191,0.06) 45%, transparent 70%); }
+    .dark .logo { position: absolute; right: 7rem; top: 50%; transform: translateY(-50%);
+                  width: 16rem; z-index: 1; }
+    .dark .top { position: absolute; top: 1.9rem; left: 2.8rem; right: 2.8rem;
+                 display: flex; justify-content: space-between; align-items: center; }
+    .dark .top .pillbadge { border: 1px solid var(--t400); color: var(--t400);
+                            font-size: 0.82rem; letter-spacing: 0.2em; padding: 0.5rem 1.6rem;
+                            border-radius: 99rem; }
+    .dark .top .iwd { color: var(--t400); font-size: 0.95rem; letter-spacing: 0.03em; font-weight: 600; }
+    .dark h1 { font-size: 3.4rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.16; }
+    .dark h1 em { color: var(--t400); font-style: normal; }
+    .dark .sub { font-size: 1.2rem; color: var(--s400); margin-top: 1.3rem; line-height: 1.65; }
+    .dark .pills { display: flex; gap: 0.6rem; margin-top: 1.9rem; flex-wrap: wrap; }
+    .dark .pill { border: 1px solid var(--s700); background: rgba(30,41,59,0.7); color: var(--s300);
+                  font-size: 0.9rem; padding: 0.42rem 1rem; border-radius: 99rem; }
+    .dark .pill b { color: var(--t400); margin-right: 0.35rem; }
+    .dark .corner { position: absolute; left: 2.8rem; bottom: 1.5rem; right: 2.8rem;
+                    display: flex; justify-content: flex-start; gap: 0.9rem; align-items: center;
+                    font-size: 0.82rem; letter-spacing: 0.16em; }
+    .dark .corner .ai { color: var(--t400); font-weight: 600; }
+    .dark .corner .div { color: var(--s600); }
+    .dark .corner .cp { color: var(--s500); }
   </style>
 </head>
 <body>
@@ -127,191 +234,341 @@
   <section class="slide dark" data-title="표지">
     <div class="glow"></div>
     <img class="logo" src="assets/aisight-marketing/logo.png" alt="aisight 로고">
-    <div class="badge">AI-POWERED ANALYTICS</div>
+    <div class="top">
+      <span class="pillbadge">SAILINGSTONE — AISIGHT 2026</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
     <h1>물어보세요.<br><em>데이터가 답합니다.</em></h1>
-    <p class="sub">aisight — AI와 대화하며 데이터를 분석하는 새로운 방식의 BI 플랫폼</p>
-    <div class="corner"><span><b>aisight</b> · SAILINGSTONE</span><span>Intelligence with Data</span></div>
+    <p class="sub">aisight — AI와 대화하며 데이터를 분석하는 새로운 방식의 BI 플랫폼<br>
+      복잡한 도구 없이, 질문 한 번으로 분석부터 보고서까지.</p>
+    <div class="pills">
+      <span class="pill"><b>01</b>대화형 분석</span>
+      <span class="pill"><b>02</b>자동 리포트</span>
+      <span class="pill"><b>03</b>지식 자산화</span>
+      <span class="pill"><b>04</b>온프레미스 보안</span>
+    </div>
+    <div class="corner">
+      <span class="ai">AI · BI · ANALYTICS</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
+    </div>
   </section>
 
   <!-- 2. 문제 제기 -->
   <section class="slide" data-title="지금의 데이터 업무">
     <header class="s-head">
       <h2><span class="bullet"></span>보고서 하나에, <em>왜 이렇게 오래 걸릴까요?</em></h2>
-      <div class="s-mark">aisight</div>
+      <div class="s-right"><span class="sec">01 · Why aisight</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <p class="s-lead">대시보드도, 데이터도 이미 충분히 많습니다. 그런데 정작 <strong>내가 궁금한 답</strong>을 얻는 일은 여전히 느리고 번거롭습니다.</p>
-    <div class="cards c3 grow">
-      <div class="card"><div class="ico">🔍</div><h3>화면에 없는 질문</h3><p>대시보드는 정해진 화면만 보여줍니다. 조금만 다른 각도로 물어보면 답을 찾을 수 없습니다.</p></div>
-      <div class="card"><div class="ico">⏳</div><h3>기다림의 연속</h3><p>새로운 데이터가 필요하면 IT 부서에 요청하고, 승인되고, 전달될 때까지 기다려야 합니다.</p></div>
-      <div class="card"><div class="ico">📋</div><h3>반복되는 수작업</h3><p>화면 캡처, 엑셀 정리, 문서 복사·붙여넣기. 매주 같은 보고서를 손으로 다시 만듭니다.</p></div>
+    <div class="s-band"><p>대시보드도, 데이터도 이미 충분히 많습니다. 그런데 정작 <strong>내가 궁금한 답</strong>을 얻는 일은 여전히 느리고 번거롭습니다.</p></div>
+    <div class="content">
+      <div class="cards c3">
+        <div class="card"><div class="no">PROBLEM 01</div><div class="ico">🔍</div><h3>화면에 없는 질문</h3>
+          <p>대시보드는 정해진 화면만 보여줍니다. 조금만 다른 각도로 물어보면 답을 찾을 수 없습니다.</p>
+          <div class="quote">"차트는 많은데, 정작 궁금한 건 항상 화면 밖에 있어요."</div></div>
+        <div class="card"><div class="no">PROBLEM 02</div><div class="ico">⏳</div><h3>기다림의 연속</h3>
+          <p>새로운 데이터가 필요하면 IT 부서에 요청하고, 승인되고, 전달될 때까지 기다려야 합니다.</p>
+          <div class="quote">"숫자 하나 확인하려고 며칠을 기다립니다."</div></div>
+        <div class="card"><div class="no">PROBLEM 03</div><div class="ico">📋</div><h3>반복되는 수작업</h3>
+          <p>화면 캡처, 엑셀 정리, 문서 복사·붙여넣기. 매주 같은 보고서를 손으로 다시 만듭니다.</p>
+          <div class="quote">"보고 전날은 언제나 야근이에요."</div></div>
+      </div>
+      <div class="stripe"><span class="sicon">💡</span><span>데이터는 많은데 답은 느린 <b>이 간극</b>에서 aisight는 출발했습니다.</span></div>
     </div>
-    <footer class="s-foot"><span>– 2 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">– 2 –</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 3. aisight 정의 + 챗 목업 -->
   <section class="slide" data-title="aisight란?">
     <header class="s-head">
       <h2><span class="bullet"></span>aisight는 <em>대화로 분석하는 AI 플랫폼</em>입니다</h2>
-      <div class="s-mark">aisight</div>
+      <div class="s-right"><span class="sec">01 · Why aisight</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <p class="s-lead">쓰던 말 그대로 질문하면, AI가 사내 데이터를 분석해 <strong>근거 있는 답</strong>을 돌려줍니다. 분석 도구를 배울 필요가 없습니다.</p>
-    <div class="chat grow">
-      <div class="msg q">지난 분기 대비 매출이 떨어진 이유가 뭐야?</div>
-      <div class="msg a"><b>매출 하락의 주요 요인 2가지를 찾았습니다.</b><br>
-        1. <span class="pt">신규 고객 수 감소</span> — 전 분기 대비 두 자릿수 감소로 영향이 가장 큽니다.<br>
-        2. <span class="pt">A지역 판매 둔화</span> — 특정 지역 편중이 확인됩니다.<br>
-        관련 차트와 상세 표를 함께 준비했습니다. 보고서로 만들어 드릴까요?</div>
-      <div class="msg q">응, 보고서로 만들어서 팀에 공유해줘</div>
-      <div class="hint">* 이해를 돕기 위한 예시 화면입니다</div>
+    <div class="s-band"><p>쓰던 말 그대로 질문하면, AI가 사내 데이터를 분석해 <strong>근거 있는 답</strong>을 돌려줍니다. 분석 도구를 배울 필요가 없습니다.</p></div>
+    <div class="content">
+      <div class="two">
+        <div class="krows">
+          <div class="krow"><div class="kico">🗣️</div><div><h4>① 질문을 이해합니다</h4><p>"지난 분기 매출이 왜 떨어졌지?" — 평소 쓰는 말 그대로면 충분합니다.</p></div></div>
+          <div class="krow"><div class="kico">🧮</div><div><h4>② 사내 데이터로 분석합니다</h4><p>회사가 검증한 지표 기준으로 원인을 찾습니다. AI가 임의로 숫자를 만들지 않습니다.</p></div></div>
+          <div class="krow"><div class="kico">📈</div><div><h4>③ 차트와 함께 답합니다</h4><p>결과(What)와 원인(Why)을 차트·표와 함께 설명하고, 바로 보고서로 이어줍니다.</p></div></div>
+        </div>
+        <div>
+          <div class="win">
+            <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">aisight Work Space</span><span class="live">● LIVE</span></div>
+            <div class="body">
+              <div class="msg q">지난 분기 대비 매출이 떨어진 이유가 뭐야?</div>
+              <div class="msg a"><b>매출 하락의 주요 요인 2가지를 찾았습니다.</b><br>
+                1. <span class="pt">신규 고객 수 감소</span> — 영향이 가장 큽니다.<br>
+                2. <span class="pt">A지역 판매 둔화</span> — 지역 편중이 확인됩니다.<br>
+                관련 차트와 표를 준비했습니다. 보고서로 만들까요?</div>
+              <div class="msg q">응, 보고서로 만들어서 팀에 공유해줘</div>
+              <div class="input">무엇이든 물어보세요…<span class="send">➤</span></div>
+            </div>
+          </div>
+          <div class="cap">* 이해를 돕기 위한 예시 화면입니다</div>
+        </div>
+      </div>
     </div>
-    <footer class="s-foot"><span>– 3 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">– 3 –</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 4. 세 가지 약속 -->
   <section class="slide" data-title="aisight의 3가지 약속">
     <header class="s-head">
       <h2><span class="bullet"></span>aisight가 바꾸는 <em>세 가지</em></h2>
-      <div class="s-mark">aisight</div>
+      <div class="s-right"><span class="sec">01 · Why aisight</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <p class="s-lead">복잡한 기술은 화면 뒤에 숨겼습니다. 사용하는 사람에게 남는 것은 이 세 가지입니다.</p>
-    <div class="cards c3 grow">
-      <div class="card"><div class="label">INSTANT</div><h3>묻는 즉시 답</h3><p>IT 부서를 거치지 않고, 그 자리에서 질문하고 그 자리에서 답을 받습니다.</p></div>
-      <div class="card"><div class="label">TRUSTED</div><h3>근거 있는 답</h3><p>AI의 추측이 아니라 회사가 검증한 지표와 데이터에서 출발한 답만 제공합니다.</p></div>
-      <div class="card"><div class="label">AUTOMATED</div><h3>보고서까지 자동</h3><p>대화에서 나온 인사이트가 클릭 한 번에 보고서가 되고, 정해진 주기에 자동 발송됩니다.</p></div>
+    <div class="s-band"><p>복잡한 기술은 화면 뒤에 숨겼습니다. 사용하는 사람에게 남는 것은 이 세 가지입니다.</p></div>
+    <div class="content">
+      <div class="cards c3">
+        <div class="card"><div class="no">01 · INSTANT</div><div class="ico">⚡</div><h3>묻는 즉시 답</h3>
+          <p>IT 부서를 거치지 않고, 그 자리에서 질문하고 그 자리에서 답을 받습니다.</p>
+          <div class="chips"><span class="chip">요청 대기 제로</span><span class="chip">셀프서비스 분석</span></div></div>
+        <div class="card"><div class="no">02 · TRUSTED</div><div class="ico">🛡️</div><h3>근거 있는 답</h3>
+          <p>AI의 추측이 아니라 회사가 검증한 지표와 데이터에서 출발한 답만 제공합니다.</p>
+          <div class="chips"><span class="chip">검증 지표 기반</span><span class="chip">출처 확인 가능</span></div></div>
+        <div class="card"><div class="no">03 · AUTOMATED</div><div class="ico">🔁</div><h3>보고서까지 자동</h3>
+          <p>대화에서 나온 인사이트가 클릭 한 번에 보고서가 되고, 정해진 주기에 자동 발송됩니다.</p>
+          <div class="chips"><span class="chip">원클릭 보고서</span><span class="chip">정기 자동 발송</span></div></div>
+      </div>
+      <div class="stripe"><span class="sicon">🤝</span><span>배우는 도구가 아니라, <b>대화하는 동료</b>에 가깝습니다.</span></div>
     </div>
-    <footer class="s-foot"><span>– 4 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">– 4 –</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
-  <!-- 5. 기능 1 -->
+  <!-- 5. 기능 1: 대화형 분석 -->
   <section class="slide" data-title="기능 ① 대화형 분석">
     <header class="s-head">
       <h2><span class="bullet"></span>① 대화형 분석 — <em>질문이 곧 분석입니다</em></h2>
-      <div class="s-mark">aisight</div>
+      <div class="s-right"><span class="sec">02 · Key Features</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <p class="s-lead">차트를 만드는 법이 아니라 <strong>궁금한 것</strong>만 있으면 됩니다. 결과는 차트와 표로 바로 확인합니다.</p>
-    <div class="cards c3 grow">
-      <div class="card"><div class="ico">💬</div><h3>자연어 질문</h3><p>"이번 달 실적 어때?"처럼 평소 쓰는 말로 물어보면 AI가 의도를 파악해 분석합니다.</p></div>
-      <div class="card"><div class="ico">📊</div><h3>즉시 시각화</h3><p>답변은 숫자 나열이 아니라 이해하기 쉬운 차트와 표로 함께 제공됩니다.</p></div>
-      <div class="card"><div class="ico">🖥️</div><h3>대시보드와 한 몸</h3><p>보고 있는 대시보드에 대해 바로 질문하고, 화면도 대화로 조작할 수 있습니다.</p></div>
+    <div class="s-band"><p>차트 만드는 법이 아니라 <strong>궁금한 것</strong>만 있으면 됩니다. 보고 있는 대시보드 위에서 바로 묻고, 바로 확인합니다.</p></div>
+    <div class="content">
+      <div class="two">
+        <div class="krows">
+          <div class="krow"><div class="kico">💬</div><div><h4>자연어 질문</h4><p>"이번 달 실적 어때?"처럼 평소 쓰는 말로 물어보면 AI가 의도를 파악해 분석합니다.</p></div></div>
+          <div class="krow"><div class="kico">📊</div><div><h4>즉시 시각화</h4><p>답변은 숫자 나열이 아니라 이해하기 쉬운 차트와 표로 함께 제공됩니다.</p></div></div>
+          <div class="krow"><div class="kico">🖥️</div><div><h4>대시보드 제어</h4><p>화면 필터·기간 변경도 말로 지시합니다. 클릭 대신 대화로 대시보드를 움직입니다.</p></div></div>
+        </div>
+        <div>
+          <div class="win">
+            <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">실시간 매출 현황</span><span class="live">● LIVE</span></div>
+            <div class="body">
+              <div class="kpis">
+                <div class="kpi"><div class="k">이번 분기 매출</div><div class="v">128.4억</div><div class="d down">▼ 8.7%</div></div>
+                <div class="kpi"><div class="k">신규 고객</div><div class="v">1,204</div><div class="d down">▼ 12.3%</div></div>
+                <div class="kpi"><div class="k">목표 달성률</div><div class="v">91.3%</div><div class="d up">▲ 진행 중</div></div>
+              </div>
+              <div>
+                <div class="bars"><i style="height:38%"></i><i style="height:52%"></i><i style="height:47%"></i><i style="height:64%"></i><i style="height:58%"></i><i class="hl" style="height:88%"></i></div>
+                <div class="bars-x"><span>1월</span><span>2월</span><span>3월</span><span>4월</span><span>5월</span><span>6월</span></div>
+              </div>
+              <div class="input">이번 주 상위 5개 제품 보여줘…<span class="send">➤</span></div>
+            </div>
+          </div>
+          <div class="cap">* 이해를 돕기 위한 예시 화면입니다</div>
+        </div>
+      </div>
     </div>
-    <footer class="s-foot"><span>– 5 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">– 5 –</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
-  <!-- 6. 기능 2 -->
+  <!-- 6. 기능 2: 자동 리포트 -->
   <section class="slide" data-title="기능 ② 자동 리포트">
     <header class="s-head">
       <h2><span class="bullet"></span>② 자동 리포트 — <em>보고서가 스스로 만들어집니다</em></h2>
-      <div class="s-mark">aisight</div>
+      <div class="s-right"><span class="sec">02 · Key Features</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <p class="s-lead">분석에서 끝나지 않습니다. 결과를 정리하고, 문서로 만들고, 전달하는 일까지 aisight가 이어서 합니다.</p>
-    <div class="cards c3 grow">
-      <div class="card"><div class="ico">📝</div><h3>클릭 한 번, 보고서</h3><p>대화로 도출한 인사이트를 회사 표준 양식에 맞는 보고서 초안으로 자동 구성합니다.</p></div>
-      <div class="card"><div class="ico">📅</div><h3>정기 자동 발송</h3><p>주간·월간 보고서를 정해진 시간에 담당자에게 메일로 자동 배포합니다.</p></div>
-      <div class="card"><div class="ico">🔁</div><h3>반복 업무 제로</h3><p>매주 반복하던 취합·정리·공유 작업이 구독 설정 한 번으로 끝납니다.</p></div>
+    <div class="s-band"><p>분석에서 끝나지 않습니다. 결과를 정리하고, 문서로 만들고, 전달하는 일까지 aisight가 이어서 합니다.</p></div>
+    <div class="content">
+      <div class="two">
+        <div>
+          <div class="win">
+            <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">주간 매출 분석 리포트</span><span class="live">자동 생성됨</span></div>
+            <div class="body">
+              <div class="doc">
+                <div class="dt">📄 6월 2주차 매출 분석 요약</div>
+                <div class="line w85"></div><div class="line w70"></div><div class="line w50"></div>
+                <div class="bars" style="height:3.4rem"><i style="height:45%"></i><i style="height:70%"></i><i class="hl" style="height:95%"></i><i style="height:60%"></i></div>
+              </div>
+              <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+                <span class="badge-ok">✓ 매주 월 09:00 자동 발송</span>
+                <span class="badge-ok">수신 3명</span>
+                <span class="badge-ok">메일 · 메신저</span>
+              </div>
+            </div>
+          </div>
+          <div class="cap">* 이해를 돕기 위한 예시 화면입니다</div>
+        </div>
+        <div class="krows">
+          <div class="krow"><div class="kico">📝</div><div><h4>클릭 한 번, 보고서</h4><p>대화로 도출한 인사이트를 회사 표준 양식에 맞는 보고서 초안으로 자동 구성합니다.</p></div></div>
+          <div class="krow"><div class="kico">📅</div><div><h4>정기 자동 발송</h4><p>주간·월간 보고서를 정해진 시간에 담당자에게 메일·메신저로 자동 배포합니다.</p></div></div>
+          <div class="krow"><div class="kico">🔁</div><div><h4>반복 업무 제로</h4><p>매주 반복하던 취합·정리·공유 작업이 구독 설정 한 번으로 끝납니다.</p></div></div>
+        </div>
+      </div>
     </div>
-    <footer class="s-foot"><span>– 6 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">– 6 –</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
-  <!-- 7. 기능 3 -->
+  <!-- 7. 기능 3: 사내 지식 연결 -->
   <section class="slide" data-title="기능 ③ 사내 지식 연결">
     <header class="s-head">
       <h2><span class="bullet"></span>③ 사내 지식 연결 — <em>문서도 대화로 찾습니다</em></h2>
-      <div class="s-mark">aisight</div>
+      <div class="s-right"><span class="sec">02 · Key Features</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <p class="s-lead">숫자 데이터만이 아닙니다. 회사 곳곳에 흩어진 문서와 노하우를 AI가 이해하는 <strong>지식 자산</strong>으로 만듭니다.</p>
-    <div class="cards c3 grow">
-      <div class="card"><div class="ico">📂</div><h3>흩어진 문서를 한곳에</h3><p>PDF, 워드, 엑셀 등 형식에 관계없이 사내 문서를 모아 지식으로 정리합니다.</p></div>
-      <div class="card"><div class="ico">🔎</div><h3>찾지 말고 물어보기</h3><p>"작년 품질 기준이 어떻게 되지?" — 문서를 뒤지는 대신 질문 한 번으로 답을 얻습니다.</p></div>
-      <div class="card"><div class="ico">🏛️</div><h3>회사의 기억이 됩니다</h3><p>개인의 분석과 노하우가 축적되어 조직 전체가 쓰는 지식 자산으로 남습니다.</p></div>
+    <div class="s-band"><p>숫자 데이터만이 아닙니다. 회사 곳곳에 흩어진 문서와 노하우를 AI가 이해하는 <strong>지식 자산</strong>으로 만듭니다.</p></div>
+    <div class="content">
+      <div class="two">
+        <div class="krows">
+          <div class="krow"><div class="kico">📂</div><div><h4>흩어진 문서를 한곳에</h4><p>PDF, 워드, 엑셀 등 형식에 관계없이 사내 문서를 모아 지식으로 정리합니다.</p></div></div>
+          <div class="krow"><div class="kico">🔎</div><div><h4>찾지 말고 물어보기</h4><p>문서를 뒤지는 대신 질문 한 번으로 필요한 내용과 출처를 함께 받습니다.</p></div></div>
+          <div class="krow"><div class="kico">🏛️</div><div><h4>회사의 기억이 됩니다</h4><p>개인의 분석과 노하우가 축적되어 조직 전체가 쓰는 지식 자산으로 남습니다.</p></div></div>
+        </div>
+        <div>
+          <div class="win">
+            <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">AI 지식 위키</span></div>
+            <div class="body">
+              <div style="display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
+                <span class="chip">📕 PDF</span><span class="chip">📘 Word</span><span class="chip">📗 Excel</span><span class="chip">📙 PPT</span><span class="chip">📃 매뉴얼</span>
+              </div>
+              <div style="text-align:center; color:var(--t600); font-weight:700; font-size:1.05rem;">▼ AI가 읽고 정리</div>
+              <div class="fnode hl" style="padding:0.85rem;"><div class="ft">🏛️ 전사 지식 위키</div><div class="fd">부서·주제별로 구조화된 회사 공용 지식</div></div>
+              <div style="text-align:center; color:var(--t600); font-weight:700; font-size:1.05rem;">▼ 대화로 검색</div>
+              <div class="msg q" style="align-self:center; max-width:100%;">작년에 정한 품질 검사 기준이 뭐였지?</div>
+              <div class="msg a" style="max-width:100%;">기준 문서를 찾았습니다. <span class="pt">요약</span>과 <span class="pt">원문 위치</span>를 함께 드릴게요.</div>
+            </div>
+          </div>
+          <div class="cap">* 이해를 돕기 위한 예시 화면입니다</div>
+        </div>
+      </div>
     </div>
-    <footer class="s-foot"><span>– 7 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">– 7 –</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 8. 신뢰와 보안 -->
   <section class="slide" data-title="신뢰와 보안">
     <header class="s-head">
       <h2><span class="bullet"></span>기업이 믿고 쓰도록, <em>기본부터 다르게</em></h2>
-      <div class="s-mark">aisight</div>
+      <div class="s-right"><span class="sec">03 · Enterprise Ready</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <p class="s-lead">생성형 AI의 가장 큰 걱정 — <strong>"그 답, 믿어도 되나요?"</strong> — 에서 출발해 설계했습니다.</p>
-    <div class="cards c4 grow">
-      <div class="card"><div class="ico">✅</div><h3>환각 차단</h3><p>회사가 검증한 지표와 계산식 기준으로만 답합니다. AI가 숫자를 지어내지 않습니다.</p></div>
-      <div class="card"><div class="ico">🧭</div><h3>근거 추적</h3><p>모든 답변은 어떤 데이터에서 나왔는지 출처를 확인할 수 있습니다.</p></div>
-      <div class="card"><div class="ico">🔐</div><h3>권한 준수</h3><p>부서·직급별 데이터 접근 권한을 그대로 따릅니다. 볼 수 없는 데이터는 답하지 않습니다.</p></div>
-      <div class="card"><div class="ico">🏢</div><h3>사내 설치형</h3><p>고객사 인프라 안에 직접 설치되어 데이터가 외부로 나가지 않습니다.</p></div>
+    <div class="s-band"><p>생성형 AI의 가장 큰 걱정 — <strong>"그 답, 믿어도 되나요?"</strong> — 에서 출발해 설계했습니다. 모든 답변은 아래 과정을 통과해야만 사용자에게 도착합니다.</p></div>
+    <div class="content">
+      <div class="flow">
+        <div class="fnode"><div class="ft">💬 질문</div><div class="fd">현업의 자연어 질문</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode hl"><div class="ft">검증 게이트</div><div class="fd">검증된 지표 확인 · 접근 권한 확인 · 근거 기록</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode"><div class="ft">✅ 근거 있는 답변</div><div class="fd">출처와 함께 전달</div></div>
+      </div>
+      <div class="cards c4">
+        <div class="card"><div class="no">GUARDRAIL</div><h3>환각 차단</h3><p>회사가 검증한 지표·계산식 기준으로만 답합니다. AI가 숫자를 지어내지 않습니다.</p></div>
+        <div class="card"><div class="no">TRACE</div><h3>근거 추적</h3><p>모든 답변은 어떤 데이터에서 나왔는지 출처를 확인할 수 있습니다.</p></div>
+        <div class="card"><div class="no">ACCESS</div><h3>권한 준수</h3><p>부서·직급별 접근 권한을 그대로 따릅니다. 볼 수 없는 데이터는 답하지 않습니다.</p></div>
+        <div class="card"><div class="no">ON-PREM</div><h3>사내 설치형</h3><p>고객사 인프라 안에 직접 설치되어 데이터가 외부로 나가지 않습니다.</p></div>
+      </div>
     </div>
-    <footer class="s-foot"><span>– 8 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">– 8 –</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 9. 비교 -->
   <section class="slide" data-title="도입 전과 후">
     <header class="s-head">
       <h2><span class="bullet"></span>도입 전과 후, <em>하루가 달라집니다</em></h2>
-      <div class="s-mark">aisight</div>
+      <div class="s-right"><span class="sec">04 · Getting Started</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <p class="s-lead">같은 질문, 같은 보고서 — 걸리는 시간과 과정이 달라집니다.</p>
-    <div class="vs grow">
-      <div class="col before">
-        <h3>지금까지는</h3>
-        <ul>
-          <li>화면에 없는 데이터는 IT 부서에 요청하고 대기</li>
-          <li>지표가 왜 움직였는지는 사람이 다시 파헤쳐야 함</li>
-          <li>보고서는 매주 캡처와 복사·붙여넣기로 제작</li>
-          <li>문서와 노하우가 개인 PC에 흩어져 있음</li>
-        </ul>
+    <div class="s-band"><p>같은 질문, 같은 보고서 — 걸리는 시간과 과정이 달라집니다.</p></div>
+    <div class="content">
+      <div class="vs">
+        <div class="col before">
+          <h3>지금까지는</h3>
+          <ul>
+            <li>화면에 없는 데이터는 IT 부서에 요청하고 대기<span class="tag">기다림</span></li>
+            <li>지표가 왜 움직였는지는 사람이 다시 파헤쳐야 함<span class="tag">수작업</span></li>
+            <li>보고서는 매주 캡처와 복사·붙여넣기로 제작<span class="tag">반복</span></li>
+            <li>문서와 노하우가 개인 PC에 흩어져 있음<span class="tag">단절</span></li>
+          </ul>
+        </div>
+        <div class="col after">
+          <h3>aisight와 함께라면</h3>
+          <ul>
+            <li>그 자리에서 질문하고 <b>즉시 답</b>을 받습니다<span class="tag">즉시</span></li>
+            <li>결과(What)와 함께 <b>원인(Why)</b>까지 설명합니다<span class="tag">자동 분석</span></li>
+            <li>보고서가 <b>자동 생성·자동 배포</b>됩니다<span class="tag">자동화</span></li>
+            <li>조직의 지식이 <b>한곳에 쌓여</b> 누구나 꺼내 씁니다<span class="tag">자산화</span></li>
+          </ul>
+        </div>
       </div>
-      <div class="col after">
-        <h3>aisight와 함께라면</h3>
-        <ul>
-          <li>그 자리에서 질문하고 <b>즉시 답</b>을 받습니다</li>
-          <li>결과(What)와 함께 <b>원인(Why)</b>까지 설명합니다</li>
-          <li>보고서가 <b>자동 생성·자동 배포</b>됩니다</li>
-          <li>조직의 지식이 <b>한곳에 쌓여</b> 누구나 꺼내 씁니다</li>
-        </ul>
-      </div>
+      <div class="stripe"><span class="sicon">⏱️</span><span>도구가 하나 늘어나는 것이 아니라, <b>기다림이 사라지는</b> 변화입니다.</span></div>
     </div>
-    <footer class="s-foot"><span>– 9 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">– 9 –</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 10. 도입 여정 -->
   <section class="slide" data-title="도입은 이렇게">
     <header class="s-head">
       <h2><span class="bullet"></span>도입은 <em>가볍게 시작</em>합니다</h2>
-      <div class="s-mark">aisight</div>
+      <div class="s-right"><span class="sec">04 · Getting Started</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <p class="s-lead">전사를 한 번에 바꾸는 방식이 아닙니다. 잘 되는 업무부터 작게 시작해 성과를 확인하며 넓혀갑니다.</p>
-    <div class="steps grow">
-      <div class="step"><div class="no">1</div><h3>진단과 기획</h3><p>현재 데이터 환경과 업무를 함께 살펴보고, 효과가 가장 빠른 영역을 정합니다.</p></div>
-      <div class="step"><div class="no">2</div><h3>파일럿 도입</h3><p>핵심 업무 한두 개에 먼저 적용해 실제 효과를 눈으로 확인합니다.</p></div>
-      <div class="step"><div class="no">3</div><h3>단계적 확산</h3><p>검증된 성과를 바탕으로 부서별로 차근차근 넓혀가며 정착을 지원합니다.</p></div>
+    <div class="s-band"><p>전사를 한 번에 바꾸는 방식이 아닙니다. 잘 되는 업무부터 작게 시작해 성과를 확인하며 넓혀갑니다.</p></div>
+    <div class="content">
+      <div class="steps">
+        <div class="step"><div class="no">1</div><h3>진단과 기획</h3><p>현재 데이터 환경과 업무를 함께 살펴보고, 효과가 가장 빠른 영역을 정합니다.</p><div class="chips"><span class="chip">함께 설계</span></div></div>
+        <div class="sarrow">→</div>
+        <div class="step"><div class="no">2</div><h3>파일럿 도입</h3><p>핵심 업무 한두 개에 먼저 적용해 실제 효과를 눈으로 확인합니다.</p><div class="chips"><span class="chip">작게 검증</span></div></div>
+        <div class="sarrow">→</div>
+        <div class="step"><div class="no">3</div><h3>단계적 확산</h3><p>검증된 성과를 바탕으로 부서별로 차근차근 넓혀가며 정착을 지원합니다.</p><div class="chips"><span class="chip">크게 확산</span></div></div>
+      </div>
+      <div class="stripe"><span class="sicon">💡</span><span><b>쓰던 시스템은 그대로.</b> 기존 BI·대시보드를 버리는 것이 아니라, 그 위에 aisight를 얹어 더 똑똑하게 쓰는 방식입니다.</span></div>
     </div>
-    <div class="note">💡 <b>쓰던 시스템은 그대로.</b> 기존 BI·대시보드를 버리는 것이 아니라, 그 위에 aisight를 얹어 더 똑똑하게 쓰는 방식입니다.</div>
-    <footer class="s-foot"><span>– 10 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">– 10 –</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 11. 만든 사람들 -->
   <section class="slide" data-title="세일링스톤">
     <header class="s-head">
       <h2><span class="bullet"></span>만든 사람들, <em>세일링스톤</em></h2>
-      <div class="s-mark">aisight</div>
+      <div class="s-right"><span class="sec">04 · Getting Started</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <p class="s-lead">세일링스톤은 국내 대기업들과 데이터 분석 시스템을 구축해 온 <strong>BI·AI 전문 기업</strong>입니다. 현장에서 검증된 경험으로 aisight를 만들었습니다.</p>
-    <div class="nums grow">
-      <div class="num"><div class="v">2019</div><div class="k">설립 이후 꾸준한 성장<br>BI·AI 한 길</div></div>
-      <div class="num"><div class="v">73명</div><div class="k">BI·AI 전문 인력 중심의<br>정예 조직</div></div>
-      <div class="num"><div class="v">다수</div><div class="k">국내 주요 대기업<br>장기 파트너십 프로젝트</div></div>
+    <div class="s-band"><p>세일링스톤은 국내 대기업들과 데이터 분석 시스템을 구축해 온 <strong>BI·AI 전문 기업</strong>입니다.</p></div>
+    <div class="content">
+      <div class="two">
+        <div>
+          <p style="font-size:1.13rem; line-height:1.7; color:var(--s600);">
+            화려한 데모가 아니라 <strong style="color:var(--t600);">현장에서 버티는 시스템</strong>을 만들어 온 경험 —
+            그 위에서 aisight가 태어났습니다.<br><br>
+            도입 이후의 정착과 확산까지, 세일링스톤 전담팀이 끝까지 함께합니다.</p>
+          <div class="chips" style="padding-top:1.1rem;">
+            <span class="chip">BI 컨설팅</span><span class="chip">분석 포털 구축</span>
+            <span class="chip">AI 에이전트</span><span class="chip">데이터 교육</span>
+          </div>
+        </div>
+        <div class="nums">
+          <div class="num"><div class="v">2019</div><div class="k">설립 이후 꾸준한 성장<br>BI·AI 한 길</div></div>
+          <div class="num"><div class="v">73명</div><div class="k">BI·AI 전문 인력 중심의<br>정예 조직</div></div>
+          <div class="num"><div class="v">다수</div><div class="k">국내 주요 대기업<br>장기 파트너십 프로젝트</div></div>
+          <div class="num"><div class="v">A-</div><div class="k">외부 평가기관<br>기술신용평가 등급</div></div>
+        </div>
+      </div>
     </div>
-    <footer class="s-foot"><span>– 11 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">– 11 –</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 12. 맺음 -->
   <section class="slide dark" data-title="데모 신청">
     <div class="glow"></div>
     <img class="logo" src="assets/aisight-marketing/logo.png" alt="aisight 로고">
-    <div class="badge">SEE IT IN ACTION</div>
+    <div class="top">
+      <span class="pillbadge">SEE IT IN ACTION</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
     <h1>직접 보시면<br><em>다릅니다.</em></h1>
-    <p class="sub">귀사의 데이터로 시연해 드립니다.<br>데모 신청 · www.sailingstone.io</p>
-    <div class="corner"><span><b>aisight</b> · SAILINGSTONE</span><span>Intelligence with Data</span></div>
+    <p class="sub">귀사의 데이터로 라이브 시연해 드립니다.<br>데모 신청 · www.sailingstone.io</p>
+    <div class="pills">
+      <span class="pill"><b>✓</b>실데이터 질의응답 시연</span>
+      <span class="pill"><b>✓</b>보고서 자동 생성 시연</span>
+      <span class="pill"><b>✓</b>기존 대시보드 연동 상담</span>
+    </div>
+    <div class="corner">
+      <span class="ai">AI · BI · ANALYTICS</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
+    </div>
   </section>
 
 </body>
