@@ -385,6 +385,30 @@
     .kg-cap { font-size: 0.82rem; color: var(--s500); text-align: center; }
     .kg-cap b { color: var(--t700); font-weight: 700; }
 
+    /* ── LLM 자동 배정 매트릭스 ── */
+    .rt { height: 100%; display: grid; grid-template-columns: 1.25fr 1.5rem 0.95fr 1.5rem 1.15fr;
+          grid-template-rows: auto repeat(3, 1fr); gap: 0.8rem 0.5rem; }
+    .rt .hh { font-size: 0.92rem; font-weight: 700; color: var(--s400); text-align: center;
+              align-self: end; letter-spacing: 0.03em; }
+    .rt .qq { background: var(--s900); color: #fff; border-radius: 0.85rem 0.85rem 0.2rem 0.85rem;
+              padding: 0.7rem 1.05rem; font-size: 1.02rem; line-height: 1.5;
+              display: block; align-content: center; }
+    .rt .ar { display: flex; align-items: center; justify-content: center;
+              color: var(--s400); font-size: 0.95rem; }
+    .rt .jd { border: 1px solid var(--t100); background: var(--t50); border-radius: 0.75rem;
+              padding: 0.5rem 0.8rem; text-align: center; display: block; align-content: center; }
+    .rt .jd b { display: block; color: var(--t800); font-size: 1rem; }
+    .rt .jd small { color: var(--t700); font-size: 0.8rem; }
+    .rt .as { border-radius: 0.75rem; padding: 0.6rem 0.95rem; display: block; align-content: center; }
+    .rt .as.inh { background: var(--s50); border: 1px solid var(--s200); }
+    .rt .as.ext { background: var(--s900); }
+    .rt .as b { display: flex; gap: 0.45rem; align-items: center; font-size: 1.02rem; }
+    .rt .as.inh b { color: var(--s900); } .rt .as.inh b .i { color: var(--t600); }
+    .rt .as.ext b { color: var(--t400); }
+    .rt .as small { display: block; font-size: 0.84rem; margin-top: 0.22rem; line-height: 1.4; }
+    .rt .as.inh small { color: var(--s500); }
+    .rt .as.ext small { color: var(--s300); }
+
     /* ── 엑셀 그리드 목업 ── */
     .xl { width: 100%; border-collapse: collapse; font-size: 0.84rem; background: #fff; }
     .xl th { background: var(--s100); color: var(--s500); font-weight: 700;
@@ -909,39 +933,38 @@
   </section>
 
   <!-- 기능 4: 스마트 LLM 운용 -->
-  <section class="slide" data-title="기능 ④ 스마트 LLM 운용">
+  <section class="slide" data-title="기능 ④ 하이브리드 AI 운용">
     <header class="s-head">
-      <h2><span class="bullet"></span>④ 스마트 LLM 운용 - <em>질문마다 알맞은 AI로</em></h2>
+      <h2><span class="bullet"></span>④ 하이브리드 AI 운용 - <em>질문만 하세요, 선택은 aisight가</em></h2>
       <div class="s-right"><span class="sec">02 · Key Features</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <div class="s-band"><p>모든 질문을 같은 AI에 보내지 않습니다. <strong>보안·난이도·비용 기준</strong>으로 가장 알맞은 모델에 자동 배분합니다.</p></div>
+    <div class="s-band"><p>사용자는 어떤 AI를 쓸지 고를 필요가 없습니다. 질문의 <strong>보안 · 난이도 · 비용</strong>을 aisight가 판단해 사내 LLM과 상용 LLM에 자동 배분합니다.</p></div>
     <div class="content">
-      <div class="two fill">
-        <div class="krows">
-          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div><h4>보안 우선 배치</h4><p>민감한 데이터가 걸린 질문은 외부로 나가지 않고 폐쇄망의 사내 LLM에서만 처리합니다.</p></div></div>
-          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div><h4>난이도별 최적화</h4><p>고난도 분석은 고성능 상용 모델로 자동 승격해 답변 품질을 지킵니다.</p></div></div>
-          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 6v2"/><path d="M12 16v2"/></svg></div><div><h4>예측 가능한 비용</h4><p>간단한 질문에 비싼 모델을 쓰지 않으니 운영 비용이 통제됩니다.</p></div></div>
-        </div>
-        <div class="mockcol">
-          <div class="win">
-            <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">스마트 LLM 라우팅</span><span class="live">AUTO</span></div>
-            <div class="body">
-              <div class="msg q" style="align-self:center; max-width:100%;">질문이 들어옵니다</div>
-              <div class="adown">▼</div>
-              <div class="fnode hl" style="padding:0.8rem;"><div class="ft"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 15h3"/><path d="M1 9h3"/><path d="M1 15h3"/></svg> aisight 스마트 라우터</div><div class="fd">보안 등급 · 질문 난이도 · 비용을 판단해 자동 배분</div></div>
-              <div class="adown">▼&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼</div>
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.7rem;">
-                <div class="anode" style="text-align:left; padding:0.6rem 0.75rem;"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> <b style="font-size:0.92rem;">사내 LLM</b><small>폐쇄망 · 민감 데이터 · 일상 질의</small></div>
-                <div class="anode" style="text-align:left; padding:0.6rem 0.75rem;"><svg class="i" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b style="font-size:0.92rem;">상용 LLM</b><small>Claude · GPT 등 · 고난도 분석</small></div>
-              </div>
-              <div class="kg-cap">품질은 높이고, 보안과 비용은 지키는 <b>하이브리드 운용</b></div>
-            </div>
-          </div>
-          <div class="cap">* 이해를 돕기 위한 예시 화면입니다</div>
-        </div>
+      <div class="rt fill">
+        <div class="hh">현업의 질문</div><div></div><div class="hh">aisight의 판단</div><div></div><div class="hh">자동 배정</div>
+
+        <div class="qq">"우리 팀 인사평가 결과 분석해줘"</div>
+        <div class="ar">→</div>
+        <div class="jd"><b>민감 정보 포함</b><small>보안 기준</small></div>
+        <div class="ar">→</div>
+        <div class="as inh"><b><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>사내 LLM</b><small>폐쇄망에서만 처리 · 데이터 외부 반출 없음</small></div>
+
+        <div class="qq">"어제 매출 얼마였지?"</div>
+        <div class="ar">→</div>
+        <div class="jd"><b>단순 조회</b><small>속도 · 비용 기준</small></div>
+        <div class="ar">→</div>
+        <div class="as inh"><b><svg class="i" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>사내 LLM</b><small>즉시 응답 · 운영 비용 최소화</small></div>
+
+        <div class="qq">"3개년 추세로 내년 시나리오 뽑아줘"</div>
+        <div class="ar">→</div>
+        <div class="jd"><b>고난도 추론</b><small>품질 기준</small></div>
+        <div class="ar">→</div>
+        <div class="as ext"><b><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 15h3"/><path d="M1 9h3"/><path d="M1 15h3"/></svg>상용 LLM</b><small>Claude · GPT 등 고성능 모델로 승격</small></div>
       </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span>모델 선택과 비용 걱정은 aisight의 일 - 현업에게는 그저 <b>하나의 똑똑한 동료</b>입니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
+  
   </section>
 
   <!-- 기능 5: 교차 분석 -->
