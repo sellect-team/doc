@@ -200,6 +200,30 @@
     .ecap b { color: var(--s700); }
     .eblk.hl .ecap b { color: var(--t700); }
 
+    .evo .eblk.mid { flex: 0.62; }
+    .evo .eblk.hl { flex: 1.65; }
+    .esplit { flex: 1; min-height: 0; display: flex; }
+    .edash { flex: 1.15; padding: 0.5rem 0.6rem; display: flex; flex-direction: column;
+             gap: 0.4rem; justify-content: center; }
+    .edock { flex: 1; border-left: 1px solid var(--t100); background: var(--t50);
+             padding: 0.4rem 0.5rem; display: flex; flex-direction: column; gap: 0.28rem; }
+    .edock-h { display: flex; align-items: center; gap: 0.3rem; font-size: 0.68rem;
+               font-weight: 800; color: var(--t800); padding-bottom: 0.1rem; }
+    .edock-h img { width: 0.85rem; height: auto; }
+    .edock .eq { align-self: flex-end; max-width: 95%; background: var(--s900); color: #fff;
+                 font-size: 0.65rem; line-height: 1.35; padding: 0.24rem 0.5rem;
+                 border-radius: 0.5rem 0.5rem 0.15rem 0.5rem; }
+    .edock .ea { align-self: flex-start; max-width: 95%; background: #fff;
+                 border: 1px solid var(--t100); color: var(--s600); font-size: 0.65rem;
+                 line-height: 1.35; padding: 0.24rem 0.5rem;
+                 border-radius: 0.5rem 0.5rem 0.5rem 0.15rem; }
+    .edock .ea b { color: var(--t700); }
+    .edock .ein { margin-top: auto; border: 1px solid var(--t100); background: #fff;
+                  border-radius: 99rem; font-size: 0.6rem; color: var(--s400);
+                  padding: 0.2rem 0.55rem; }
+    .ewin .eh .onb { margin-left: auto; font-size: 0.58rem; font-weight: 800;
+                     color: var(--t600); letter-spacing: 0.04em; }
+
     /* ── 단색 라인 아이콘 ── */
     .i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6;
          stroke-linecap: round; stroke-linejoin: round; display: inline-block;
@@ -684,20 +708,28 @@
           <div class="ecap"><b>보기만 하는 화면</b><br>결과(What)를 조회</div>
         </div>
         <div class="eop">+</div>
-        <div class="eblk">
+        <div class="eblk mid">
           <div class="emid"><img src="assets/aisight-marketing/logo.png" alt=""><b>aisight 탑재</b></div>
-          <div class="ecap"><b>Extension 방식</b><br>재구축 없이 그대로 연동</div>
+          <div class="ecap"><b>Extension 방식</b><br>재구축 없이 연동</div>
         </div>
         <div class="eop">→</div>
         <div class="eblk hl">
           <div class="ewin on">
-            <div class="eh"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> AI 분석 환경</div>
-            <div class="eb">
-              <div class="ebars"><i style="height:45%"></i><i style="height:70%"></i><i style="height:55%"></i><i class="hl" style="height:85%"></i><i style="height:62%"></i></div>
-              <div class="echat"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>"왜 떨어졌지?" → 원인 2건을 찾았습니다</div>
+            <div class="eh"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> 기존 BI 대시보드<span class="onb">● aisight ON</span></div>
+            <div class="esplit">
+              <div class="edash">
+                <div class="l w80"></div><div class="l w60"></div>
+                <div class="ebars"><i style="height:45%"></i><i style="height:70%"></i><i style="height:55%"></i><i class="hl" style="height:85%"></i><i style="height:62%"></i></div>
+              </div>
+              <div class="edock">
+                <div class="edock-h"><img src="assets/aisight-marketing/logo.png" alt="">aisight Agent</div>
+                <div class="eq">이번 달 왜 떨어졌지?</div>
+                <div class="ea"><b>원인 2건</b>을 찾았습니다. 차트에 표시할까요?</div>
+                <div class="ein">질문 입력…</div>
+              </div>
             </div>
           </div>
-          <div class="ecap"><b>묻고 답하는 화면</b><br>원인(Why)까지 대화로</div>
+          <div class="ecap"><b>같은 화면, 에이전트가 상주</b><br>보던 대시보드 옆에서 바로 대화(Why)</div>
         </div>
       </div>
       <div class="cards c4" style="flex:1; min-height:0;">
