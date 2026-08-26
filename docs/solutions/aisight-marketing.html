@@ -87,8 +87,8 @@
     .card ul li { font-size: 0.99rem; color: var(--s500); padding-left: 1.2rem;
                   position: relative; line-height: 1.5; }
     .card ul li::before { content: "✓"; position: absolute; left: 0; color: var(--t600); font-weight: 700; }
-    .step .out { margin-top: 0.8rem; font-size: 0.9rem; color: var(--t700); background: var(--t50);
-                 border: 1px solid var(--t100); border-radius: 0.6rem; padding: 0.5rem 0.75rem;
+    .step .out { margin-top: 0.9rem; font-size: 0.95rem; color: var(--t700); background: var(--t50);
+                 border: 1px solid var(--t100); border-radius: 0.6rem; padding: 0.6rem 0.85rem;
                  font-weight: 600; line-height: 1.5; }
     .dark .entag { margin-top: 1.5rem; color: var(--t400); font-size: 0.92rem;
                    letter-spacing: 0.22em; font-weight: 600; }
@@ -124,6 +124,8 @@
     .win .body { flex: 1; min-height: 0; padding: 0.85rem 1rem; display: flex; flex-direction: column;
                  gap: 0.6rem; justify-content: space-between; }
     .cap { font-size: 0.76rem; color: var(--s400); text-align: right; margin-top: 0.35rem; }
+    .sugg { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+    .sugg .sl { font-size: 0.74rem; color: var(--s400); font-weight: 600; margin-right: 0.15rem; }
 
     /* 챗 목업 */
     .msg { max-width: 84%; padding: 0.6rem 0.9rem; border-radius: 0.85rem;
@@ -354,32 +356,32 @@
 
     /* ── 리포트 페이지 목업 (생성된 PPT 한 장) ── */
     .rpage { background: #fff; border: 1px solid var(--s200); border-radius: 0.5rem;
-             box-shadow: 0 10px 26px rgba(15,23,42,0.10); padding: 0.9rem 1.05rem 0.7rem;
-             display: flex; flex-direction: column; gap: 0.55rem; }
+             box-shadow: 0 10px 26px rgba(15,23,42,0.10); padding: 1.15rem 1.3rem 0.9rem;
+             display: flex; flex-direction: column; gap: 0.75rem; }
     .rp-head { display: flex; align-items: baseline; justify-content: space-between;
                border-bottom: 1px solid var(--s200); padding-bottom: 0.45rem; }
-    .rp-head .t { font-size: 1.02rem; font-weight: 800; color: var(--s900); letter-spacing: -0.01em; }
+    .rp-head .t { font-size: 1.16rem; font-weight: 800; color: var(--s900); letter-spacing: -0.01em; }
     .rp-head .t::before { content: ""; display: inline-block; width: 0.4rem; height: 0.4rem;
                           background: var(--t400); margin-right: 0.45rem; vertical-align: middle; }
-    .rp-head .d { font-size: 0.7rem; color: var(--s400); }
+    .rp-head .d { font-size: 0.78rem; color: var(--s400); }
     .rp-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
     .rp-kpi { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.45rem;
               padding: 0.45rem 0.55rem; }
-    .rp-kpi .k { font-size: 0.62rem; color: var(--s500); }
-    .rp-kpi .v { font-size: 0.98rem; font-weight: 800; color: var(--s900); }
-    .rp-kpi .v small { font-size: 0.62rem; font-weight: 700; color: var(--t600); margin-left: 0.2rem; }
+    .rp-kpi .k { font-size: 0.72rem; color: var(--s500); }
+    .rp-kpi .v { font-size: 1.14rem; font-weight: 800; color: var(--s900); }
+    .rp-kpi .v small { font-size: 0.7rem; font-weight: 700; color: var(--t600); margin-left: 0.2rem; }
     .rp-body { display: grid; grid-template-columns: 1.05fr 1fr; gap: 0.7rem; align-items: stretch; }
     .rp-chart { border: 1px solid var(--s100); border-radius: 0.45rem; padding: 0.5rem 0.55rem 0.35rem;
                 display: flex; flex-direction: column; justify-content: flex-end; }
-    .rp-chart .ct { font-size: 0.64rem; font-weight: 700; color: var(--s500); margin-bottom: 0.25rem; }
+    .rp-chart .ct { font-size: 0.74rem; font-weight: 700; color: var(--s500); margin-bottom: 0.35rem; }
     .rp-ins { display: flex; flex-direction: column; gap: 0.4rem; justify-content: center; }
-    .rp-ins .it { font-size: 0.62rem; font-weight: 700; color: var(--s500); }
-    .rp-ins li { list-style: none; font-size: 0.74rem; color: var(--s600); line-height: 1.45;
+    .rp-ins .it { font-size: 0.72rem; font-weight: 700; color: var(--s500); }
+    .rp-ins li { list-style: none; font-size: 0.85rem; color: var(--s600); line-height: 1.5;
                  padding-left: 0.95rem; position: relative; }
     .rp-ins li::before { content: "✓"; position: absolute; left: 0; color: var(--t600); font-weight: 700; }
     .rp-foot { display: flex; justify-content: space-between; align-items: center;
                border-top: 1px solid var(--s100); padding-top: 0.35rem;
-               font-size: 0.6rem; color: var(--s400); letter-spacing: 0.08em; }
+               font-size: 0.68rem; color: var(--s400); letter-spacing: 0.08em; }
     .rp-stack { position: relative; }
     .rp-stack::before, .rp-stack::after { content: ""; position: absolute; inset: 0;
                background: #fff; border: 1px solid var(--s200); border-radius: 0.5rem; z-index: -1; }
@@ -388,7 +390,7 @@
     .rp-flow { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;
                font-size: 0.8rem; color: var(--s500); }
     .rp-flow .st { background: var(--s50); border: 1px solid var(--s200); border-radius: 99rem;
-                   padding: 0.28rem 0.75rem; font-weight: 600; color: var(--s600); }
+                   padding: 0.36rem 0.9rem; font-weight: 600; color: var(--s600); font-size: 0.88rem; }
     .rp-flow .st.on { background: var(--t50); border-color: var(--t100); color: var(--t700); }
     .rp-flow .ar { color: var(--s400); font-size: 0.8rem; }
 
@@ -659,8 +661,14 @@
     .step .no { width: 2rem; height: 2rem; border-radius: 50%; background: var(--t600);
                 color: #fff; font-weight: 700; font-size: 1rem; display: flex;
                 align-items: center; justify-content: center; margin-bottom: 0.75rem; }
-    .step h3 { font-size: 1.22rem; font-weight: 700; margin-bottom: 0.4rem; }
-    .step p { font-size: 0.98rem; line-height: 1.55; color: var(--s500); }
+    .step h3 { font-size: 1.32rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .step p { font-size: 1.04rem; line-height: 1.6; color: var(--s500); }
+    .step .sul { list-style: none; margin-top: 0.9rem; display: flex; flex-direction: column;
+                 gap: 0.55rem; }
+    .step .sul li { font-size: 1rem; color: var(--s500); padding-left: 1.1rem;
+                    position: relative; line-height: 1.55; }
+    .step .sul li::before { content: "✓"; position: absolute; left: 0;
+                            color: var(--t600); font-weight: 700; font-size: 0.8rem; }
     .sarrow { display: flex; align-items: center; font-size: 1.15rem; color: var(--s400); font-weight: 400; }
 
     /* ── 숫자 하이라이트 ── */
@@ -989,7 +997,8 @@
                   <span class="chip" style="font-size:0.76rem;">Week · 2026-26</span>
                   <span class="chip" style="font-size:0.76rem;">근거 보기</span>
                 </div>
-                <div class="input" style="margin-top:auto;">질문 입력…<span class="send">➤</span></div>
+                <div class="sugg" style="margin-top:auto;"><span class="sl">추천 질문</span><span class="chip" style="font-size:0.76rem;">상승 요인 분해</span><span class="chip" style="font-size:0.76rem;">지역별 비교</span><span class="chip" style="font-size:0.76rem;">주간 리포트 생성</span></div>
+                <div class="input">질문 입력…<span class="send">➤</span></div>
               </div>
             </div>
           </div>
@@ -1030,7 +1039,7 @@
                   <div class="rp-body">
                     <div class="rp-chart">
                       <div class="ct">주차별 매출 추이</div>
-                      <div class="bars" style="height:2.6rem; gap:0.35rem;"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:66%"></i><i style="height:60%"></i><i class="hl" style="height:90%"></i></div>
+                      <div class="bars" style="height:3.6rem; gap:0.4rem;"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:66%"></i><i style="height:60%"></i><i class="hl" style="height:90%"></i></div>
                       <div class="bars-x" style="gap:0.35rem;"><span>21W</span><span>22W</span><span>23W</span><span>24W</span><span>25W</span><span>26W</span></div>
                     </div>
                     <ul class="rp-ins">
@@ -1276,11 +1285,11 @@
     <div class="s-band"><p>전사를 한 번에 바꾸는 방식이 아닙니다. <strong>POC로 실제 효과를 먼저 확인</strong>하고, 검증된 곳부터 넓혀갑니다.</p></div>
     <div class="content">
       <div class="steps fill">
-        <div class="step"><div class="no">1</div><h3>진단과 기획</h3><p>현재 데이터 환경과 업무를 함께 살펴보고, 효과가 가장 빠른 영역을 정합니다. 기존 BI·대시보드는 그대로 둔 채 시작합니다.</p><div class="out"><svg class="i" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> 산출물 · 진단 리포트, 적용 설계안</div><div class="chips"><span class="chip">함께 설계</span><span class="chip">핵심 업무 선정</span></div></div>
+        <div class="step"><div class="no">1</div><h3>진단과 기획</h3><p>현재 데이터 환경과 업무를 함께 살펴보고, 효과가 가장 빠른 영역을 정합니다. 기존 BI·대시보드는 그대로 둔 채 시작합니다.</p><ul class="sul"><li>데이터 환경·업무 흐름 진단</li><li>적용 우선순위와 목표 지표 합의</li></ul><div class="out"><svg class="i" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> 산출물 · 진단 리포트, 적용 설계안</div><div class="chips"><span class="chip">함께 설계</span><span class="chip">핵심 업무 선정</span></div></div>
         <div class="sarrow">→</div>
-        <div class="step"><div class="no">2</div><h3>POC 검증</h3><p>핵심 업무 한두 개에 귀사의 실제 데이터로 POC를 진행해, 답변 품질과 업무 효과를 직접 확인합니다.</p><div class="out"><svg class="i" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> 산출물 · POC 결과·효과 측정 리포트</div><div class="chips"><span class="chip">실데이터 검증</span><span class="chip">효과 측정</span></div></div>
+        <div class="step"><div class="no">2</div><h3>POC 검증</h3><p>핵심 업무 한두 개에 귀사의 실제 데이터로 POC를 진행해, 답변 품질과 업무 효과를 직접 확인합니다.</p><ul class="sul"><li>실데이터 연결과 분석 스킬 구성</li><li>현업 시나리오로 품질 직접 검증</li></ul><div class="out"><svg class="i" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> 산출물 · POC 결과·효과 측정 리포트</div><div class="chips"><span class="chip">실데이터 검증</span><span class="chip">효과 측정</span></div></div>
         <div class="sarrow">→</div>
-        <div class="step"><div class="no">3</div><h3>단계적 확산</h3><p>검증된 성과를 바탕으로 부서별로 차근차근 넓혀갑니다. 정착 교육과 운영 지원까지 전담팀이 함께합니다.</p><div class="out"><svg class="i" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> 산출물 · 확산 로드맵, 운영 가이드</div><div class="chips"><span class="chip">부서별 확산</span><span class="chip">정착 지원</span></div></div>
+        <div class="step"><div class="no">3</div><h3>단계적 확산</h3><p>검증된 성과를 바탕으로 부서별로 차근차근 넓혀갑니다. 정착 교육과 운영 지원까지 전담팀이 함께합니다.</p><ul class="sul"><li>부서별 온보딩과 사용자 교육</li><li>운영 이관과 정착 밀착 지원</li></ul><div class="out"><svg class="i" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> 산출물 · 확산 로드맵, 운영 가이드</div><div class="chips"><span class="chip">부서별 확산</span><span class="chip">정착 지원</span></div></div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.68.68 1.15 1.45 1.41 2.5"/></svg></span><span><b>쓰던 시스템은 그대로.</b> 기존 BI·대시보드를 버리는 것이 아니라, 그 위에 aisight를 얹어 더 똑똑하게 쓰는 방식입니다.</span></div>
     </div>
