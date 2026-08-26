@@ -405,6 +405,34 @@
     .num .v { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; color: var(--t600); }
     .num .k { font-size: 0.93rem; color: var(--s500); margin-top: 0.3rem; line-height: 1.45; }
 
+    /* ── 세일링스톤: 여정 타임라인 + 성장 카드 ── */
+    .tl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; position: relative;
+          padding-top: 0.85rem; }
+    .tl::before { content: ""; position: absolute; top: 0.28rem; left: 3%; right: 3%;
+                  height: 1px; background: var(--s200); }
+    .tln { position: relative; }
+    .tln::before { content: ""; position: absolute; top: -0.85rem; left: 0;
+                   width: 0.55rem; height: 0.55rem; border-radius: 50%;
+                   background: #fff; border: 1px solid var(--t600); }
+    .tln.on::before { background: var(--t600); }
+    .tln .y { font-size: 1.02rem; font-weight: 800; color: var(--t600); }
+    .tln .tt { font-size: 0.95rem; font-weight: 700; color: var(--s900); margin: 0.15rem 0 0.2rem; }
+    .tln .td { font-size: 0.82rem; color: var(--s500); line-height: 1.45; }
+    .gcard { border: 1px solid var(--s200); border-radius: 0.9rem; background: var(--s50);
+             padding: 1.1rem 1.2rem; display: flex; flex-direction: column;
+             box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
+    .gcard .gh { display: flex; align-items: baseline; justify-content: space-between; }
+    .gcard .gh b { font-size: 1.05rem; color: var(--s900); }
+    .gcard .gh .big { font-size: 2rem; font-weight: 800; color: var(--t600);
+                      letter-spacing: -0.03em; }
+    .gcard .gf { font-size: 0.82rem; color: var(--s500); margin-top: 0.4rem; }
+    .gcard .bars { flex: 1; min-height: 0; }
+    .strow { flex: 1; display: flex; align-items: center; gap: 0.9rem; background: var(--s50);
+             border: 1px solid var(--s200); border-radius: 0.8rem; padding: 0.65rem 1rem; }
+    .strow .v { font-size: 1.45rem; font-weight: 800; color: var(--t600);
+                letter-spacing: -0.02em; min-width: 4.6rem; }
+    .strow .k { font-size: 0.9rem; color: var(--s600); line-height: 1.4; }
+
     /* ── 다크 슬라이드 (표지·맺음) ── */
     .dark { background:
               linear-gradient(rgba(148,163,184,0.055) 1px, transparent 1px),
@@ -868,17 +896,28 @@
     </header>
     <div class="s-band"><p>세일링스톤은 국내 대기업들과 데이터 분석 시스템을 구축해 온 <strong>BI·AI 전문 기업</strong>입니다.</p></div>
     <div class="content">
+      <div class="tl">
+        <div class="tln"><div class="y">2019</div><div class="tt">법인 설립</div><div class="td">BI 전문가 팀으로 출발, 엔터프라이즈 컨설팅 시작</div></div>
+        <div class="tln"><div class="y">2022</div><div class="tt">엔터프라이즈 확장</div><div class="td">대기업 분석 포털 구축을 연속 수주하며 성장 본격화</div></div>
+        <div class="tln"><div class="y">2024</div><div class="tt">AI 전환</div><div class="td">AI 조직 신설, LLM 기반 분석 프로젝트 본격 수행</div></div>
+        <div class="tln on"><div class="y">2026</div><div class="tt">aisight</div><div class="td">현장 경험을 담은 전사 AI 분석 플랫폼으로 고도화</div></div>
+      </div>
       <div class="two fill">
-        <div class="krows">
-          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div><div><h4>대기업이 검증한 실행력</h4><p>국내 주요 대기업의 엔터프라이즈 BI·AI 프로젝트를 다수 수행했고, 단일 고객사 기준 수십 건의 프로젝트를 연속 수행하며 신뢰를 쌓았습니다.</p></div></div>
-          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h4>10년 호흡의 원팀 시스템</h4><p>기획·솔루션·데이터·UX 리더들이 10년 이상 손발을 맞춰 온 팀이라, 커뮤니케이션 손실 없이 빠르고 정확하게 움직입니다.</p></div></div>
-          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><div><h4>구축으로 끝나지 않는 파트너십</h4><p>BI 컨설팅부터 포털 구축, AI 에이전트, 교육까지 - 도입 이후의 정착과 확산도 전담팀이 끝까지 함께합니다.</p></div></div>
+        <div class="gcard">
+          <div class="gh"><b>매출 성장 곡선</b><span class="big">3.8배</span></div>
+          <div class="bars" style="margin-top:0.6rem;"><i style="height:22%"></i><i style="height:38%"></i><i style="height:76%"></i><i class="hl" style="height:95%"></i></div>
+          <div class="bars-x"><span>2022</span><span>2023</span><span>2024</span><span>2025</span></div>
+          <div class="gf">20억(2022)에서 93억(2025)으로, 3개년 연속 우상향 성장</div>
         </div>
-        <div class="nums">
-          <div class="num"><div class="v">3.8배</div><div class="k">최근 3개년 매출 성장<br>우상향의 지속 성장 곡선</div></div>
-          <div class="num"><div class="v">70%+</div><div class="k">주요 고객 장기 계약 매출 비중<br>단발 구축이 아닌 동행</div></div>
-          <div class="num"><div class="v">A-</div><div class="k">외부 평가기관 기술신용평가<br>객관적으로 검증된 기술력</div></div>
-          <div class="num"><div class="v">10년+</div><div class="k">리더십 그룹의 협업 호흡<br>검증된 원팀 시너지</div></div>
+        <div style="display:flex; flex-direction:column; gap:0.85rem; height:100%; justify-content:space-between;">
+          <div class="strow"><span class="v">70%+</span><span class="k">주요 고객 <b>장기 계약</b> 매출 비중 - 단발 구축이 아닌 동행의 증거</span></div>
+          <div class="strow"><span class="v">A-</span><span class="k">외부 평가기관 <b>기술신용평가</b> - 객관적으로 검증된 기술 경쟁력</span></div>
+          <div class="strow"><span class="v">10년+</span><span class="k">기획·솔루션·데이터·UX 리더들의 <b>원팀 협업 호흡</b></span></div>
+          <div class="chips" style="padding-top:0;">
+            <span class="chip">BI 컨설팅</span><span class="chip">분석 포털 구축</span>
+            <span class="chip">AI 에이전트</span><span class="chip">데이터 교육</span>
+            <span class="chip">Tableau 전문 서비스</span>
+          </div>
         </div>
       </div>
     </div>
