@@ -166,6 +166,40 @@
                 border: 1px solid var(--t100); color: var(--t700); font-size: 0.81rem;
                 font-weight: 700; border-radius: 99rem; padding: 0.28rem 0.75rem; }
 
+    /* ── 대시보드 진화 비주얼 ── */
+    .evo { display: flex; align-items: stretch; gap: 0.9rem; }
+    .evo .eblk { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .evo .eop { display: flex; align-items: center; justify-content: center;
+                font-size: 1.6rem; font-weight: 300; color: var(--t600); padding-bottom: 1.3rem; }
+    .ewin { flex: 1; border: 1px solid var(--s200); border-radius: 0.7rem; background: #fff;
+            overflow: hidden; display: flex; flex-direction: column; }
+    .ewin.on { border-color: var(--t400); box-shadow: 0 8px 22px rgba(13,148,136,0.14); }
+    .ewin .eh { font-size: 0.74rem; font-weight: 700; color: var(--s500);
+                background: var(--s100); border-bottom: 1px solid var(--s200);
+                padding: 0.32rem 0.65rem; display: flex; align-items: center; gap: 0.35rem; }
+    .ewin.on .eh { color: var(--t700); background: var(--t50); border-color: var(--t100); }
+    .ewin .eb { flex: 1; padding: 0.55rem 0.65rem; display: flex; flex-direction: column;
+                gap: 0.42rem; justify-content: center; }
+    .ewin .l { height: 0.34rem; border-radius: 99rem; background: var(--s200); }
+    .ewin .l.w60 { width: 60%; } .ewin .l.w80 { width: 80%; }
+    .ewin .ebars { display: flex; align-items: flex-end; gap: 0.3rem; height: 2.1rem; }
+    .ewin .ebars i { flex: 1; background: var(--s200); border-radius: 0.2rem 0.2rem 0 0; }
+    .ewin.on .ebars i.hl { background: linear-gradient(180deg, var(--t400), var(--t600)); }
+    .ewin .echat { display: flex; align-items: center; gap: 0.4rem; background: var(--t50);
+                   border: 1px solid var(--t100); border-radius: 0.5rem;
+                   padding: 0.32rem 0.55rem; font-size: 0.74rem; color: var(--t800);
+                   font-weight: 600; line-height: 1.35; }
+    .ewin .echat .i { color: var(--t600); flex-shrink: 0; }
+    .emid { flex: 1; border: 1px solid var(--t100); border-radius: 0.7rem; background: var(--t50);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 0.4rem; padding: 0.6rem; }
+    .emid img { width: 2.3rem; height: auto; }
+    .emid b { font-size: 0.92rem; color: var(--t800); }
+    .ecap { text-align: center; font-size: 0.79rem; color: var(--s500); margin-top: 0.4rem;
+            line-height: 1.4; }
+    .ecap b { color: var(--s700); }
+    .eblk.hl .ecap b { color: var(--t700); }
+
     /* ── 단색 라인 아이콘 ── */
     .i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6;
          stroke-linecap: round; stroke-linejoin: round; display: inline-block;
@@ -361,29 +395,43 @@
     .vs .after .tag { background: var(--t400); color: var(--s900); }
 
     /* ── 업무 장면별 비교 매트릭스 ── */
-    .vs2 { height: 100%; display: grid; grid-template-columns: 1fr 8.6rem 1fr;
-           grid-template-rows: auto repeat(5, 1fr); gap: 0.6rem 1rem; }
-    .vs2 .h { display: flex; align-items: center; justify-content: center;
-              font-size: 1rem; font-weight: 700; letter-spacing: 0.02em;
-              border-radius: 0.6rem; padding: 0.45rem 0; }
-    .vs2 .h.hb { color: var(--s500); background: var(--s100); }
-    .vs2 .h.hm { color: var(--s400); font-size: 0.82rem; font-weight: 600; }
-    .vs2 .h.ha { color: var(--t400); background: var(--s900); }
+    .vs2 { height: 100%; display: grid; grid-template-columns: 1fr 7.8rem 1fr;
+           grid-template-rows: auto repeat(5, 1fr); gap: 0.6rem 1rem; position: relative; }
+    .vs2::before { content: ""; position: absolute; left: 50%; top: 3.1rem; bottom: 0.6rem;
+                   width: 1px; background: var(--s200); }
+    .vs2 .h { display: flex; flex-direction: column; align-items: center; justify-content: center;
+              border-radius: 0.6rem; padding: 0.35rem 0; z-index: 1; }
+    .vs2 .h b { font-size: 1rem; font-weight: 700; letter-spacing: 0.02em; }
+    .vs2 .h small { font-size: 0.74rem; font-weight: 600; margin-top: 0.05rem; }
+    .vs2 .h.hb { background: var(--s100); } .vs2 .h.hb b { color: var(--s500); }
+    .vs2 .h.hb small { color: var(--s400); }
+    .vs2 .h.hm { color: var(--s400); font-size: 0.8rem; font-weight: 600; background: #fff; }
+    .vs2 .h.ha { background: var(--s900); } .vs2 .h.ha b { color: var(--t400); }
+    .vs2 .h.ha small { color: var(--s400); }
     .vs2 .bc { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.7rem;
-               padding: 0.55rem 0.9rem 0.55rem 2rem; font-size: 0.97rem; line-height: 1.45;
-               color: var(--s500); position: relative; display: block; align-content: center; }
+               padding: 0.55rem 0.8rem 0.55rem 2rem; position: relative;
+               display: flex; align-items: center; gap: 0.7rem; }
     .vs2 .bc::before { content: "\2715"; position: absolute; left: 0.85rem; color: var(--s400);
                        font-size: 0.8rem; }
+    .vs2 .bc .tx { font-size: 0.96rem; line-height: 1.45; color: var(--s500); }
     .vs2 .mc { display: flex; flex-direction: column; align-items: center; justify-content: center;
-               gap: 0.2rem; font-size: 0.86rem; font-weight: 700; color: var(--s700);
-               text-align: center; line-height: 1.3; }
-    .vs2 .mc .i { color: var(--t600); font-size: 1.1rem; }
+               gap: 0.3rem; font-size: 0.85rem; font-weight: 700; color: var(--s700);
+               text-align: center; line-height: 1.25; z-index: 1; }
+    .vs2 .mc .ic { width: 2.4rem; height: 2.4rem; border-radius: 50%; background: #fff;
+                   border: 1px solid var(--t100); box-shadow: 0 3px 10px rgba(15,23,42,0.07);
+                   display: flex; align-items: center; justify-content: center; }
+    .vs2 .mc .ic .i { font-size: 1.1rem; color: var(--t600); }
     .vs2 .ac { background: var(--s900); border-radius: 0.7rem;
-               padding: 0.55rem 0.9rem 0.55rem 2rem; font-size: 0.97rem; line-height: 1.45;
-               color: var(--s200); position: relative; display: block; align-content: center; }
+               padding: 0.55rem 0.8rem 0.55rem 2rem; position: relative;
+               display: flex; align-items: center; gap: 0.7rem; }
     .vs2 .ac::before { content: "\2713"; position: absolute; left: 0.85rem; color: var(--t400);
                        font-weight: 700; font-size: 0.85rem; }
-    .vs2 .ac b { color: #fff; }
+    .vs2 .ac .tx { font-size: 0.96rem; line-height: 1.45; color: var(--s200); }
+    .vs2 .ac .tx b { color: #fff; }
+    .vs2 .pill { margin-left: auto; flex-shrink: 0; font-size: 0.72rem; font-weight: 700;
+                 border-radius: 99rem; padding: 0.2rem 0.62rem; letter-spacing: 0.02em; }
+    .vs2 .bc .pill { background: var(--s200); color: var(--s500); }
+    .vs2 .ac .pill { background: var(--t400); color: var(--s900); }
 
     /* ── 도입 스텝 ── */
     .steps { display: flex; align-items: stretch; gap: 1.2rem; height: 100%; }
@@ -617,28 +665,48 @@
   </section>
 
   <!-- 4. 세 가지 약속 -->
-  <section class="slide" data-title="aisight의 3가지 약속">
+  <section class="slide" data-title="대시보드의 AI 진화">
     <header class="s-head">
-      <h2><span class="bullet"></span>aisight가 바꾸는 <em>세 가지</em></h2>
+      <h2><span class="bullet"></span>쓰던 대시보드 그대로, <em>AI로 진화합니다</em></h2>
       <div class="s-right"><span class="sec">01 · Why aisight</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <div class="s-band"><p>복잡한 기술은 화면 뒤에 숨겼습니다. 사용하는 사람에게 남는 것은 이 세 가지입니다.</p></div>
+    <div class="s-band"><p>Tableau 등 <strong>이미 쓰고 있는 대시보드</strong>를 바꿀 필요가 없습니다. aisight를 얹는 순간, 보던 화면이 대화하는 화면이 됩니다.</p></div>
     <div class="content">
-      <div class="cards c3 fill">
-        <div class="card"><div class="no">01 · INSTANT</div><div class="ico"><svg class="i" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h3>묻는 즉시 답</h3>
-          <p>IT 부서를 거치지 않고, 그 자리에서 질문하고 그 자리에서 답을 받습니다.</p>
-          <ul><li>아침 회의 전, 어제 실적을 30초 만에</li><li>화면에 없는 숫자도 즉시 조회</li><li>회의 중 급한 질문도 그 자리에서 해결</li></ul>
-          <div class="chips"><span class="chip">요청 대기 제로</span><span class="chip">셀프서비스 분석</span></div></div>
-        <div class="card"><div class="no">02 · TRUSTED</div><div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div><h3>근거 있는 답</h3>
-          <p>AI의 추측이 아니라 회사가 검증한 지표와 데이터에서 출발한 답만 제공합니다.</p>
-          <ul><li>모든 수치는 검증된 지표에서 출발</li><li>답변마다 출처를 바로 확인</li><li>보고에 그대로 인용해도 안전</li></ul>
-          <div class="chips"><span class="chip">환각 차단</span><span class="chip">감사 대응 용이</span></div></div>
-        <div class="card"><div class="no">03 · AUTOMATED</div><div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg></div><h3>보고서까지 자동</h3>
-          <p>대화에서 나온 인사이트가 클릭 한 번에 보고서가 되고, 정해진 주기에 자동 발송됩니다.</p>
-          <ul><li>대화 인사이트를 표준 양식 보고서로</li><li>주간·월간 정기 발송을 구독으로</li><li>취합·정리·공유 수작업 소멸</li></ul>
-          <div class="chips"><span class="chip">원클릭 보고서</span><span class="chip">구독형 배포</span></div></div>
+      <div class="evo fill">
+        <div class="eblk">
+          <div class="ewin">
+            <div class="eh"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> 기존 BI 대시보드</div>
+            <div class="eb">
+              <div class="l w80"></div><div class="l w60"></div>
+              <div class="ebars"><i style="height:45%"></i><i style="height:70%"></i><i style="height:55%"></i><i style="height:85%"></i><i style="height:62%"></i></div>
+            </div>
+          </div>
+          <div class="ecap"><b>보기만 하는 화면</b><br>결과(What)를 조회</div>
+        </div>
+        <div class="eop">+</div>
+        <div class="eblk">
+          <div class="emid"><img src="assets/aisight-marketing/logo.png" alt=""><b>aisight 탑재</b></div>
+          <div class="ecap"><b>Extension 방식</b><br>재구축 없이 그대로 연동</div>
+        </div>
+        <div class="eop">→</div>
+        <div class="eblk hl">
+          <div class="ewin on">
+            <div class="eh"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> AI 분석 환경</div>
+            <div class="eb">
+              <div class="ebars"><i style="height:45%"></i><i style="height:70%"></i><i style="height:55%"></i><i class="hl" style="height:85%"></i><i style="height:62%"></i></div>
+              <div class="echat"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>"왜 떨어졌지?" → 원인 2건을 찾았습니다</div>
+            </div>
+          </div>
+          <div class="ecap"><b>묻고 답하는 화면</b><br>원인(Why)까지 대화로</div>
+        </div>
       </div>
-      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span>배우는 도구가 아니라, <b>대화하는 동료</b>에 가깝습니다.</span></div>
+      <div class="cards c4" style="flex:1; min-height:0;">
+        <div class="card"><div class="no">01 · KEEP</div><h3>재구축 제로</h3><p>기존 Tableau·BI 자산과 권한 체계를 그대로 둔 채 연동합니다. 버리는 것이 없습니다.</p></div>
+        <div class="card"><div class="no">02 · START</div><h3>바로 대화 시작</h3><p>별도 교육 없이, 늘 보던 대시보드 화면에서 질문 한 줄로 시작합니다.</p></div>
+        <div class="card"><div class="no">03 · DEEPEN</div><h3>조회에서 분석으로</h3><p>결과만 보여주던 화면이 원인까지 설명하는 화면으로 바뀝니다.</p></div>
+        <div class="card"><div class="no">04 · ACT</div><h3>화면에서 실행까지</h3><p>필터 제어부터 보고서 생성·배포까지, 대시보드를 벗어나지 않고 끝냅니다.</p></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></span><span>도입의 시작은 교체가 아니라, <b>지금 화면 위의 진화</b>입니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 5 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
@@ -839,29 +907,29 @@
     <div class="s-band"><p>같은 질문, 같은 보고서 - 걸리는 시간과 과정이 달라집니다.</p></div>
     <div class="content">
       <div class="vs2 fill">
-        <div class="h hb">지금까지는</div>
+        <div class="h hb"><b>지금까지는</b><small>기다림의 하루</small></div>
         <div class="h hm">업무 장면</div>
-        <div class="h ha">aisight와 함께라면</div>
+        <div class="h ha"><b>aisight와 함께라면</b><small>즉답의 하루</small></div>
 
-        <div class="bc">IT 부서에 요청서를 내고 며칠을 기다립니다</div>
-        <div class="mc"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>데이터 확인</div>
-        <div class="ac">그 자리에서 질문하고 <b>즉시 답</b>을 받습니다</div>
+        <div class="bc"><span class="tx">IT 부서에 요청서를 내고 며칠을 기다립니다</span><span class="pill">대기</span></div>
+        <div class="mc"><span class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>데이터 확인</div>
+        <div class="ac"><span class="tx">그 자리에서 질문하고 <b>즉시 답</b>을 받습니다</span><span class="pill">즉시</span></div>
 
-        <div class="bc">지표가 왜 움직였는지 사람이 다시 파헤칩니다</div>
-        <div class="mc"><svg class="i" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>원인 분석</div>
-        <div class="ac">결과(What)와 <b>원인(Why)</b>을 함께 설명합니다</div>
+        <div class="bc"><span class="tx">지표가 왜 움직였는지 사람이 다시 파헤칩니다</span><span class="pill">수작업</span></div>
+        <div class="mc"><span class="ic"><svg class="i" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span>원인 분석</div>
+        <div class="ac"><span class="tx">결과(What)와 <b>원인(Why)</b>을 함께 설명합니다</span><span class="pill">자동 분석</span></div>
 
-        <div class="bc">"확인 후 회신드리겠습니다"가 최선입니다</div>
-        <div class="mc"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>회의 대응</div>
-        <div class="ac">회의 중에도 <b>바로 묻고 바로 확인</b>합니다</div>
+        <div class="bc"><span class="tx">"확인 후 회신드리겠습니다"가 최선입니다</span><span class="pill">지연</span></div>
+        <div class="mc"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>회의 대응</div>
+        <div class="ac"><span class="tx">회의 중에도 <b>바로 묻고 바로 확인</b>합니다</span><span class="pill">실시간</span></div>
 
-        <div class="bc">캡처·복붙으로 매주 손으로 다시 만듭니다</div>
-        <div class="mc"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>정기 보고</div>
-        <div class="ac">보고서가 <b>자동 생성·자동 발송</b>됩니다</div>
+        <div class="bc"><span class="tx">캡처·복붙으로 매주 손으로 다시 만듭니다</span><span class="pill">반복</span></div>
+        <div class="mc"><span class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>정기 보고</div>
+        <div class="ac"><span class="tx">보고서가 <b>자동 생성·자동 발송</b>됩니다</span><span class="pill">자동화</span></div>
 
-        <div class="bc">담당자를 수소문하거나 폴더를 뒤집니다</div>
-        <div class="mc"><svg class="i" viewBox="0 0 24 24"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>지식 찾기</div>
-        <div class="ac">위키에 질문하면 <b>출처와 함께</b> 답이 옵니다</div>
+        <div class="bc"><span class="tx">담당자를 수소문하거나 폴더를 뒤집니다</span><span class="pill">단절</span></div>
+        <div class="mc"><span class="ic"><svg class="i" viewBox="0 0 24 24"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>지식 찾기</div>
+        <div class="ac"><span class="tx">위키에 질문하면 <b>출처와 함께</b> 답이 옵니다</span><span class="pill">자산화</span></div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span>도구가 하나 늘어나는 것이 아니라, <b>기다림이 사라지는</b> 변화입니다.</span></div>
     </div>
