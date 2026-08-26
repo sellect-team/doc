@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>aisight 소개 (고객 배포용)</title>
-  <meta name="doc-version" content="1.1">
+  <meta name="doc-version" content="1.2">
   <meta name="doc-description" content="일반 고객 배포용 aisight 마케팅 소개 자료 — 핵심 가치와 활용 장면 중심의 12장 요약본">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
@@ -20,13 +20,13 @@
     }
     .slide {
       width: 100vw; height: 100vh; overflow: hidden; position: relative;
-      padding: 1.7rem 2.6rem 1rem; display: flex; flex-direction: column;
+      padding: 1.6rem 2.6rem 0.9rem; display: flex; flex-direction: column;
       background: #fff;
     }
 
-    /* ── 기존 템플릿 공통 골격: 헤더(제목+섹션·워드마크) / 리드 밴드 / 중앙 페이지 푸터 ── */
+    /* ── 기존 템플릿 공통 골격 ── */
     .s-head { display: flex; align-items: center; justify-content: space-between;
-              padding-bottom: 0.85rem; }
+              padding-bottom: 0.8rem; }
     .s-head h2 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; color: var(--s900); }
     .s-head h2 em { color: var(--t600); font-style: normal; }
     .bullet { display: inline-block; width: 0.55rem; height: 0.55rem;
@@ -39,17 +39,21 @@
 
     .s-band { margin: 0 -2.6rem; background: var(--s50);
               border-top: 1px solid var(--s200); border-bottom: 1px solid var(--s200);
-              padding: 0.85rem 2.6rem; }
-    .s-band p { font-size: 1.13rem; line-height: 1.62; color: var(--s600); }
+              padding: 0.8rem 2.6rem; }
+    .s-band p { font-size: 1.12rem; line-height: 1.6; color: var(--s600); }
     .s-band strong { color: var(--t600); font-weight: 700; }
 
     .s-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
-              font-size: 0.78rem; color: var(--s400); margin-top: 0.85rem; }
+              font-size: 0.78rem; color: var(--s400); margin-top: 0.75rem; }
     .s-foot .pg { grid-column: 2; }
     .s-foot .mark { grid-column: 3; justify-self: end; letter-spacing: 0.14em; color: var(--s400); }
-    .grow { flex: 1; min-height: 0; }
+
+    /* 콘텐츠 영역: 남는 높이를 fill 블록이 전부 가져간다 (상하 여백 최소화) */
     .content { flex: 1; min-height: 0; display: flex; flex-direction: column;
-               justify-content: center; gap: 1rem; padding-top: 1rem; }
+               gap: 0.95rem; padding-top: 0.95rem; }
+    .fill { flex: 1; min-height: 0; }
+    .stack { display: flex; flex-direction: column; gap: 0.95rem; }
+    .stack > .cards { flex: 1; min-height: 0; }
 
     /* ── 하단 요약 스트라이프 ── */
     .stripe { background: var(--s900); color: #E2E8F0; border-radius: 0.7rem;
@@ -58,38 +62,41 @@
     .stripe b { color: var(--t400); font-weight: 700; }
     .stripe .sicon { font-size: 1.15rem; }
 
-    /* ── 카드 ── */
-    .cards { display: grid; gap: 1rem; }
+    /* ── 카드 (fill 안에서 세로로 늘어남) ── */
+    .cards { display: grid; gap: 1rem; grid-auto-rows: 1fr; }
     .c3 { grid-template-columns: repeat(3, 1fr); }
     .c4 { grid-template-columns: repeat(4, 1fr); }
     .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
-            padding: 1.2rem 1.15rem 1.05rem; display: flex; flex-direction: column;
+            padding: 1.3rem 1.25rem 1.15rem; display: flex; flex-direction: column;
+            justify-content: space-between; gap: 0.55rem;
             box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
     .card .no { font-size: 0.78rem; font-weight: 800; color: var(--t600); letter-spacing: 0.1em;
                 margin-bottom: 0.55rem; }
-    .card .ico { font-size: 1.65rem; line-height: 1; margin-bottom: 0.65rem; }
-    .card h3 { font-size: 1.26rem; font-weight: 700; color: var(--s900); margin-bottom: 0.4rem;
+    .card .ico { font-size: 2rem; line-height: 1; margin-bottom: 0.3rem; }
+    .card h3 { font-size: 1.38rem; font-weight: 700; color: var(--s900);
                letter-spacing: -0.01em; }
-    .card p { font-size: 0.99rem; line-height: 1.55; color: var(--s500); }
-    .card .quote { margin-top: auto; padding-top: 0.85rem; font-size: 0.9rem; color: var(--s400);
-                   font-style: italic; border-top: 1px dashed var(--s200); }
-    .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: auto; padding-top: 0.85rem; }
+    .card p { font-size: 1.06rem; line-height: 1.62; color: var(--s500); }
+    .card .quote { padding-top: 0.85rem; font-size: 0.96rem; color: var(--s400);
+                   font-style: italic; border-top: 1px dashed var(--s200); line-height: 1.55; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; padding-top: 0.6rem; }
     .chip { background: var(--t50); border: 1px solid var(--t100); color: var(--t700);
-            font-size: 0.84rem; font-weight: 600; padding: 0.28rem 0.7rem; border-radius: 99rem; }
+            font-size: 0.85rem; font-weight: 600; padding: 0.28rem 0.7rem; border-radius: 99rem; }
 
-    /* ── 2단 레이아웃 & 기능 행 ── */
-    .two { display: grid; grid-template-columns: 1fr 1.15fr; gap: 1.4rem; align-items: center; }
-    .krows { display: flex; flex-direction: column; gap: 0.8rem; }
-    .krow { display: flex; gap: 0.9rem; align-items: flex-start;
+    /* ── 2단 레이아웃: 좌우 모두 높이를 꽉 채움 ── */
+    .two { display: grid; grid-template-columns: 1fr 1.15fr; gap: 1.3rem; align-items: stretch; }
+    .krows { display: flex; flex-direction: column; gap: 0.85rem; height: 100%; }
+    .krow { flex: 1; display: flex; gap: 0.95rem; align-items: center;
             background: var(--s50); border: 1px solid var(--s200); border-radius: 0.85rem;
-            padding: 0.95rem 1.05rem; }
-    .krow .kico { width: 2.4rem; height: 2.4rem; border-radius: 0.7rem; background: var(--t100);
-                  display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+            padding: 0.95rem 1.1rem; }
+    .krow .kico { width: 2.5rem; height: 2.5rem; border-radius: 0.7rem; background: var(--t100);
+                  display: flex; align-items: center; justify-content: center; font-size: 1.25rem;
                   flex-shrink: 0; }
-    .krow h4 { font-size: 1.1rem; font-weight: 700; color: var(--s900); margin-bottom: 0.22rem; }
-    .krow p { font-size: 0.95rem; line-height: 1.5; color: var(--s500); }
+    .krow h4 { font-size: 1.14rem; font-weight: 700; color: var(--s900); margin-bottom: 0.25rem; }
+    .krow p { font-size: 0.97rem; line-height: 1.52; color: var(--s500); }
 
-    /* ── 목업 윈도우 ── */
+    /* ── 목업 윈도우 (컬럼 높이를 꽉 채움) ── */
+    .mockcol { display: flex; flex-direction: column; height: 100%; }
+    .mockcol .win { flex: 1; min-height: 0; }
     .win { background: #fff; border: 1px solid var(--s200); border-radius: 0.9rem;
            box-shadow: 0 14px 34px rgba(15,23,42,0.10); overflow: hidden;
            display: flex; flex-direction: column; }
@@ -99,12 +106,13 @@
     .win .bar .t { margin-left: 0.4rem; font-size: 0.84rem; font-weight: 600; color: var(--s500); }
     .win .bar .live { margin-left: auto; font-size: 0.7rem; font-weight: 700; color: var(--t600);
                       background: var(--t50); border-radius: 99rem; padding: 0.14rem 0.6rem; }
-    .win .body { padding: 0.95rem 1.05rem; display: flex; flex-direction: column; gap: 0.75rem; }
-    .cap { font-size: 0.76rem; color: var(--s400); text-align: right; margin-top: 0.4rem; }
+    .win .body { flex: 1; padding: 0.95rem 1.05rem; display: flex; flex-direction: column;
+                 gap: 0.7rem; justify-content: space-between; }
+    .cap { font-size: 0.76rem; color: var(--s400); text-align: right; margin-top: 0.35rem; }
 
     /* 챗 목업 */
     .msg { max-width: 84%; padding: 0.72rem 0.95rem; border-radius: 0.85rem;
-           font-size: 0.96rem; line-height: 1.5; }
+           font-size: 0.97rem; line-height: 1.5; }
     .msg.q { align-self: flex-end; background: var(--s900); color: #fff;
              border-bottom-right-radius: 0.2rem; }
     .msg.a { align-self: flex-start; background: var(--s50); border: 1px solid var(--s200);
@@ -121,80 +129,82 @@
     .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem; }
     .kpi { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.7rem;
            padding: 0.65rem 0.75rem; }
-    .kpi .k { font-size: 0.73rem; color: var(--s500); }
-    .kpi .v { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; color: var(--s900);
+    .kpi .k { font-size: 0.74rem; color: var(--s500); }
+    .kpi .v { font-size: 1.32rem; font-weight: 800; letter-spacing: -0.02em; color: var(--s900);
               margin-top: 0.12rem; }
-    .kpi .d { font-size: 0.73rem; font-weight: 700; margin-top: 0.08rem; }
+    .kpi .d { font-size: 0.74rem; font-weight: 700; margin-top: 0.08rem; }
     .kpi .up { color: var(--t600); } .kpi .down { color: #E11D48; }
-    .bars { display: flex; align-items: flex-end; gap: 0.5rem; height: 5.6rem;
+    .bars { display: flex; align-items: flex-end; gap: 0.5rem; height: 5.2rem;
             padding: 0.35rem 0.2rem 0; }
     .bars i { flex: 1; background: var(--s200); border-radius: 0.3rem 0.3rem 0 0; }
     .bars i.hl { background: linear-gradient(180deg, var(--t400), var(--t600)); }
-    .bars-x { display: flex; gap: 0.5rem; font-size: 0.66rem; color: var(--s400); }
+    .bars-x { display: flex; gap: 0.5rem; font-size: 0.67rem; color: var(--s400); }
     .bars-x span { flex: 1; text-align: center; }
 
     /* 리포트 목업 */
     .doc { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.6rem;
            padding: 0.85rem 0.95rem; }
-    .doc .dt { font-size: 0.93rem; font-weight: 700; color: var(--s900); margin-bottom: 0.45rem; }
+    .doc .dt { font-size: 0.94rem; font-weight: 700; color: var(--s900); margin-bottom: 0.45rem; }
     .line { height: 0.4rem; border-radius: 99rem; background: var(--s200); margin: 0.36rem 0; }
     .line.w70 { width: 70%; } .line.w50 { width: 50%; } .line.w85 { width: 85%; }
     .badge-ok { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--t50);
-                border: 1px solid var(--t100); color: var(--t700); font-size: 0.8rem;
+                border: 1px solid var(--t100); color: var(--t700); font-size: 0.81rem;
                 font-weight: 700; border-radius: 99rem; padding: 0.28rem 0.75rem; }
 
     /* ── 플로우(가로 흐름) ── */
     .flow { display: flex; align-items: stretch; gap: 0.6rem; }
     .fnode { flex: 1; background: var(--s50); border: 1px solid var(--s200); border-radius: 0.8rem;
-             padding: 0.8rem 1rem; text-align: center; display: flex; flex-direction: column;
+             padding: 0.85rem 1rem; text-align: center; display: flex; flex-direction: column;
              justify-content: center; }
     .fnode.hl { background: var(--s900); border-color: var(--s900); color: #fff; }
-    .fnode .ft { font-size: 1rem; font-weight: 700; }
+    .fnode .ft { font-size: 1.02rem; font-weight: 700; }
     .fnode.hl .ft { color: var(--t400); }
-    .fnode .fd { font-size: 0.8rem; color: var(--s500); margin-top: 0.22rem; line-height: 1.45; }
+    .fnode .fd { font-size: 0.82rem; color: var(--s500); margin-top: 0.22rem; line-height: 1.45; }
     .fnode.hl .fd { color: var(--s300); }
     .farrow { display: flex; align-items: center; font-size: 1.2rem; color: var(--t600); font-weight: 700; }
 
-    /* ── 비교 ── */
+    /* ── 비교 (컬럼·리스트 모두 높이 채움) ── */
     .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
-    .vs .col { border-radius: 0.95rem; padding: 1.15rem 1.3rem; }
+    .vs .col { border-radius: 0.95rem; padding: 1.15rem 1.3rem; display: flex; flex-direction: column; }
     .vs .before { background: var(--s50); border: 1px solid var(--s200); }
     .vs .after { background: var(--s900); }
-    .vs h3 { font-size: 1.08rem; font-weight: 700; letter-spacing: 0.03em; margin-bottom: 0.85rem; }
+    .vs h3 { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.03em; margin-bottom: 0.7rem; }
     .vs .before h3 { color: var(--s500); }
     .vs .after h3 { color: var(--t400); }
-    .vs ul { list-style: none; display: flex; flex-direction: column; gap: 0.68rem; }
-    .vs li { font-size: 0.99rem; line-height: 1.5; padding-left: 1.4rem; position: relative; }
+    .vs ul { list-style: none; flex: 1; display: flex; flex-direction: column;
+             justify-content: space-evenly; }
+    .vs li { font-size: 1.01rem; line-height: 1.5; padding-left: 1.4rem; position: relative; }
     .vs .before li { color: var(--s500); }
     .vs .before li::before { content: "✕"; position: absolute; left: 0; color: var(--s400); }
     .vs .after li { color: var(--s200); }
     .vs .after li::before { content: "✓"; position: absolute; left: 0; color: var(--t400); font-weight: 700; }
     .vs .after li b { color: #fff; }
-    .vs .tag { display: inline-block; font-size: 0.76rem; font-weight: 700; border-radius: 99rem;
+    .vs .tag { display: inline-block; font-size: 0.77rem; font-weight: 700; border-radius: 99rem;
                padding: 0.1rem 0.55rem; margin-left: 0.4rem; vertical-align: 0.05rem; }
     .vs .before .tag { background: var(--s200); color: var(--s500); }
     .vs .after .tag { background: var(--t400); color: var(--s900); }
 
     /* ── 도입 스텝 ── */
-    .steps { display: flex; align-items: stretch; gap: 0.55rem; }
+    .steps { display: flex; align-items: stretch; gap: 0.55rem; height: 100%; }
     .step { flex: 1; background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
-            padding: 1.1rem 1.1rem 0.95rem; display: flex; flex-direction: column;
+            padding: 1.15rem 1.15rem 1rem; display: flex; flex-direction: column;
             box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
-    .step .no { width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--t600);
-                color: #fff; font-weight: 700; font-size: 0.95rem; display: flex;
-                align-items: center; justify-content: center; margin-bottom: 0.7rem; }
-    .step h3 { font-size: 1.18rem; font-weight: 700; margin-bottom: 0.35rem; }
-    .step p { font-size: 0.95rem; line-height: 1.55; color: var(--s500); }
+    .step .no { width: 2rem; height: 2rem; border-radius: 50%; background: var(--t600);
+                color: #fff; font-weight: 700; font-size: 1rem; display: flex;
+                align-items: center; justify-content: center; margin-bottom: 0.75rem; }
+    .step h3 { font-size: 1.22rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .step p { font-size: 0.98rem; line-height: 1.55; color: var(--s500); }
     .sarrow { display: flex; align-items: center; font-size: 1.3rem; color: var(--t600); font-weight: 700; }
 
     /* ── 숫자 하이라이트 ── */
-    .nums { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .nums { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; grid-auto-rows: 1fr;
+            height: 100%; }
     .num { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.85rem;
-           padding: 1rem 1.05rem; }
-    .num .v { font-size: 1.85rem; font-weight: 800; letter-spacing: -0.03em; color: var(--t600); }
-    .num .k { font-size: 0.9rem; color: var(--s500); margin-top: 0.28rem; line-height: 1.45; }
+           padding: 1rem 1.1rem; display: flex; flex-direction: column; justify-content: center; }
+    .num .v { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; color: var(--t600); }
+    .num .k { font-size: 0.93rem; color: var(--s500); margin-top: 0.3rem; line-height: 1.45; }
 
-    /* ── 다크 슬라이드 (표지·맺음) — 기존 표지 템플릿 구성 ── */
+    /* ── 다크 슬라이드 (표지·맺음) ── */
     .dark { background:
               linear-gradient(rgba(148,163,184,0.055) 1px, transparent 1px),
               linear-gradient(90deg, rgba(148,163,184,0.055) 1px, transparent 1px),
@@ -260,15 +270,15 @@
     </header>
     <div class="s-band"><p>대시보드도, 데이터도 이미 충분히 많습니다. 그런데 정작 <strong>내가 궁금한 답</strong>을 얻는 일은 여전히 느리고 번거롭습니다.</p></div>
     <div class="content">
-      <div class="cards c3">
+      <div class="cards c3 fill">
         <div class="card"><div class="no">PROBLEM 01</div><div class="ico">🔍</div><h3>화면에 없는 질문</h3>
-          <p>대시보드는 정해진 화면만 보여줍니다. 조금만 다른 각도로 물어보면 답을 찾을 수 없습니다.</p>
+          <p>대시보드는 정해진 화면만 보여줍니다. 조금만 다른 각도로 물어보면 답을 찾을 수 없고, 새 화면을 만들려면 또 개발 요청입니다.</p>
           <div class="quote">"차트는 많은데, 정작 궁금한 건 항상 화면 밖에 있어요."</div></div>
         <div class="card"><div class="no">PROBLEM 02</div><div class="ico">⏳</div><h3>기다림의 연속</h3>
-          <p>새로운 데이터가 필요하면 IT 부서에 요청하고, 승인되고, 전달될 때까지 기다려야 합니다.</p>
+          <p>새로운 데이터가 필요하면 IT 부서에 요청하고, 승인되고, 전달될 때까지 기다립니다. 그 사이 의사결정 타이밍은 지나갑니다.</p>
           <div class="quote">"숫자 하나 확인하려고 며칠을 기다립니다."</div></div>
         <div class="card"><div class="no">PROBLEM 03</div><div class="ico">📋</div><h3>반복되는 수작업</h3>
-          <p>화면 캡처, 엑셀 정리, 문서 복사·붙여넣기. 매주 같은 보고서를 손으로 다시 만듭니다.</p>
+          <p>화면 캡처, 엑셀 정리, 문서 복사·붙여넣기. 매주 같은 보고서를 손으로 다시 만들고, 사람이 바뀌면 노하우도 사라집니다.</p>
           <div class="quote">"보고 전날은 언제나 야근이에요."</div></div>
       </div>
       <div class="stripe"><span class="sicon">💡</span><span>데이터는 많은데 답은 느린 <b>이 간극</b>에서 aisight는 출발했습니다.</span></div>
@@ -284,13 +294,13 @@
     </header>
     <div class="s-band"><p>쓰던 말 그대로 질문하면, AI가 사내 데이터를 분석해 <strong>근거 있는 답</strong>을 돌려줍니다. 분석 도구를 배울 필요가 없습니다.</p></div>
     <div class="content">
-      <div class="two">
+      <div class="two fill">
         <div class="krows">
-          <div class="krow"><div class="kico">🗣️</div><div><h4>① 질문을 이해합니다</h4><p>"지난 분기 매출이 왜 떨어졌지?" — 평소 쓰는 말 그대로면 충분합니다.</p></div></div>
+          <div class="krow"><div class="kico">🗣️</div><div><h4>① 질문을 이해합니다</h4><p>"지난 분기 매출이 왜 떨어졌지?" — 평소 쓰는 말 그대로면 충분합니다. 모호하면 AI가 되물어 의도를 좁힙니다.</p></div></div>
           <div class="krow"><div class="kico">🧮</div><div><h4>② 사내 데이터로 분석합니다</h4><p>회사가 검증한 지표 기준으로 원인을 찾습니다. AI가 임의로 숫자를 만들지 않습니다.</p></div></div>
-          <div class="krow"><div class="kico">📈</div><div><h4>③ 차트와 함께 답합니다</h4><p>결과(What)와 원인(Why)을 차트·표와 함께 설명하고, 바로 보고서로 이어줍니다.</p></div></div>
+          <div class="krow"><div class="kico">📈</div><div><h4>③ 차트와 함께 답합니다</h4><p>결과(What)와 원인(Why)을 차트·표와 함께 설명하고, 그대로 보고서·공유로 이어집니다.</p></div></div>
         </div>
-        <div>
+        <div class="mockcol">
           <div class="win">
             <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">aisight Work Space</span><span class="live">● LIVE</span></div>
             <div class="body">
@@ -300,6 +310,7 @@
                 2. <span class="pt">A지역 판매 둔화</span> — 지역 편중이 확인됩니다.<br>
                 관련 차트와 표를 준비했습니다. 보고서로 만들까요?</div>
               <div class="msg q">응, 보고서로 만들어서 팀에 공유해줘</div>
+              <div class="msg a">✅ <b>보고서 초안이 생성되었습니다.</b> 팀 채널로 공유했고, 매주 월요일 자동 발송으로 등록할 수 있습니다.</div>
               <div class="input">무엇이든 물어보세요…<span class="send">➤</span></div>
             </div>
           </div>
@@ -318,16 +329,16 @@
     </header>
     <div class="s-band"><p>복잡한 기술은 화면 뒤에 숨겼습니다. 사용하는 사람에게 남는 것은 이 세 가지입니다.</p></div>
     <div class="content">
-      <div class="cards c3">
+      <div class="cards c3 fill">
         <div class="card"><div class="no">01 · INSTANT</div><div class="ico">⚡</div><h3>묻는 즉시 답</h3>
-          <p>IT 부서를 거치지 않고, 그 자리에서 질문하고 그 자리에서 답을 받습니다.</p>
-          <div class="chips"><span class="chip">요청 대기 제로</span><span class="chip">셀프서비스 분석</span></div></div>
+          <p>IT 부서를 거치지 않고, 그 자리에서 질문하고 그 자리에서 답을 받습니다. 회의 중 급한 질문도 그 자리에서 해결됩니다.</p>
+          <div class="chips"><span class="chip">요청 대기 제로</span><span class="chip">셀프서비스 분석</span><span class="chip">회의 중 즉시 확인</span></div></div>
         <div class="card"><div class="no">02 · TRUSTED</div><div class="ico">🛡️</div><h3>근거 있는 답</h3>
-          <p>AI의 추측이 아니라 회사가 검증한 지표와 데이터에서 출발한 답만 제공합니다.</p>
-          <div class="chips"><span class="chip">검증 지표 기반</span><span class="chip">출처 확인 가능</span></div></div>
+          <p>AI의 추측이 아니라 회사가 검증한 지표와 데이터에서 출발한 답만 제공합니다. 어떤 답이든 출처를 되짚을 수 있습니다.</p>
+          <div class="chips"><span class="chip">검증 지표 기반</span><span class="chip">출처 확인 가능</span><span class="chip">감사 대응 용이</span></div></div>
         <div class="card"><div class="no">03 · AUTOMATED</div><div class="ico">🔁</div><h3>보고서까지 자동</h3>
-          <p>대화에서 나온 인사이트가 클릭 한 번에 보고서가 되고, 정해진 주기에 자동 발송됩니다.</p>
-          <div class="chips"><span class="chip">원클릭 보고서</span><span class="chip">정기 자동 발송</span></div></div>
+          <p>대화에서 나온 인사이트가 클릭 한 번에 보고서가 되고, 정해진 주기에 담당자에게 자동 발송됩니다.</p>
+          <div class="chips"><span class="chip">원클릭 보고서</span><span class="chip">정기 자동 발송</span><span class="chip">구독형 배포</span></div></div>
       </div>
       <div class="stripe"><span class="sicon">🤝</span><span>배우는 도구가 아니라, <b>대화하는 동료</b>에 가깝습니다.</span></div>
     </div>
@@ -342,13 +353,14 @@
     </header>
     <div class="s-band"><p>차트 만드는 법이 아니라 <strong>궁금한 것</strong>만 있으면 됩니다. 보고 있는 대시보드 위에서 바로 묻고, 바로 확인합니다.</p></div>
     <div class="content">
-      <div class="two">
+      <div class="two fill">
         <div class="krows">
           <div class="krow"><div class="kico">💬</div><div><h4>자연어 질문</h4><p>"이번 달 실적 어때?"처럼 평소 쓰는 말로 물어보면 AI가 의도를 파악해 분석합니다.</p></div></div>
           <div class="krow"><div class="kico">📊</div><div><h4>즉시 시각화</h4><p>답변은 숫자 나열이 아니라 이해하기 쉬운 차트와 표로 함께 제공됩니다.</p></div></div>
           <div class="krow"><div class="kico">🖥️</div><div><h4>대시보드 제어</h4><p>화면 필터·기간 변경도 말로 지시합니다. 클릭 대신 대화로 대시보드를 움직입니다.</p></div></div>
+          <div class="krow"><div class="kico">🔗</div><div><h4>내 파일도 함께 분석</h4><p>갖고 있는 엑셀을 올려 사내 데이터와 함께 교차 분석할 수 있습니다.</p></div></div>
         </div>
-        <div>
+        <div class="mockcol">
           <div class="win">
             <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">실시간 매출 현황</span><span class="live">● LIVE</span></div>
             <div class="body">
@@ -361,6 +373,7 @@
                 <div class="bars"><i style="height:38%"></i><i style="height:52%"></i><i style="height:47%"></i><i style="height:64%"></i><i style="height:58%"></i><i class="hl" style="height:88%"></i></div>
                 <div class="bars-x"><span>1월</span><span>2월</span><span>3월</span><span>4월</span><span>5월</span><span>6월</span></div>
               </div>
+              <div class="msg a" style="max-width:100%;">6월 상승은 <span class="pt">신제품 출시 효과</span>가 큽니다. 제품별로 분해해 보여드릴까요?</div>
               <div class="input">이번 주 상위 5개 제품 보여줘…<span class="send">➤</span></div>
             </div>
           </div>
@@ -379,15 +392,19 @@
     </header>
     <div class="s-band"><p>분석에서 끝나지 않습니다. 결과를 정리하고, 문서로 만들고, 전달하는 일까지 aisight가 이어서 합니다.</p></div>
     <div class="content">
-      <div class="two">
-        <div>
+      <div class="two fill">
+        <div class="mockcol">
           <div class="win">
             <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">주간 매출 분석 리포트</span><span class="live">자동 생성됨</span></div>
             <div class="body">
               <div class="doc">
                 <div class="dt">📄 6월 2주차 매출 분석 요약</div>
                 <div class="line w85"></div><div class="line w70"></div><div class="line w50"></div>
-                <div class="bars" style="height:3.4rem"><i style="height:45%"></i><i style="height:70%"></i><i class="hl" style="height:95%"></i><i style="height:60%"></i></div>
+                <div class="bars" style="height:3.2rem"><i style="height:45%"></i><i style="height:70%"></i><i class="hl" style="height:95%"></i><i style="height:60%"></i></div>
+              </div>
+              <div class="doc">
+                <div class="dt">💡 핵심 인사이트 3가지</div>
+                <div class="line w85"></div><div class="line w70"></div>
               </div>
               <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
                 <span class="badge-ok">✓ 매주 월 09:00 자동 발송</span>
@@ -401,6 +418,7 @@
         <div class="krows">
           <div class="krow"><div class="kico">📝</div><div><h4>클릭 한 번, 보고서</h4><p>대화로 도출한 인사이트를 회사 표준 양식에 맞는 보고서 초안으로 자동 구성합니다.</p></div></div>
           <div class="krow"><div class="kico">📅</div><div><h4>정기 자동 발송</h4><p>주간·월간 보고서를 정해진 시간에 담당자에게 메일·메신저로 자동 배포합니다.</p></div></div>
+          <div class="krow"><div class="kico">🧾</div><div><h4>회사 양식 그대로</h4><p>표지·목차·양식이 정해진 사내 표준 문서 규격에 맞춰 생성됩니다.</p></div></div>
           <div class="krow"><div class="kico">🔁</div><div><h4>반복 업무 제로</h4><p>매주 반복하던 취합·정리·공유 작업이 구독 설정 한 번으로 끝납니다.</p></div></div>
         </div>
       </div>
@@ -416,22 +434,23 @@
     </header>
     <div class="s-band"><p>숫자 데이터만이 아닙니다. 회사 곳곳에 흩어진 문서와 노하우를 AI가 이해하는 <strong>지식 자산</strong>으로 만듭니다.</p></div>
     <div class="content">
-      <div class="two">
+      <div class="two fill">
         <div class="krows">
           <div class="krow"><div class="kico">📂</div><div><h4>흩어진 문서를 한곳에</h4><p>PDF, 워드, 엑셀 등 형식에 관계없이 사내 문서를 모아 지식으로 정리합니다.</p></div></div>
           <div class="krow"><div class="kico">🔎</div><div><h4>찾지 말고 물어보기</h4><p>문서를 뒤지는 대신 질문 한 번으로 필요한 내용과 출처를 함께 받습니다.</p></div></div>
+          <div class="krow"><div class="kico">🧩</div><div><h4>숫자와 문서를 함께</h4><p>"이 지표의 산정 기준 문서 보여줘"처럼 데이터와 문서를 넘나드는 질문이 가능합니다.</p></div></div>
           <div class="krow"><div class="kico">🏛️</div><div><h4>회사의 기억이 됩니다</h4><p>개인의 분석과 노하우가 축적되어 조직 전체가 쓰는 지식 자산으로 남습니다.</p></div></div>
         </div>
-        <div>
+        <div class="mockcol">
           <div class="win">
             <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">AI 지식 위키</span></div>
             <div class="body">
               <div style="display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
                 <span class="chip">📕 PDF</span><span class="chip">📘 Word</span><span class="chip">📗 Excel</span><span class="chip">📙 PPT</span><span class="chip">📃 매뉴얼</span>
               </div>
-              <div style="text-align:center; color:var(--t600); font-weight:700; font-size:1.05rem;">▼ AI가 읽고 정리</div>
+              <div style="text-align:center; color:var(--t600); font-weight:700; font-size:1.02rem;">▼ AI가 읽고 정리</div>
               <div class="fnode hl" style="padding:0.85rem;"><div class="ft">🏛️ 전사 지식 위키</div><div class="fd">부서·주제별로 구조화된 회사 공용 지식</div></div>
-              <div style="text-align:center; color:var(--t600); font-weight:700; font-size:1.05rem;">▼ 대화로 검색</div>
+              <div style="text-align:center; color:var(--t600); font-weight:700; font-size:1.02rem;">▼ 대화로 검색</div>
               <div class="msg q" style="align-self:center; max-width:100%;">작년에 정한 품질 검사 기준이 뭐였지?</div>
               <div class="msg a" style="max-width:100%;">기준 문서를 찾았습니다. <span class="pt">요약</span>과 <span class="pt">원문 위치</span>를 함께 드릴게요.</div>
             </div>
@@ -451,18 +470,20 @@
     </header>
     <div class="s-band"><p>생성형 AI의 가장 큰 걱정 — <strong>"그 답, 믿어도 되나요?"</strong> — 에서 출발해 설계했습니다. 모든 답변은 아래 과정을 통과해야만 사용자에게 도착합니다.</p></div>
     <div class="content">
-      <div class="flow">
-        <div class="fnode"><div class="ft">💬 질문</div><div class="fd">현업의 자연어 질문</div></div>
-        <div class="farrow">→</div>
-        <div class="fnode hl"><div class="ft">검증 게이트</div><div class="fd">검증된 지표 확인 · 접근 권한 확인 · 근거 기록</div></div>
-        <div class="farrow">→</div>
-        <div class="fnode"><div class="ft">✅ 근거 있는 답변</div><div class="fd">출처와 함께 전달</div></div>
-      </div>
-      <div class="cards c4">
-        <div class="card"><div class="no">GUARDRAIL</div><h3>환각 차단</h3><p>회사가 검증한 지표·계산식 기준으로만 답합니다. AI가 숫자를 지어내지 않습니다.</p></div>
-        <div class="card"><div class="no">TRACE</div><h3>근거 추적</h3><p>모든 답변은 어떤 데이터에서 나왔는지 출처를 확인할 수 있습니다.</p></div>
-        <div class="card"><div class="no">ACCESS</div><h3>권한 준수</h3><p>부서·직급별 접근 권한을 그대로 따릅니다. 볼 수 없는 데이터는 답하지 않습니다.</p></div>
-        <div class="card"><div class="no">ON-PREM</div><h3>사내 설치형</h3><p>고객사 인프라 안에 직접 설치되어 데이터가 외부로 나가지 않습니다.</p></div>
+      <div class="stack fill">
+        <div class="flow">
+          <div class="fnode"><div class="ft">💬 질문</div><div class="fd">현업의 자연어 질문</div></div>
+          <div class="farrow">→</div>
+          <div class="fnode hl"><div class="ft">검증 게이트</div><div class="fd">검증된 지표 확인 · 접근 권한 확인 · 근거 기록</div></div>
+          <div class="farrow">→</div>
+          <div class="fnode"><div class="ft">✅ 근거 있는 답변</div><div class="fd">출처와 함께 전달</div></div>
+        </div>
+        <div class="cards c4">
+          <div class="card"><div class="no">GUARDRAIL</div><div class="ico">✅</div><h3>환각 차단</h3><p>회사가 검증한 지표·계산식 기준으로만 답합니다. AI가 숫자를 지어내지 않습니다.</p></div>
+          <div class="card"><div class="no">TRACE</div><div class="ico">🧭</div><h3>근거 추적</h3><p>모든 답변은 어떤 데이터에서 나왔는지 출처를 확인할 수 있어 감사 대응도 쉽습니다.</p></div>
+          <div class="card"><div class="no">ACCESS</div><div class="ico">🔐</div><h3>권한 준수</h3><p>부서·직급별 접근 권한을 그대로 따릅니다. 볼 수 없는 데이터는 답하지 않습니다.</p></div>
+          <div class="card"><div class="no">ON-PREM</div><div class="ico">🏢</div><h3>사내 설치형</h3><p>고객사 인프라 안에 직접 설치되어 데이터가 외부로 나가지 않습니다.</p></div>
+        </div>
       </div>
     </div>
     <footer class="s-foot"><span class="pg">– 8 –</span><span class="mark">SAILINGSTONE</span></footer>
@@ -476,12 +497,13 @@
     </header>
     <div class="s-band"><p>같은 질문, 같은 보고서 — 걸리는 시간과 과정이 달라집니다.</p></div>
     <div class="content">
-      <div class="vs">
+      <div class="vs fill">
         <div class="col before">
           <h3>지금까지는</h3>
           <ul>
             <li>화면에 없는 데이터는 IT 부서에 요청하고 대기<span class="tag">기다림</span></li>
             <li>지표가 왜 움직였는지는 사람이 다시 파헤쳐야 함<span class="tag">수작업</span></li>
+            <li>회의 중 급한 질문엔 "확인 후 회신"이 최선<span class="tag">지연</span></li>
             <li>보고서는 매주 캡처와 복사·붙여넣기로 제작<span class="tag">반복</span></li>
             <li>문서와 노하우가 개인 PC에 흩어져 있음<span class="tag">단절</span></li>
           </ul>
@@ -491,6 +513,7 @@
           <ul>
             <li>그 자리에서 질문하고 <b>즉시 답</b>을 받습니다<span class="tag">즉시</span></li>
             <li>결과(What)와 함께 <b>원인(Why)</b>까지 설명합니다<span class="tag">자동 분석</span></li>
+            <li>회의 중에도 <b>바로 묻고 바로 확인</b>합니다<span class="tag">실시간</span></li>
             <li>보고서가 <b>자동 생성·자동 배포</b>됩니다<span class="tag">자동화</span></li>
             <li>조직의 지식이 <b>한곳에 쌓여</b> 누구나 꺼내 씁니다<span class="tag">자산화</span></li>
           </ul>
@@ -507,14 +530,14 @@
       <h2><span class="bullet"></span>도입은 <em>가볍게 시작</em>합니다</h2>
       <div class="s-right"><span class="sec">04 · Getting Started</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <div class="s-band"><p>전사를 한 번에 바꾸는 방식이 아닙니다. 잘 되는 업무부터 작게 시작해 성과를 확인하며 넓혀갑니다.</p></div>
+    <div class="s-band"><p>전사를 한 번에 바꾸는 방식이 아닙니다. <strong>POC로 실제 효과를 먼저 확인</strong>하고, 검증된 곳부터 넓혀갑니다.</p></div>
     <div class="content">
-      <div class="steps">
-        <div class="step"><div class="no">1</div><h3>진단과 기획</h3><p>현재 데이터 환경과 업무를 함께 살펴보고, 효과가 가장 빠른 영역을 정합니다.</p><div class="chips"><span class="chip">함께 설계</span></div></div>
+      <div class="steps fill">
+        <div class="step"><div class="no">1</div><h3>진단과 기획</h3><p>현재 데이터 환경과 업무를 함께 살펴보고, 효과가 가장 빠른 영역을 정합니다. 기존 BI·대시보드는 그대로 둔 채 시작합니다.</p><div class="chips"><span class="chip">함께 설계</span><span class="chip">핵심 업무 선정</span></div></div>
         <div class="sarrow">→</div>
-        <div class="step"><div class="no">2</div><h3>파일럿 도입</h3><p>핵심 업무 한두 개에 먼저 적용해 실제 효과를 눈으로 확인합니다.</p><div class="chips"><span class="chip">작게 검증</span></div></div>
+        <div class="step"><div class="no">2</div><h3>POC 검증</h3><p>핵심 업무 한두 개에 귀사의 실제 데이터로 POC를 진행해, 답변 품질과 업무 효과를 직접 확인합니다.</p><div class="chips"><span class="chip">실데이터 검증</span><span class="chip">효과 측정</span></div></div>
         <div class="sarrow">→</div>
-        <div class="step"><div class="no">3</div><h3>단계적 확산</h3><p>검증된 성과를 바탕으로 부서별로 차근차근 넓혀가며 정착을 지원합니다.</p><div class="chips"><span class="chip">크게 확산</span></div></div>
+        <div class="step"><div class="no">3</div><h3>단계적 확산</h3><p>검증된 성과를 바탕으로 부서별로 차근차근 넓혀갑니다. 정착 교육과 운영 지원까지 전담팀이 함께합니다.</p><div class="chips"><span class="chip">부서별 확산</span><span class="chip">정착 지원</span></div></div>
       </div>
       <div class="stripe"><span class="sicon">💡</span><span><b>쓰던 시스템은 그대로.</b> 기존 BI·대시보드를 버리는 것이 아니라, 그 위에 aisight를 얹어 더 똑똑하게 쓰는 방식입니다.</span></div>
     </div>
@@ -529,16 +552,11 @@
     </header>
     <div class="s-band"><p>세일링스톤은 국내 대기업들과 데이터 분석 시스템을 구축해 온 <strong>BI·AI 전문 기업</strong>입니다.</p></div>
     <div class="content">
-      <div class="two">
-        <div>
-          <p style="font-size:1.13rem; line-height:1.7; color:var(--s600);">
-            화려한 데모가 아니라 <strong style="color:var(--t600);">현장에서 버티는 시스템</strong>을 만들어 온 경험 —
-            그 위에서 aisight가 태어났습니다.<br><br>
-            도입 이후의 정착과 확산까지, 세일링스톤 전담팀이 끝까지 함께합니다.</p>
-          <div class="chips" style="padding-top:1.1rem;">
-            <span class="chip">BI 컨설팅</span><span class="chip">분석 포털 구축</span>
-            <span class="chip">AI 에이전트</span><span class="chip">데이터 교육</span>
-          </div>
+      <div class="two fill">
+        <div class="krows">
+          <div class="krow"><div class="kico">🧭</div><div><h4>현장에서 검증된 경험</h4><p>화려한 데모가 아니라 현장에서 버티는 시스템을 만들어 온 경험 위에서 aisight가 태어났습니다.</p></div></div>
+          <div class="krow"><div class="kico">🤝</div><div><h4>끝까지 함께하는 전담팀</h4><p>도입 이후의 정착과 확산까지, 세일링스톤 전담팀이 상주·비상주로 밀착 지원합니다.</p></div></div>
+          <div class="krow"><div class="kico">🧱</div><div><h4>BI부터 AI까지 한 팀</h4><p>BI 컨설팅 · 분석 포털 구축 · AI 에이전트 · 데이터 교육을 한 팀이 일관되게 수행합니다.</p></div></div>
         </div>
         <div class="nums">
           <div class="num"><div class="v">2019</div><div class="k">설립 이후 꾸준한 성장<br>BI·AI 한 길</div></div>
@@ -552,19 +570,20 @@
   </section>
 
   <!-- 12. 맺음 -->
-  <section class="slide dark" data-title="데모 신청">
+  <section class="slide dark" data-title="POC 신청">
     <div class="glow"></div>
     <img class="logo" src="assets/aisight-marketing/logo.png" alt="aisight 로고">
     <div class="top">
-      <span class="pillbadge">SEE IT IN ACTION</span>
+      <span class="pillbadge">PROOF OF CONCEPT</span>
       <span class="iwd">Intelligence with Data</span>
     </div>
-    <h1>직접 보시면<br><em>다릅니다.</em></h1>
-    <p class="sub">귀사의 데이터로 라이브 시연해 드립니다.<br>데모 신청 · www.sailingstone.io</p>
+    <h1>말이 아니라,<br><em>POC로 증명하겠습니다.</em></h1>
+    <p class="sub">귀사의 실제 데이터와 환경에서 aisight를 직접 검증해 보세요.<br>POC 신청 · www.sailingstone.io</p>
     <div class="pills">
-      <span class="pill"><b>✓</b>실데이터 질의응답 시연</span>
-      <span class="pill"><b>✓</b>보고서 자동 생성 시연</span>
-      <span class="pill"><b>✓</b>기존 대시보드 연동 상담</span>
+      <span class="pill"><b>✓</b>POC 범위 무료 협의</span>
+      <span class="pill"><b>✓</b>실데이터 질의응답 검증</span>
+      <span class="pill"><b>✓</b>보고서 자동화 검증</span>
+      <span class="pill"><b>✓</b>결과 리포트 제공</span>
     </div>
     <div class="corner">
       <span class="ai">AI · BI · ANALYTICS</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
