@@ -5,8 +5,8 @@
 >
 > 문서를 만드는 방법 세 가지:
 > - 이 프로젝트에서 Claude Code에게: **"AUTHORING.md 지침대로 만들어줘"**
-> - 다른 클로드(claude.ai 등)에서: **PROMPT.md 내용을 복사해 붙여넣고** 요청 — 규격에 맞는 완성 파일이 나옵니다
-> - **이미 만들어둔 PPT가 있으면 변환**합니다 (아래 10절) — 원본과 100% 동일하게 올라갑니다
+> - 다른 클로드(claude.ai 등)에서: **PROMPT.md 내용을 복사해 붙여넣고** 요청 - 규격에 맞는 완성 파일이 나옵니다
+> - **이미 만들어둔 PPT가 있으면 변환**합니다 (아래 10절) - 원본과 100% 동일하게 올라갑니다
 >
 > 지침이 바뀌면 이 파일과 PROMPT.md를 함께 수정하고 커밋하세요. 사이트의 "작성 지침" 메뉴에 자동 반영됩니다.
 
@@ -68,18 +68,25 @@ docs/
 ```html
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { font-size: clamp(8px, 1.25vw, 20px); }  /* 화면 크기에 따라 글자가 함께 커지고 작아짐 */
+  /* 16:9 고정 캔버스 - 창 크기가 변해도 전체가 같은 비율로 확대·축소된다 */
+  html { font-size: min(1.25vw, 2.2222vh); }
+  body {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; min-height: 100vh;
+  }
   .slide {
-    width: 100vw;
-    height: 100vh;
+    width: min(100vw, 177.7778vh);   /* 항상 16:9 */
+    height: min(56.25vw, 100vh);
     overflow: hidden;
     position: relative;
+    flex-shrink: 0;
     padding: 4rem 5rem;
   }
 </style>
 ```
 
-- **글자 크기는 반드시 `rem` 단위**로 씁니다. (`px` 고정 금지 — 창 크기가 바뀌면 레이아웃이 깨집니다)
+- **글자 크기는 반드시 `rem` 단위**로 씁니다. (`px` 고정 금지 - 창 크기가 바뀌면 레이아웃이 깨집니다)
+- **`font-size`에 상한(clamp의 최대값)을 두지 마세요.** 상한이 있으면 화면이 커질 때 글자만 멈추고 여백만 벌어져 레이아웃이 무너집니다.
 - 한 슬라이드에 내용이 넘치면 스크롤이 아니라 **슬라이드를 나누세요.**
 
 ## 5. 자체 완결(Self-contained) 원칙
@@ -95,7 +102,7 @@ docs/
 - 포인트 컬러: 인디고 `#4f46e5` (필요 시 시트러스 `#f56300`, 블러시 `#f5a8b8` 보조 사용)
 - 제목은 크고 굵게(3~4.5rem, font-weight 700), 여백은 아낌없이
 - 폰트 스택: `"Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif`
-- **긴 줄표(—, –)는 쓰지 않습니다.** 구분이 필요하면 하이픈(-)을 사용합니다.
+- **긴 줄표(-, -)는 쓰지 않습니다.** 구분이 필요하면 하이픈(-)을 사용합니다.
 
 ## 7. 버전 관리 규칙
 
@@ -105,14 +112,14 @@ docs/
 [company-intro] v1.1 2026년 실적 슬라이드 추가
 ```
 
-- **`[파일명(확장자 제외)] v버전 변경 요약`** — 사이트의 "버전 기록"에 이 메시지가 그대로 표시됩니다.
+- **`[파일명(확장자 제외)] v버전 변경 요약`** - 사이트의 "버전 기록"에 이 메시지가 그대로 표시됩니다.
 - 특정 고객용으로 분기할 때는 파일을 복사하지 말고 **브랜치**를 만듭니다: `git checkout -b proposal-hanwha`
   - 분기 버전을 사이트에도 올리고 싶으면 별도 파일로 저장하세요. (예: `proposal-hanwha-2026.html`)
 
 ## 8. 업로드(배포) 절차
 
 1. `docs/` 아래에 문서 저장 (또는 수정)
-2. 커밋 & 푸시 — Claude에게: **"빌드하고 커밋, 푸시해줘"**
+2. 커밋 & 푸시 - Claude에게: **"빌드하고 커밋, 푸시해줘"**
 3. 푸시하면 GitHub Actions가 자동으로: **규격 검증** → 목록 갱신 → PDF 생성 → 사이트 배포 (2~3분 소요)
 
 규격 위반이 있으면 빌드가 실패하며 무엇이 틀렸는지 한글 오류 메시지로 알려줍니다.
@@ -139,6 +146,6 @@ powershell -File "scripts/convert-pptx.ps1" -Source "C:\경로\원본.pptx" -Cat
 - [ ] 파일명이 영문 소문자-하이픈인가?
 - [ ] `title`, `doc-version`, `doc-description` 메타가 있는가?
 - [ ] 모든 페이지가 `<section class="slide" data-title="...">`인가?
-- [ ] 글자 크기가 `rem` 단위인가? (`html { font-size: clamp(...) }` 포함)
+- [ ] 글자 크기가 `rem` 단위이고, 16:9 고정 캔버스 CSS(4절)를 넣었는가?
 - [ ] 외부 스크립트 없이 자체 완결인가?
 - [ ] 커밋 메시지가 `[파일명] v버전 요약` 형식인가?

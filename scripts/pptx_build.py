@@ -67,14 +67,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
     * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-    html {{ font-size: clamp(8px, 1.25vw, 20px); }}
+    /* 16:9 고정 캔버스 - 창 크기가 변해도 전체가 같은 비율로 확대·축소된다 */
+    html {{ font-size: min(1.25vw, 2.2222vh); }}
     body {{
       font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
       background: #ffffff; color: #1d1d1f;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 100vh;
     }}
-    /* 원본 슬라이드를 그대로 담는 컨테이너 — 16:9 비율 유지 */
+    /* 원본 슬라이드를 그대로 담는 컨테이너 - 항상 16:9 */
     .slide {{
-      width: 100vw; height: 100vh; overflow: hidden; position: relative;
+      width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh);
+      overflow: hidden; position: relative; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       background: #ffffff;
     }}

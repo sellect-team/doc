@@ -8,10 +8,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { font-size: clamp(8px, 1.25vw, 20px); }
+    html { font-size: min(1.25vw, 2.2222vh); }  /* 16:9 고정 캔버스 - 전체가 비율 그대로 확대·축소 */
     body {
       font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
       background: #fff; color: #0F172A;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
     }
     :root {
       --s900: #0F172A; --s800: #1E293B; --s700: #334155; --s600: #475569; --s500: #64748B;
@@ -19,7 +20,8 @@
       --t800: #115E59; --t700: #0F766E; --t600: #0D9488; --t400: #2DD4BF; --t100: #CCFBF1; --t50: #F0FDFA;
     }
     .slide {
-      width: 100vw; height: 100vh; overflow: hidden; position: relative;
+      width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh);
+      overflow: hidden; position: relative; flex-shrink: 0;
       padding: 1.6rem 2.6rem 0.9rem; display: flex; flex-direction: column;
       background: #fff;
     }

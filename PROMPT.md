@@ -14,9 +14,9 @@
 1. **완성된 HTML 파일 하나**로 출력한다. (`<!DOCTYPE html>`부터 `</html>`까지)
 2. `<head>`에 다음 4개를 반드시 넣는다:
    - `<meta charset="UTF-8">`
-   - `<title>문서 제목</title>` — 한글 가능, 목록 카드에 표시됨
-   - `<meta name="doc-version" content="1.0">` — 숫자 `주.부` 형식만 허용
-   - `<meta name="doc-description" content="한 줄 요약">` — 목록 카드에 표시됨
+   - `<title>문서 제목</title>` - 한글 가능, 목록 카드에 표시됨
+   - `<meta name="doc-version" content="1.0">` - 숫자 `주.부` 형식만 허용
+   - `<meta name="doc-description" content="한 줄 요약">` - 목록 카드에 표시됨
 3. **모든 내용은 `<section class="slide" data-title="페이지이름">` 안에** 넣는다.
    - 슬라이드 1개 = 화면에 보이는 페이지 1장
    - `data-title`은 모든 슬라이드에 필수 (뷰어 왼쪽 목차에 표시됨)
@@ -29,15 +29,21 @@
 
 ```css
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { font-size: clamp(8px, 1.25vw, 20px); }
-body { font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif; color: #1d1d1f; }
+/* 16:9 고정 캔버스 - 창 크기가 변해도 전체가 같은 비율로 확대·축소된다 */
+html { font-size: min(1.25vw, 2.2222vh); }
+body {
+  font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif; color: #1d1d1f;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
+}
 .slide {
-  width: 100vw; height: 100vh; overflow: hidden; position: relative;
+  width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh);
+  overflow: hidden; position: relative; flex-shrink: 0;
   padding: 4rem 5rem; display: flex; flex-direction: column; justify-content: center;
 }
 ```
 
 7. 한 슬라이드에 내용이 넘치면 스크롤시키지 말고 **슬라이드를 나눈다.**
+8. **`font-size`에 상한을 두지 마라.** `clamp(..., 20px)`처럼 최대값을 걸면 화면이 커질 때 글자만 멈추고 여백만 벌어진다.
 
 ## 디자인 규칙 (Apple 스타일)
 
@@ -49,7 +55,7 @@ body { font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sa
 - 숫자·지표는 카드 그리드(`#f5f5f7` 배경, border-radius 1.4rem)로 크게 보여준다
 - 여백을 아끼지 말 것. 슬라이드 하나에 메시지 하나.
 - 표지(첫 슬라이드)와 맺음말(마지막 슬라이드)을 반드시 포함한다
-- **긴 줄표(—, –)는 절대 쓰지 않는다. 구분은 하이픈(-)으로 한다**
+- **긴 줄표(-, -)는 절대 쓰지 않는다. 구분은 하이픈(-)으로 한다**
 
 ## 뼈대 템플릿 (이 구조에서 시작)
 

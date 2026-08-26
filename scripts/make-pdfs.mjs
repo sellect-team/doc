@@ -28,6 +28,8 @@ for (const doc of data.docs) {
     content: `
       @page { size: 13.333in 7.5in; margin: 0; }
       html { font-size: 16px !important; }
+      /* 고정 캔버스의 중앙정렬은 화면용 - 인쇄에서는 슬라이드를 순차 배치한다 */
+      body { display: block !important; min-height: 0 !important; }
       section.slide { width: 13.333in !important; height: 7.5in !important; page-break-after: always; overflow: hidden !important; }
     `,
   });
