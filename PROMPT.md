@@ -49,6 +49,7 @@ body { font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sa
 - 숫자·지표는 카드 그리드(`#f5f5f7` 배경, border-radius 1.4rem)로 크게 보여준다
 - 여백을 아끼지 말 것. 슬라이드 하나에 메시지 하나.
 - 표지(첫 슬라이드)와 맺음말(마지막 슬라이드)을 반드시 포함한다
+- **긴 줄표(—, –)는 절대 쓰지 않는다. 구분은 하이픈(-)으로 한다**
 
 ## 뼈대 템플릿 (이 구조에서 시작)
 

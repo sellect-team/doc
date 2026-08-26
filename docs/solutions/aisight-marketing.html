@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>aisight 소개 (고객 배포용)</title>
   <meta name="doc-version" content="1.3">
-  <meta name="doc-description" content="일반 고객 배포용 aisight 마케팅 소개 자료 — 핵심 가치와 활용 장면 중심의 12장 요약본">
+  <meta name="doc-description" content="일반 고객 배포용 aisight 마케팅 소개 자료 - 핵심 가치와 활용 장면 중심의 12장 요약본">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -207,6 +207,53 @@
                  justify-content: center; font-size: 0.56rem; font-weight: 700; color: var(--s700); z-index: 1; }
     .donut .dl b { font-size: 0.7rem; color: var(--s900); }
 
+    /* ── 아키텍처 v2 ── */
+    .a2 { height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+    .a2 .conn { height: 0.85rem; display: flex; justify-content: center; gap: 24rem; }
+    .a2 .conn i { width: 1px; background: var(--s300); }
+    .a2-users { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+    .usr { border: 1px solid var(--s200); border-radius: 0.7rem; padding: 0.5rem 0.95rem;
+           display: flex; align-items: center; gap: 0.6rem; background: var(--s50); }
+    .usr .i { color: var(--t600); }
+    .usr b { font-size: 0.98rem; color: var(--s900); }
+    .usr small { margin-left: auto; font-size: 0.8rem; color: var(--s500); }
+    .plat2 { border: 1px solid var(--s200); border-radius: 0.9rem; background: #fff;
+             box-shadow: 0 10px 26px rgba(15,23,42,0.08); padding: 0.75rem 0.85rem;
+             display: flex; flex-direction: column; gap: 0.65rem; }
+    .plat2-head { display: flex; align-items: center; gap: 0.5rem; }
+    .plat2-head img { width: 1.35rem; height: auto; }
+    .plat2-head b { font-size: 1.05rem; font-weight: 800; color: var(--s900); }
+    .plat2-head .tag { margin-left: auto; font-size: 0.78rem; color: var(--t700);
+                       background: var(--t50); border: 1px solid var(--t100);
+                       border-radius: 99rem; padding: 0.2rem 0.75rem; font-weight: 700; }
+    .plat2-main { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .pcard { border-radius: 0.7rem; padding: 0.6rem 0.7rem; }
+    .pcard.ws { background: var(--t50); border: 1px solid var(--t100); }
+    .pcard.ops { background: var(--s900); }
+    .pcard .ph2 { font-weight: 800; font-size: 0.96rem; margin-bottom: 0.45rem;
+                  display: flex; gap: 0.4rem; align-items: baseline; }
+    .pcard .ph2 small { font-weight: 600; font-size: 0.72rem; }
+    .pcard.ws .ph2 { color: var(--t800); } .pcard.ws .ph2 small { color: var(--t700); }
+    .pcard.ops .ph2 { color: var(--t400); } .pcard.ops .ph2 small { color: var(--s400); }
+    .pcard .fns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; }
+    .fn { font-size: 0.79rem; border-radius: 0.45rem; padding: 0.3rem 0.55rem; line-height: 1.35; }
+    .pcard.ws .fn { background: #fff; color: var(--s600); border: 1px solid var(--t100); }
+    .pcard.ops .fn { background: var(--s800); color: var(--s300); }
+    .eng { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+    .ecard { border: 1px solid var(--s200); border-radius: 0.6rem; padding: 0.45rem 0.6rem;
+             background: var(--s50); }
+    .ecard b { font-size: 0.84rem; color: var(--s800); display: flex; gap: 0.35rem;
+               align-items: center; }
+    .ecard b .i { color: var(--t600); }
+    .ecard small { font-size: 0.71rem; color: var(--s500); display: block; margin-top: 0.16rem;
+                   line-height: 1.35; }
+    .a2-src { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .srcc { border: 1px solid var(--s200); background: #fff; border-radius: 0.7rem;
+            padding: 0.45rem 0.7rem; display: flex; align-items: center; gap: 0.55rem; }
+    .srcc .i { color: var(--s500); flex-shrink: 0; }
+    .srcc b { font-size: 0.88rem; color: var(--s700); display: block; }
+    .srcc small { font-size: 0.7rem; color: var(--s500); display: block; }
+
     /* ── 간략 아키텍처 ── */
     .arch { height: 100%; display: flex; flex-direction: column; gap: 0.45rem; }
     .arow { display: grid; gap: 1.2rem; }
@@ -313,6 +360,31 @@
     .vs .before .tag { background: var(--s200); color: var(--s500); }
     .vs .after .tag { background: var(--t400); color: var(--s900); }
 
+    /* ── 업무 장면별 비교 매트릭스 ── */
+    .vs2 { height: 100%; display: grid; grid-template-columns: 1fr 8.6rem 1fr;
+           grid-template-rows: auto repeat(5, 1fr); gap: 0.6rem 1rem; }
+    .vs2 .h { display: flex; align-items: center; justify-content: center;
+              font-size: 1rem; font-weight: 700; letter-spacing: 0.02em;
+              border-radius: 0.6rem; padding: 0.45rem 0; }
+    .vs2 .h.hb { color: var(--s500); background: var(--s100); }
+    .vs2 .h.hm { color: var(--s400); font-size: 0.82rem; font-weight: 600; }
+    .vs2 .h.ha { color: var(--t400); background: var(--s900); }
+    .vs2 .bc { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.7rem;
+               padding: 0.55rem 0.9rem 0.55rem 2rem; font-size: 0.97rem; line-height: 1.45;
+               color: var(--s500); position: relative; display: block; align-content: center; }
+    .vs2 .bc::before { content: "\2715"; position: absolute; left: 0.85rem; color: var(--s400);
+                       font-size: 0.8rem; }
+    .vs2 .mc { display: flex; flex-direction: column; align-items: center; justify-content: center;
+               gap: 0.2rem; font-size: 0.86rem; font-weight: 700; color: var(--s700);
+               text-align: center; line-height: 1.3; }
+    .vs2 .mc .i { color: var(--t600); font-size: 1.1rem; }
+    .vs2 .ac { background: var(--s900); border-radius: 0.7rem;
+               padding: 0.55rem 0.9rem 0.55rem 2rem; font-size: 0.97rem; line-height: 1.45;
+               color: var(--s200); position: relative; display: block; align-content: center; }
+    .vs2 .ac::before { content: "\2713"; position: absolute; left: 0.85rem; color: var(--t400);
+                       font-weight: 700; font-size: 0.85rem; }
+    .vs2 .ac b { color: #fff; }
+
     /* ── 도입 스텝 ── */
     .steps { display: flex; align-items: stretch; gap: 1.2rem; height: 100%; }
     .step { flex: 1; background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
@@ -374,11 +446,11 @@
     <div class="glow" data-bleed></div>
     <img class="logo" src="assets/aisight-marketing/logo.png" alt="aisight 로고">
     <div class="top">
-      <span class="pillbadge">SAILINGSTONE — AISIGHT 2026</span>
+      <span class="pillbadge">SAILINGSTONE - AISIGHT 2026</span>
       <span class="iwd">Intelligence with Data</span>
     </div>
     <h1>물어보세요.<br><em>데이터가 답합니다.</em></h1>
-    <p class="sub">aisight — AI와 대화하며 데이터를 분석하는 새로운 방식의 BI 플랫폼<br>
+    <p class="sub">aisight - AI와 대화하며 데이터를 분석하는 새로운 방식의 BI 플랫폼<br>
       복잡한 도구 없이, 질문 한 번으로 분석부터 보고서까지.</p>
     <div class="entag">MAKE DATA SMARTER, MAKE DECISIONS FASTER.</div>
     <div class="pills">
@@ -416,7 +488,7 @@
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.68.68 1.15 1.45 1.41 2.5"/></svg></span><span>데이터는 많은데 답은 느린 <b>이 간극</b>에서 aisight는 출발했습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">– 2 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 2 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 3. aisight 정의 + 챗 목업 -->
@@ -429,7 +501,7 @@
     <div class="content">
       <div class="two fill">
         <div class="krows">
-          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="9" x2="16" y2="9"/></svg></div><div><h4>① 질문을 이해합니다</h4><p>"지난 분기 매출이 왜 떨어졌지?" — 평소 쓰는 말 그대로면 충분합니다. 모호하면 AI가 되물어 의도를 좁힙니다.</p></div></div>
+          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="9" x2="16" y2="9"/></svg></div><div><h4>① 질문을 이해합니다</h4><p>"지난 분기 매출이 왜 떨어졌지?" - 평소 쓰는 말 그대로면 충분합니다. 모호하면 AI가 되물어 의도를 좁힙니다.</p></div></div>
           <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><path d="M8 11h.01"/><path d="M12 11h.01"/><path d="M16 11h.01"/><path d="M8 15h.01"/><path d="M12 15h.01"/><path d="M16 15h.01"/></svg></div><div><h4>② 사내 데이터로 분석합니다</h4><p>회사가 검증한 지표 기준으로 원인을 찾습니다. AI가 임의로 숫자를 만들지 않습니다.</p></div></div>
           <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div><h4>③ 차트와 함께 답합니다</h4><p>결과(What)와 원인(Why)을 차트·표와 함께 설명하고, 그대로 보고서·공유로 이어집니다.</p></div></div>
         </div>
@@ -439,8 +511,8 @@
             <div class="body">
               <div class="msg q">지난 분기 대비 매출이 떨어진 이유가 뭐야?</div>
               <div class="msg a"><b>매출 하락의 주요 요인 2가지를 찾았습니다.</b><br>
-                1. <span class="pt">신규 고객 수 감소</span> — 영향이 가장 큽니다.<br>
-                2. <span class="pt">A지역 판매 둔화</span> — 지역 편중이 확인됩니다.<br>
+                1. <span class="pt">신규 고객 수 감소</span> - 영향이 가장 큽니다.<br>
+                2. <span class="pt">A지역 판매 둔화</span> - 지역 편중이 확인됩니다.<br>
                 관련 차트와 표를 준비했습니다. 보고서로 만들까요?</div>
               <div class="msg q">응, 보고서로 만들어서 팀에 공유해줘</div>
               <div class="msg a"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> <b>보고서 초안이 생성되었습니다.</b> 팀 채널로 공유했고, 매주 월요일 자동 발송으로 등록할 수 있습니다.</div>
@@ -450,53 +522,70 @@
           <div class="cap">* 이해를 돕기 위한 예시 화면입니다</div>
         </div>
       </div>
-      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span><span>하나의 플랫폼, 두 가지 화면 — 현업이 쓰는 <b>Work Space</b>, 관리자가 통제하는 <b>Ops</b>. 조직 전체를 위한 구성입니다.</span></div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span><span>하나의 플랫폼, 두 가지 화면 - 현업이 쓰는 <b>Work Space</b>, 관리자가 통제하는 <b>Ops</b>. 조직 전체를 위한 구성입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">– 3 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 3 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
 
   <!-- 전체 구성 (간략 아키텍처) -->
   <section class="slide" data-title="전체 구성 한눈에">
     <header class="s-head">
-      <h2><span class="bullet"></span>전체 구성 — <em>한 장으로 보는 aisight</em></h2>
+      <h2><span class="bullet"></span>전체 구성 - <em>한 장으로 보는 aisight</em></h2>
       <div class="s-right"><span class="sec">01 · Why aisight</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
     <div class="s-band"><p>현업은 <strong>Work Space</strong>에서 묻고, 관리자는 <strong>Ops</strong>에서 통제합니다. 이 모든 것이 <strong>고객사 인프라 안</strong>에서 동작합니다.</p></div>
     <div class="content">
-      <div class="arch fill">
-        <div class="arow u2">
-          <div class="anode"><svg class="i" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> 현업 사용자<small>질문 · 분석 · 보고서 열람</small></div>
-          <div class="anode"><svg class="i" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> 관리자 · IT<small>지표 · 권한 · 품질 관리</small></div>
+      <div class="a2 fill">
+        <div class="a2-users">
+          <div class="usr"><svg class="i" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><b>현업 사용자</b><small>묻고 · 받고 · 공유하고</small></div>
+          <div class="usr"><svg class="i" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><b>관리자 · IT</b><small>정의하고 · 통제하고 · 검증하고</small></div>
         </div>
-        <div class="adown">▼&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼</div>
-        <div class="onprem">
-          <span class="tag"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> 고객사 인프라 내 설치 (On-Premises)</span>
-          <div class="plat">
-            <div class="ph"><img src="assets/aisight-marketing/logo.png" alt="">aisight Platform</div>
-            <div class="arow u2">
-              <div class="anode tt"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Work Space<small>대화형 분석 · 리포트 · 지식 검색 포털</small></div>
-              <div class="anode hl"><svg class="i" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg> Ops<small>중앙 관제 · 검증 게이트 · 권한 통제</small></div>
+        <div class="conn"><i></i><i></i></div>
+        <div class="plat2">
+          <div class="plat2-head"><img src="assets/aisight-marketing/logo.png" alt=""><b>aisight Platform</b><span class="tag"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> On-Premises · 사내 설치</span></div>
+          <div class="plat2-main">
+            <div class="pcard ws">
+              <div class="ph2"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Work Space <small>현업의 화면</small></div>
+              <div class="fns">
+                <div class="fn">대화형 분석 Agent</div>
+                <div class="fn">대시보드 양방향 제어</div>
+                <div class="fn">원클릭 리포트 생성</div>
+                <div class="fn">지식 · 문서 검색</div>
+                <div class="fn">내 파일 업로드 분석</div>
+                <div class="fn">구독 · 자동 배포</div>
+              </div>
             </div>
-            <div class="arow d4" style="gap:0.9rem;">
-              <div class="anode"><small style="margin:0;">AI 분석 엔진</small></div>
-              <div class="anode"><small style="margin:0;">지식 위키</small></div>
-              <div class="anode"><small style="margin:0;">자동 리포트</small></div>
-              <div class="anode"><small style="margin:0;">보안 · 감사 로그</small></div>
+            <div class="pcard ops">
+              <div class="ph2"><svg class="i" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg> Ops <small>관리자의 관제탑</small></div>
+              <div class="fns">
+                <div class="fn">검증 게이트 (지표 · 수식)</div>
+                <div class="fn">권한 · 마스킹 통제</div>
+                <div class="fn">지식 · 스킬 관리</div>
+                <div class="fn">LLM 통합 운용</div>
+                <div class="fn">품질 모니터링</div>
+                <div class="fn">사용 이력 · 감사 로그</div>
+              </div>
             </div>
           </div>
-          <div class="adown">▼</div>
-          <div class="arow d4">
-            <div class="anode"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> 기존 BI · 대시보드</div>
-            <div class="anode"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg> DB · DW</div>
-            <div class="anode"><svg class="i" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg> 사내 문서</div>
-            <div class="anode"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 15h3"/><path d="M1 9h3"/><path d="M1 15h3"/></svg> 사내 · 상용 LLM</div>
+          <div class="eng">
+            <div class="ecard"><b><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 15h3"/><path d="M1 9h3"/><path d="M1 15h3"/></svg>AI 분석 엔진</b><small>자연어를 검증된 분석으로 실행</small></div>
+            <div class="ecard"><b><svg class="i" viewBox="0 0 24 24"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>지식 그래프 · 위키</b><small>문서를 관계형 지식으로 자산화</small></div>
+            <div class="ecard"><b><svg class="i" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>자동화 엔진</b><small>리포트 생성과 정기 발송 수행</small></div>
+            <div class="ecard"><b><svg class="i" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>보안 · 감사</b><small>모든 질의와 답의 근거 기록</small></div>
           </div>
+        </div>
+        <div class="conn"><i></i><i></i></div>
+        <div class="a2-src">
+          <div class="srcc"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg><span><b>기존 BI · 대시보드</b><small>Tableau 등 그대로 연동</small></span></div>
+          <div class="srcc"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg><span><b>DB · DW</b><small>정형 데이터</small></span></div>
+          <div class="srcc"><svg class="i" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg><span><b>사내 문서</b><small>비정형 지식 자산</small></span></div>
+          <div class="srcc"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 15h3"/><path d="M1 9h3"/><path d="M1 15h3"/></svg><span><b>LLM</b><small>사내 · 상용 하이브리드</small></span></div>
         </div>
       </div>
-      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><span>새 시스템을 세우는 것이 아니라, <b>지금 있는 시스템 위에 지능을 얹는</b> 구조입니다.</span></div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span>새 시스템을 세우는 것이 아니라, <b>지금 있는 시스템 위에 지능을 얹는</b> 구조입니다. 데이터는 밖으로 나가지 않습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">– 4 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 4 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 4. 세 가지 약속 -->
@@ -523,13 +612,13 @@
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span>배우는 도구가 아니라, <b>대화하는 동료</b>에 가깝습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">– 5 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 5 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 5. 기능 1: 대화형 분석 -->
   <section class="slide" data-title="기능 ① 대화형 분석">
     <header class="s-head">
-      <h2><span class="bullet"></span>① 대화형 분석 — <em>질문이 곧 분석입니다</em></h2>
+      <h2><span class="bullet"></span>① 대화형 분석 - <em>질문이 곧 분석입니다</em></h2>
       <div class="s-right"><span class="sec">02 · Key Features</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
     <div class="s-band"><p>차트 만드는 법이 아니라 <strong>궁금한 것</strong>만 있으면 됩니다. 보고 있는 대시보드 위에서 바로 묻고, 바로 확인합니다.</p></div>
@@ -543,7 +632,7 @@
         </div>
         <div class="mockcol">
           <div class="win">
-            <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">Business Sales Overview — 쓰던 대시보드 그대로</span><span class="live">● aisight ON</span></div>
+            <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">Business Sales Overview - 쓰던 대시보드 그대로</span><span class="live">● aisight ON</span></div>
             <div class="duo">
               <div class="dpane">
                 <div class="dh">주간 매출 현황 <small>2026-26W</small></div>
@@ -584,13 +673,13 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">– 6 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 6 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 6. 기능 2: 자동 리포트 -->
   <section class="slide" data-title="기능 ② 자동 리포트">
     <header class="s-head">
-      <h2><span class="bullet"></span>② 자동 리포트 — <em>보고서가 스스로 만들어집니다</em></h2>
+      <h2><span class="bullet"></span>② 자동 리포트 - <em>보고서가 스스로 만들어집니다</em></h2>
       <div class="s-right"><span class="sec">02 · Key Features</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
     <div class="s-band"><p>분석에서 끝나지 않습니다. 결과를 정리하고, 문서로 만들고, 전달하는 일까지 aisight가 이어서 합니다.</p></div>
@@ -627,7 +716,7 @@
                       <li>다음 주 프로모션 물량 점검 필요</li>
                     </ul>
                   </div>
-                  <div class="rp-foot"><span>– 1 –</span><span>SAILINGSTONE · CONFIDENTIAL</span></div>
+                  <div class="rp-foot"><span>- 1 -</span><span>SAILINGSTONE · CONFIDENTIAL</span></div>
                 </div>
               </div>
               <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
@@ -647,13 +736,13 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">– 7 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 7 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 7. 기능 3: 사내 지식 연결 -->
   <section class="slide" data-title="기능 ③ 사내 지식 연결">
     <header class="s-head">
-      <h2><span class="bullet"></span>③ 사내 지식 연결 — <em>문서도 대화로 찾습니다</em></h2>
+      <h2><span class="bullet"></span>③ 사내 지식 연결 - <em>문서도 대화로 찾습니다</em></h2>
       <div class="s-right"><span class="sec">02 · Key Features</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
     <div class="s-band"><p>숫자 데이터만이 아닙니다. 회사 곳곳에 흩어진 문서와 노하우를 AI가 이해하는 <strong>지식 자산</strong>으로 만듭니다.</p></div>
@@ -679,7 +768,7 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">– 8 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 8. 신뢰와 보안 -->
@@ -688,7 +777,7 @@
       <h2><span class="bullet"></span>기업이 믿고 쓰도록, <em>기본부터 다르게</em></h2>
       <div class="s-right"><span class="sec">03 · Enterprise Ready</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <div class="s-band"><p>생성형 AI의 가장 큰 걱정 — <strong>"그 답, 믿어도 되나요?"</strong> — 에서 출발해 설계했습니다. 모든 답변은 아래 과정을 통과해야만 사용자에게 도착합니다.</p></div>
+    <div class="s-band"><p>생성형 AI의 가장 큰 걱정 - <strong>"그 답, 믿어도 되나요?"</strong> - 에서 출발해 설계했습니다. 모든 답변은 아래 과정을 통과해야만 사용자에게 도착합니다.</p></div>
     <div class="content">
       <div class="stack fill">
         <div class="flow">
@@ -710,7 +799,7 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">– 9 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 9. 비교 -->
@@ -719,33 +808,36 @@
       <h2><span class="bullet"></span>도입 전과 후, <em>하루가 달라집니다</em></h2>
       <div class="s-right"><span class="sec">04 · Getting Started</span><span class="sep"></span><img class="mk" src="assets/aisight-marketing/logo.png" alt=""><span class="mkt">aisight</span></div>
     </header>
-    <div class="s-band"><p>같은 질문, 같은 보고서 — 걸리는 시간과 과정이 달라집니다.</p></div>
+    <div class="s-band"><p>같은 질문, 같은 보고서 - 걸리는 시간과 과정이 달라집니다.</p></div>
     <div class="content">
-      <div class="vs fill">
-        <div class="col before">
-          <h3>지금까지는</h3>
-          <ul>
-            <li>화면에 없는 데이터는 IT 부서에 요청하고 대기<span class="tag">기다림</span></li>
-            <li>지표가 왜 움직였는지는 사람이 다시 파헤쳐야 함<span class="tag">수작업</span></li>
-            <li>회의 중 급한 질문엔 "확인 후 회신"이 최선<span class="tag">지연</span></li>
-            <li>보고서는 매주 캡처와 복사·붙여넣기로 제작<span class="tag">반복</span></li>
-            <li>문서와 노하우가 개인 PC에 흩어져 있음<span class="tag">단절</span></li>
-          </ul>
-        </div>
-        <div class="col after">
-          <h3>aisight와 함께라면</h3>
-          <ul>
-            <li>그 자리에서 질문하고 <b>즉시 답</b>을 받습니다<span class="tag">즉시</span></li>
-            <li>결과(What)와 함께 <b>원인(Why)</b>까지 설명합니다<span class="tag">자동 분석</span></li>
-            <li>회의 중에도 <b>바로 묻고 바로 확인</b>합니다<span class="tag">실시간</span></li>
-            <li>보고서가 <b>자동 생성·자동 배포</b>됩니다<span class="tag">자동화</span></li>
-            <li>조직의 지식이 <b>한곳에 쌓여</b> 누구나 꺼내 씁니다<span class="tag">자산화</span></li>
-          </ul>
-        </div>
+      <div class="vs2 fill">
+        <div class="h hb">지금까지는</div>
+        <div class="h hm">업무 장면</div>
+        <div class="h ha">aisight와 함께라면</div>
+
+        <div class="bc">IT 부서에 요청서를 내고 며칠을 기다립니다</div>
+        <div class="mc"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>데이터 확인</div>
+        <div class="ac">그 자리에서 질문하고 <b>즉시 답</b>을 받습니다</div>
+
+        <div class="bc">지표가 왜 움직였는지 사람이 다시 파헤칩니다</div>
+        <div class="mc"><svg class="i" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>원인 분석</div>
+        <div class="ac">결과(What)와 <b>원인(Why)</b>을 함께 설명합니다</div>
+
+        <div class="bc">"확인 후 회신드리겠습니다"가 최선입니다</div>
+        <div class="mc"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>회의 대응</div>
+        <div class="ac">회의 중에도 <b>바로 묻고 바로 확인</b>합니다</div>
+
+        <div class="bc">캡처·복붙으로 매주 손으로 다시 만듭니다</div>
+        <div class="mc"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>정기 보고</div>
+        <div class="ac">보고서가 <b>자동 생성·자동 발송</b>됩니다</div>
+
+        <div class="bc">담당자를 수소문하거나 폴더를 뒤집니다</div>
+        <div class="mc"><svg class="i" viewBox="0 0 24 24"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>지식 찾기</div>
+        <div class="ac">위키에 질문하면 <b>출처와 함께</b> 답이 옵니다</div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span>도구가 하나 늘어나는 것이 아니라, <b>기다림이 사라지는</b> 변화입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">– 10 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 10. 도입 여정 -->
@@ -765,7 +857,7 @@
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.68.68 1.15 1.45 1.41 2.5"/></svg></span><span><b>쓰던 시스템은 그대로.</b> 기존 BI·대시보드를 버리는 것이 아니라, 그 위에 aisight를 얹어 더 똑똑하게 쓰는 방식입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">– 11 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 11. 만든 사람들 -->
@@ -780,7 +872,7 @@
         <div class="krows">
           <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div><div><h4>대기업이 검증한 실행력</h4><p>국내 주요 대기업의 엔터프라이즈 BI·AI 프로젝트를 다수 수행했고, 단일 고객사 기준 수십 건의 프로젝트를 연속 수행하며 신뢰를 쌓았습니다.</p></div></div>
           <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h4>10년 호흡의 원팀 시스템</h4><p>기획·솔루션·데이터·UX 리더들이 10년 이상 손발을 맞춰 온 팀이라, 커뮤니케이션 손실 없이 빠르고 정확하게 움직입니다.</p></div></div>
-          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><div><h4>구축으로 끝나지 않는 파트너십</h4><p>BI 컨설팅부터 포털 구축, AI 에이전트, 교육까지 — 도입 이후의 정착과 확산도 전담팀이 끝까지 함께합니다.</p></div></div>
+          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><div><h4>구축으로 끝나지 않는 파트너십</h4><p>BI 컨설팅부터 포털 구축, AI 에이전트, 교육까지 - 도입 이후의 정착과 확산도 전담팀이 끝까지 함께합니다.</p></div></div>
         </div>
         <div class="nums">
           <div class="num"><div class="v">3.8배</div><div class="k">최근 3개년 매출 성장<br>우상향의 지속 성장 곡선</div></div>
@@ -790,7 +882,7 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">– 12 –</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 12. 맺음 -->

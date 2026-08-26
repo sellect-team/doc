@@ -95,6 +95,7 @@ docs/
 - 포인트 컬러: 인디고 `#4f46e5` (필요 시 시트러스 `#f56300`, 블러시 `#f5a8b8` 보조 사용)
 - 제목은 크고 굵게(3~4.5rem, font-weight 700), 여백은 아낌없이
 - 폰트 스택: `"Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif`
+- **긴 줄표(—, –)는 쓰지 않습니다.** 구분이 필요하면 하이픈(-)을 사용합니다.
 
 ## 7. 버전 관리 규칙
 
