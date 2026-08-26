@@ -157,6 +157,12 @@ button { font-family: inherit; }
 /* ============ 지침 페이지 (마크다운 렌더) ============ */
 .md-wrap { max-width: 780px; margin: 0 auto; padding: calc(var(--nav-h) + 60px) 24px 120px; }
 .md-wrap h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.03em; margin: 0 0 24px; }
+/* 문서 제목 이후의 h1은 "부" 구분 - 문서 제목보다 한 단계 낮게 */
+.md-wrap h1 ~ h1 {
+  font-size: 28px; color: var(--accent);
+  margin: 56px 0 20px; padding-bottom: 10px;
+  border-bottom: 2px solid var(--accent-soft);
+}
 .md-wrap h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 48px 0 14px; }
 .md-wrap h3 { font-size: 19px; font-weight: 600; margin: 32px 0 10px; }
 .md-wrap p { margin: 12px 0; font-size: 16px; color: #333336; }

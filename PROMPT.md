@@ -45,17 +45,122 @@ body {
 7. 한 슬라이드에 내용이 넘치면 스크롤시키지 말고 **슬라이드를 나눈다.**
 8. **`font-size`에 상한을 두지 마라.** `clamp(..., 20px)`처럼 최대값을 걸면 화면이 커질 때 글자만 멈추고 여백만 벌어진다.
 
-## 디자인 규칙 (Apple 스타일)
+## 디자인 시스템 (반드시 이 팔레트만 사용)
 
-- 배경: 흰색 `#ffffff` 또는 연회색 `#f5f5f7` / 강조 슬라이드는 검정 `#1d1d1f`에 밝은 글자 `#f5f5f7`
-- 본문 `#1d1d1f`, 보조 텍스트 `#6e6e73`, 포인트 컬러 인디고 `#4f46e5` (보조: 시트러스 `#f56300`)
-- 제목: 3~4.5rem, font-weight 700, letter-spacing -0.03em, 줄간격 1.1 이내
-- 핵심 문구에는 그라데이션 텍스트 사용 가능:
-  `background: linear-gradient(90deg, #4f46e5, #a855f7 55%, #f56300); -webkit-background-clip: text; background-clip: text; color: transparent;`
-- 숫자·지표는 카드 그리드(`#f5f5f7` 배경, border-radius 1.4rem)로 크게 보여준다
-- 여백을 아끼지 말 것. 슬라이드 하나에 메시지 하나.
-- 표지(첫 슬라이드)와 맺음말(마지막 슬라이드)을 반드시 포함한다
-- **긴 줄표(-, -)는 절대 쓰지 않는다. 구분은 하이픈(-)으로 한다**
+**slate 계열이 화면의 85%, teal은 강조에만.** 이 비율이 무너지면 싸구려로 보인다.
+
+```css
+:root {
+  --s900: #0F172A;  --s800: #1E293B;  --s700: #334155;  --s600: #475569;
+  --s500: #64748B;  --s400: #94A3B8;  --s300: #CBD5E1;  --s200: #E2E8F0;
+  --s100: #F1F5F9;  --s50:  #F8FAFC;
+  --t800: #115E59;  --t700: #0F766E;  --t600: #0D9488;
+  --t400: #2DD4BF;  --t100: #CCFBF1;  --t50:  #F0FDFA;
+}
+```
+
+| 용도 | 밝은 슬라이드 | 다크 슬라이드 |
+|---|---|---|
+| 배경 | `#fff` / `--s50` | `--s900` |
+| 제목 | `--s900` | `#fff` |
+| 본문 | `--s600` | `--s300` |
+| 테두리 | `--s200` | `--s700` |
+| 강조 | `--t600` | `--t400` |
+
+경고 표시에만 로즈(`#E11D48`, 배경 `#FFF1F2`)를 쓴다. 그 외 색은 쓰지 않는다.
+
+**타이포 스케일**: 표지 카피 3.4rem / 슬라이드 제목 2rem(letter-spacing -0.02em) / 리드문 1.12rem / 카드 제목 1.3~1.4rem / 본문 1~1.08rem / 캡션 0.78~0.9rem. 제목의 강조어는 `<em>`으로 감싸고 `font-style: normal; color: var(--t600)`.
+
+## 슬라이드 골격 (콘텐츠 슬라이드는 예외 없이 이 4단 구조)
+
+**헤더 - 리드 밴드 - 콘텐츠 - 푸터**
+
+```html
+<section class="slide" data-title="핵심 역량">
+  <header class="s-head">
+    <h2><span class="bullet"></span>핵심 역량, <em>주요 사업 영역</em></h2>
+    <div class="s-right"><span class="sec">02 · Key Features</span></div>
+  </header>
+  <div class="s-band"><p>이 슬라이드의 <strong>결론</strong>을 먼저 한두 줄로.</p></div>
+  <div class="content">
+    <div class="cards c3 fill"> … </div>
+    <div class="stripe"><span>한 줄 요약</span></div>
+  </div>
+  <footer class="s-foot"><span class="pg">- 5 -</span><span class="mark">SAILINGSTONE</span></footer>
+</section>
+```
+
+```css
+.s-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.8rem; }
+.s-head h2 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; color: var(--s900); }
+.s-head h2 em { color: var(--t600); font-style: normal; }
+.bullet { display: inline-block; width: 0.55rem; height: 0.55rem;
+          background: var(--t400); margin-right: 0.75rem; vertical-align: middle; }
+.s-band { margin: 0 -2.6rem; background: var(--s50);
+          border-top: 1px solid var(--s200); border-bottom: 1px solid var(--s200);
+          padding: 0.8rem 2.6rem; }
+.s-band p { font-size: 1.12rem; line-height: 1.6; color: var(--s600); }
+.s-band strong { color: var(--t600); font-weight: 700; }
+.content { flex: 1; min-height: 0; display: flex; flex-direction: column;
+           gap: 1.6rem; padding-top: 1.2rem; }
+.fill { flex: 1; min-height: 0; }
+.stripe { background: var(--s900); color: #E2E8F0; border-radius: 0.7rem;
+          padding: 0.8rem 1.4rem; font-size: 1.03rem;
+          display: flex; align-items: center; gap: 0.8rem; }
+.stripe b { color: var(--t400); font-weight: 700; }
+.s-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+          font-size: 0.78rem; color: var(--s400); margin-top: 0.75rem; }
+.s-foot .pg { grid-column: 2; }
+.s-foot .mark { grid-column: 3; justify-self: end; letter-spacing: 0.14em; }
+```
+
+표지와 맺음말은 **다크 슬라이드**(`--s900` 배경)로 만든다.
+
+## 간격 규칙
+
+- **박스 사이 가로 간격 = 문서 좌우 여백(2.6rem)** 과 같게. 세로 간격은 1.5~1.6rem.
+- 카드 내부 패딩 1.3~1.6rem. 간격은 이 값들로만 통일한다.
+
+```css
+.cards { display: grid; gap: 1.6rem 2.6rem; grid-auto-rows: 1fr; }
+.two   { display: flex; gap: 2.6rem; align-items: stretch; }
+```
+
+## 아이콘과 선
+
+- **컬러 이모지 절대 금지.** 반드시 단색 라인 SVG를 인라인으로 넣는다.
+- 선은 가늘게. 굵으면 만화처럼 유치해진다.
+
+```css
+.i { width: 1em; height: 1em; fill: none; stroke: currentColor;
+     stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+     display: inline-block; vertical-align: -0.12em; }
+```
+
+테두리·구분선·점선은 1px, 강조 상단 액센트만 2px. 화살표는 회색(`--s400`) + 일반 굵기.
+
+## 내용 작성 규칙
+
+- **결론을 먼저.** 리드 밴드에 주장을 쓰고 카드는 근거로 쓴다.
+- **모든 주장에 숫자를 붙인다.** 숫자가 없으면 그 주장은 빼라.
+- 카드 설명 2~3줄 이내, 한 줄에 카드 최대 4개, 한 슬라이드에 메시지 하나.
+- 예시 화면(목업)에는 `* 이해를 돕기 위한 예시 화면입니다` 캡션을 단다.
+- 표지(첫 슬라이드)와 맺음말(마지막 슬라이드)을 반드시 포함한다.
+
+## 빈 공간 다루기
+
+**빈 곳은 콘텐츠로 채운다. 요소를 억지로 늘리지 마라.**
+`justify-content: space-between`으로 벌리면 내부 간격이 이상해진다. 대신 인용구, 칩 행, 체크리스트, 부연 설명을 추가하거나 타이포를 키운다.
+
+## 금지 사항
+
+- 컬러 이모지 / 굵은 선·굵은 화살표
+- **긴 줄표(em dash, en dash)** - 구분은 반드시 하이픈(`-`)
+- `px` 고정 글자 크기 / `font-size` 상한
+- 요소 스트레치로 여백 채우기
+- 제목 아래 장식용 밑줄·색 띠
+- 본문 가운데 정렬 (제목만 가운데)
+- teal을 넓은 면적 배경에 사용
 
 ## 뼈대 템플릿 (이 구조에서 시작)
 
@@ -82,11 +187,28 @@ body {
 
 ## 출력 전 자가 점검 (반드시 수행)
 
+**규격**
+
 - [ ] 4개 필수 메타가 모두 있는가? `doc-version`이 `1.0` 같은 숫자 형식인가?
-- [ ] 모든 슬라이드에 `data-title`이 있는가?
+- [ ] 모든 슬라이드에 `data-title`이 있고 15자 내외인가?
 - [ ] body 직속에 section 외의 요소가 없는가?
 - [ ] 외부 스크립트/스타일시트가 없는가? (Pretendard 제외)
 - [ ] 키보드 이벤트·넘김 버튼을 넣지 않았는가?
+- [ ] 16:9 고정 캔버스 CSS를 넣었고 `font-size`에 상한이 없는가?
+
+**디자인**
+
+- [ ] slate/teal 팔레트만 썼는가? teal이 강조에만 쓰였는가?
+- [ ] 이모지 대신 단색 라인 SVG를 썼는가? 선이 가는가?
+- [ ] 박스 가로 간격이 2.6rem인가?
+- [ ] 긴 줄표 대신 하이픈을 썼는가?
+
+**내용**
+
+- [ ] 모든 콘텐츠 슬라이드가 헤더-리드밴드-콘텐츠-푸터 골격인가?
+- [ ] 리드문에 결론이 먼저 오는가? 주장마다 숫자가 있는가?
+- [ ] 빈 공간을 스트레치가 아니라 콘텐츠로 채웠는가?
+- [ ] 표지와 맺음말이 다크 슬라이드인가?
 - [ ] 글자가 전부 rem 단위이고 `html { font-size: clamp(...) }`가 있는가?
 
 ---
