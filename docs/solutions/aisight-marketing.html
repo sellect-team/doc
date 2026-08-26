@@ -274,6 +274,12 @@
     .rp-flow .st.on { background: var(--t50); border-color: var(--t100); color: var(--t700); }
     .rp-flow .ar { color: var(--s400); font-size: 0.8rem; }
 
+    /* ── 지식 그래프 목업 ── */
+    .kg { width: 100%; flex: 1; min-height: 0; }
+    .kg text { font-family: inherit; }
+    .kg-cap { font-size: 0.82rem; color: var(--s500); text-align: center; }
+    .kg-cap b { color: var(--t700); font-weight: 700; }
+
     /* ── 플로우(가로 흐름) ── */
     .flow { display: flex; align-items: stretch; gap: 1.1rem; }
     .fnode { flex: 1; background: var(--s50); border: 1px solid var(--s200); border-radius: 0.8rem;
@@ -663,14 +669,10 @@
           <div class="win">
             <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">AI 지식 위키</span></div>
             <div class="body">
-              <div style="display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
-                <span class="chip">PDF</span><span class="chip">Word</span><span class="chip">Excel</span><span class="chip">PPT</span><span class="chip">매뉴얼</span>
-              </div>
-              <div style="text-align:center; color:var(--s400); font-weight:400; font-size:0.85rem;">▼ AI가 읽고 정리</div>
-              <div class="fnode hl" style="padding:0.85rem;"><div class="ft"><svg class="i" viewBox="0 0 24 24"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg> 전사 지식 위키</div><div class="fd">부서·주제별로 구조화된 회사 공용 지식</div></div>
-              <div style="text-align:center; color:var(--s400); font-weight:400; font-size:0.85rem;">▼ 대화로 검색</div>
-              <div class="msg q" style="align-self:center; max-width:100%;">작년에 정한 품질 검사 기준이 뭐였지?</div>
-              <div class="msg a" style="max-width:100%;">기준 문서를 찾았습니다. <span class="pt">요약</span>과 <span class="pt">원문 위치</span>를 함께 드릴게요.</div>
+              <div class="kg-cap">흩어져 있던 문서·보고서·노하우가 <b>관계로 연결된 지식 그래프</b>로 저장됩니다</div>
+              <svg class="kg" viewBox="0 0 420 252"><line x1="210" y1="126" x2="75" y2="35" stroke="#CBD5E1" stroke-width="1"/><line x1="210" y1="126" x2="345" y2="35" stroke="#CBD5E1" stroke-width="1"/><line x1="210" y1="126" x2="210" y2="25" stroke="#CBD5E1" stroke-width="1"/><line x1="210" y1="126" x2="60" y2="217" stroke="#CBD5E1" stroke-width="1"/><line x1="210" y1="126" x2="352" y2="217" stroke="#CBD5E1" stroke-width="1"/><line x1="210" y1="126" x2="55" y2="126" stroke="#CBD5E1" stroke-width="1"/><line x1="210" y1="126" x2="362" y2="126" stroke="#CBD5E1" stroke-width="1"/><line x1="75" y1="35" x2="210" y2="25" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="3 3"/><line x1="345" y1="35" x2="362" y2="126" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="3 3"/><line x1="60" y1="217" x2="55" y2="126" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="3 3"/><circle cx="75" cy="35" r="2.2" fill="#2DD4BF"/><circle cx="345" cy="35" r="2.2" fill="#2DD4BF"/><circle cx="210" cy="25" r="2.2" fill="#2DD4BF"/><circle cx="60" cy="217" r="2.2" fill="#2DD4BF"/><circle cx="352" cy="217" r="2.2" fill="#2DD4BF"/><circle cx="55" cy="126" r="2.2" fill="#2DD4BF"/><circle cx="362" cy="126" r="2.2" fill="#2DD4BF"/><rect x="20" y="20" width="110" height="26" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/><text x="75.0" y="37" text-anchor="middle" font-size="9.5" font-weight="600" fill="#475569">품질 기준서.pdf</text><rect x="290" y="20" width="112" height="26" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/><text x="346.0" y="37" text-anchor="middle" font-size="9.5" font-weight="600" fill="#475569">주간 실적 보고서</text><rect x="164" y="12" width="92" height="26" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/><text x="210.0" y="29" text-anchor="middle" font-size="9.5" font-weight="600" fill="#475569">회의록 · 노트</text><rect x="16" y="204" width="90" height="26" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/><text x="61.0" y="221" text-anchor="middle" font-size="9.5" font-weight="600" fill="#475569">운영 매뉴얼</text><rect x="298" y="204" width="108" height="26" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/><text x="352.0" y="221" text-anchor="middle" font-size="9.5" font-weight="600" fill="#475569">제품 스펙 문서</text><rect x="12" y="113" width="86" height="26" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/><text x="55.0" y="130" text-anchor="middle" font-size="9.5" font-weight="600" fill="#475569">교육 자료</text><rect x="318" y="113" width="90" height="26" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/><text x="363.0" y="130" text-anchor="middle" font-size="9.5" font-weight="600" fill="#475569">품의 · 계약서</text><rect x="146" y="102" width="128" height="48" rx="10" fill="#0F172A"/><text x="210" y="122" text-anchor="middle" font-size="12" font-weight="700" fill="#2DD4BF">전사 지식 위키</text><text x="210" y="137" text-anchor="middle" font-size="7.5" fill="#94A3B8" letter-spacing="1">KNOWLEDGE GRAPH DB</text></svg>
+              <div class="msg q" style="align-self:flex-end; max-width:88%;">작년에 정한 품질 검사 기준이 뭐였지?</div>
+              <div class="msg a" style="max-width:100%;"><b>품질 기준서.pdf</b>에서 찾았습니다. <span class="pt">요약</span>과 <span class="pt">원문 위치</span>, 연결된 <span class="pt">관련 문서 2건</span>을 함께 드릴게요.</div>
             </div>
           </div>
           <div class="cap">* 이해를 돕기 위한 예시 화면입니다</div>
@@ -776,15 +778,15 @@
     <div class="content">
       <div class="two fill">
         <div class="krows">
-          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div><div><h4>현장에서 검증된 경험</h4><p>화려한 데모가 아니라 현장에서 버티는 시스템을 만들어 온 경험 위에서 aisight가 태어났습니다.</p></div></div>
-          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h4>끝까지 함께하는 전담팀</h4><p>도입 이후의 정착과 확산까지, 세일링스톤 전담팀이 상주·비상주로 밀착 지원합니다.</p></div></div>
-          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><div><h4>BI부터 AI까지 한 팀</h4><p>BI 컨설팅 · 분석 포털 구축 · AI 에이전트 · 데이터 교육을 한 팀이 일관되게 수행합니다.</p></div></div>
+          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div><div><h4>대기업이 검증한 실행력</h4><p>국내 주요 대기업의 엔터프라이즈 BI·AI 프로젝트를 다수 수행했고, 단일 고객사 기준 수십 건의 프로젝트를 연속 수행하며 신뢰를 쌓았습니다.</p></div></div>
+          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h4>10년 호흡의 원팀 시스템</h4><p>기획·솔루션·데이터·UX 리더들이 10년 이상 손발을 맞춰 온 팀이라, 커뮤니케이션 손실 없이 빠르고 정확하게 움직입니다.</p></div></div>
+          <div class="krow"><div class="kico"><svg class="i" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><div><h4>구축으로 끝나지 않는 파트너십</h4><p>BI 컨설팅부터 포털 구축, AI 에이전트, 교육까지 — 도입 이후의 정착과 확산도 전담팀이 끝까지 함께합니다.</p></div></div>
         </div>
         <div class="nums">
-          <div class="num"><div class="v">2019</div><div class="k">설립 이후 꾸준한 성장<br>BI·AI 한 길</div></div>
-          <div class="num"><div class="v">73명</div><div class="k">BI·AI 전문 인력 중심의<br>정예 조직</div></div>
-          <div class="num"><div class="v">다수</div><div class="k">국내 주요 대기업<br>장기 파트너십 프로젝트</div></div>
-          <div class="num"><div class="v">A-</div><div class="k">외부 평가기관<br>기술신용평가 등급</div></div>
+          <div class="num"><div class="v">3.8배</div><div class="k">최근 3개년 매출 성장<br>우상향의 지속 성장 곡선</div></div>
+          <div class="num"><div class="v">70%+</div><div class="k">주요 고객 장기 계약 매출 비중<br>단발 구축이 아닌 동행</div></div>
+          <div class="num"><div class="v">A-</div><div class="k">외부 평가기관 기술신용평가<br>객관적으로 검증된 기술력</div></div>
+          <div class="num"><div class="v">10년+</div><div class="k">리더십 그룹의 협업 호흡<br>검증된 원팀 시너지</div></div>
         </div>
       </div>
     </div>
