@@ -47,24 +47,22 @@ npx http-server site -p 8123 -c-1
 
 로컬에서는 로그인 없이 열린다(인증은 Azure에서만 동작). PDF 버튼은 브라우저 인쇄로 대체된다.
 
-## 최초 배포 (1회)
+## 배포 (GitHub Pages)
 
-1. **GitHub 비공개 저장소** 생성 후 push
-2. **Azure Portal → Static Web App 생성** (무료 플랜)
-   - 소스: GitHub 저장소 연결 없이 "기타" 선택 (배포는 우리 워크플로우가 함)
-   - 생성 후 **배포 토큰** 복사 → GitHub 저장소 Settings → Secrets → `AZURE_STATIC_WEB_APPS_API_TOKEN` 등록
-3. push하면 Actions가 빌드 + PDF + 배포 실행
+원격 저장소: https://github.com/sellect-team/doc (공개)
 
-## 사용자 초대 (접근 제어)
+- push하면 Actions가 자동으로: 규격 검증 -> 빌드 -> 전수검사 -> PDF 생성 -> **GitHub Pages 배포**
+- 공개 주소: **https://sellect-team.github.io/doc/**
+- 접근 제어는 클라이언트 비밀번호 게이트(`site/assets/gate.js`, 30분 세션)뿐이다.
+  저장소가 공개이므로 문서 원본과 PDF는 저장소에서도 열람 가능하다는 점을 인지할 것.
 
-이 사이트는 `employee` 역할이 있는 사용자만 열람할 수 있다 (`site/staticwebapp.config.json`).
+### MS 로그인이 필요해지면 (Azure 전환)
 
-- Azure Portal → 해당 Static Web App → **역할 관리(Role management) → 초대(Invite)**
-  - 공급자: **Microsoft Entra ID (AAD)**
-  - 초대할 이메일: 영업 직원의 M365 계정
-  - 역할: `employee`
-- 무료 플랜은 초대 사용자 최대 25명. 본인(관리자)도 초대해야 열람 가능.
-- 초대되지 않은 계정으로 로그인하면 "접근 권한 필요" 안내 페이지가 뜬다.
+진짜 접근 제어(Entra ID 로그인 + 초대 25명 무료)가 필요해지면:
+1. 저장소를 **비공개**로 전환
+2. Azure Static Web Apps(무료 플랜) 생성 후 배포 토큰을 `AZURE_STATIC_WEB_APPS_API_TOKEN` 시크릿으로 등록
+3. deploy.yml을 Azure 배포 방식으로 되돌린다 (git 이력의 이전 버전 참고)
+4. `site/staticwebapp.config.json`의 `employee` 역할 초대로 사용자 관리
 
 ## 버전 관리
 
