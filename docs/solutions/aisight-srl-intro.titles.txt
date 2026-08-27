@@ -18,4 +18,4 @@
 지식 위키 (Knowledge Wiki)
 문서 파서 (Document Parser)
 Fast-Track 도입 전략
-감사합니다 · Q&A
+맺음 · Q&A
