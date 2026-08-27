@@ -16,6 +16,7 @@ aisight Ops
 지능형 LLM 위키
 지식 그래프 (Graph DB)
 문서 파서 (Document Parser)
+젠플로이 (Genploy)
 Insight Mate (Excel 플러그인)
 Tableau 데이터 문화 교육
 Tableau Extension 아키텍처
