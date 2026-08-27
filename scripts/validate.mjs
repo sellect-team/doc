@@ -68,14 +68,14 @@ export function validateDoc(html, filename, docDir) {
     errors.push("<body> 태그가 없음");
   }
 
-  // 5. 자체 완결: 외부 스크립트/스타일시트 금지 (Pretendard 폰트 CSS만 예외)
+  // 5. 자체 완결: 외부 스크립트/스타일시트 금지 (폰트는 @font-face로만)
   if (/<script[^>]*\ssrc=/i.test(html)) {
     errors.push("외부 스크립트(<script src=…>) 금지 — JS는 인라인만 허용");
   }
   for (const m of html.matchAll(/<link[^>]*rel=["']stylesheet["'][^>]*>/gi)) {
     const href = m[0].match(/href=["']([^"']+)["']/i)?.[1] || "";
-    if (/^https?:/i.test(href) && !/pretendard/i.test(href)) {
-      errors.push(`외부 스타일시트 금지: ${href} (예외: Pretendard 폰트 CSS)`);
+    if (/^https?:/i.test(href) && !/(pretendard|sun-typeface|SUIT)/i.test(href)) {
+      errors.push(`외부 스타일시트 금지: ${href} (폰트는 @font-face로 불러오세요)`);
     }
   }
 
@@ -100,8 +100,15 @@ export function validateDoc(html, filename, docDir) {
   if (px) {
     warnings.push(`font-size가 px로 고정된 곳 ${px.length}건 — rem 단위 권장`);
   }
-  if (!/Pretendard/i.test(html)) {
-    warnings.push("Pretendard 폰트 스택이 없음 — 디자인 일관성을 위해 권장");
+  // PPTX에서 변환한 이미지 기반 문서는 본문 텍스트가 없어 폰트 검사 대상이 아니다
+  const isConverted = /<meta\s+name=["']doc-source["']/i.test(html);
+  if (!isConverted && !/SUIT/i.test(html)) {
+    warnings.push("SUIT 폰트가 없음 - 브랜드 폰트를 @font-face로 불러오세요 (AUTHORING.md 7절)");
+  }
+  // 굵기용 폰트가 따로 있으므로 font-weight로 굵게 하면 가짜 굵게가 만들어진다
+  const heavy = noComments.match(/font-weight:\s*(?:[5-9]00|bold(?:er)?)/gi);
+  if (heavy) {
+    warnings.push(`font-weight로 굵게 지정한 곳 ${heavy.length}건 - var(--fx) 패밀리를 쓰세요 (가짜 굵게 방지)`);
   }
 
   return { errors, warnings };

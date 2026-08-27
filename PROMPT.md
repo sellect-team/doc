@@ -22,8 +22,7 @@
    - `data-title`은 모든 슬라이드에 필수 (뷰어 왼쪽 목차에 표시됨)
    - `<body>` 직속에는 section 외에 아무것도 두지 않는다
 4. **자체 완결**: CSS는 `<head>`의 `<style>`에 인라인으로. 외부 `<script src>`, 외부 스타일시트 금지.
-   - 유일한 예외: Pretendard 폰트 CSS
-     `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">`
+   - 폰트는 `@font-face`로 SUIT를 불러온다 (아래 폰트 절). 외부 스타일시트 `<link>`는 쓰지 않는다.
 5. **페이지 넘김 기능(키보드 이벤트, 넘김 버튼 등)을 절대 넣지 않는다.** 포털 뷰어가 자동으로 붙인다.
 6. 슬라이드는 16:9 화면을 꽉 채우는 기준으로 디자인하고, **글자 크기는 전부 `rem` 단위**로 쓴다. 아래 기본 CSS를 그대로 포함한다:
 
@@ -32,7 +31,7 @@
 /* 16:9 고정 캔버스 - 창 크기가 변해도 전체가 같은 비율로 확대·축소된다 */
 html { font-size: min(1.25vw, 2.2222vh); }
 body {
-  font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif; color: #1d1d1f;
+  font-family: var(--f); color: #1d1d1f;
   display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
 }
 .slide {
@@ -44,6 +43,28 @@ body {
 
 7. 한 슬라이드에 내용이 넘치면 스크롤시키지 말고 **슬라이드를 나눈다.**
 8. **`font-size`에 상한을 두지 마라.** `clamp(..., 20px)`처럼 최대값을 걸면 화면이 커질 때 글자만 멈추고 여백만 벌어진다.
+
+## 폰트 (SUIT 2종) - 반드시 이대로
+
+**`font-weight`로 굵게 하지 마라.** 굵기용 폰트가 따로 있는데 `font-weight: 700`을 주면 브라우저가 가짜 굵게를 만들어 획이 뭉개진다. ExtraBold 패밀리를 지정하고 `font-weight`는 400으로 둔다.
+
+```css
+@font-face { font-family: "SUIT"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "SUIT ExtraBold"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap; }
+
+:root {
+  --f:  "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+  --fx: "SUIT ExtraBold", "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+}
+/* 합성 굵게·기울임 전면 금지 */
+* { font-synthesis: none; -webkit-font-synthesis: none; }
+b, strong { font-family: var(--fx); font-weight: 400; }
+h1, h2, h3, h4, h5, h6 { font-weight: 400; }
+```
+
+굵게 할 곳에는 `font-family: var(--fx); font-weight: 400;`. **문서 어디에도 `font-weight: 500~900`을 쓰지 마라.**
 
 ## 디자인 시스템 (반드시 이 팔레트만 사용)
 
@@ -92,7 +113,7 @@ body {
 
 ```css
 .s-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.8rem; }
-.s-head h2 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; color: var(--s900); }
+.s-head h2 { font-size: 2rem; font-family: var(--fx); letter-spacing: -0.02em; color: var(--s900); }
 .s-head h2 em { color: var(--t600); font-style: normal; }
 .bullet { display: inline-block; width: 0.55rem; height: 0.55rem;
           background: var(--t400); margin-right: 0.75rem; vertical-align: middle; }
@@ -100,14 +121,14 @@ body {
           border-top: 1px solid var(--s200); border-bottom: 1px solid var(--s200);
           padding: 0.8rem 2.6rem; }
 .s-band p { font-size: 1.12rem; line-height: 1.6; color: var(--s600); }
-.s-band strong { color: var(--t600); font-weight: 700; }
+.s-band strong { color: var(--t600); font-family: var(--fx); }
 .content { flex: 1; min-height: 0; display: flex; flex-direction: column;
            gap: 1.6rem; padding-top: 1.2rem; }
 .fill { flex: 1; min-height: 0; }
 .stripe { background: var(--s900); color: #E2E8F0; border-radius: 0.7rem;
           padding: 0.8rem 1.4rem; font-size: 1.03rem;
           display: flex; align-items: center; gap: 0.8rem; }
-.stripe b { color: var(--t400); font-weight: 700; }
+.stripe b { color: var(--t400); font-family: var(--fx); }
 .s-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
           font-size: 0.78rem; color: var(--s400); margin-top: 0.75rem; }
 .s-foot .pg { grid-column: 2; }
@@ -172,7 +193,6 @@ body {
   <title>문서 제목</title>
   <meta name="doc-version" content="1.0">
   <meta name="doc-description" content="한 줄 요약">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
     /* 위 절대 규칙 6번의 기본 CSS + 문서 고유 스타일 */
   </style>
@@ -192,12 +212,13 @@ body {
 - [ ] 4개 필수 메타가 모두 있는가? `doc-version`이 `1.0` 같은 숫자 형식인가?
 - [ ] 모든 슬라이드에 `data-title`이 있고 15자 내외인가?
 - [ ] body 직속에 section 외의 요소가 없는가?
-- [ ] 외부 스크립트/스타일시트가 없는가? (Pretendard 제외)
+- [ ] 외부 스크립트/스타일시트가 없는가? (폰트는 @font-face로만)
 - [ ] 키보드 이벤트·넘김 버튼을 넣지 않았는가?
 - [ ] 16:9 고정 캔버스 CSS를 넣었고 `font-size`에 상한이 없는가?
 
 **디자인**
 
+- [ ] SUIT 2종만 썼고, 굵게는 `var(--fx)`인가? `font-weight: 700`이 하나도 없는가?
 - [ ] slate/teal 팔레트만 썼는가? teal이 강조에만 쓰였는가?
 - [ ] 이모지 대신 단색 라인 SVG를 썼는가? 선이 가는가?
 - [ ] 박스 가로 간격이 2.6rem인가?
@@ -209,7 +230,6 @@ body {
 - [ ] 리드문에 결론이 먼저 오는가? 주장마다 숫자가 있는가?
 - [ ] 빈 공간을 스트레치가 아니라 콘텐츠로 채웠는가?
 - [ ] 표지와 맺음말이 다크 슬라이드인가?
-- [ ] 글자가 전부 rem 단위이고 `html { font-size: clamp(...) }`가 있는가?
 
 ---
 

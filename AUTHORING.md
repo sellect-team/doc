@@ -72,7 +72,7 @@ docs/
 /* 16:9 고정 캔버스 - 창 크기가 변해도 전체가 같은 비율로 확대·축소된다 */
 html { font-size: min(1.25vw, 2.2222vh); }
 body {
-  font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+  font-family: var(--f);          /* 7절의 SUIT 토큰 */
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; min-height: 100vh;
 }
@@ -96,8 +96,7 @@ body {
 ## 5. 자체 완결(Self-contained) 원칙
 
 - CSS는 `<head>`의 `<style>`에 **인라인**으로 넣습니다. 외부 스크립트·스타일시트 금지.
-  - 유일한 예외: Pretendard 폰트 CDN
-    `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">`
+  - 폰트는 `@font-face`로 SUIT를 CDN에서 불러옵니다 (7절). 외부 스타일시트 `<link>`는 쓰지 않습니다.
 - **페이지 넘김 기능(키보드 이벤트, 넘김 버튼)을 절대 넣지 마세요.** 뷰어가 자동으로 주입합니다.
   문서를 단독으로 열면 슬라이드가 세로로 이어져 보이는 게 정상입니다.
 
@@ -132,19 +131,38 @@ body {
 
 경고·주의를 표시할 때만 로즈(`#E11D48`, 배경 `#FFF1F2`, 테두리 `#FECDD3`)를 씁니다. 그 외 색은 쓰지 않습니다.
 
-## 7. 타이포그래피
+## 7. 폰트 (SUIT)
 
-폰트는 **Pretendard** 하나만 씁니다. 실제 사용 중인 스케일:
+폰트는 **SUIT** 하나만 씁니다. 굵기는 **기본(Regular)과 ExtraBold 2종**만 사용합니다.
 
-| 용도 | 크기 | 굵기 |
+**절대 규칙: `font-weight`로 굵게 하지 마세요.** 굵기용 폰트 파일이 따로 있는데 `font-weight: 700`을 주면 브라우저가 기본 폰트를 강제로 늘려 **가짜 굵게**를 만들어 획이 뭉개집니다. 반드시 ExtraBold 패밀리를 지정하고 `font-weight`는 400으로 둡니다.
+
+```css
+@font-face { font-family: "SUIT"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "SUIT ExtraBold"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap; }
+
+:root {
+  --f:  "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+  --fx: "SUIT ExtraBold", "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+}
+/* 합성 굵게·기울임 전면 금지 */
+* { font-synthesis: none; -webkit-font-synthesis: none; }
+b, strong { font-family: var(--fx); font-weight: 400; }
+h1, h2, h3, h4, h5, h6 { font-weight: 400; }
+```
+
+굵게 표현할 곳에는 `font-family: var(--fx); font-weight: 400;` 을 씁니다.
+
+| 용도 | 크기 | 패밀리 |
 |---|---|---|
-| 표지 대형 카피 | 3.4rem | 700 |
-| 슬라이드 제목 | 2rem | 700, letter-spacing -0.02em |
-| 리드문 | 1.12rem | 400 |
-| 카드 제목 | 1.3~1.4rem | 700 |
-| 본문 | 1rem~1.08rem | 400 |
-| 라벨·캡션 | 0.78~0.9rem | 600~800 |
-| 푸터 | 0.78rem | 400 |
+| 표지 대형 카피 | 3.4rem | `var(--fx)` |
+| 슬라이드 제목 | 2rem | `var(--fx)`, letter-spacing -0.02em |
+| 리드문 | 1.12rem | `var(--f)` (강조어만 `--fx`) |
+| 카드 제목 | 1.3~1.4rem | `var(--fx)` |
+| 본문 | 1rem~1.08rem | `var(--f)` |
+| 라벨·캡션 | 0.78~0.9rem | `var(--fx)` |
 
 - 원본 PPT를 참고할 때 환산 공식: **`rem = 원본 pt ÷ 9`** (본문 11pt = 1.2rem, 제목 20pt = 2.2rem)
 - 제목의 강조어는 `<em>`으로 감싸고 `font-style: normal; color: var(--t600)` 처리합니다.
@@ -175,7 +193,7 @@ body {
 
 ```css
 .s-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.8rem; }
-.s-head h2 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; color: var(--s900); }
+.s-head h2 { font-size: 2rem; font-family: var(--fx); letter-spacing: -0.02em; color: var(--s900); }
 .s-head h2 em { color: var(--t600); font-style: normal; }
 .bullet { display: inline-block; width: 0.55rem; height: 0.55rem;
           background: var(--t400); margin-right: 0.75rem; vertical-align: middle; }
@@ -183,14 +201,14 @@ body {
 .s-right .sec { font-size: 0.95rem; color: var(--s400); letter-spacing: 0.04em; }
 .s-right .sep { width: 1px; height: 1.2rem; background: var(--s300); }
 .s-right .mk { width: 1.45rem; height: auto; }
-.s-right .mkt { font-size: 1.3rem; font-weight: 700; color: var(--s700); }
+.s-right .mkt { font-size: 1.3rem; font-family: var(--fx); color: var(--s700); }
 
 /* 리드 밴드: 좌우 여백만큼 음수 마진으로 슬라이드 끝까지 채운다 */
 .s-band { margin: 0 -2.6rem; background: var(--s50);
           border-top: 1px solid var(--s200); border-bottom: 1px solid var(--s200);
           padding: 0.8rem 2.6rem; }
 .s-band p { font-size: 1.12rem; line-height: 1.6; color: var(--s600); }
-.s-band strong { color: var(--t600); font-weight: 700; }
+.s-band strong { color: var(--t600); font-family: var(--fx); }
 
 /* 콘텐츠 영역: fill 블록이 남는 높이를 가져간다 */
 .content { flex: 1; min-height: 0; display: flex; flex-direction: column;
@@ -203,7 +221,20 @@ body {
 .s-foot .mark { grid-column: 3; justify-self: end; letter-spacing: 0.14em; }
 ```
 
-**표지와 맺음말은 다크 슬라이드**로 만듭니다. 그리드 배경 + 우측 로고 + 글로우가 표준입니다.
+**표지와 맺음말은 다크 슬라이드**로 만듭니다. 모든 문서는 aisight 솔루션 소개서·세일링스톤
+회사소개서의 표지 양식을 기본으로 따릅니다 (이하 "표준 표지"). 구성 요소는 고정입니다.
+
+- 배경: `--s900` + 3.4rem 간격의 얇은 그리드 라인 + 우측 티일 글로우(radial)
+- 우측: 드롭릿 로고 대형 배치 (글로우 중심, `width: 14rem`)
+- 좌상단: 티일 아웃라인 필 뱃지 - 대문자·자간 0.2em (예: `AISIGHT - BUILD & POC REFERENCE`)
+- 우상단: `Intelligence with Data` (티일, ExtraBold)
+- 좌측: 대형 카피 2줄 (3.4rem, 한 구절만 `em`으로 티일 강조) + 서브 설명 1~2줄(`--s400`)
+- 카피 아래: `01~04` 번호 필 4개(문서 핵심 키워드) + 필요 시 고지 박스
+- 좌하단: `AI · BI · ANALYTICS | © 2026 SAILINGSTONE`
+- 영문 태그라인: `MAKE DATA SMARTER, MAKE DECISIONS FASTER.` (자간 0.22em)
+
+맺음말도 같은 다크 골격을 재사용하고 카피와 서브만 바꿉니다. 변환 문서(PPTX)도 표지가 이
+양식과 다르면 표준 표지를 1페이지로 삽입해 맞춥니다.
 
 ## 9. 간격 규칙
 
@@ -275,8 +306,8 @@ body {
 .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
         padding: 1.6rem 1.5rem 1.35rem; display: flex; flex-direction: column;
         box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
-.card .no { font-size: 0.78rem; font-weight: 800; color: var(--t600); letter-spacing: 0.1em; }
-.card h3 { font-size: 1.4rem; font-weight: 700; color: var(--s900); margin-bottom: 0.55rem; }
+.card .no { font-size: 0.78rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.1em; }
+.card h3 { font-size: 1.4rem; font-family: var(--fx); color: var(--s900); margin-bottom: 0.55rem; }
 .card p  { font-size: 1.08rem; line-height: 1.65; color: var(--s500); }
 ```
 
@@ -307,7 +338,7 @@ body {
 .stripe { background: var(--s900); color: #E2E8F0; border-radius: 0.7rem;
           padding: 0.8rem 1.4rem; font-size: 1.03rem;
           display: flex; align-items: center; gap: 0.8rem; }
-.stripe b { color: var(--t400); font-weight: 700; }
+.stripe b { color: var(--t400); font-family: var(--fx); }
 ```
 
 그 밖에 **비교 매트릭스**(도입 전/후), **아키텍처 다이어그램**(레이어 + 라벨 화살표), **KPI 스트립**, **타임라인**, **추적 로그**는 `docs/solutions/aisight-marketing.html`에 구현되어 있으니 필요할 때 그대로 가져다 쓰세요.
@@ -415,6 +446,7 @@ powershell -File "scripts/convert-pptx.ps1" -Source "C:\경로\원본.pptx" -Cat
 **디자인**
 
 - [ ] 색상이 slate 85% + teal 강조 비율인가?
+- [ ] SUIT를 쓰고, 굵게는 `var(--fx)` 패밀리인가? (`font-weight: 700` 금지)
 - [ ] 이모지 대신 단색 라인 SVG를 썼는가? 선이 가는가?
 - [ ] 박스 가로 간격이 문서 좌우 여백(2.6rem)과 같은가?
 - [ ] 긴 줄표 대신 하이픈을 썼는가?
