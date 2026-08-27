@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateAll } from "./validate.mjs";
+import { buildStandalone } from "./standalone.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DOCS = path.join(ROOT, "docs");
@@ -133,6 +134,7 @@ for (const catDir of fs.readdirSync(DOCS, { withFileTypes: true })) {
       history,
       oldVersions,
       pdf: `pdf/${id}.pdf`,
+      html: `standalone/${id}.html`,
     });
   }
 }
@@ -149,5 +151,11 @@ fs.writeFileSync(path.join(OUT_DATA, "docs.json"), JSON.stringify({
 // 작성 지침을 사이트에서 열람할 수 있게 복사
 fs.copyFileSync(path.join(ROOT, "AUTHORING.md"), path.join(OUT_DATA, "authoring.md"));
 
+// 단일 파일 HTML (이미지 내장 + 페이지 넘김 주입)
+const standalone = buildStandalone(docs, SITE);
+
 console.log(`빌드 완료: 문서 ${docs.length}개, 카테고리 ${Object.keys(categories).length}개`);
+for (const r of standalone) {
+  console.log(`  · 단일 HTML ${r.id}.html - 이미지 ${r.images}개 내장, ${r.mb.toFixed(1)} MB`);
+}
 for (const d of docs) console.log(`  - [${d.categoryLabel}] ${d.title} v${d.version} (${d.pages}p, 이력 ${d.history.length}건)`);

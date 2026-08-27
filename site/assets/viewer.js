@@ -180,6 +180,19 @@
     if (e.key === "End") { e.preventDefault(); goto(total - 1); }
   });
 
+  // ── HTML 다운로드: 이미지가 내장된 단일 파일 ──
+  $("htmlBtn").onclick = async () => {
+    const res = await fetch(doc.html).catch(() => null);
+    if (!res || !res.ok) { alert("HTML 파일을 찾을 수 없습니다. 빌드를 다시 실행하세요."); return; }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${doc.title} v${doc.version}.html`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+
   // ── PDF: CI 생성본이 있으면 다운로드, 없으면 브라우저 인쇄 ──
   $("pdfBtn").onclick = async () => {
     const head = await fetch(doc.pdf, { method: "HEAD" }).catch(() => null);

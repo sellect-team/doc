@@ -54,11 +54,23 @@
         </div>
         <div class="actions">
           <button class="btn primary" data-open>문서 보기</button>
+          <button class="btn ghost" data-html>HTML</button>
           <button class="btn ghost" data-pdf>PDF</button>
         </div>`;
       const open = () => (location.href = `viewer.html?doc=${encodeURIComponent(d.id)}`);
       card.onclick = open;
       card.querySelector("[data-open]").onclick = (e) => { e.stopPropagation(); open(); };
+      card.querySelector("[data-html]").onclick = async (e) => {
+        e.stopPropagation();
+        const res = await fetch(d.html).catch(() => null);
+        if (!res || !res.ok) { alert("HTML 파일을 찾을 수 없습니다."); return; }
+        const url = URL.createObjectURL(await res.blob());
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${d.title} v${d.version}.html`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      };
       card.querySelector("[data-pdf]").onclick = async (e) => {
         e.stopPropagation();
         // CI에서 생성된 PDF가 있으면 다운로드, 없으면(로컬) 뷰어에서 인쇄 안내
