@@ -1,0 +1,11 @@
+{
+  "_설명": "포털 기본 정렬. 여기 나열된 순서대로 표시되고, 없는 문서는 뒤에 최신순으로 붙는다.",
+  "docs": [
+    "company--company-intro-2026",
+    "solutions--aisight-intro",
+    "solutions--aisight-marketing",
+    "solutions--aisight-srl-intro",
+    "solutions--aisight-poc-reference",
+    "proposals--proposal-template"
+  ]
+}

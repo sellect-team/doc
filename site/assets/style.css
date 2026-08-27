@@ -185,3 +185,75 @@ button { font-family: inherit; }
 .md-wrap th, .md-wrap td { border: 1px solid var(--line); padding: 9px 14px; text-align: left; }
 .md-wrap th { background: var(--bg-soft); font-weight: 600; }
 .md-wrap hr { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
+
+/* ============ 툴바: 검색 · 정렬 · 순서 편집 ============ */
+.toolbar {
+  max-width: 720px; margin: 0 auto; padding: 4px 24px 0;
+  display: flex; gap: 10px; align-items: center;
+}
+.search {
+  flex: 1; display: flex; align-items: center; gap: 10px;
+  background: var(--bg-soft); border-radius: 999px; padding: 10px 18px;
+  transition: box-shadow 0.2s ease;
+}
+.search:focus-within { box-shadow: 0 0 0 2px var(--accent-soft), 0 0 0 3px var(--accent); }
+.search svg { width: 17px; height: 17px; color: var(--ink-3); flex-shrink: 0; }
+.search input {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-family: inherit; font-size: 15px; color: var(--ink);
+}
+.search input::placeholder { color: var(--ink-3); }
+.toolbar select {
+  border: none; cursor: pointer; appearance: none;
+  padding: 10px 16px; border-radius: 999px;
+  font-family: inherit; font-size: 14px; font-weight: 500;
+  background: var(--bg-soft); color: var(--ink-2);
+}
+.toolbar .orderBtn {
+  border: none; cursor: pointer;
+  padding: 10px 18px; border-radius: 999px;
+  font-size: 14px; font-weight: 500;
+  background: var(--bg-soft); color: var(--ink-2);
+  transition: all 0.2s ease;
+}
+.toolbar .orderBtn:hover { color: var(--ink); }
+.toolbar .orderBtn.on { background: var(--accent); color: #fff; }
+.count {
+  text-align: center; font-size: 13px; color: var(--ink-3);
+  padding: 0 24px;
+}
+
+/* ============ 순서 편집 모드 ============ */
+.orderbar {
+  max-width: 1200px; margin: 8px auto 0; padding: 10px 18px;
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  background: var(--accent-soft); border-radius: 14px;
+  font-size: 13.5px; color: var(--accent);
+}
+.orderbar[hidden] { display: none; }
+.orderbar span { flex: 1; min-width: 200px; }
+.orderbar .btn { padding: 7px 14px; font-size: 13px; }
+.card.edit { cursor: grab; }
+.card.edit:active { cursor: grabbing; }
+.card.dragging { opacity: 0.45; transform: scale(0.98); }
+.card .grip {
+  font-size: 12px; color: var(--ink-3); letter-spacing: 0.02em;
+  margin-bottom: 6px; user-select: none;
+}
+
+/* ============ 검색 매칭 페이지 칩 ============ */
+.pgchips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.pgchip {
+  border: none; cursor: pointer;
+  background: var(--accent-soft); color: var(--accent);
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  border-radius: 999px; padding: 4px 11px;
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.pgchip:hover { background: var(--accent); color: #fff; }
+
+@media (max-width: 640px) {
+  .toolbar { flex-wrap: wrap; }
+  .search { min-width: 100%; }
+}

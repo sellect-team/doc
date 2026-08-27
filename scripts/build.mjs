@@ -139,8 +139,14 @@ for (const catDir of fs.readdirSync(DOCS, { withFileTypes: true })) {
   }
 }
 
-// 최근 수정순 정렬
+// 정렬: docs/order.json에 나열된 순서 우선, 나머지는 최근 수정순으로 뒤에
 docs.sort((a, b) => (b.updated || "").localeCompare(a.updated || ""));
+const orderFile = path.join(DOCS, "order.json");
+if (fs.existsSync(orderFile)) {
+  const order = JSON.parse(fs.readFileSync(orderFile, "utf8")).docs || [];
+  const rank = (d) => { const i = order.indexOf(d.id); return i === -1 ? order.length : i; };
+  docs.sort((a, b) => rank(a) - rank(b));
+}
 
 fs.writeFileSync(path.join(OUT_DATA, "docs.json"), JSON.stringify({
   generated: new Date().toISOString(),

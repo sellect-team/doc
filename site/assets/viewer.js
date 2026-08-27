@@ -102,6 +102,12 @@
       total = d.n;
       renderPages();
       update(0);
+      // ?p=17 딥링크: 최초 로드에서 한 번만 해당 페이지로 이동
+      const p = parseInt(params.get("p"), 10);
+      if (p >= 2 && p <= total && !viewingOld && !window.__pJumped) {
+        window.__pJumped = true;
+        goto(p - 1);
+      }
       if (params.get("print") === "1" && !viewingOld) {
         setTimeout(() => frame.contentWindow.postMessage({ __viewer: true, t: "print" }, "*"), 600);
       }

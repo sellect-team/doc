@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/style.css">
   <script src="assets/gate.js"></script>
+  <script src="assets/live.js"></script>
 </head>
 <body>
 
@@ -26,7 +27,28 @@
   <p>회사소개서부터 제안서까지 - 언제나 최신 버전으로 열람하고 PDF로 받아가세요.</p>
 </header>
 
+<div class="toolbar">
+  <div class="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input id="searchInput" type="search" placeholder="문서 제목 · 설명 · 페이지 제목 검색" autocomplete="off">
+  </div>
+  <select id="sortSel" title="정렬">
+    <option value="default">기본 순서</option>
+    <option value="updated">최신 수정순</option>
+    <option value="name">이름순</option>
+  </select>
+  <button class="orderBtn" id="orderBtn" title="드래그로 문서 순서를 바꿉니다">순서 편집</button>
+</div>
+
 <div class="filters" id="filters"></div>
+<div class="count" id="count"></div>
+
+<div class="orderbar" id="orderbar" hidden>
+  <span>카드를 끌어 순서를 바꾸세요. 이 순서는 내 브라우저에 저장됩니다.</span>
+  <button class="btn ghost" id="orderExport">기본 순서로 내보내기</button>
+  <button class="btn ghost" id="orderReset">초기화</button>
+  <button class="btn primary" id="orderDone">완료</button>
+</div>
 
 <main class="grid" id="grid"></main>
 
