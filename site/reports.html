@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>작업 리포트 — 세일링스톤 문서 시스템</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/gate.js"></script>
+  <script src="assets/live.js"></script>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="index.html">Docs<span class="dot">.</span></a>
+  <div class="links">
+    <a href="index.html">문서</a>
+    <a href="reports.html" class="on">작업 리포트</a>
+    <a href="guide.html">작성 지침</a>
+    <span class="user" id="userName"></span>
+    <button class="logout" id="logoutBtn" hidden onclick="location.href='/.auth/logout'">로그아웃</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">Work Reports</div>
+  <h1>무엇이 바뀌었는지<br><span class="grad">여기서 확인하세요.</span></h1>
+  <p>문서를 고치거나 새로 만들 때마다 남기는 작업 기록입니다 - 바뀐 페이지로 바로 이동할 수 있습니다.</p>
+</header>
+
+<div class="count" id="count"></div>
+
+<main class="grid" id="grid"></main>
+
+<footer class="footer" id="footer"></footer>
+
+<script src="assets/reports.js"></script>
+</body>
+</html>

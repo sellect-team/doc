@@ -15,6 +15,8 @@ const OUT_DOCS = path.join(SITE, "docs");
 const OUT_DATA = path.join(SITE, "data");
 const OUT_VERSIONS = path.join(OUT_DOCS, "_versions");
 const MAX_OLD_VERSIONS = 8; // 문서당 열람 가능한 이전 버전 수
+// 영업 자료가 아닌 내부 문서 카테고리 — 메인 목록이 아니라 별도 탭에서 본다
+const REPORT_CATEGORIES = new Set(["reports"]);
 
 function git(args, opts = {}) {
   try {
@@ -121,6 +123,7 @@ for (const catDir of fs.readdirSync(DOCS, { withFileTypes: true })) {
     docs.push({
       pdfSource: hasSrcPdf ? "original" : "generated",
       id,
+      kind: REPORT_CATEGORIES.has(catDir.name) ? "report" : "doc",
       category: catDir.name,
       categoryLabel: categories[catDir.name] || catDir.name,
       file: rel,
@@ -160,7 +163,9 @@ fs.copyFileSync(path.join(ROOT, "AUTHORING.md"), path.join(OUT_DATA, "authoring.
 // 단일 파일 HTML (이미지 내장 + 페이지 넘김 주입)
 const standalone = buildStandalone(docs, SITE);
 
-console.log(`빌드 완료: 문서 ${docs.length}개, 카테고리 ${Object.keys(categories).length}개`);
+const nDocs = docs.filter((d) => d.kind !== "report").length;
+const nReports = docs.length - nDocs;
+console.log(`빌드 완료: 문서 ${nDocs}개, 작업 리포트 ${nReports}개, 카테고리 ${Object.keys(categories).length}개`);
 for (const r of standalone) {
   console.log(`  · 단일 HTML ${r.id}.html - 이미지 ${r.images}개 내장, ${r.mb.toFixed(1)} MB`);
 }

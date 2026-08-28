@@ -375,7 +375,27 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 
 # 4부. 작업 절차
 
-## 16. 버전 관리
+## 16. 작업 리포트 (docs/reports)
+
+문서를 고치거나 새로 만들면 **작업 리포트**를 남긴다. 영업 자료가 아니므로 메인 목록이 아니라
+포털의 **작업 리포트 탭**(reports.html)에서만 보인다.
+
+- 위치: `docs/reports/work-report-YYYY-MM-DD.html` (영문 소문자·숫자·하이픈)
+- 카테고리 `reports`는 `build.mjs`가 `kind: "report"`로 표시해 메인 목록에서 자동으로 뺀다.
+  `docs/order.json`에는 넣지 않는다.
+- 구성: 표지 / 한눈에 보기 / 신규 페이지 / 정비 내역 / (기능 변경) / 확인 요청
+- **바뀐 페이지에는 반드시 바로가기 버튼을 넣는다.** 뷰어는 iframe 안에서 문서를 열기 때문에
+  `target="_top"`이 없으면 iframe 내부만 이동한다. 배포 URL 절대 경로로 적어야 단일 HTML로
+  내려받았을 때도 동작한다.
+
+```html
+<a class="go" target="_top"
+   href="https://sellect-team.github.io/doc/viewer.html?doc=company--company-intro-2026&p=17">17p 보기</a>
+```
+
+뷰어는 `?p=N` 쿼리로 해당 페이지를 바로 연다 (1부터 시작, 최초 로드에서 한 번만 이동).
+
+## 17. 버전 관리
 
 - 문서를 수정하면 `doc-version`을 올리고, 커밋 메시지를 아래 형식으로 씁니다:
 
@@ -387,7 +407,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 - 뷰어에서 이전 버전을 클릭하면 그 시점의 문서가 그대로 열립니다 (최근 8개 보관).
 - 특정 고객용 분기는 파일 복사 대신 **브랜치**: `git checkout -b proposal-hanwha`
 
-## 17. 만들고 올리는 절차
+## 18. 만들고 올리는 절차
 
 ```bash
 node scripts/validate.mjs        # 규격 검증
@@ -416,7 +436,7 @@ npx http-server site -p 8787 -c-1   # 로컬 확인
 
 HTML 단일 파일은 `node scripts/build.mjs`가 `site/standalone/`에 자동 생성합니다. 문서에는 넘김 기능을 넣지 마세요(5절) - 빌드가 주입합니다.
 
-## 18. 기존 PPT 변환해서 올리기
+## 19. 기존 PPT 변환해서 올리기
 
 완성된 PPTX가 있으면 새로 만들지 말고 변환합니다. PowerPoint 자체 렌더링을 쓰므로 **원본과 100% 동일**하고, 텍스트가 선택되는 원본 PDF도 함께 배포됩니다.
 
@@ -432,7 +452,7 @@ powershell -File "scripts/convert-pptx.ps1" -Source "C:\경로\원본.pptx" -Cat
 
 자세한 절차, 원본 PPT 디자인 시스템 분석, 카드 액센트 정리 도구는 **CONVERSION-GUIDE.md**를 보세요.
 
-## 19. 체크리스트
+## 20. 체크리스트
 
 **규격**
 

@@ -31,10 +31,12 @@
     const rank = (d) => { const i = my.indexOf(d.id); return i === -1 ? my.length : i; };
     return [...list].sort((a, b) => rank(a) - rank(b));
   }
-  let baseDocs = applyOrder(data.docs);
+  // 작업 리포트는 영업 자료가 아니므로 메인 목록에서 제외한다 (reports.html 탭에서 본다)
+  const listDocs = data.docs.filter((d) => d.kind !== "report");
+  let baseDocs = applyOrder(listDocs);
 
   // ── 카테고리 필터 (문서가 있는 카테고리만) ──
-  const cats = [...new Set(data.docs.map((d) => d.category))];
+  const cats = [...new Set(listDocs.map((d) => d.category))];
   const mkBtn = (key, label) => {
     const b = document.createElement("button");
     b.textContent = label;
@@ -81,7 +83,7 @@
   $("orderDone").onclick = () => setEdit(false);
   $("orderReset").onclick = () => {
     localStorage.removeItem(LS_KEY);
-    baseDocs = [...data.docs];
+    baseDocs = [...listDocs];
     render();
   };
   $("orderExport").onclick = async () => {
@@ -207,5 +209,5 @@
 
   render();
   document.getElementById("footer").textContent =
-    `문서 ${data.docs.length}개 · 마지막 빌드 ${new Date(data.generated).toLocaleString("ko-KR")}`;
+    `문서 ${listDocs.length}개 · 마지막 빌드 ${new Date(data.generated).toLocaleString("ko-KR")}`;
 })();

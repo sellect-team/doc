@@ -1,7 +1,6 @@
 {
-  "_설명": "포털 기본 정렬. 여기 나열된 순서대로 표시되고, 없는 문서는 뒤에 최신순으로 붙는다.",
+  "_설명": "포털 메인 목록의 기본 정렬. 여기 나열된 순서대로 표시되고, 없는 문서는 뒤에 최신순으로 붙는다. 작업 리포트(reports)는 별도 탭이라 여기 넣지 않는다.",
   "docs": [
-    "reports--work-report-2026-08-28",
     "company--company-intro-2026",
     "solutions--aisight-intro",
     "solutions--aisight-marketing",

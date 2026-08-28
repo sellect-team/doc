@@ -257,3 +257,6 @@ button { font-family: inherit; }
   .toolbar { flex-wrap: wrap; }
   .search { min-width: 100%; }
 }
+
+/* 현재 탭 표시 */
+.nav .links a.on { color: var(--ink); font-weight: 600; }
