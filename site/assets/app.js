@@ -12,6 +12,14 @@
     document.getElementById("logoutBtn").hidden = false;
   }
 
+  // ── 조직(테넌트) 이름표 - 같은 화면 코드로 여러 조직 포털을 돌린다 ──
+  const tn = data.tenant || {};
+  const put = (sel, html) => { const el = document.querySelector(sel); if (el && html) el.innerHTML = html; };
+  if (tn.siteTitle) document.title = tn.siteTitle;
+  put(".hero .eyebrow", tn.eyebrow);
+  if (tn.heroLine1) put(".hero h1", `${tn.heroLine1}<br><span class="grad">${tn.heroLine2 || ""}</span>`);
+  put(".hero p", tn.heroDesc);
+
   const $ = (id) => document.getElementById(id);
   const grid = $("grid");
   const filtersEl = $("filters");

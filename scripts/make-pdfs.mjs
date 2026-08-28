@@ -1,12 +1,11 @@
 // 문서별 PDF 생성 (Playwright/Chromium)
-// 선행: node scripts/build.mjs  |  사용법: node scripts/make-pdfs.mjs
+// 선행: node scripts/build.mjs  |  사용법: node scripts/make-pdfs.mjs [--tenant docs-sovereigns]
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
+import { resolveTenant } from "./tenant.mjs";
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SITE = path.join(ROOT, "site");
+const { siteDir: SITE } = resolveTenant();
 const OUT = path.join(SITE, "pdf");
 
 const data = JSON.parse(fs.readFileSync(path.join(SITE, "data", "docs.json"), "utf8"));

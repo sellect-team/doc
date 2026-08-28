@@ -1,16 +1,17 @@
 // 문서 포털 빌드 스크립트
 // docs/ 를 스캔해 메타데이터와 Git 이력을 추출하고 site/ 에 배포용 데이터를 생성한다.
-// 사용법: node scripts/build.mjs
+// 사용법: node scripts/build.mjs [--tenant docs-sovereigns]
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateAll } from "./validate.mjs";
 import { buildStandalone } from "./standalone.mjs";
+import { resolveTenant } from "./tenant.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const DOCS = path.join(ROOT, "docs");
-const SITE = path.join(ROOT, "site");
+// 조직(테넌트) 선택 - 인자가 없으면 예전과 같이 docs/ + site/ (세일링스톤)
+const { dir: TENANT_DIR, docsDir: DOCS, siteDir: SITE, tenant } = resolveTenant();
 const OUT_DOCS = path.join(SITE, "docs");
 const OUT_DATA = path.join(SITE, "data");
 const OUT_VERSIONS = path.join(OUT_DOCS, "_versions");
@@ -61,11 +62,11 @@ function fileHistory(relPath) {
 
 // --- 준비 ---
 if (!fs.existsSync(DOCS)) {
-  console.error("docs/ 폴더가 없습니다.");
+  console.error(`${TENANT_DIR}/ 폴더가 없습니다.`);
   process.exit(1);
 }
 // 규격 검증 — 위반 문서가 있으면 빌드 중단 (AUTHORING.md 강제)
-if (!validateAll(DOCS)) process.exit(1);
+if (!validateAll(DOCS, tenant, TENANT_DIR)) process.exit(1);
 fs.rmSync(OUT_DOCS, { recursive: true, force: true });
 fs.rmSync(OUT_DATA, { recursive: true, force: true });
 fs.mkdirSync(OUT_DATA, { recursive: true });
@@ -92,7 +93,8 @@ for (const catDir of fs.readdirSync(DOCS, { withFileTypes: true })) {
   for (const f of fs.readdirSync(catPath)) {
     if (!f.endsWith(".html") || f.startsWith("_")) continue;
     const abs = path.join(catPath, f);
-    const rel = `docs/${catDir.name}/${f}`; // git용 posix 경로
+    const rel = `${TENANT_DIR}/${catDir.name}/${f}`; // 저장소 기준 경로 (git 이력·원본 PPTX 조회용)
+    const file = `docs/${catDir.name}/${f}`;        // 포털 기준 경로 (조직마다 자기 site 폴더)
     const html = fs.readFileSync(abs, "utf8");
     const slides = readSlides(html);
     const history = fileHistory(rel);
@@ -127,7 +129,8 @@ for (const catDir of fs.readdirSync(DOCS, { withFileTypes: true })) {
       kind: REPORT_CATEGORIES.has(catDir.name) ? "report" : "doc",
       category: catDir.name,
       categoryLabel: categories[catDir.name] || catDir.name,
-      file: rel,
+      file,
+      src: rel,
       title: readTitle(html) || f,
       version: readMeta(html, "doc-version") || "1.0",
       description: readMeta(html, "doc-description") || "",
@@ -155,6 +158,7 @@ if (fs.existsSync(orderFile)) {
 
 fs.writeFileSync(path.join(OUT_DATA, "docs.json"), JSON.stringify({
   generated: new Date().toISOString(),
+  tenant,
   categories,
   docs,
 }, null, 2));
@@ -166,6 +170,7 @@ const GUIDE_DOCS = [
   { file: "PROMPT.md", title: "문서 제작 프롬프트", desc: "클로드에 그대로 붙여 쓰는 지시문" },
   { file: "CONVERSION-GUIDE.md", title: "PPT 변환 가이드", desc: "기존 PPTX를 포털 문서로 변환하는 방법" },
   { file: "MULTI-TENANT.md", title: "하위 URL 문서 시스템 추가", desc: "다른 조직 포털을 같은 저장소에 붙이는 방법" },
+  { file: "SOVEREIGNS-DESIGN.md", title: "소버린즈 문서 디자인 기준", desc: "소버린즈 문서 전용 색·폰트·슬라이드 마스터" },
   { file: "README.md", title: "저장소 안내", desc: "폴더 구조와 기본 명령" },
 ];
 const guideList = [];
@@ -181,11 +186,13 @@ for (const g of GUIDE_DOCS) {
 fs.copyFileSync(path.join(ROOT, "AUTHORING.md"), path.join(OUT_DATA, "authoring.md"));
 const stamp = new Date().toISOString().slice(0, 16).replace("T", " ");
 const toc = guideList.map((g, i) => `${i + 1}. **${g.title}** (${g.file}) - ${g.desc}`).join("\n");
-const bundled = `# 세일링스톤 문서 시스템 지침 모음\n\n`
+const bundleTitle = `${tenant.siteTitle} 지침 모음`;
+const bundled = `# ${bundleTitle}\n\n`
   + `생성 ${stamp} · 문서 ${guideList.length}건\n\n`
   + toc + `\n\n---\n\n` + bundle.join("\n---\n\n");
 fs.writeFileSync(path.join(OUT_DATA, "all-guides.md"), bundled);
 fs.writeFileSync(path.join(OUT_DATA, "guides.json"), JSON.stringify({
+  title: bundleTitle,
   docs: guideList,
   bundle: { file: "all-guides.md", bytes: Buffer.byteLength(bundled, "utf8") },
 }, null, 2));
@@ -193,9 +200,37 @@ fs.writeFileSync(path.join(OUT_DATA, "guides.json"), JSON.stringify({
 // 단일 파일 HTML (이미지 내장 + 페이지 넘김 주입)
 const standalone = buildStandalone(docs, SITE);
 
+// ── 하위 URL 조직 포털: 화면 HTML을 상위 site/에서 가져와 assets 경로만 상위로 돌린다 ──
+// 화면 코드(JS·CSS)는 한 벌만 유지하고, 조직별 복사본은 빌드할 때마다 새로 만든다.
+if (tenant.base) {
+  const SHELL_TITLE = {
+    "index.html": tenant.siteTitle,
+    "reports.html": `작업 리포트 - ${tenant.siteTitle}`,
+  };
+  for (const name of ["index.html", "viewer.html", "reports.html", "guide.html"]) {
+    let html = fs.readFileSync(path.join(ROOT, "site", name), "utf8");
+    html = html.replace(/(src|href)="assets\//g, '$1="../assets/');
+    if (SHELL_TITLE[name]) html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${SHELL_TITLE[name]}</title>`);
+    // 조직 테마: 상위 style.css 뒤에 얹어 토큰만 덮어쓴다
+    if (tenant.theme) {
+      html = html.replace('<link rel="stylesheet" href="../assets/style.css">',
+        `<link rel="stylesheet" href="../assets/style.css">\n  <link rel="stylesheet" href="../assets/theme-${tenant.theme}.css">`);
+    }
+    // 조직 전용 웹폰트 (tenant.json의 fontLinks)
+    if (tenant.fontLinks) html = html.replace("</head>", `  ${tenant.fontLinks.join("\n  ")}\n</head>`);
+    // 잠금 화면은 docs.json을 읽기 전에 뜨므로 조직 정보를 미리 심어 준다
+    html = html.replace('<script src="../assets/gate.js"></script>',
+      `<script>window.__TENANT = ${JSON.stringify({
+        gateTitle: tenant.gateTitle, footerMark: tenant.footerMark,
+        accent: tenant.accent || null, gateBg: tenant.gateBg || null,
+      })};</script>\n  <script src="../assets/gate.js"></script>`);
+    fs.writeFileSync(path.join(SITE, name), html);
+  }
+}
+
 const nDocs = docs.filter((d) => d.kind !== "report").length;
 const nReports = docs.length - nDocs;
-console.log(`빌드 완료: 문서 ${nDocs}개, 작업 리포트 ${nReports}개, 카테고리 ${Object.keys(categories).length}개`);
+console.log(`[${tenant.siteTitle}] 빌드 완료: 문서 ${nDocs}개, 작업 리포트 ${nReports}개, 카테고리 ${Object.keys(categories).length}개`);
 for (const r of standalone) {
   console.log(`  · 단일 HTML ${r.id}.html - 이미지 ${r.images}개 내장, ${r.mb.toFixed(1)} MB`);
 }

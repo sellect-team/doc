@@ -109,7 +109,7 @@
     g.docs.map((d, i) =>
       `<button class="btn ghost" data-i="${i}" title="${d.desc}">${d.file} · ${kb(d.bytes)}</button>`).join("");
   bar.querySelector("#dlAll").onclick = () =>
-    save(g.bundle.file, `세일링스톤 문서 지침 모음.md`);
+    save(g.bundle.file, `${g.title || "문서 지침 모음"}.md`);
   bar.querySelectorAll("[data-i]").forEach((b) => {
     b.onclick = () => save(g.docs[b.dataset.i].file);
   });

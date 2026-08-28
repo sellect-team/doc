@@ -30,7 +30,9 @@ jobs:
           node-version: 22
 
       - name: 사이트 데이터 빌드 (문서 목록 + 버전 이력)
-        run: node scripts/build.mjs
+        run: |
+          node scripts/build.mjs
+          node scripts/build.mjs --tenant docs-sovereigns
 
       - name: Playwright 설치
         run: |
@@ -38,15 +40,25 @@ jobs:
           npx playwright install --with-deps chromium
 
       - name: 슬라이드 전수검사 (영역 이탈·잘림)
-        run: node scripts/check-overflow.mjs
+        run: |
+          node scripts/check-overflow.mjs
+          node scripts/check-overflow.mjs --tenant docs-sovereigns
+
+      - name: 문서 자가 점검 (형식·문체·용어)
+        run: |
+          node scripts/check-docs.mjs
+          CHECK_STRICT=1 node scripts/check-docs.mjs --tenant docs-sovereigns
 
       - name: PDF 생성
-        run: node scripts/make-pdfs.mjs
+        run: |
+          node scripts/make-pdfs.mjs
+          node scripts/make-pdfs.mjs --tenant docs-sovereigns
 
       - name: PPT 생성 (변환 문서는 원본 PPTX, 네이티브 문서는 도형으로 변환)
         run: |
           npm install pptxgenjs
           node scripts/make-pptx.mjs
+          node scripts/make-pptx.mjs --tenant docs-sovereigns
 
       - name: GitHub Pages 설정
         uses: actions/configure-pages@v5

@@ -3,26 +3,25 @@
 //   · 원본 PPTX가 있는 변환 문서  -> 원본을 그대로 배포한다 (100% 진짜 도형)
 //   · 네이티브 HTML 문서          -> html2pptx로 도형·텍스트 상자로 변환한다
 //
-// 선행: node scripts/build.mjs   |  사용법: node scripts/make-pptx.mjs [문서id ...]
+// 선행: node scripts/build.mjs   |  사용법: node scripts/make-pptx.mjs [--tenant docs-sovereigns] [문서id ...]
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
+import { resolveTenant, ROOT } from "./tenant.mjs";
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SITE = path.join(ROOT, "site");
+const { siteDir: SITE, rest } = resolveTenant();
 const OUT = path.join(SITE, "pptx");
 
 const data = JSON.parse(fs.readFileSync(path.join(SITE, "data", "docs.json"), "utf8"));
 fs.mkdirSync(OUT, { recursive: true });
 
-const only = process.argv.slice(2);
+const only = rest;
 let made = 0, copied = 0;
 
 for (const doc of data.docs) {
   if (only.length && !only.includes(doc.id)) continue;
   const dest = path.join(OUT, `${doc.id}.pptx`);
-  const srcHtml = path.join(ROOT, doc.file);
+  const srcHtml = path.join(ROOT, doc.src || doc.file); // 저장소 원본 (조직 폴더 기준)
 
   // 1) PPTX에서 변환된 문서는 원본이 가장 정확하다
   const meta = fs.readFileSync(srcHtml, "utf8").match(/name="doc-source"\s+content="([^"]+)"/);
@@ -50,4 +49,5 @@ for (const doc of data.docs) {
   }
 }
 
-console.log(`\nPPTX 준비 완료: 원본 ${copied}건 · 변환 ${made}건 -> site/pptx/`);
+console.log(`
+PPTX 준비 완료: 원본 ${copied}건 · 변환 ${made}건 -> ${path.relative(ROOT, OUT)}`);

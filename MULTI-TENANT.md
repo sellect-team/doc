@@ -1,254 +1,103 @@
-# 하위 URL로 다른 조직 문서 시스템 추가하기
+# 하위 URL로 다른 조직 문서 시스템 운영하기
 
-같은 저장소·같은 코드로 **조직마다 별도 문서 포털**을 하위 URL에 올리는 방법이다.
-첫 적용 대상은 **소버린즈 문서관리 시스템**(`/doc/sovereigns/`)이며, 기능은 세일링스톤 포털과 동일하다.
+같은 저장소·같은 코드로 **조직마다 별도 문서 포털**을 하위 URL에 올린다.
+첫 적용 대상은 **소버린즈 문서관리 시스템**(`/doc/sovereigns/`)이고, 2026-08-28에 실제로 붙였다.
 
 ```
-https://sellect-team.github.io/doc/              세일링스톤 세일즈 그룹 문서 시스템 (기존)
-https://sellect-team.github.io/doc/sovereigns/   소버린즈 문서관리 시스템 (새로 추가)
+https://sellect-team.github.io/doc/              세일링스톤 세일즈 그룹 문서 시스템
+https://sellect-team.github.io/doc/sovereigns/   소버린즈 문서관리 시스템
 ```
 
-문서 작성 규칙([AUTHORING.md](AUTHORING.md))·변환 파이프라인·PPT 다운로드는 **그대로 공유**한다.
-조직마다 다른 것은 **문서 폴더**와 **표시할 이름**뿐이다.
+문서 **규격**([AUTHORING.md](AUTHORING.md))·변환 파이프라인·PDF/PPT 생성은 그대로 공유한다.
+조직마다 다른 것은 **문서 폴더 · 표시 문구 · 디자인 테마** 셋뿐이다.
+소버린즈 문서의 디자인 기준은 [SOVEREIGNS-DESIGN.md](SOVEREIGNS-DESIGN.md)에 따로 있다.
 
 ---
 
-## 1. 현재 구조 (바꾸기 전)
+## 1. 폴더 구조
 
 ```
-docs/                     원본 문서 (카테고리 폴더 = company / solutions / proposals / reports)
-  categories.json         카테고리 이름표
-  order.json              메인 목록 기본 정렬
-scripts/
-  build.mjs               docs/ 스캔 -> site/data/docs.json + site/docs/ 복사 + 단일 HTML
-  make-pdfs.mjs           PDF 생성 -> site/pdf/
-  make-pptx.mjs           PPT 생성 -> site/pptx/
-  check-overflow.mjs      슬라이드 전수검사
-  audit.mjs               HTML 점검 (여백·잘림·폰트)
-site/
-  index.html              문서 목록      viewer.html  뷰어
-  reports.html            작업 리포트    guide.html   작성 지침
-  assets/{app,reports,viewer,gate,live}.js, style.css
-.github/workflows/deploy.yml   빌드 -> 전수검사 -> PDF -> PPT -> Pages 배포
+docs/                      세일링스톤 문서 (기존)
+  tenant.json              조직 설정
+docs-sovereigns/           소버린즈 문서
+  tenant.json  categories.json  order.json
+  company/  proposals/  reports/
+  _template/               문서 템플릿 (_로 시작해 빌드가 건너뜀)
+site/                      세일링스톤 포털 (화면 HTML 원본 + 공용 assets)
+  assets/theme-sovereigns.css   조직 테마 (토큰만 덮어씀)
+site/sovereigns/           소버린즈 포털 - 빌드가 통째로 생성. git에 넣지 않는다
 ```
 
-빌드 산출물(`site/data`, `site/docs`, `site/pdf`, `site/pptx`, `site/standalone`)은 `.gitignore`에 있고
-CI가 매번 새로 만든다.
+`site/sovereigns/`의 `index/viewer/reports/guide.html`은 **빌드가 상위 `site/*.html`을 읽어 만든다.**
+`assets/` 경로만 `../assets/`로 바꾸고, 제목·테마 링크·웹폰트·잠금 화면 정보를 끼워 넣는다.
+따라서 화면 코드(JS·CSS)는 한 벌만 유지되고, 상위 화면을 고치면 두 포털에 함께 반영된다.
 
----
+## 2. 조직 설정 - tenant.json
 
-## 2. 설계 방침
+`docs-<조직>/tenant.json`이 그 조직의 모든 표시 문구를 갖는다.
 
-**조직 폴더를 나란히 두고, 빌드를 조직별로 두 번 돌린다.** 코드는 한 벌만 유지한다.
+| 키 | 뜻 |
+| --- | --- |
+| `id` | 조직 식별자 |
+| `base` | 하위 URL 경로. 빈 문자열이면 최상위(`site/`) |
+| `siteTitle` `eyebrow` `heroLine1` `heroLine2` `heroDesc` | 목록 화면 문구 |
+| `gateTitle` `footerMark` | 잠금 화면 제목과 하단 마크 |
+| `theme` | `site/assets/theme-<값>.css`를 추가로 불러온다 (없으면 생략) |
+| `accent` `gateBg` | 잠금 화면 강조색·배경색 |
+| `fontLinks` | `<head>`에 추가할 웹폰트 링크 배열 |
+| `brandFont` `weightBold` | 검증기(validate.mjs)의 폰트·굵기 경고 기준 |
 
-```
-docs/                  세일링스톤 (기존 그대로)
-docs-sovereigns/       소버린즈 (새로 만듦, 구조 동일)
-site/                  세일링스톤 포털 (기존 그대로)
-site/sovereigns/       소버린즈 포털 (HTML 4장만, assets는 상위 것을 함께 씀)
-```
+빌드는 이 값을 `data/docs.json`의 `tenant`에도 넣고, `app.js`가 목록 화면 제목·히어로 문구를 여기서 채운다.
 
-이렇게 하는 이유:
+## 3. 명령 - `--tenant` 인자
 
-- **URL이 깔끔하다** — 쿼리 파라미터가 아니라 진짜 하위 경로다.
-- **코드 중복이 없다** — `site/sovereigns/*.html`이 `../assets/`를 참조하므로 JS·CSS는 한 벌이다.
-- **서로 영향을 주지 않는다** — 한쪽 문서를 고쳐도 다른 쪽 빌드는 그대로다.
-- **기존 URL이 안 바뀐다** — 이미 공유한 링크가 살아 있다.
-
----
-
-## 3. 작업 순서
-
-### 3-1. 조직 설정 파일 만들기
-
-조직마다 다른 값만 모아 둔다. 코드가 이 파일을 읽어 제목·문구를 바꾼다.
-
-`docs/tenant.json` (세일링스톤)
-
-```json
-{
-  "id": "sailingstone",
-  "base": "",
-  "siteTitle": "세일링스톤 세일즈 그룹 문서 시스템",
-  "eyebrow": "Sailingstone Sales Group",
-  "heroLine1": "세일링스톤 세일즈 그룹",
-  "heroLine2": "문서 시스템.",
-  "heroDesc": "회사소개서부터 제안서까지 - 언제나 최신 버전으로 열람하고 PDF로 받아가세요.",
-  "gateTitle": "세일링스톤 <b>세일즈 그룹</b><br>문서 시스템",
-  "footerMark": "SAILINGSTONE"
-}
-```
-
-`docs-sovereigns/tenant.json` (소버린즈)
-
-```json
-{
-  "id": "sovereigns",
-  "base": "sovereigns",
-  "siteTitle": "소버린즈 문서관리 시스템",
-  "eyebrow": "Sovereigns",
-  "heroLine1": "소버린즈",
-  "heroLine2": "문서관리 시스템.",
-  "heroDesc": "프로젝트 문서를 한곳에서 최신 버전으로 열람하고 PDF·PPT로 받아가세요.",
-  "gateTitle": "소버린즈<br><b>문서관리 시스템</b>",
-  "footerMark": "SOVEREIGNS"
-}
-```
-
-### 3-2. 문서 폴더 만들기
-
-```
-docs-sovereigns/
-  tenant.json
-  categories.json        예: { "proposals": "제안서", "reports": "작업 리포트" }
-  order.json             { "docs": [] }  (문서를 넣으면서 채운다)
-  proposals/             문서 HTML을 여기에
-  reports/
-```
-
-`categories.json`의 키가 곧 폴더 이름이다. 필요한 카테고리만 만들면 된다.
-
-### 3-3. 빌드 스크립트를 조직 인자로 받게 고치기
-
-`scripts/build.mjs` 상단의 경로 상수를 인자로 바꾼다.
-
-```js
-// 조직 선택: node scripts/build.mjs [조직폴더]   (생략하면 docs)
-const TENANT_DIR = process.argv[2] || "docs";
-const DOCS = path.join(ROOT, TENANT_DIR);
-const tenant = JSON.parse(fs.readFileSync(path.join(DOCS, "tenant.json"), "utf8"));
-const SITE = path.join(ROOT, "site", tenant.base);   // base가 ""면 site/
-```
-
-`OUT_DOCS` `OUT_DATA` `OUT_VERSIONS`는 `SITE` 기준이라 자동으로 따라간다.
-`docs.json`을 쓸 때 `tenant` 값도 함께 넣어 두면 화면에서 제목·문구를 꺼내 쓸 수 있다.
-
-```js
-fs.writeFileSync(path.join(OUT_DATA, "docs.json"), JSON.stringify({
-  generated: new Date().toISOString(),
-  tenant, categories, docs,
-}, null, 2));
-```
-
-`make-pdfs.mjs` `make-pptx.mjs` `check-overflow.mjs` `audit.mjs`도 같은 방식으로
-첫 인자를 받아 `SITE` / `DOCS`를 정하게 고친다.
-
-### 3-4. 포털 화면 만들기
-
-`site/index.html` `viewer.html` `reports.html` `guide.html`을 `site/sovereigns/`로 복사하고
-**assets 경로만 상위로** 바꾼다.
-
-```html
-<!-- site/sovereigns/index.html -->
-<link rel="stylesheet" href="../assets/style.css">
-<script src="../assets/gate.js"></script>
-<script src="../assets/live.js"></script>
-…
-<script src="../assets/app.js"></script>
-```
-
-제목·문구는 하드코딩하지 말고 `docs.json`의 `tenant`에서 읽어 채운다.
-`site/assets/app.js` 맨 앞에 아래를 넣으면 두 포털이 같은 파일을 쓰면서 각자 이름을 갖는다.
-
-```js
-const t = data.tenant || {};
-if (t.siteTitle) document.title = t.siteTitle;
-const set = (sel, html) => { const el = document.querySelector(sel); if (el && html) el.innerHTML = html; };
-set(".hero .eyebrow", t.eyebrow);
-set(".hero h1", `${t.heroLine1}<br><span class="grad">${t.heroLine2}</span>`);
-set(".hero p", t.heroDesc);
-```
-
-`data/docs.json` `pdf/…` `pptx/…` 같은 경로는 **상대 경로 그대로** 두면 각 포털의 자기 폴더를 가리킨다.
-
-### 3-5. 게이트(비밀번호) 처리
-
-비밀번호는 **0401로 동일**하다. `site/assets/gate.js`를 그대로 쓰되 두 가지만 본다.
-
-- **세션 키**: 현재 `var KEY = "ss_gate_until"` 하나다. 그대로 두면 한 번 입력으로 두 포털이 함께 열린다.
-  같은 회사 사람이 둘 다 보는 상황이면 이 편이 편하다.
-  따로 받고 싶으면 `var KEY = "gate_until_" + (location.pathname.split("/")[2] || "root");` 로 바꾼다.
-- **잠금 화면 문구**: 62행의 제목이 하드코딩돼 있다. `docs.json`을 읽기 전에 뜨는 화면이라
-  간단히 경로로 판단하게 한다.
-
-```js
-var isSov = location.pathname.indexOf("/sovereigns/") !== -1;
-var title = isSov ? "소버린즈<br><b>문서관리 시스템</b>"
-                  : "세일링스톤 <b>세일즈 그룹</b><br>문서 시스템";
-```
-
-> 이 게이트는 화면을 가리는 커튼이다. GitHub Pages는 정적 호스팅이라
-> 파일 URL을 직접 아는 사람까지 막지는 못한다. **공개해도 되는 문서만 올린다**는 전제는 그대로다.
-
-### 3-6. CI에 조직 하나 더 추가
-
-`.github/workflows/deploy.yml`의 빌드 단계들을 조직별로 두 번 돌린다.
-
-```yaml
-      - name: 사이트 데이터 빌드 (세일링스톤)
-        run: node scripts/build.mjs docs
-
-      - name: 사이트 데이터 빌드 (소버린즈)
-        run: node scripts/build.mjs docs-sovereigns
-
-      - name: 슬라이드 전수검사
-        run: |
-          node scripts/check-overflow.mjs docs
-          node scripts/check-overflow.mjs docs-sovereigns
-
-      - name: PDF 생성
-        run: |
-          node scripts/make-pdfs.mjs docs
-          node scripts/make-pdfs.mjs docs-sovereigns
-
-      - name: PPT 생성
-        run: |
-          npm install pptxgenjs
-          node scripts/make-pptx.mjs docs
-          node scripts/make-pptx.mjs docs-sovereigns
-```
-
-### 3-7. .gitignore 추가
-
-```
-site/sovereigns/data/
-site/sovereigns/docs/
-site/sovereigns/pdf/
-site/sovereigns/pptx/
-site/sovereigns/standalone/
-```
-
----
-
-## 4. 확인 절차
-
-로컬에서 순서대로 돌려 본다.
+모든 스크립트가 `--tenant <폴더>`를 받는다. **생략하면 예전과 똑같이** `docs/` + `site/`로 동작한다.
 
 ```bash
-node scripts/build.mjs docs-sovereigns
-node scripts/check-overflow.mjs docs-sovereigns
-node scripts/audit.mjs
+node scripts/build.mjs           --tenant docs-sovereigns
+node scripts/check-overflow.mjs  --tenant docs-sovereigns
+node scripts/make-pdfs.mjs       --tenant docs-sovereigns
+node scripts/make-pptx.mjs       --tenant docs-sovereigns
+node scripts/audit.mjs           --tenant docs-sovereigns
+```
+
+`package.json`에 단축 명령도 있다: `npm run build:sov` `check:sov` `pdf:sov` `pptx:sov`.
+
+문서 경로는 두 가지로 나뉜다. `docs.json`의 `file`은 **포털 기준**(`docs/<카테고리>/<파일>`)이고,
+`src`는 **저장소 기준**(`docs-sovereigns/<카테고리>/<파일>`)이다. git 이력 조회와 원본 PPTX 탐색은 `src`를 쓴다.
+
+## 4. 게이트(비밀번호)
+
+비밀번호는 두 포털 모두 동일하고 세션 키도 하나(`ss_gate_until`)라 한 번 입력하면 둘 다 열린다.
+잠금 화면 문구·색은 빌드가 심어 준 `window.__TENANT`를 `gate.js`가 읽어 쓴다.
+
+> 이 게이트는 화면을 가리는 커튼이다. GitHub Pages는 정적 호스팅이라 파일 URL을 직접 아는 사람까지
+> 막지 못한다. **공개해도 되는 문서만 올린다**는 전제는 그대로다.
+
+## 5. 배포
+
+`.github/workflows/deploy.yml`이 빌드·전수검사·PDF·PPT 단계를 조직마다 한 번씩 돌린 뒤 `site/`를 통째로 올린다.
+조직을 하나 더 붙일 때는 문서 폴더와 `tenant.json`을 만들고, 워크플로 각 단계에 `--tenant` 줄을 하나씩 추가하면 된다.
+`.gitignore`에 그 조직의 산출물 폴더(`site/<base>/`)도 추가한다.
+
+## 6. 확인 절차
+
+```bash
+node scripts/build.mjs
+node scripts/build.mjs --tenant docs-sovereigns
+node scripts/check-overflow.mjs --tenant docs-sovereigns
 npx http-server site -p 8787 -c-1
 ```
 
-- `http://localhost:8787/` — 세일링스톤 포털이 그대로 뜨는지 (기존이 깨지지 않았는지 먼저 확인)
-- `http://localhost:8787/sovereigns/` — 소버린즈 포털, 제목·문구가 바뀌었는지
-- 비밀번호 0401로 들어가지는지, 문서 보기·HTML·PPT·PDF 버튼이 각자 자기 파일을 받는지
-- 뷰어에서 `?doc=…&p=3` 딥링크가 동작하는지
+- `http://localhost:8787/` - 세일링스톤 포털이 그대로인지 **먼저** 확인
+- `http://localhost:8787/sovereigns/` - 제목·문구·테마가 바뀌었는지
+- 비밀번호 0401 입장, 문서 보기·HTML·PPT·PDF 버튼이 각자 자기 파일을 받는지
+- 뷰어 딥링크 `?doc=…&p=3` 동작 여부
 
-배포 후에는 두 URL을 모두 눌러 보고, **기존 URL이 그대로 살아 있는지**를 반드시 확인한다.
+## 7. 주의할 점
 
----
-
-## 5. 주의할 점
-
-- **기존 것을 먼저 지킨다.** `build.mjs`를 고칠 때 인자를 생략하면 예전과 똑같이 동작해야 한다
-  (`process.argv[2] || "docs"`). 세일링스톤 포털이 깨지면 안 된다.
-- **문서 규칙은 공유한다.** 소버린즈 문서도 [AUTHORING.md](AUTHORING.md)를 그대로 따른다
-  (16:9 고정 캔버스, SUIT 2종, slate/teal, 표준 표지, PPT 변환 고려).
-- **작업 리포트는 `reports` 카테고리**로 만든다. `build.mjs`가 `kind: "report"`로 표시해
-  메인 목록에서 빼고 리포트 탭에만 띄운다.
-- **문서 안 푸터 문구**(`SAILINGSTONE`)는 문서마다 하드코딩돼 있다. 소버린즈 문서는
-  `tenant.json`의 `footerMark` 값으로 직접 적는다.
-- **`_source/` 폴더**에 원본 PPTX를 두면 PPT 다운로드가 원본을 그대로 제공한다.
-  네이티브 HTML 문서는 도형으로 변환된다.
+- **기존 것을 먼저 지킨다.** 인자를 생략했을 때의 동작이 예전과 같아야 한다.
+- **문서 규칙은 공유, 디자인은 분리.** 소버린즈 문서는 SUIT·slate/teal 대신 [SOVEREIGNS-DESIGN.md](SOVEREIGNS-DESIGN.md)를 따른다.
+- 문서 안 푸터 마크(`SOVEREIGNS`)는 문서마다 하드코딩한다. `tenant.json`의 `footerMark`와 맞춘다.
+- 작업 리포트는 `reports` 카테고리에 두면 메인 목록에서 빠지고 리포트 탭에만 뜬다.
+- `_source/` 폴더에 원본 PPTX를 두면 PPT 다운로드가 원본을 그대로 제공한다.

@@ -4,7 +4,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-export function validateDoc(html, filename, docDir) {
+// tenant: 조직별로 다른 브랜드 폰트·굵기 규칙 (tenant.json)
+export function validateDoc(html, filename, docDir, tenant = {}) {
+  const brandFont = tenant.brandFont || "SUIT";        // 문서에 반드시 실려야 하는 폰트
+  const weightBold = tenant.weightBold === true;       // true면 font-weight로 굵게 해도 됨
   const errors = [];
   const warnings = [];
 
@@ -74,7 +77,8 @@ export function validateDoc(html, filename, docDir) {
   }
   for (const m of html.matchAll(/<link[^>]*rel=["']stylesheet["'][^>]*>/gi)) {
     const href = m[0].match(/href=["']([^"']+)["']/i)?.[1] || "";
-    if (/^https?:/i.test(href) && !/(pretendard|sun-typeface|SUIT)/i.test(href)) {
+    // 웹폰트만 예외 (Pretendard·SUIT·Google Fonts)
+    if (/^https?:/i.test(href) && !/(pretendard|sun-typeface|SUIT|fonts\.googleapis\.com|fonts\.gstatic\.com)/i.test(href)) {
       errors.push(`외부 스타일시트 금지: ${href} (폰트는 @font-face로 불러오세요)`);
     }
   }
@@ -102,12 +106,12 @@ export function validateDoc(html, filename, docDir) {
   }
   // PPTX에서 변환한 이미지 기반 문서는 본문 텍스트가 없어 폰트 검사 대상이 아니다
   const isConverted = /<meta\s+name=["']doc-source["']/i.test(html);
-  if (!isConverted && !/SUIT/i.test(html)) {
-    warnings.push("SUIT 폰트가 없음 - 브랜드 폰트를 @font-face로 불러오세요 (AUTHORING.md 7절)");
+  if (!isConverted && !html.toLowerCase().includes(brandFont.toLowerCase())) {
+    warnings.push(`${brandFont} 폰트가 없음 - 브랜드 폰트를 불러오세요 (AUTHORING.md 7절)`);
   }
   // 굵기용 폰트가 따로 있으므로 font-weight로 굵게 하면 가짜 굵게가 만들어진다
   const heavy = noComments.match(/font-weight:\s*(?:[5-9]00|bold(?:er)?)/gi);
-  if (heavy) {
+  if (heavy && !weightBold) {
     warnings.push(`font-weight로 굵게 지정한 곳 ${heavy.length}건 - var(--fx) 패밀리를 쓰세요 (가짜 굵게 방지)`);
   }
 
@@ -141,7 +145,7 @@ export function validateDoc(html, filename, docDir) {
 }
 
 // 모든 문서 검증 후 리포트 출력. 오류가 있으면 exit 1.
-export function validateAll(docsDir) {
+export function validateAll(docsDir, tenant = {}, dirName = "docs") {
   let errCount = 0;
   for (const catDir of fs.readdirSync(docsDir, { withFileTypes: true })) {
     if (!catDir.isDirectory() || catDir.name.startsWith("_")) continue;
@@ -149,9 +153,9 @@ export function validateAll(docsDir) {
       if (!f.endsWith(".html") || f.startsWith("_")) continue;
       const catPath = path.join(docsDir, catDir.name);
       const html = fs.readFileSync(path.join(catPath, f), "utf8");
-      const { errors, warnings } = validateDoc(html, f, catPath);
+      const { errors, warnings } = validateDoc(html, f, catPath, tenant);
       if (errors.length || warnings.length) {
-        console.log(`\ndocs/${catDir.name}/${f}`);
+        console.log(`\n${dirName}/${catDir.name}/${f}`);
         errors.forEach((e) => console.log(`  ✗ [오류] ${e}`));
         warnings.forEach((w) => console.log(`  ! [경고] ${w}`));
       }

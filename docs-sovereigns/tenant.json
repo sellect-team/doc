@@ -1,0 +1,21 @@
+{
+  "id": "sovereigns",
+  "base": "sovereigns",
+  "siteTitle": "소버린즈 문서관리 시스템",
+  "eyebrow": "Sovereigns · Document System",
+  "heroLine1": "소버린즈",
+  "heroLine2": "문서관리 시스템.",
+  "heroDesc": "제안서부터 요구사항정의서까지 - 언제나 최신 버전으로 열람하고 PDF·PPT로 받아가세요.",
+  "gateTitle": "소버린즈<br><b>문서관리 시스템</b>",
+  "footerMark": "SOVEREIGNS",
+  "theme": "sovereigns",
+  "accent": "#E7FF6E",
+  "gateBg": "#1E1B22",
+  "brandFont": "Plus Jakarta Sans",
+  "weightBold": true,
+  "fontLinks": [
+    "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>",
+    "<link href=\"https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap\" rel=\"stylesheet\">"
+  ],
+  "docFormat": "strict"
+}

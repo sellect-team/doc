@@ -9,7 +9,7 @@
   <script src="assets/gate.js"></script>
   <script src="assets/live.js"></script>
   <style>
-    body { overflow: hidden; background: #f5f5f7; }
+    body { overflow: hidden; background: var(--viewer-bg); }
     .viewer { display: grid; grid-template-rows: var(--nav-h) 1fr; height: 100vh; }
 
     /* ── 상단 바 ── */
@@ -94,7 +94,7 @@
       position: relative; min-width: 0; min-height: 0;
       display: flex; align-items: center; justify-content: center;
       padding: 28px 84px;
-      background: radial-gradient(1200px 600px at 50% -10%, #ffffff 0%, #f5f5f7 60%);
+      background: radial-gradient(1200px 600px at 50% -10%, var(--viewer-top) 0%, var(--viewer-bg) 60%);
     }
     .frame-wrap {
       position: relative;

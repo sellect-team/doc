@@ -7,16 +7,25 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+// 검사할 조직 폴더 (--tenant docs-sovereigns, 생략하면 docs)
+function tenantDir() {
+  const i = process.argv.indexOf("--tenant");
+  const eq = process.argv.find((a) => a.startsWith("--tenant="));
+  const dir = i !== -1 ? process.argv[i + 1] : eq ? eq.slice("--tenant=".length) : "docs";
+  return path.join(ROOT, dir);
+}
 const GAP_STD = 2.6;      // 박스 가로 간격 기준(rem) - AUTHORING.md 9절
 const GAP_TOL = 0.25;     // 허용 오차(rem)
 
 function nativeDocs() {
   const out = [];
-  for (const cat of fs.readdirSync(path.join(ROOT, "docs"), { withFileTypes: true })) {
+  const DOCS = tenantDir();
+  for (const cat of fs.readdirSync(DOCS, { withFileTypes: true })) {
     if (!cat.isDirectory() || cat.name.startsWith("_")) continue;
-    for (const f of fs.readdirSync(path.join(ROOT, "docs", cat.name))) {
+    for (const f of fs.readdirSync(path.join(DOCS, cat.name))) {
       if (!f.endsWith(".html") || f.startsWith("_")) continue;
-      const p = path.join(ROOT, "docs", cat.name, f);
+      const p = path.join(DOCS, cat.name, f);
       // 이미지 변환 문서는 검사 대상이 아니다 (본문이 그림 한 장)
       if (/name="doc-source"/.test(fs.readFileSync(p, "utf8"))) continue;
       out.push(p);
@@ -147,9 +156,15 @@ function inspect(cfg) {
 }
 
 // ── 실행 ──
-const targets = process.argv.slice(2).length
-  ? process.argv.slice(2).map((f) => path.resolve(f))
-  : nativeDocs();
+// 파일을 직접 지정하면 그 파일만, 없으면 조직 폴더의 네이티브 문서 전부
+const files = [];
+for (let i = 2; i < process.argv.length; i++) {
+  const a = process.argv[i];
+  if (a === "--tenant") { i++; continue; }
+  if (a.startsWith("--tenant=")) continue;
+  files.push(a);
+}
+const targets = files.length ? files.map((f) => path.resolve(f)) : nativeDocs();
 const ROUNDS = Number(process.env.AUDIT_ROUNDS || 1);
 
 const browser = await chromium.launch();

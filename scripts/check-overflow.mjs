@@ -1,17 +1,17 @@
 // 슬라이드 전수검사: 요소가 슬라이드 영역(1280x720)을 벗어나거나
 // overflow:hidden 컨테이너 안에서 잘리는 곳을 모두 찾아 보고한다.
-// 선행: node scripts/build.mjs  |  사용법: node scripts/check-overflow.mjs [문서ID]
+// 선행: node scripts/build.mjs  |  사용법: node scripts/check-overflow.mjs [--tenant docs-sovereigns] [문서ID]
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { pathToFileURL } from "node:url";
 import { chromium } from "playwright";
+import { resolveTenant } from "./tenant.mjs";
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SITE = path.join(ROOT, "site");
+const { siteDir: SITE, rest } = resolveTenant();
 const W = 1280, H = 720, TOL = 2; // 허용 오차 px
 
 const data = JSON.parse(fs.readFileSync(path.join(SITE, "data", "docs.json"), "utf8"));
-const only = process.argv[2];
+const only = rest[0];
 const docs = data.docs.filter((d) => !only || d.id === only);
 
 const browser = await chromium.launch();
@@ -52,6 +52,17 @@ for (const doc of docs) {
         if ((st.overflow === "hidden" || st.overflowX === "hidden") &&
             el.scrollWidth > el.clientWidth + TOL) {
           out.push(`내부 가로 잘림 ${el.scrollWidth - el.clientWidth}px: ${label(el)}`);
+        }
+      }
+      // 3) 본문이 꼬리말 영역을 침범 (슬라이드 안에는 있지만 겹쳐 보이는 경우)
+      const foot = cur.querySelector(".s-foot");
+      if (foot) {
+        const fr = foot.getBoundingClientRect();
+        for (const el of cur.querySelectorAll(".body > *, .body table, .body .grid > *")) {
+          const r = el.getBoundingClientRect();
+          if (r.height && r.bottom > fr.top + TOL) {
+            out.push(`꼬리말과 ${Math.round(r.bottom - fr.top)}px 겹침: ${label(el)}`);
+          }
         }
       }
       return [...new Set(out)];

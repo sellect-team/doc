@@ -11,6 +11,8 @@
     document.getElementById("logoutBtn").hidden = false;
   }
 
+  if (data.tenant?.siteTitle) document.title = `작업 리포트 - ${data.tenant.siteTitle}`;
+
   const grid = document.getElementById("grid");
   const reports = data.docs
     .filter((d) => d.kind === "report")

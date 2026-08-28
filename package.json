@@ -9,7 +9,11 @@
     "pdf": "node scripts/make-pdfs.mjs",
     "serve": "npx http-server site -p 8123 -c-1",
     "pptx": "node scripts/make-pptx.mjs",
-    "pptx:diff": "node scripts/pptx-diff.mjs"
+    "pptx:diff": "node scripts/pptx-diff.mjs",
+    "build:sov": "node scripts/build.mjs --tenant docs-sovereigns",
+    "pdf:sov": "node scripts/make-pdfs.mjs --tenant docs-sovereigns",
+    "pptx:sov": "node scripts/make-pptx.mjs --tenant docs-sovereigns",
+    "check:sov": "node scripts/check-overflow.mjs --tenant docs-sovereigns"
   },
   "devDependencies": {
     "playwright": "^1.49.0",

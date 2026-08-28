@@ -10,6 +10,12 @@
     tenantId: "organizations",    // Directory (tenant) ID (조직 전용이면 해당 ID)
     domain: "sailingstone.io",    // 허용할 메일 도메인
   };
+  // 조직 정보 (하위 URL 포털은 빌드가 window.__TENANT를 심어 준다)
+  var T = window.__TENANT || {};
+  var GATE_TITLE = T.gateTitle || "세일링스톤 <b>세일즈 그룹</b><br>문서 시스템";
+  var GATE_MARK = T.footerMark || "SAILINGSTONE";
+  var GATE_ACCENT = T.accent || "#2DD4BF";
+  var GATE_BG = T.gateBg || "#0F172A";
   var KEY = "ss_gate_until";
   var SESSION_MIN = 30;
   var PW = String.fromCharCode(48, 52, 48, 49);
@@ -22,23 +28,23 @@
       "html.gate-lock body > *:not(#gateOv) { display: none !important; }",
       "#gateOv { position: fixed; inset: 0; z-index: 99999;",
       "  background: linear-gradient(rgba(148,163,184,0.05) 1px, transparent 1px),",
-      "    linear-gradient(90deg, rgba(148,163,184,0.05) 1px, transparent 1px), #0F172A;",
+      "    linear-gradient(90deg, rgba(148,163,184,0.05) 1px, transparent 1px), " + GATE_BG + ";",
       "  background-size: 44px 44px, 44px 44px, auto;",
       "  display: flex; align-items: center; justify-content: center;",
       "  font-family: 'Pretendard', -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif; }",
       "#gateOv .box { width: min(88vw, 400px); text-align: center; }",
       "#gateOv .lock { margin-bottom: 18px; }",
-      "#gateOv .lock svg { width: 40px; height: 40px; stroke: #2DD4BF; fill: none;",
+      "#gateOv .lock svg { width: 40px; height: 40px; stroke: " + GATE_ACCENT + "; fill: none;",
       "  stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }",
       "#gateOv h1 { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }",
-      "#gateOv h1 b { color: #2DD4BF; font-weight: 700; }",
+      "#gateOv h1 b { color: " + GATE_ACCENT + "; font-weight: 700; }",
       "#gateOv p { color: #64748B; font-size: 13px; margin-top: 8px; line-height: 1.5; }",
       "#gateOv .row { display: flex; gap: 8px; margin-top: 24px; }",
       "#gateOv input { flex: 1; background: rgba(30,41,59,0.85); border: 1px solid #334155;",
       "  border-radius: 12px; padding: 13px 16px; font-size: 16px; color: #fff;",
       "  outline: none; letter-spacing: 0.35em; text-align: center; }",
-      "#gateOv input:focus { border-color: #2DD4BF; }",
-      "#gateOv button { background: #2DD4BF; color: #0F172A; border: none; border-radius: 12px;",
+      "#gateOv input:focus { border-color: " + GATE_ACCENT + "; }",
+      "#gateOv button { background: " + GATE_ACCENT + "; color: " + GATE_BG + "; border: none; border-radius: 12px;",
       "  padding: 0 22px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; }",
       "#gateOv button:hover { background: #5EEAD4; }",
       "#gateOv .msbtn { width: 100%; margin-top: 24px; padding: 13px 0; display: flex;",
@@ -59,10 +65,10 @@
     ov.innerHTML =
       '<div class="box">' +
       '<div class="lock"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>' +
-      "<h1>세일링스톤 <b>세일즈 그룹</b><br>문서 시스템</h1>" +
+      "<h1>" + GATE_TITLE + "</h1>" +
       inner +
       '<div class="err" id="gateErr"></div>' +
-      '<div class="foot">SAILINGSTONE · INTERNAL USE ONLY</div>' +
+      '<div class="foot">' + GATE_MARK + ' · INTERNAL USE ONLY</div>' +
       "</div>";
     document.body.appendChild(ov);
     return ov;

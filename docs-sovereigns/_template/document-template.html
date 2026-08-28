@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>문서 제목</title>
+<meta name="doc-version" content="1.0">
+<meta name="doc-description" content="한 줄 요약 - 목록 카드에 그대로 보입니다">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   소버린즈 문서 규격 - Cake Equity 기준 디자인 시스템
+   16:9 고정 캔버스 / 라틴은 Plus Jakarta Sans·Inter, 한글은 Pretendard 폴백
+   채움은 바이올렛 하나뿐 · 카드는 그림자 대신 1px 테두리 · 다크는 덱당 1장
+   ============================================================ */
+:root{
+  --violet:#4823FF; --voltage:#7E78FF; --iris:#6D67FB;
+  --lilac:#EDE9FF; --peri:#D9D2FF; --chartreuse:#E7FF6E; --powder:#99CEFE;
+  --bone:#FAFAF8; --paper:#FFFFFF; --ink:#18161A; --carbon:#333333;
+  --slate:#898B91; --lavender:#9E99AB; --midnight:#1E1B22;
+  --fd:'Plus Jakarta Sans','Pretendard Variable',Pretendard,sans-serif;
+  --fu:'Inter','Pretendard Variable',Pretendard,sans-serif;
+  --pad:3.5rem;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:min(1.25vw,2.2222vh)}
+body{
+  margin:0; background:#E8E5F0; font-family:var(--fu);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-height:100vh; color:var(--ink); -webkit-font-smoothing:antialiased;
+  word-break:keep-all; /* 한글은 단어 단위로 줄바꿈 */
+}
+section.slide{
+  width:min(100vw,177.7778vh); height:min(56.25vw,100vh);
+  position:relative; overflow:hidden; background:var(--bone);
+  padding:2.9rem var(--pad) 2.2rem; display:flex; flex-direction:column;
+  font-size:1rem; line-height:1.5; letter-spacing:-0.001em;
+}
+.slide.tint{background:var(--lilac)}
+.slide.dark{background:var(--midnight); color:#FFFFFF}
+
+/* 머리말 */
+.s-head{margin-bottom:1.4rem}
+.eyebrow{font-weight:700; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
+.dark .eyebrow{color:var(--chartreuse)}
+h2.title{font-family:var(--fd); font-weight:800; font-size:2.25rem; letter-spacing:-0.032em; line-height:1.15; margin:0.5rem 0 0}
+.lead{font-weight:300; font-size:1.1rem; line-height:1.5; margin:0.65rem 0 0; max-width:62ch}
+.lead b{font-weight:600; color:var(--violet)}
+.dark .lead{color:#EDEAF2}
+.dark .lead b{color:var(--chartreuse)}
+
+/* 본문 */
+.body{flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center}
+.grid{display:grid; gap:1.2rem}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1.3rem 1.35rem}
+.card.lil{background:var(--lilac)}
+.dark .card{background:#26222C; border-color:#3A3542}
+.card h3{font-family:var(--fd); font-weight:800; font-size:1.1rem; letter-spacing:-0.02em; margin:0.45rem 0 0}
+.card p{font-size:0.9rem; line-height:1.55; color:var(--carbon); margin:0.5rem 0 0}
+.dark .card p{color:#C9C4D2}
+.card ul{margin:0.55rem 0 0; padding:0; list-style:none}
+.card li{position:relative; padding:0.28rem 0 0.28rem 0.9rem; font-size:0.88rem; color:var(--carbon); line-height:1.45}
+.card li::before{content:""; position:absolute; left:0; top:0.72rem; width:0.3rem; height:0.3rem; border-radius:50%; background:var(--violet)}
+.dark .card li{color:#C9C4D2}
+.dark .card li::before{background:var(--chartreuse)}
+.tag{display:inline-block; background:var(--lilac); color:var(--violet); font-weight:600; font-size:0.72rem; padding:0.18rem 0.68rem; border-radius:999px}
+.tag.gray{background:#F0EFF3; color:var(--slate)}
+.tag.ch{background:var(--chartreuse); color:var(--ink)}
+.tags{display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.7rem}
+.num{font-family:var(--fd); font-weight:800; font-size:2rem; letter-spacing:-0.04em; line-height:1; color:var(--violet)}
+.dark .num{color:var(--chartreuse)}
+.unit{font-size:0.76rem; color:var(--slate); margin-top:0.3rem}
+.dark .unit{color:#9E99AB}
+
+/* 표 */
+table{width:100%; border-collapse:separate; border-spacing:0; background:var(--paper);
+  border:1px solid var(--peri); border-radius:1.25rem; overflow:hidden; font-size:0.84rem}
+th,td{text-align:left; padding:0.55rem 0.85rem; border-bottom:1px solid var(--lilac); vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-weight:700; font-size:0.68rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--slate); white-space:nowrap}
+td.g{color:var(--slate)}
+td b{font-weight:600}
+td .tag{font-size:0.68rem}
+
+/* 꼬리말 */
+.s-foot{display:flex; justify-content:space-between; align-items:center;
+  font-size:0.7rem; letter-spacing:0.04em; color:var(--slate); padding-top:1rem}
+.dark .s-foot{color:#6F6A79}
+.s-foot .mark{font-family:var(--fd); font-weight:800; letter-spacing:-0.02em}
+
+/* 표지 */
+.cover{justify-content:space-between; padding:3.4rem var(--pad) 3rem}
+.brand{display:flex; align-items:center; gap:0.6rem; font-family:var(--fd); font-weight:800; font-size:1.1rem; letter-spacing:-0.04em}
+.brand .mk{width:1.85rem; height:1.85rem; border-radius:50%; background:var(--violet); color:#FFFFFF;
+  display:grid; place-items:center; font-family:var(--fd); font-weight:800; font-size:0.85rem}
+.cov-mid{display:grid; grid-template-columns:1.35fr 1fr; gap:3.4rem; align-items:center}
+.cov-card{padding:1.5rem 1.6rem}
+.cov-rows{margin-top:0.9rem}
+.cov-rows .r{display:flex; justify-content:space-between; align-items:baseline;
+  padding:0.55rem 0; border-bottom:1px solid var(--lilac); font-size:0.88rem; color:var(--carbon)}
+.cov-rows .r:last-child{border-bottom:0}
+.cov-rows b{font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:-0.03em; color:var(--ink)}
+.cover h1{font-family:var(--fd); font-weight:800; font-size:3.5rem; letter-spacing:-0.04em; line-height:1.03; margin:0.9rem 0 0}
+.cover h1 em{font-style:normal; color:var(--violet)}
+.cover .sub{font-weight:300; font-size:1.25rem; margin-top:1rem}
+.cover .meta{display:flex; gap:2.4rem; align-items:flex-end}
+.cover .meta div{font-size:0.78rem; color:var(--slate)}
+.cover .meta b{display:block; font-family:var(--fd); font-weight:800; font-size:0.95rem; letter-spacing:-0.02em; color:var(--ink); margin-bottom:0.2rem}
+
+/* 목차 */
+.toc{display:grid; grid-template-columns:1fr 1fr; gap:0 2.4rem}
+.toc .it{display:flex; align-items:baseline; gap:0.9rem; padding:0.8rem 0; border-bottom:1px solid var(--peri)}
+.toc .no{font-family:var(--fd); font-weight:800; font-size:0.82rem; color:var(--violet); width:1.7rem; flex:none}
+.toc .tt{font-weight:600; font-size:1.02rem}
+.toc .dd{font-size:0.8rem; color:var(--slate); margin-left:auto}
+
+/* 파트 전환 */
+.part{justify-content:center; align-items:flex-start}
+.part .pno{font-family:var(--fd); font-weight:800; font-size:0.82rem; letter-spacing:0.06em; color:var(--violet)}
+.part h2{font-family:var(--fd); font-weight:800; font-size:3.2rem; letter-spacing:-0.04em; line-height:1.06; margin:0.85rem 0 0}
+.part p{font-weight:300; font-size:1.15rem; margin-top:0.9rem; max-width:54ch}
+.part-list{display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1.8rem}
+.part-list span{background:rgba(255,255,255,0.72); border:1px solid var(--peri); border-radius:999px;
+  padding:0.35rem 0.95rem; font-size:0.85rem; color:var(--carbon)}
+
+/* 흐름 */
+.flow{display:flex; align-items:stretch; gap:0.7rem}
+.flow .step{flex:1; background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1rem 1rem 1.1rem}
+.flow .step .k{font-weight:700; font-size:0.66rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
+.flow .step h4{font-family:var(--fd); font-weight:800; font-size:0.98rem; letter-spacing:-0.02em; margin:0.4rem 0 0}
+.flow .step p{font-size:0.8rem; color:var(--carbon); margin:0.4rem 0 0; line-height:1.5}
+.flow .arw{align-self:center; color:var(--lavender); font-size:0.9rem; flex:none}
+.dark .flow .step{background:#26222C; border-color:#3A3542}
+.dark .flow .step .k{color:var(--chartreuse)}
+.dark .flow .step p{color:#C9C4D2}
+
+/* 대시보드 구성안 */
+.mock{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:0.9rem;
+  display:flex; flex-direction:column; gap:0.6rem; height:100%}
+.mock .kpis{display:grid; grid-template-columns:repeat(5,1fr); gap:0.5rem}
+.mock .kpi{background:var(--bone); border:1px solid var(--peri); border-radius:0.7rem; padding:0.5rem 0.65rem}
+.mock .kpi b{display:block; font-family:var(--fd); font-weight:800; font-size:1.25rem; letter-spacing:-0.03em; line-height:1}
+.mock .kpi span{font-size:0.64rem; color:var(--slate)}
+.mock .low{display:grid; grid-template-columns:2.05fr 1fr; gap:0.6rem; flex:1; min-height:0}
+.mock .map{background:var(--lilac); border:1px solid var(--peri); border-radius:0.7rem; position:relative; overflow:hidden}
+.mock .map svg{width:100%; height:100%; display:block}
+.mock .legend{position:absolute; left:0.6rem; top:0.6rem; display:flex; gap:0.5rem}
+.mock .legend span{background:rgba(255,255,255,0.9); border:1px solid var(--peri); border-radius:999px;
+  font-size:0.6rem; padding:0.15rem 0.5rem; color:var(--carbon)}
+.mock .holes{position:absolute; left:0.6rem; right:0.6rem; bottom:0.6rem; display:flex; gap:0.35rem}
+.mock .holes span{flex:1; text-align:center; background:rgba(255,255,255,0.9); border:1px solid var(--peri);
+  border-radius:0.5rem; font-size:0.6rem; padding:0.2rem 0; color:var(--slate)}
+.mock .holes span.on{background:var(--violet); border-color:var(--violet); color:#FFFFFF; font-weight:600}
+.mock .side{display:flex; flex-direction:column; gap:0.5rem; min-height:0}
+.mock .panel{background:var(--bone); border:1px solid var(--peri); border-radius:0.7rem; padding:0.55rem 0.65rem; flex:1}
+.mock .panel .h{font-weight:700; font-size:0.62rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--slate); margin-bottom:0.35rem}
+.mock .row{display:flex; align-items:center; gap:0.4rem; font-size:0.7rem; padding:0.16rem 0; color:var(--carbon)}
+.mock .dot{width:0.42rem; height:0.42rem; border-radius:50%; flex:none}
+.mock .bar{flex:1; height:0.32rem; background:#E4E1EA; border-radius:999px; overflow:hidden}
+.mock .bar i{display:block; height:100%; background:var(--violet); border-radius:999px}
+.mock .pct{font-size:0.66rem; color:var(--slate); width:2.1rem; text-align:right}
+.mock .cap{font-size:0.68rem; color:var(--slate); margin-left:auto}
+
+/* 자리표시 */
+.tbd{border:1px dashed var(--peri); border-radius:1.25rem; background:var(--paper);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.6rem; height:100%}
+.tbd .t{font-family:var(--fd); font-weight:800; font-size:1.25rem; letter-spacing:-0.03em; color:var(--lavender)}
+.tbd .d{font-size:0.88rem; color:var(--slate)}
+
+/* 맺음 */
+.end{justify-content:center}
+.end h2{font-family:var(--fd); font-weight:800; font-size:3rem; letter-spacing:-0.04em; line-height:1.08; margin:0}
+.end h2 em{font-style:normal; color:var(--violet)}
+.end p{font-weight:300; font-size:1.15rem; margin-top:1rem; max-width:52ch}
+.end .info{display:flex; gap:2.2rem; margin-top:2.2rem; font-size:0.82rem; color:var(--slate)}
+.end .info b{display:block; font-family:var(--fd); font-weight:800; font-size:0.92rem; color:var(--ink); letter-spacing:-0.02em; margin-bottom:0.15rem}
+</style>
+</head>
+<body>
+
+<!-- 표지 - 본 캔버스(밝음). 좌측 카피 + 우측 요약 카드 2단 -->
+<section class="slide cover" data-title="표지">
+  <div class="brand"><span class="mk">S</span>소버린즈</div>
+  <div class="cov-mid">
+    <div>
+      <div class="eyebrow">제안서 · Proposal</div>
+      <h1>문서 제목<br><em>강조 구절</em></h1>
+      <p class="sub">한 줄 설명입니다.</p>
+    </div>
+    <div class="card cov-card">
+      <div class="eyebrow">요약</div>
+      <div class="cov-rows">
+        <div class="r"><span>항목</span><b>값</b></div>
+        <div class="r"><span>항목</span><b>값</b></div>
+      </div>
+      <div class="tags"><span class="tag">키워드</span><span class="tag">키워드</span></div>
+    </div>
+  </div>
+  <div class="meta">
+    <div><b>수신처</b>제안 대상</div>
+    <div><b>2026. 08</b>작성일</div>
+    <div><b>소버린즈 주식회사</b>기획 · 디자인 · 개발</div>
+  </div>
+</section>
+
+<!-- 전환 - 라일락 워시 -->
+<section class="slide tint part" data-title="01 파트 제목">
+  <div class="pno">PART 01</div>
+  <h2>파트 이름</h2>
+  <p>이 파트에서 무엇을 다루는지 한 문장으로 씁니다.</p>
+  <div class="part-list"><span>다루는 항목</span><span>다루는 항목</span></div>
+</section>
+
+<!-- 본문 - 흰 카드 + 페리윙클 테두리 (grid는 g2/g3/g4) -->
+<section class="slide" data-title="본문 제목">
+  <div class="s-head">
+    <div class="eyebrow">01. 파트 이름</div>
+    <h2 class="title">본문 제목(명사형)</h2>
+    <p class="lead">결론을 먼저 쓰고 <b>핵심 구절</b>만 바이올렛으로 강조합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g3">
+      <div class="card"><span class="tag">라벨</span><h3>카드 제목</h3><p>설명 문장입니다.</p></div>
+      <div class="card"><span class="tag">라벨</span><h3>카드 제목</h3>
+        <ul><li>항목 하나</li><li>항목 둘</li></ul>
+      </div>
+      <div class="card lil"><span class="tag">라벨</span><h3>카드 제목</h3><p>라일락 카드는 보조 그룹에 씁니다.</p></div>
+    </div>
+  </div>
+  <div class="s-foot"><span>출처 · 대상 · 주석</span><span class="mark">SOVEREIGNS · 03</span></div>
+</section>
+
+<!-- 데이터 - 미드나잇. 덱당 한 장만 -->
+<section class="slide dark" data-title="데이터 제목">
+  <div class="s-head">
+    <div class="eyebrow">01. 파트 이름</div>
+    <h2 class="title">숫자로 말하는 한 장</h2>
+    <p class="lead">다크는 <b>덱당 한 장</b>, 샤르트뢰즈는 이 안에서만 씁니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g4">
+      <div class="card"><div class="num">12</div><div class="unit">단위 설명</div></div>
+      <div class="card"><div class="num">5</div><div class="unit">단위 설명</div></div>
+      <div class="card"><div class="num">4</div><div class="unit">단위 설명</div></div>
+      <div class="card"><div class="num">10</div><div class="unit">단위 설명</div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span>출처</span><span class="mark">SOVEREIGNS · 04</span></div>
+</section>
+
+<!-- 맺음 -->
+<section class="slide end" data-title="맺음">
+  <div class="eyebrow">맺음</div>
+  <h2>다음 단계를 말하는 문장<br><em>강조 구절</em></h2>
+  <p>부연 한 문장.</p>
+  <div class="info">
+    <div><b>소버린즈 주식회사</b>846-81-03834</div>
+    <div><b>문서</b>제목</div>
+    <div><b>작성</b>2026. 08</div>
+  </div>
+</section>
+
+</body>
+</html>
