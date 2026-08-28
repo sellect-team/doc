@@ -186,6 +186,16 @@
     if (e.key === "End") { e.preventDefault(); goto(total - 1); }
   });
 
+  // ── PPT 다운로드: 도형·텍스트 상자로 된 편집 가능한 PPTX ──
+  $("pptxBtn").onclick = async () => {
+    const head = await fetch(doc.pptx, { method: "HEAD" }).catch(() => null);
+    if (!head || !head.ok) { alert("PPT 파일이 아직 준비되지 않았습니다."); return; }
+    const a = document.createElement("a");
+    a.href = doc.pptx;
+    a.download = `${doc.title} v${doc.version}.pptx`;
+    a.click();
+  };
+
   // ── HTML 다운로드: 이미지가 내장된 단일 파일 ──
   $("htmlBtn").onclick = async () => {
     const res = await fetch(doc.html).catch(() => null);

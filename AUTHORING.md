@@ -375,7 +375,49 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 
 # 4부. 작업 절차
 
-## 16. 작업 리포트 (docs/reports)
+## 16. PPT 변환을 고려한 작성
+
+이 포털의 HTML 문서는 **진짜 PowerPoint 도형·텍스트 상자로 변환**되어 내려받을 수 있다
+(`scripts/html2pptx.mjs`). 이미지를 붙이는 방식이 아니라 배경·테두리는 도형으로, 글자는
+텍스트 상자로 옮기므로, 만들 때 몇 가지를 지키면 변환 품질이 크게 올라간다.
+
+### 지켜야 할 것
+
+- **도형 배경에 그라디언트를 쓰지 않는다.** 발표용 PPT에 그라디언트는 필요 없고,
+  PowerPoint 도형으로 정확히 옮겨지지도 않는다. 단색을 쓴다.
+- **색상 포인트가 필요하면 도형을 겹친다.** 예를 들어 둥근 카드 위쪽에 강조색 띠를 넣을 때
+  `border-top`으로 주면 모서리에서 라운드가 끊긴다. 카드를 `position: relative; overflow: hidden`
+  으로 두고 안에 띠 도형을 넣으면 라운드가 매끄럽게 이어지고, PPT에서도 상단만 둥근 도형
+  (`round2SameRect`)으로 정확히 재현된다.
+
+```css
+.card   { position: relative; overflow: hidden; border-radius: 0.9rem; }
+.accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
+          background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
+```
+```html
+<div class="card"><span class="accent"></span> … </div>
+```
+
+- **막대·게이지의 강조도 같은 방식**으로 만든다. 단색 막대 위에 다른 색 도형을 겹쳐 포인트를 준다.
+- **아이콘은 인라인 SVG**로 둔다. 도형으로는 옮길 수 없어 배경이 투명한 PNG로 자동 변환된다.
+  이모지를 쓰면 PPT에서 글꼴이 달라지므로 쓰지 않는다 (15절).
+- **글자는 요소 안에 직접 둔다.** 가상 요소(`::before`, `::after`)의 글자는 변환되지 않는다.
+  체크 표시 같은 것도 `::before`가 아니라 실제 문자나 SVG로 넣는다.
+- **텍스트를 이미지 위에 겹쳐 놓지 않는다.** 겹치면 PPT에서 가려질 수 있다.
+
+### 변환 품질 확인
+
+```bash
+node scripts/html2pptx.mjs docs/solutions/문서.html out.pptx "문서 제목"
+node scripts/pptx-diff.mjs docs/solutions/문서.html out.pptx
+```
+
+`pptx-diff`는 원본 HTML과 변환된 PPT를 슬라이드별로 겹쳐 픽셀 차이를 재고, 차이가 큰
+슬라이드와 위치를 알려준다. 글자 안티앨리어싱 차이 때문에 0%는 나오지 않으며,
+**평균 4% 안팎이면 육안으로 구분이 어려운 수준**이다.
+
+## 17. 작업 리포트 (docs/reports)
 
 문서를 고치거나 새로 만들면 **작업 리포트**를 남긴다. 영업 자료가 아니므로 메인 목록이 아니라
 포털의 **작업 리포트 탭**(reports.html)에서만 보인다.
@@ -395,7 +437,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 
 뷰어는 `?p=N` 쿼리로 해당 페이지를 바로 연다 (1부터 시작, 최초 로드에서 한 번만 이동).
 
-## 17. 버전 관리
+## 18. 버전 관리
 
 - 문서를 수정하면 `doc-version`을 올리고, 커밋 메시지를 아래 형식으로 씁니다:
 
@@ -407,7 +449,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 - 뷰어에서 이전 버전을 클릭하면 그 시점의 문서가 그대로 열립니다 (최근 8개 보관).
 - 특정 고객용 분기는 파일 복사 대신 **브랜치**: `git checkout -b proposal-hanwha`
 
-## 18. 만들고 올리는 절차
+## 19. 만들고 올리는 절차
 
 ```bash
 node scripts/validate.mjs        # 규격 검증
@@ -436,7 +478,7 @@ npx http-server site -p 8787 -c-1   # 로컬 확인
 
 HTML 단일 파일은 `node scripts/build.mjs`가 `site/standalone/`에 자동 생성합니다. 문서에는 넘김 기능을 넣지 마세요(5절) - 빌드가 주입합니다.
 
-## 19. 기존 PPT 변환해서 올리기
+## 20. 기존 PPT 변환해서 올리기
 
 완성된 PPTX가 있으면 새로 만들지 말고 변환합니다. PowerPoint 자체 렌더링을 쓰므로 **원본과 100% 동일**하고, 텍스트가 선택되는 원본 PDF도 함께 배포됩니다.
 
@@ -452,7 +494,7 @@ powershell -File "scripts/convert-pptx.ps1" -Source "C:\경로\원본.pptx" -Cat
 
 자세한 절차, 원본 PPT 디자인 시스템 분석, 카드 액센트 정리 도구는 **CONVERSION-GUIDE.md**를 보세요.
 
-## 20. 체크리스트
+## 21. 체크리스트
 
 **규격**
 

@@ -122,6 +122,7 @@ for (const catDir of fs.readdirSync(DOCS, { withFileTypes: true })) {
     const stat = fs.statSync(abs);
     docs.push({
       pdfSource: hasSrcPdf ? "original" : "generated",
+      pptxSource: readMeta(html, "doc-source") ? "original" : "generated",
       id,
       kind: REPORT_CATEGORIES.has(catDir.name) ? "report" : "doc",
       category: catDir.name,
@@ -137,6 +138,7 @@ for (const catDir of fs.readdirSync(DOCS, { withFileTypes: true })) {
       history,
       oldVersions,
       pdf: `pdf/${id}.pdf`,
+      pptx: `pptx/${id}.pptx`,
       html: `standalone/${id}.html`,
     });
   }

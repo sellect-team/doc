@@ -87,6 +87,13 @@
     .wrow b { font-family: var(--fx); font-size: 1.05rem; color: var(--s900); display: block; }
     .wrow small { display: block; font-size: 0.92rem; color: var(--s500); line-height: 1.5; margin-top: 0.15rem; }
 
+/* ── 둥근 카드의 색상 포인트 ──
+       border-top으로 주면 모서리에서 라운드가 끊긴다.
+       카드 안에 상단만 둥근 도형을 겹쳐 넣어야 라운드가 매끄럽고,
+       PPT로 옮길 때도 도형 2개로 그대로 재현된다. */
+    .accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
+              background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
+
     /* ── 아키텍처 ── */
     .arch { height: 100%; display: flex; flex-direction: column; gap: 0.5rem; }
     .arow { display: grid; gap: 1.3rem; }
@@ -101,7 +108,7 @@
     .anode.tt { background: var(--t50); border-color: var(--t100); color: var(--t800); }
     .anode.tt small { color: var(--t700); }
     .adown { text-align: center; color: var(--s400); font-size: 0.85rem; line-height: 1; }
-    .plat { flex: 1; border: 1px solid var(--s200); border-top: 2px solid var(--t400); border-radius: 0.9rem;
+    .plat { flex: 1; border: 1px solid var(--s200); border-radius: 0.9rem; position: relative; overflow: hidden;
             padding: 1rem 1.2rem; background: #fff; box-shadow: 0 8px 20px rgba(15,23,42,0.06);
             display: flex; flex-direction: column; gap: 0.7rem; }
     .plat .ph { display: flex; align-items: center; gap: 0.5rem; font-family: var(--fx);
@@ -127,7 +134,10 @@
     .grow .gl { font-size: 1rem; font-family: var(--fx); color: var(--s900); }
     .grow .gl small { display: block; font-size: 0.82rem; color: var(--s400); font-family: var(--f); }
     .grow i { height: 1.9rem; background: var(--s100); border-radius: 0.3rem; }
-    .grow i.on { background: linear-gradient(90deg, var(--t400), var(--t600)); }
+    /* 진행 막대: 그라디언트 대신 도형 2개를 겹쳐 표현한다 */
+    .grow i.on { background: var(--t600); position: relative; overflow: hidden; }
+    .grow i.on b { position: absolute; top: 0; bottom: 0; left: 0; width: 38%;
+                   background: var(--t400); border-radius: 0.3rem 0 0 0.3rem; }
     .grow i.on.soft { background: var(--t100); }
 
     /* ── 투입 조직 ── */
@@ -295,7 +305,7 @@
           <div class="anode">[사용자 그룹 2]<small>[관리자 - 무엇을 하는지]</small></div>
         </div>
         <div class="adown">▾</div>
-        <div class="plat">
+        <div class="plat"><span class="accent"></span>
           <div class="ph"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>[제안 솔루션명]<span class="tag">[배포 형태 - 온프레미스 / 클라우드]</span></div>
           <div class="fns">
             <div class="fn"><b>[기능 1]</b>[한 줄 설명]</div>
@@ -332,13 +342,13 @@
       <div class="gantt fill">
         <div class="gh"><span>단계</span><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span><span>W7</span><span>W8</span><span>W9</span><span>W10</span><span>W11</span><span>W12</span></div>
         <div class="grow"><span class="gl">1단계 · 진단<small>[산출물]</small></span>
-          <i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <i class="on"><b></b></i><i class="on"><b></b></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <div class="grow"><span class="gl">2단계 · 구축<small>[산출물]</small></span>
-          <i></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+          <i></i><i></i><i class="on"><b></b></i><i class="on"><b></b></i><i class="on"><b></b></i><i class="on"><b></b></i><i class="on"><b></b></i><i class="on"><b></b></i><i></i><i></i><i></i><i></i></div>
         <div class="grow"><span class="gl">3단계 · 확산<small>[산출물]</small></span>
-          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"><b></b></i><i class="on"><b></b></i><i class="on"><b></b></i><i class="on"><b></b></i></div>
         <div class="grow"><span class="gl">교육 · 이관<small>[산출물]</small></span>
-          <i></i><i></i><i></i><i></i><i></i><i></i><i class="on soft"></i><i class="on soft"></i><i class="on soft"></i><i class="on soft"></i><i class="on"></i><i class="on"></i></div>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i class="on soft"></i><i class="on soft"></i><i class="on soft"></i><i class="on soft"></i><i class="on"><b></b></i><i class="on"><b></b></i></div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
         <span>착수 후 <b>[N]주 차에 중간 보고</b>, <b>[N]주 차에 최종 보고</b>를 진행합니다. 일정은 고객사 상황에 맞춰 조정 가능합니다.</span></div>

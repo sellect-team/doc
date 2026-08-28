@@ -105,7 +105,13 @@
     .c4 { grid-template-columns: repeat(4, 1fr); }
     .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
             padding: 1.05rem 1.15rem 1rem; display: flex; flex-direction: column;
-            box-shadow: 0 6px 18px rgba(15,23,42,0.05); border-top: 2px solid var(--t400); }
+            box-shadow: 0 6px 18px rgba(15,23,42,0.05); position: relative; overflow: hidden; }
+    /* ── 둥근 카드의 색상 포인트 ──
+       border-top으로 주면 모서리에서 라운드가 끊긴다.
+       카드 안에 상단만 둥근 도형을 겹쳐 넣어야 라운드가 매끄럽고,
+       PPT로 옮길 때도 도형 2개로 그대로 재현된다. */
+    .accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
+              background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
     .card .no { display: flex; justify-content: space-between; align-items: baseline;
                 font-size: 0.76rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.08em;
                 margin-bottom: 0.4rem; }
@@ -302,19 +308,19 @@
         <div><small>주요 데이터</small><b>실적 · 사내 문서 · 대시보드 · 도매 거래</b></div>
       </div>
       <div class="cards c4 fill">
-        <div class="card"><div class="no">01<span class="cat">사내 데이터</span></div><h3>실적 셀프 조회</h3>
+        <div class="card"><span class="accent"></span><div class="no">01<span class="cat">사내 데이터</span></div><h3>실적 셀프 조회</h3>
           <div class="seg"><em>과제</em><p>실적이 시스템별로 흩어져 있고, 조회 요청이 본사 담당자에게 집중되어 대기가 발생</p></div>
           <div class="seg"><em>적용</em><p>무선 · 유선 상품군별 실적을 대화형으로 조회하고, 팀장 이상 관리자용 현황 요약 뷰 제공</p></div>
           <div class="seg fx"><em>효과</em><p>요청 대기열 감소 · 현황 파악 시점 단축 · 조회 이력 전건 기록</p></div></div>
-        <div class="card"><div class="no">02<span class="cat">사내 문서</span></div><h3>사내 문서 챗봇</h3>
+        <div class="card"><span class="accent"></span><div class="no">02<span class="cat">사내 문서</span></div><h3>사내 문서 챗봇</h3>
           <div class="seg"><em>과제</em><p>사내 문서 2,000여 건이 쌓여 탐색에 시간이 들고, 열람 권한이 달라 통합 검색이 어려움</p></div>
           <div class="seg"><em>적용</em><p>사내 문서 시스템을 API로 연동하고, 권한 범위 내 문서만 답변에 활용</p></div>
           <div class="seg fx"><em>효과</em><p>문서 탐색 시간 단축 · 권한 밖 노출 없음 · 답변 근거를 원문으로 확인</p></div></div>
-        <div class="card"><div class="no">03<span class="cat">산출물 공유</span></div><h3>대시보드 공유 · SDK</h3>
+        <div class="card"><span class="accent"></span><div class="no">03<span class="cat">산출물 공유</span></div><h3>대시보드 공유 · SDK</h3>
           <div class="seg"><em>과제</em><p>개인이 만든 분석 결과물이 파일로 흩어지고, 공유 시 열람 범위를 통제할 수단이 없음</p></div>
           <div class="seg"><em>적용</em><p>HTML 산출물을 플랫폼에 등록하고, 권한 관리 기반으로 링크 공유</p></div>
           <div class="seg fx"><em>효과</em><p>분석 결과물이 조직 자산으로 축적 · 중복 제작 감소</p></div></div>
-        <div class="card"><div class="no">04<span class="cat">외부 시스템</span></div><h3>도매 에이전트 연동</h3>
+        <div class="card"><span class="accent"></span><div class="no">04<span class="cat">외부 시스템</span></div><h3>도매 에이전트 연동</h3>
           <div class="seg"><em>과제</em><p>도매 업무가 별도 시스템이라 분석 도구와 분리되고, 확인한 내용이 액션으로 이어지지 않음</p></div>
           <div class="seg"><em>적용</em><p>aisight AI 기능을 API로 제공해 고객사 도매 에이전트 시스템에 탑재</p></div>
           <div class="seg fx"><em>효과</em><p>업무 화면에서 바로 인사이트 확보 · 분석 이후 액션까지 연결</p></div></div>
@@ -346,19 +352,19 @@
         <span class="ftail">운영 · 고도화</span>
       </div>
       <div class="cards c4 fill">
-        <div class="card"><div class="no">01<span class="cat">분석 인사이트</span></div><h3>현황 분석</h3>
+        <div class="card"><span class="accent"></span><div class="no">01<span class="cat">분석 인사이트</span></div><h3>현황 분석</h3>
           <div class="seg"><em>적용 기능</em><p>주요 지표의 현황 · 증감 · 원인을 질문 한 줄로 확인</p></div>
           <div class="seg"><p>지역-법인, 사업부-제품군 등 단계별 드릴다운 분석</p></div>
           <div class="seg"><p>연관 질의를 눌러 이어서 분석</p></div></div>
-        <div class="card"><div class="no">02<span class="cat">데이터 조회</span></div><h3>데이터 탐색 · GenSQL</h3>
+        <div class="card"><span class="accent"></span><div class="no">02<span class="cat">데이터 조회</span></div><h3>데이터 탐색 · GenSQL</h3>
           <div class="seg"><em>적용 기능</em><p>자연어 질의로 DB를 직접 조회해 표 형태로 즉시 제공</p></div>
           <div class="seg"><p>필요한 기초 데이터를 그대로 내려받아 후속 작업에 활용</p></div>
           <div class="seg"><p>지표 · 차원을 조합해 탐색</p></div></div>
-        <div class="card"><div class="no">03<span class="cat">산출물 생성</span></div><h3>차트 · 문서 자동 생성</h3>
+        <div class="card"><span class="accent"></span><div class="no">03<span class="cat">산출물 생성</span></div><h3>차트 · 문서 자동 생성</h3>
           <div class="seg"><em>적용 기능</em><p>탐색 결과를 보고서에 쓸 수 있는 차트로 자동 변환 (GenChart)</p></div>
           <div class="seg"><p>프롬프트만으로 분석 내용을 PPT 문서로 자동 생성</p></div>
           <div class="seg"><p>생성한 문서를 메일로 발송해 필요한 사람에게 바로 공유</p></div></div>
-        <div class="card"><div class="no">04<span class="cat">문서 RAG</span></div><h3>궁금해요 · 문서 기반 응답</h3>
+        <div class="card"><span class="accent"></span><div class="no">04<span class="cat">문서 RAG</span></div><h3>궁금해요 · 문서 기반 응답</h3>
           <div class="seg"><em>적용 기능</em><p>온보딩 문서를 Document Parser로 지식화해 답변에 활용</p></div>
           <div class="seg"><p>정해진 문답 매칭이 아니라 질문 의도를 해석해 응답</p></div>
           <div class="seg"><p>한글 · 영문 질의에 각각 대응해 해외 법인 확산까지 고려</p></div></div>
@@ -390,19 +396,19 @@
         <span class="ftail">1차에 이어 2차 과업으로 적용 영역 확대</span>
       </div>
       <div class="cards c4 fill">
-        <div class="card"><div class="no">01<span class="cat">데이터 기반</span></div><h3>AI 전용 데이터 마트</h3>
+        <div class="card"><span class="accent"></span><div class="no">01<span class="cat">데이터 기반</span></div><h3>AI 전용 데이터 마트</h3>
           <div class="seg"><p>경영 · 품질 · 개발 실적 영역별 특성을 반영한 전용 마트 설계</p></div>
           <div class="seg"><p>웹 대시보드와 AI 분석이 같은 데이터를 바라보는 구조</p></div>
           <div class="seg"><p>영역이 늘어나도 같은 방식으로 마트를 추가해 확장</p></div></div>
-        <div class="card"><div class="no">02<span class="cat">정량 분석</span></div><h3>AI 인사이트 분석</h3>
+        <div class="card"><span class="accent"></span><div class="no">02<span class="cat">정량 분석</span></div><h3>AI 인사이트 분석</h3>
           <div class="seg"><p>현황 · 비교 · 증감 · 원인분석 · 트렌드 · 순위 · 누적 7개 질의유형</p></div>
           <div class="seg"><p>자연어 질의로 데이터를 탐색하고 세부 내역 조회 · 다운로드</p></div>
           <div class="seg"><p>웹 대시보드와 인사이트를 연계해 화면에서 바로 분석</p></div></div>
-        <div class="card"><div class="no">03<span class="cat">정성 데이터</span></div><h3>사내 문서 AI 분석</h3>
+        <div class="card"><span class="accent"></span><div class="no">03<span class="cat">정성 데이터</span></div><h3>사내 문서 AI 분석</h3>
           <div class="seg"><p>문서 내 텍스트 · 표 · 이미지를 함께 처리하는 멀티모달 방식</p></div>
           <div class="seg"><p>답변에 근거 문서와 출처를 함께 제시</p></div>
           <div class="seg"><p>대시보드와 연계해 정량 지표와 정성 근거를 한 흐름에서 확인</p></div></div>
-        <div class="card"><div class="no">04<span class="cat">운영 · 통제</span></div><h3>AI Ops · 문서 자동화</h3>
+        <div class="card"><span class="accent"></span><div class="no">04<span class="cat">운영 · 통제</span></div><h3>AI Ops · 문서 자동화</h3>
           <div class="seg"><p>사용량 · 로그 · 통계 모니터링</p></div>
           <div class="seg"><p>질문에서 답변까지 도출 과정을 단계별로 추적</p></div>
           <div class="seg"><p>인사이트 기반 문서 자동 생성과 정기 구독 발송</p></div></div>

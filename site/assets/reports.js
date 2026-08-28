@@ -42,6 +42,7 @@
       </div>
       <div class="actions">
         <button class="btn primary" data-open>리포트 열기</button>
+        <button class="btn ghost" data-pptx>PPT</button>
         <button class="btn ghost" data-pdf>PDF</button>
       </div>`;
     const open = (p) => (location.href = `viewer.html?doc=${encodeURIComponent(d.id)}${p ? `&p=${p}` : ""}`);
@@ -50,6 +51,18 @@
     card.querySelectorAll(".pgchip").forEach((b) => {
       b.onclick = (e) => { e.stopPropagation(); open(parseInt(b.dataset.p, 10)); };
     });
+    card.querySelector("[data-pptx]").onclick = async (e) => {
+      e.stopPropagation();
+      const head = await fetch(d.pptx, { method: "HEAD" }).catch(() => null);
+      if (head && head.ok) {
+        const a = document.createElement("a");
+        a.href = d.pptx;
+        a.download = `${d.title}.pptx`;
+        a.click();
+      } else {
+        alert("PPT 파일이 아직 준비되지 않았습니다.");
+      }
+    };
     card.querySelector("[data-pdf]").onclick = async (e) => {
       e.stopPropagation();
       const head = await fetch(d.pdf, { method: "HEAD" }).catch(() => null);

@@ -7,9 +7,13 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "pdf": "node scripts/make-pdfs.mjs",
-    "serve": "npx http-server site -p 8123 -c-1"
+    "serve": "npx http-server site -p 8123 -c-1",
+    "pptx": "node scripts/make-pptx.mjs",
+    "pptx:diff": "node scripts/pptx-diff.mjs"
   },
   "devDependencies": {
-    "playwright": "^1.49.0"
+    "playwright": "^1.49.0",
+    "pngjs": "^7.0.0",
+    "pptxgenjs": "^4.0.1"
   }
 }

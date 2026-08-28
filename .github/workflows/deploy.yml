@@ -43,6 +43,11 @@ jobs:
       - name: PDF 생성
         run: node scripts/make-pdfs.mjs
 
+      - name: PPT 생성 (변환 문서는 원본 PPTX, 네이티브 문서는 도형으로 변환)
+        run: |
+          npm install pptxgenjs
+          node scripts/make-pptx.mjs
+
       - name: GitHub Pages 설정
         uses: actions/configure-pages@v5
         with:
