@@ -159,8 +159,36 @@ fs.writeFileSync(path.join(OUT_DATA, "docs.json"), JSON.stringify({
   docs,
 }, null, 2));
 
-// 작성 지침을 사이트에서 열람할 수 있게 복사
+// 작성 지침 문서들을 사이트에서 열람·내려받을 수 있게 복사한다.
+// 합본(all-guides.md)도 함께 만들어 한 번에 받을 수 있게 한다.
+const GUIDE_DOCS = [
+  { file: "AUTHORING.md", title: "HTML 문서 작성 지침", desc: "규격·디자인 시스템·레이아웃·작업 절차" },
+  { file: "PROMPT.md", title: "문서 제작 프롬프트", desc: "클로드에 그대로 붙여 쓰는 지시문" },
+  { file: "CONVERSION-GUIDE.md", title: "PPT 변환 가이드", desc: "기존 PPTX를 포털 문서로 변환하는 방법" },
+  { file: "MULTI-TENANT.md", title: "하위 URL 문서 시스템 추가", desc: "다른 조직 포털을 같은 저장소에 붙이는 방법" },
+  { file: "README.md", title: "저장소 안내", desc: "폴더 구조와 기본 명령" },
+];
+const guideList = [];
+const bundle = [];
+for (const g of GUIDE_DOCS) {
+  const src = path.join(ROOT, g.file);
+  if (!fs.existsSync(src)) continue;
+  const body = fs.readFileSync(src, "utf8");
+  fs.writeFileSync(path.join(OUT_DATA, g.file), body);
+  guideList.push({ ...g, bytes: Buffer.byteLength(body, "utf8") });
+  bundle.push(`<!-- ===== ${g.file} — ${g.title} ===== -->\n\n${body.trim()}\n`);
+}
 fs.copyFileSync(path.join(ROOT, "AUTHORING.md"), path.join(OUT_DATA, "authoring.md"));
+const stamp = new Date().toISOString().slice(0, 16).replace("T", " ");
+const toc = guideList.map((g, i) => `${i + 1}. **${g.title}** (${g.file}) - ${g.desc}`).join("\n");
+const bundled = `# 세일링스톤 문서 시스템 지침 모음\n\n`
+  + `생성 ${stamp} · 문서 ${guideList.length}건\n\n`
+  + toc + `\n\n---\n\n` + bundle.join("\n---\n\n");
+fs.writeFileSync(path.join(OUT_DATA, "all-guides.md"), bundled);
+fs.writeFileSync(path.join(OUT_DATA, "guides.json"), JSON.stringify({
+  docs: guideList,
+  bundle: { file: "all-guides.md", bytes: Buffer.byteLength(bundled, "utf8") },
+}, null, 2));
 
 // 단일 파일 HTML (이미지 내장 + 페이지 넘김 주입)
 const standalone = buildStandalone(docs, SITE);

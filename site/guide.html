@@ -20,6 +20,8 @@
   </div>
 </nav>
 
+<div class="guide-bar" id="guideBar"></div>
+
 <main class="md-wrap" id="md">불러오는 중…</main>
 
 <script>
@@ -86,6 +88,31 @@
   }
   closeAll();
   document.getElementById("md").innerHTML = html;
+})();
+
+// 지침 문서 내려받기 - 합본 한 번에 또는 문서별로
+(async function () {
+  const g = await fetch("data/guides.json").then((r) => r.json()).catch(() => null);
+  if (!g) return;
+  const kb = (n) => `${Math.round(n / 1024)}KB`;
+  const save = async (file, label) => {
+    const res = await fetch("data/" + file).catch(() => null);
+    if (!res || !res.ok) { alert("파일을 찾을 수 없습니다: " + file); return; }
+    const url = URL.createObjectURL(await res.blob());
+    const a = document.createElement("a");
+    a.href = url; a.download = label || file; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  const bar = document.getElementById("guideBar");
+  bar.innerHTML =
+    `<button class="btn primary" id="dlAll">지침 전체 내려받기 (${g.docs.length}건 · ${kb(g.bundle.bytes)})</button>` +
+    g.docs.map((d, i) =>
+      `<button class="btn ghost" data-i="${i}" title="${d.desc}">${d.file} · ${kb(d.bytes)}</button>`).join("");
+  bar.querySelector("#dlAll").onclick = () =>
+    save(g.bundle.file, `세일링스톤 문서 지침 모음.md`);
+  bar.querySelectorAll("[data-i]").forEach((b) => {
+    b.onclick = () => save(g.docs[b.dataset.i].file);
+  });
 })();
 </script>
 </body>
