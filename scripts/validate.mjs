@@ -111,6 +111,32 @@ export function validateDoc(html, filename, docDir) {
     warnings.push(`font-weight로 굵게 지정한 곳 ${heavy.length}건 - var(--fx) 패밀리를 쓰세요 (가짜 굵게 방지)`);
   }
 
+  // ── PPT 변환 품질 (AUTHORING.md 16절) ──
+  if (!isConverted) {
+    // 도형 배경 그라디언트는 PPT로 옮겨지지 않는다. 슬라이드 배경 격자·글로우는 예외.
+    const grads = (noComments.match(/background(?:-image)?:[^;}]*linear-gradient\([^)]*\)/gi) || [])
+      .filter((g) => !/1px,\s*transparent 1px/.test(g));
+    if (grads.length) {
+      warnings.push(`도형 배경에 그라디언트 ${grads.length}건 - 단색을 쓰고 색상 포인트는 도형을 겹쳐 표현하세요 (AUTHORING.md 16절)`);
+    }
+    // 아이콘 SVG가 벡터로 변환되지 못하는 요소들
+    // (<text>는 PPT 텍스트 상자로 옮겨지므로 문제되지 않는다)
+    const svgs = html.match(/<svg\b[\s\S]*?<\/svg>/gi) || [];
+    const bad = { "transform": 0, "g/use/defs": 0, "tspan": 0, "서브패스 다중": 0 };
+    for (const sv of svgs) {
+      if (/\btransform=/i.test(sv)) bad.transform++;
+      if (/<(g|use|defs|mask|clipPath|image)\b/i.test(sv)) bad["g/use/defs"]++;
+      if (/<tspan\b/i.test(sv)) bad.tspan++;
+      for (const d of sv.match(/\bd="([^"]+)"/gi) || []) {
+        if ((d.match(/[Mm]/g) || []).length > 1) { bad["서브패스 다중"]++; break; }
+      }
+    }
+    const parts = Object.entries(bad).filter(([, n]) => n > 0).map(([k, n]) => `${k} ${n}건`);
+    if (parts.length) {
+      warnings.push(`PPT에서 벡터로 못 옮기는 SVG - ${parts.join(", ")} (해당 아이콘은 PNG로 들어갑니다, AUTHORING.md 16절)`);
+    }
+  }
+
   return { errors, warnings };
 }
 

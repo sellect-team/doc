@@ -437,6 +437,22 @@ for (const s of slides) {
                       fill: fillOf(sh.style), line: lineOf(sh.style) };
           if (sh.rx > 0.01) { o.rectRadius = Math.min(Math.min(o.w, o.h) / 2, sh.rx * kAvg); }
           slide.addShape(sh.rx > 0.01 ? pptx.ShapeType.roundRect : pptx.ShapeType.rect, o);
+        } else if (sh.kind === "text") {
+          // SVG 안의 글자: 도형이 아니라 진짜 텍스트 상자로 (편집 가능)
+          const tx = bx + sh.rx * bw, ty = by + sh.ry * bh;
+          const tw = sh.rw * bw, th = sh.rh * bh;
+          const pad = Math.max(0.06, tw * 0.25);
+          slide.addText([{ text: sh.content, options: {
+            fontFace: mapFace(sh.weight >= 600 ? "SUIT ExtraBold" : "SUIT"),
+            fontSize: Math.round(sh.sizePx * PX2PT * 10) / 10,
+            color: hex(sh.color), bold: false,
+            charSpacing: sh.spacing ? Math.round(sh.spacing * PX2PT * 100) / 100 : undefined,
+          } }], {
+            x: Math.max(0, tx - pad / 2), y: ty, w: tw + pad, h: th,
+            align: "center", valign: "middle", margin: 0, wrap: false, isTextBox: true, inset: 0,
+          });
+          nText++;
+          continue;
         } else if (sh.kind === "path") {
           // custGeom: 좌표는 도형 원점 기준이라 상자를 경로의 경계로 잡는다
           let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;

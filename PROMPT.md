@@ -173,6 +173,36 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 **빈 곳은 콘텐츠로 채운다. 요소를 억지로 늘리지 마라.**
 `justify-content: space-between`으로 벌리면 내부 간격이 이상해진다. 대신 인용구, 칩 행, 체크리스트, 부연 설명을 추가하거나 타이포를 키운다.
 
+## PPT 변환을 고려해서 만들기
+
+이 문서는 **진짜 PowerPoint 도형·텍스트 상자로 변환**되어 배포된다. 아래를 지키면 100% 변환된다.
+
+**도형 배경에 그라디언트를 쓰지 않는다.** 발표용에 필요 없고 PPT 도형으로 안 옮겨진다. 단색만 쓴다.
+
+**색상 포인트는 도형을 겹쳐서 준다.** 둥근 카드 위쪽 강조 띠를 `border-top`으로 주면 모서리에서
+라운드가 끊긴다. 겹친 도형으로 만들면 라운드가 매끄럽고 PPT에서도 그대로 재현된다.
+
+```css
+.card   { position: relative; overflow: hidden; border-radius: 0.9rem; }
+.accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
+          background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
+```
+```html
+<div class="card"><span class="accent"></span> … </div>
+```
+
+막대·게이지의 강조색도 같은 방식으로 - 단색 막대 위에 다른 색 도형을 겹친다.
+
+**아이콘 SVG는 이 범위 안에서 그린다** (벗어나면 PNG로 들어가 확대 시 흐려진다).
+
+- 쓸 수 있는 요소: `<path>` `<line>` `<polyline>` `<polygon>` `<circle>` `<ellipse>` `<rect>` `<text>`
+- `transform` 속성을 쓰지 않는다. 좌표를 미리 계산해 넣는다.
+- `<tspan>`을 쓰지 않는다. 줄마다 `<text>`를 따로 쓴다.
+- `<g>` `<use>` `<defs>` `<mask>` `<clipPath>` `<image>`를 쓰지 않는다.
+- 한 `<path>`에 `M`을 두 번 이상 넣지 않는다. 획이 여러 개면 `<path>`를 나눈다.
+
+**글자는 요소 안에 직접 둔다.** `::before` `::after`의 글자는 변환되지 않는다.
+
 ## 금지 사항
 
 - 컬러 이모지 / 굵은 선·굵은 화살표
@@ -223,6 +253,8 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 - [ ] 이모지 대신 단색 라인 SVG를 썼는가? 선이 가는가?
 - [ ] 박스 가로 간격이 2.6rem인가?
 - [ ] 긴 줄표 대신 하이픈을 썼는가?
+- [ ] 도형 배경에 그라디언트가 없는가? 색상 포인트를 겹친 도형으로 줬는가?
+- [ ] SVG에 `transform` `<g>` `<tspan>`이 없고, 한 `<path>`에 `M`이 한 번뿐인가?
 
 **내용**
 

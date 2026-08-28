@@ -276,6 +276,33 @@
     return { kind: "path", subs, style, err: v.err };
   }
 
+  // SVG 안의 <text> -> 화면 좌표 기준 텍스트 정보 (PPT 텍스트 상자가 된다)
+  function textOf(el, svg) {
+    if (el.getAttribute("transform")) return { skip: "text에 transform" };
+    if (el.children.length) return { skip: "text 안에 자식 요소" };
+    const content = (el.textContent || "").trim();
+    if (!content) return { skip: "빈 text" };
+    const cs = getComputedStyle(el);
+    const sr = svg.getBoundingClientRect();
+    const tr = el.getBoundingClientRect();
+    if (sr.width <= 0 || sr.height <= 0 || tr.width <= 0) return { skip: "text 크기 0" };
+    return {
+      kind: "text",
+      content,
+      // SVG 상자 안에서의 위치 비율 (변환기가 실제 좌표로 환산한다)
+      rx: (tr.left - sr.left) / sr.width,
+      ry: (tr.top - sr.top) / sr.height,
+      rw: tr.width / sr.width,
+      rh: tr.height / sr.height,
+      sizePx: parseFloat(cs.fontSize) || 10,
+      color: cs.fill && cs.fill !== "none" ? cs.fill : cs.color,
+      weight: parseInt(cs.fontWeight, 10) || 400,
+      family: cs.fontFamily.split(",")[0].replace(/["']/g, "").trim(),
+      spacing: parseFloat(cs.letterSpacing) || 0,
+      anchor: el.getAttribute("text-anchor") || "start",
+    };
+  }
+
   window.__svg2vec = function (svg) {
     const vb = (svg.getAttribute("viewBox") || "").trim().split(/[\s,]+/).map(Number);
     if (vb.length !== 4 || vb.some(isNaN)) return { ok: false, reason: "viewBox 없음" };
@@ -289,10 +316,18 @@
     const shapes = [];
     for (const el of kids) {
       const t = el.tagName.toLowerCase();
-      if (t === "text" || t === "tspan" || t === "image" || t === "foreignObject" ||
-          t === "defs" || t === "clipPath" || t === "mask" || t === "g" || t === "use") {
+      if (t === "image" || t === "foreignObject" || t === "defs" ||
+          t === "clipPath" || t === "mask" || t === "g" || t === "use") {
         return { ok: false, reason: t + " 요소는 도형으로 옮길 수 없음" };
       }
+      // SVG 안의 글자는 도형이 아니라 PPT 텍스트 상자로 옮긴다 (편집 가능)
+      if (t === "text") {
+        const s = textOf(el, svg);
+        if (s.skip) return { ok: false, reason: s.skip };
+        shapes.push(s);
+        continue;
+      }
+      if (t === "tspan") return { ok: false, reason: "tspan은 옮길 수 없음" };
       const s = shapeOf(el, scale);
       if (s.skip) return { ok: false, reason: s.skip };
       shapes.push(s);
