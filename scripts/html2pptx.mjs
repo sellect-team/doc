@@ -204,13 +204,29 @@ function extract() {
           const txt = n.textContent;
           const re = /\S+/g;
           let m;
-          while ((m = re.exec(txt))) {
+          const chunks = [];   // [시작, 끝) 구간 목록
+          while ((m = re.exec(txt))) chunks.push([m.index, m.index + m[0].length]);
+          // 한 어절이 줄바꿈으로 두 줄에 걸치면(한글에서 흔하다) 글자 단위로 쪼개
+          // 각 줄에 제대로 나눠 넣는다. 그러지 않으면 다음 줄이 들여쓰기된 것처럼 보인다.
+          for (let ci = 0; ci < chunks.length; ci++) {
+            const [cs0, ce0] = chunks[ci];
+            const probe = document.createRange();
+            probe.setStart(n, cs0); probe.setEnd(n, ce0);
+            if ([...probe.getClientRects()].filter((r) => r.width > 0 && r.height > 0).length > 1) {
+              const parts = [];
+              for (let k = cs0; k < ce0; k++) parts.push([k, k + 1]);
+              chunks.splice(ci, 1, ...parts);
+              ci += parts.length - 1;
+            }
+          }
+          for (const [cs1, ce1] of chunks) {
             const rg = document.createRange();
-            rg.setStart(n, m.index);
-            rg.setEnd(n, m.index + m[0].length);
+            rg.setStart(n, cs1);
+            rg.setEnd(n, ce1);
             const rects = [...rg.getClientRects()].filter((r) => r.width > 0 && r.height > 0);
             if (!rects.length || !inside(rects[0])) continue;
             const r = rects[0];
+            const word = txt.slice(cs1, ce1);
             const hb = el.getBoundingClientRect();
             const ecs = getComputedStyle(el);
             const hostRect = {
@@ -218,7 +234,7 @@ function extract() {
               right: hb.right - (parseFloat(ecs.paddingRight) || 0),
               width: hb.width - (parseFloat(ecs.paddingLeft) || 0) - (parseFloat(ecs.paddingRight) || 0),
             };
-            words.push({ text: m[0], left: r.left, right: r.right, top: r.top, bottom: r.bottom,
+            words.push({ text: word, left: r.left, right: r.right, top: r.top, bottom: r.bottom,
                          st: style(el), block: blockOf(el), hostRect });
           }
         } else if (n.nodeType === 1) {
@@ -516,7 +532,10 @@ for (const s of slides) {
     // 줄 단위라 다시 줄바꿈될 일이 없다. 브라우저가 잰 왼쪽 좌표에 그대로 놓는다.
     // (정렬 기준을 추론해 옮기면 오히려 어긋나므로 실측 위치를 신뢰한다)
     const x = X(ln.x), y = Y(ln.y), h = Y(ln.h);
-    const w = Math.min(SLIDE_W - x, X(ln.w) + 0.12);
+    // PowerPoint가 같은 글자를 조금 더 넓게 그리므로 상자에 여유를 준다.
+    // 오차는 글자 수에 비례하니 여유도 줄 길이에 비례시킨다. (상자는 투명해 글자 위치는 그대로다)
+    const wNat = X(ln.w);
+    const w = Math.min(SLIDE_W - x, wNat + Math.max(0.2, wNat * 0.1));
     slide.addText(runs, {
       x, y, w, h,
       align: "left", valign: "middle",
