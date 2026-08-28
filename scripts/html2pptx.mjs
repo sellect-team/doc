@@ -19,7 +19,17 @@ const RENDER_W = 1600; // 브라우저에서 슬라이드를 렌더하는 가로
 // 슬라이드 폭 13.333in(=960pt)이 1600px에 대응하므로 실효 120dpi다.
 // 96dpi 기준 0.75를 쓰면 글자가 1.25배 커진다.
 const PX2PT = 72 / (RENDER_W / SLIDE_W);
-// 같은 폰트라도 PowerPoint가 브라우저보다 라틴 문자를 조금 넓게 그린다. 글자당 em 비율로 보정한다.
+// PowerPoint의 폰트 이름 해석은 브라우저와 다르다.
+// 이 PC 기준 "SUIT"를 지정하면 Regular가 아니라 Bold 페이스가 잡혀(100pt에서 'n' 폭 53.20 -> 56.70)
+// 본문이 굵어지고 라틴이 6.7% 넓어진다. 웨이트별 패밀리명을 직접 지정해야 한다.
+// SUIT Regular와 가장 가까운 것은 SUIT Medium이다.
+const FACE_MAP = {
+  "SUIT": "SUIT Medium",              // Regular 의도 -> Medium (SUIT는 Bold로 잡힘)
+  "SUIT ExtraBold": "SUIT ExtraBold", // 그대로 정확히 대응
+};
+const mapFace = (f) => FACE_MAP[f] || f || "SUIT Medium";
+// 폰트 페이스를 바로잡은 뒤에는 추가 보정이 오히려 오차를 키운다(실측 스윕 결과 0이 최적).
+// 필요하면 환경변수로 조절한다.
 const LATIN_FIX = Number(process.env.PPTX_LATIN_FIX ?? 0);
 const HANGUL_FIX = Number(process.env.PPTX_HANGUL_FIX ?? 0);
 
@@ -402,9 +412,10 @@ for (const s of slides) {
       return {
         text: r.text,
         options: {
-          bold: r.bold, italic: r.italic, color: r.color,
+          // bold 플래그를 켜면 짝 없는 페이스에 합성 굵게가 적용돼 5% 더 벌어진다. 항상 끄고 페이스로 지정한다.
+          bold: false, italic: r.italic, color: r.color,
           fontSize: Math.round(r.size * PX2PT * 10) / 10,
-          fontFace: r.font || "SUIT",
+          fontFace: mapFace(r.font),
           charSpacing: Math.round(spacingPt * 100) / 100,
         },
       };
