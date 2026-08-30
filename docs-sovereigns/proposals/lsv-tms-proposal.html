@@ -234,10 +234,10 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 /* 일정 간트 */
 .gt{display:flex; flex-direction:column; gap:0.32rem}
 .gt .hdr{display:grid; grid-template-columns:8.2rem 1fr; gap:0.5rem; font-size:0.62rem; color:var(--slate)}
-.gt .hdr .w{display:grid; grid-template-columns:repeat(7,1fr); text-align:center}
+.gt .hdr .w{display:grid; grid-template-columns:repeat(5,1fr); text-align:center}
 .gt .row{display:grid; grid-template-columns:8.2rem 1fr; gap:0.5rem; align-items:center}
 .gt .nm{font-size:0.76rem; color:var(--carbon); font-weight:600}
-.gt .track{display:grid; grid-template-columns:repeat(28,1fr); background:var(--paper);
+.gt .track{display:grid; grid-template-columns:repeat(20,1fr); background:var(--paper);
   border:1px solid var(--peri); border-radius:999px; height:1.15rem; align-items:center; position:relative}
 .gt .bar{grid-row:1; height:1.15rem; border-radius:999px; background:var(--violet); display:flex;
   align-items:center; justify-content:center; color:#FFFFFF; font-size:0.58rem; font-weight:600}
@@ -441,7 +441,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
       <div class="it"><span class="no">02</span><span class="tt">1단계 구축 범위</span><span class="dd">요구사항 12건과 화면 구성</span><span class="pg">09 - 19</span></div>
       <div class="it"><span class="no">03</span><span class="tt">시스템 구조</span><span class="dd">수집부터 관제 화면까지</span><span class="pg">20 - 24</span></div>
       <div class="it"><span class="no">04</span><span class="tt">2단계 확장 로드맵</span><span class="dd">확장 대상 5건과 기대 효과</span><span class="pg">25 - 27</span></div>
-      <div class="it"><span class="no">05</span><span class="tt">수행 방안 · 일정</span><span class="dd">일정 · 투입 · 요청 자료</span><span class="pg">28 - 34</span></div>
+      <div class="it"><span class="no">05</span><span class="tt">수행 방안 · 일정</span><span class="dd">일정 · 체제 · 요청 자료</span><span class="pg">28 - 34</span></div>
     </div>
   </div>
   <div class="s-foot"><span>LSV 골프카트 관제시스템(TMS) 구축 제안</span><span class="mark">SOVEREIGNS · 02</span></div>
@@ -1449,7 +1449,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
   <div class="pno">PART 05</div>
   <h2>수행 방안 · 일정</h2>
   <p>누가 어떻게 만들고 무엇으로 검수하는지, 그리고 어떤 위험을 미리 다루는지 정리했습니다.</p>
-  <div class="part-list"><span>수행 체계</span><span>위험 요소와 대응</span><span>추진 일정</span><span>투입 계획</span><span>요청 자료</span></div>
+  <div class="part-list"><span>수행 체계</span><span>위험 요소와 대응</span><span>추진 일정</span><span>수행 체제</span><span>요청 자료</span></div>
 </section>
 
 <!-- 수행 체계 -->
@@ -1463,12 +1463,12 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
     <div class="grid g3" style="margin-bottom:1.1rem">
       <div class="card">
         <span class="tag">팀 구성</span>
-        <h3>3인 단일 팀</h3>
-        <p>기획 · 디자인 · 개발이 한 팀으로 움직여 요구 해석과 구현 사이에 전달 손실이 생기지 않습니다.</p>
+        <h3>2인 전담 · 역할 겸업</h3>
+        <p>한 사람이 두 역할을 겸해 요구 해석과 구현 사이에 전달 손실이 생기지 않습니다.</p>
         <ul>
-          <li>기획 - 요구 정리 · 화면 정의 · 검수 기준</li>
-          <li>디자인 - 화면 시안 · 컴포넌트 규칙</li>
-          <li>개발 - 수집 · 서버 · 관제 화면</li>
+          <li>기획 · 개발 - 요구 정의와 서버 구현</li>
+          <li>개발 · 디자인 - 화면 설계와 구현</li>
+          <li>의사결정 단계를 줄여 회신이 빠름</li>
         </ul>
       </div>
       <div class="card">
@@ -1502,7 +1502,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
       <div class="step"><div class="k">종료 후</div><h4>이관 · 안정화</h4><p>운영 인수인계와 안정화 기간 대응 방식을 사전에 정합니다.</p></div>
     </div>
   </div>
-  <div class="s-foot"><span>소버린즈 주식회사 · 기획 · 디자인 · 개발 3인</span><span class="mark">SOVEREIGNS · 29</span></div>
+  <div class="s-foot"><span>소버린즈 주식회사 · 2인 전담(기획 · 개발 / 개발 · 디자인)</span><span class="mark">SOVEREIGNS · 29</span></div>
 </section>
 
 <!-- 위험 요소와 대응 -->
@@ -1532,73 +1532,74 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
   <div class="s-head">
     <div class="eyebrow">05. 수행 방안 · 일정</div>
     <h2 class="title">추진 일정과 단계 구분</h2>
-    <p class="lead">주 2일 투입 기준으로 <b>1단계 전체 약 26주(6개월)</b>이며, 관제 핵심을 먼저 열고 나머지를 이어 붙입니다.</p>
+    <p class="lead">주 2일 투입 기준 <b>1단계 전체 20주</b>이며, 관제 핵심은 <b>12주 차에 먼저 엽니다.</b></p>
   </div>
   <div class="body">
     <div class="gt" style="margin-bottom:0.9rem">
-      <div class="hdr"><span></span><span class="w"><span>W1-4</span><span>W5-8</span><span>W9-12</span><span>W13-16</span><span>W17-20</span><span>W21-24</span><span>W25-28</span></span></div>
+      <div class="hdr"><span></span><span class="w"><span>W1-4</span><span>W5-8</span><span>W9-12</span><span>W13-16</span><span>W17-20</span></span></div>
       <div class="row"><span class="nm">착수 · 설계</span>
-        <span class="track"><span class="bar" style="grid-column:1 / 5">요구 확정 · 실측 주행</span>
-          <span class="mile" style="left:14%"><i></i></span></span></div>
+        <span class="track"><span class="bar" style="grid-column:1 / 4">요구 확정 · 실측 주행</span></span></div>
       <div class="row"><span class="nm">수집 · 실시간 관제</span>
-        <span class="track"><span class="bar" style="grid-column:3 / 13">단말 연동 · 상태 판정 · 관제 화면</span></span></div>
+        <span class="track"><span class="bar" style="grid-column:2 / 10">단말 연동 · 상태 판정 · 관제 화면</span></span></div>
       <div class="row"><span class="nm">알림 · 정비</span>
-        <span class="track"><span class="bar" style="grid-column:9 / 19">알림 규칙 · DTC · 정비 이력</span></span></div>
+        <span class="track"><span class="bar" style="grid-column:7 / 15">알림 규칙 · DTC · 정비 이력</span></span></div>
       <div class="row"><span class="nm">차량 · 리포트 · 설정</span>
-        <span class="track"><span class="bar soft" style="grid-column:15 / 23">차량 관리 · 트립 리포트 · 코스 · 계정</span></span></div>
+        <span class="track"><span class="bar soft" style="grid-column:12 / 19">차량 관리 · 트립 리포트 · 코스 · 계정</span></span></div>
       <div class="row"><span class="nm">통합 · 현장 시험</span>
-        <span class="track"><span class="bar soft" style="grid-column:19 / 26">현장 주행 · 통신 시험</span></span></div>
+        <span class="track"><span class="bar soft" style="grid-column:15 / 21">현장 주행 · 통신 시험</span></span></div>
       <div class="row"><span class="nm">인수 · 안정화</span>
-        <span class="track"><span class="bar dark" style="grid-column:24 / 29">인수 시험 · 결함 조치</span></span></div>
+        <span class="track"><span class="bar dark" style="grid-column:18 / 21">인수 시험 · 결함 조치</span></span></div>
     </div>
     <div class="est">
-      <div><b>26주</b><span>1단계 전체 (주 2일 기준)</span></div>
-      <div><b>W16</b><span>1-A 관제 · 알림 우선 오픈</span></div>
-      <div><b>W28</b><span>1-B 포함 최종 인수</span></div>
-      <div><b>128 M/D</b><span>산정 기준 개발 공수</span></div>
+      <div><b>20주</b><span>1단계 전체 · 주 2일 기준</span></div>
+      <div><b>12주</b><span>관제 · 알림 우선 오픈</span></div>
+      <div><b>2인</b><span>겸업 전담 체제</span></div>
+      <div><b>2회</b><span>현장 시험(중간 · 최종)</span></div>
     </div>
-    <div class="note"><b>산정 근거</b> - 화면 18종(단순 6 · 중간 5 · 복잡 4 · 변형 2)과 서버 10개 모듈, 인프라 · 시험 · 안정화를 합쳐 128 M/D로 잡았습니다. 주 2일 투입에서 팀 처리량을 <b>주 5 M/D</b>로 보고 26주를 산정했으며, 투입을 늘리거나 범위를 1-A로 좁히면 단축됩니다.</div>
+    <div class="note"><b>산정 기준</b> - 화면 18종과 서버 10개 모듈, 인프라 · 시험 · 안정화를 합쳐 산정했습니다. 화면정의서에서 <b>컴포넌트 규칙을 먼저 확정</b>했기 때문에 화면 구현이 반복 작업으로 줄고, 기획 · 디자인 · 개발을 겸하는 구성이라 전달 · 재작업 손실이 없다는 전제입니다.</div>
   </div>
   <div class="s-foot"><span>착수일은 선결 3건 확정 이후로 산정</span><span class="mark">SOVEREIGNS · 31</span></div>
 </section>
 
 <!-- 투입 계획 -->
-<section class="slide" data-title="투입 계획과 조정안">
+<section class="slide" data-title="수행 체제와 기간">
   <div class="s-head">
     <div class="eyebrow">05. 수행 방안 · 일정</div>
-    <h2 class="title">투입 계획과 기간 조정안</h2>
-    <p class="lead">투입량과 범위에 따라 기간이 달라지므로 <b>세 가지 안</b>을 함께 제시합니다.</p>
+    <h2 class="title">수행 체제와 기간</h2>
+    <p class="lead">인원을 늘리는 대신 <b>한 사람이 두 역할을 겸하는 2인 전담</b>으로 전달 손실 없이 진행합니다.</p>
   </div>
   <div class="body">
-    <table class="tight" style="margin-bottom:0.9rem">
-      <tr><th>역할</th><th>담당 범위</th><th>투입</th><th>기간</th><th>환산</th></tr>
-      <tr><td><b>기획</b></td><td class="g">요구 확정 · 화면정의 · 검수 기준 · 고객 협의</td><td class="g">주 2일</td><td class="g">26주</td><td class="g">약 2.4 M/M</td></tr>
-      <tr><td><b>디자인</b></td><td class="g">화면 시안 · 컴포넌트 · 대형 화면 · 모바일</td><td class="g">주 2일(초반 집중)</td><td class="g">16주</td><td class="g">약 1.5 M/M</td></tr>
-      <tr><td><b>개발</b></td><td class="g">수집 · 서버 · 관제 화면 · 배포</td><td class="g">주 2일</td><td class="g">26주</td><td class="g">약 2.4 M/M</td></tr>
-      <tr><td><b>공통</b></td><td class="g">통합 시험 · 현장 주행 · 인수 대응</td><td class="g">3인 병행</td><td class="g">8주</td><td class="g">약 1.1 M/M</td></tr>
-    </table>
-    <div class="grid g3">
+    <div class="grid g2" style="margin-bottom:0.9rem">
       <div class="card">
-        <span class="tag">안 01 · 기준안</span>
-        <h3>주 2일 · 전체 범위</h3>
-        <p>1단계 12건을 모두 구축합니다. 관제 핵심은 <b>W16에 먼저 오픈</b>하고 나머지를 이어 붙입니다.</p>
-        <ul><li>기간 26주 · 인수 W28</li><li>현장 시험 2회(중간 · 최종)</li></ul>
+        <span class="tag">전담 01</span>
+        <h3>기획 · 개발 겸업</h3>
+        <p>요구 정의와 서버 구현을 같은 사람이 맡아 해석 차이가 생기지 않습니다.</p>
+        <ul>
+          <li>요구 확정 · 화면정의 · 검수 기준</li>
+          <li>수집 파이프라인 · 상태 판정 · 알림 규칙</li>
+          <li>고객 협의와 변경 회신 창구</li>
+        </ul>
       </div>
       <div class="card">
-        <span class="tag">안 02 · 단축</span>
-        <h3>1-A 우선 오픈</h3>
-        <p>관제 · 알림 · 차량 조회만 먼저 오픈하고 정비 · 리포트 · 설정은 이어서 진행합니다.</p>
-        <ul><li>1-A 약 15주 · 1-B 추가 11주</li><li>현장 검증을 빨리 시작할 수 있음</li></ul>
-      </div>
-      <div class="card lil">
-        <span class="tag gray">안 03 · 투입 확대</span>
-        <h3>초반 집중 투입</h3>
-        <p>수집 · 관제 구간에 주 4일을 투입하면 전체 기간이 줄어듭니다.</p>
-        <ul><li>기간 약 18~20주</li><li>비용은 투입량에 비례해 증가</li></ul>
+        <span class="tag">전담 02</span>
+        <h3>개발 · 디자인 겸업</h3>
+        <p>화면 설계와 구현을 한 사람이 맡아 시안과 결과물이 어긋나지 않습니다.</p>
+        <ul>
+          <li>컴포넌트 규칙 · 화면 시안</li>
+          <li>관제 · 차량 · 정비 화면 구현</li>
+          <li>대형 화면 · 모바일 변형 대응</li>
+        </ul>
       </div>
     </div>
+    <table class="tight">
+      <tr><th>구성</th><th>범위</th><th>투입</th><th>기간</th><th>비고</th></tr>
+      <tr><td><b>기준안</b></td><td class="g">1단계 12건 전체</td><td class="g">2인 · 주 2일</td><td class="g"><b>20주</b></td><td class="g">12주 차에 관제 · 알림 우선 오픈</td></tr>
+      <tr><td><b>단축안</b></td><td class="g">1-A 관제 · 알림 · 차량 조회</td><td class="g">2인 · 주 2일</td><td class="g"><b>12주</b></td><td class="g">나머지는 1-B로 이어서 8주</td></tr>
+      <tr><td><b>집중안</b></td><td class="g">1단계 12건 전체</td><td class="g">2인 · 초반 주 4일</td><td class="g"><b>12~14주</b></td><td class="g">수집 · 관제 구간만 집중 투입</td></tr>
+    </table>
+    <div class="note"><b>기간은 범위에 연동됩니다</b> - 요구가 추가되면 기간으로 환산해 회신하고, 1-B 이관 여부를 함께 판단합니다. 착수 시점은 선결 3건(수집 주기 · 코스 데이터 · 단말 사양) 확정 이후로 계산합니다.</div>
   </div>
-  <div class="s-foot"><span>금액은 범위 · 투입 확정 후 별도 제시</span><span class="mark">SOVEREIGNS · 32</span></div>
+  <div class="s-foot"><span>금액은 범위 · 기간 확정 후 별도 제시</span><span class="mark">SOVEREIGNS · 32</span></div>
 </section>
 
 <!-- 고객 제공 자료 1 -->
