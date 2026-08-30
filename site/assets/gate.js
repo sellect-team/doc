@@ -16,9 +16,12 @@
   var GATE_MARK = T.footerMark || "SAILINGSTONE";
   var GATE_ACCENT = T.accent || "#2DD4BF";
   var GATE_BG = T.gateBg || "#0F172A";
-  var KEY = "ss_gate_until";
+  // 조직마다 비밀번호와 세션이 다르다 (한쪽을 열어도 다른 포털은 열리지 않는다)
+  var KEY = T.gateKey || "ss_gate_until";
   var SESSION_MIN = 30;
-  var PW = String.fromCharCode(48, 52, 48, 49);
+  var PW = T.gatePw && T.gatePw.length
+    ? String.fromCharCode.apply(null, T.gatePw)
+    : String.fromCharCode(48, 52, 48, 49);
 
   // ── 공통: 잠금 + 오버레이 ──
   function lockNow() {

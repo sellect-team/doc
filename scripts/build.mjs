@@ -223,6 +223,7 @@ if (tenant.base) {
       `<script>window.__TENANT = ${JSON.stringify({
         gateTitle: tenant.gateTitle, footerMark: tenant.footerMark,
         accent: tenant.accent || null, gateBg: tenant.gateBg || null,
+        gatePw: tenant.gatePw || null, gateKey: tenant.gateKey || null,
       })};</script>\n  <script src="../assets/gate.js"></script>`);
     fs.writeFileSync(path.join(SITE, name), html);
   }
