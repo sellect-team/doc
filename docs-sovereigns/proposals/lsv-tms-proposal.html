@@ -378,6 +378,21 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 .tbd-items span{border:1px dashed var(--peri); border-radius:999px; padding:0.45rem 1.1rem;
   font-size:0.85rem; color:var(--lavender); background:var(--bone)}
 
+
+/* 세일링스톤 브랜드 - 회사소개서 로고 체계 */
+.lgm{width:100%; height:100%; display:block}
+.brand .mk{background:transparent; color:var(--violet); width:2rem; height:2rem; padding:0}
+.cov-top{display:flex; align-items:center; justify-content:space-between}
+.cov-top .iwd{font-size:0.82rem; color:var(--slate); letter-spacing:-0.01em}
+.cov-corner{display:flex; align-items:center; gap:0.7rem; font-size:0.7rem; color:var(--lavender);
+  letter-spacing:0.08em; margin-top:0.9rem}
+.cov-corner b{font-weight:600; color:var(--slate); letter-spacing:0.06em}
+.cov-corner .bar{color:var(--peri)}
+.end-logo{display:flex; align-items:center; gap:0.6rem; margin-bottom:1.1rem;
+  font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:-0.04em}
+.end-logo .mk{width:1.9rem; height:1.9rem; color:var(--violet)}
+.s-foot .mark .lgm{width:0.78rem; height:0.78rem; display:inline-block; vertical-align:-0.1rem; margin-right:0.28rem}
+
 /* 맺음 */
 .end{justify-content:center}
 .end-mid{display:grid; grid-template-columns:1.25fr 1fr; gap:3.2rem; align-items:center}
@@ -400,7 +415,10 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 
 <!-- 표지 -->
 <section class="slide cover" data-title="표지">
-  <div class="brand"><span class="mk">S</span>세일링스톤</div>
+  <div class="cov-top">
+    <div class="brand"><span class="mk"><svg class="lgm" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round" aria-label="세일링스톤"><path d="M47.5 18.3 L78.8 33.7 L76 69.2 L47.5 84.6 L20.2 67.7 L18.8 34.2 Z"></path><path d="M47.5 18.3 L76 69.2"></path><path d="M20.2 67.7 L78.8 33.7"></path><path d="M20.2 67.7 L76 69.2"></path></svg></span>세일링스톤</div>
+    <span class="iwd">Intelligence with Data</span>
+  </div>
   <div class="cov-mid">
     <div>
       <div class="eyebrow">제안서 · Proposal</div>
@@ -426,6 +444,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
     <div><b>2026. 08</b>작성일</div>
     <div><b>세일링스톤</b>기획 · 디자인 · 개발</div>
   </div>
+  <div class="cov-corner"><b>AI · BI · ANALYTICS</b><span class="bar">|</span><span>© 2026 SAILINGSTONE</span></div>
 </section>
 
 <!-- 목차 -->
@@ -1657,6 +1676,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 
 <!-- 맺음 -->
 <section class="slide end" data-title="맺음">
+  <div class="end-logo"><span class="mk"><svg class="lgm" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round" aria-label="세일링스톤"><path d="M47.5 18.3 L78.8 33.7 L76 69.2 L47.5 84.6 L20.2 67.7 L18.8 34.2 Z"></path><path d="M47.5 18.3 L76 69.2"></path><path d="M20.2 67.7 L78.8 33.7"></path><path d="M20.2 67.7 L76 69.2"></path></svg></span>세일링스톤</div>
   <div class="end-mid">
     <div>
       <div class="eyebrow">맺음</div>

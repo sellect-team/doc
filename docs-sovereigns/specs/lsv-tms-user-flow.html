@@ -152,6 +152,21 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
 .dia{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:0.8rem; flex:1; min-height:0}
 .dia svg{width:100%; height:100%; display:block}
 
+
+/* 세일링스톤 브랜드 - 회사소개서 로고 체계 */
+.lgm{width:100%; height:100%; display:block}
+.brand .mk{background:transparent; color:var(--violet); width:2rem; height:2rem; padding:0}
+.cov-top{display:flex; align-items:center; justify-content:space-between}
+.cov-top .iwd{font-size:0.82rem; color:var(--slate); letter-spacing:-0.01em}
+.cov-corner{display:flex; align-items:center; gap:0.7rem; font-size:0.7rem; color:var(--lavender);
+  letter-spacing:0.08em; margin-top:0.9rem}
+.cov-corner b{font-weight:600; color:var(--slate); letter-spacing:0.06em}
+.cov-corner .bar{color:var(--peri)}
+.end-logo{display:flex; align-items:center; gap:0.6rem; margin-bottom:1.1rem;
+  font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:-0.04em}
+.end-logo .mk{width:1.9rem; height:1.9rem; color:var(--violet)}
+.s-foot .mark .lgm{width:0.78rem; height:0.78rem; display:inline-block; vertical-align:-0.1rem; margin-right:0.28rem}
+
 /* 맺음 */
 .end{justify-content:center}
 .end h2{font-family:var(--fd); font-weight:800; font-size:3rem; letter-spacing:-0.04em; line-height:1.08; margin:0}
@@ -165,7 +180,10 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
 
 <!-- 표지 -->
 <section class="slide cover" data-title="표지">
-  <div class="brand"><span class="mk">S</span>세일링스톤</div>
+  <div class="cov-top">
+    <div class="brand"><span class="mk"><svg class="lgm" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round" aria-label="세일링스톤"><path d="M47.5 18.3 L78.8 33.7 L76 69.2 L47.5 84.6 L20.2 67.7 L18.8 34.2 Z"></path><path d="M47.5 18.3 L76 69.2"></path><path d="M20.2 67.7 L78.8 33.7"></path><path d="M20.2 67.7 L76 69.2"></path></svg></span>세일링스톤</div>
+    <span class="iwd">Intelligence with Data</span>
+  </div>
   <div class="cov-mid">
     <div>
       <div class="eyebrow">설계 산출물 · User Flow</div>
@@ -187,6 +205,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
     <div><b>v0.2 · 2026. 08</b>문서 버전</div>
     <div><b>세일링스톤</b>작성</div>
   </div>
+  <div class="cov-corner"><b>AI · BI · ANALYTICS</b><span class="bar">|</span><span>© 2026 SAILINGSTONE</span></div>
 </section>
 
 <!-- 문서 개요 -->
@@ -907,6 +926,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
 
 <!-- 맺음 -->
 <section class="slide end" data-title="맺음">
+  <div class="end-logo"><span class="mk"><svg class="lgm" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round" aria-label="세일링스톤"><path d="M47.5 18.3 L78.8 33.7 L76 69.2 L47.5 84.6 L20.2 67.7 L18.8 34.2 Z"></path><path d="M47.5 18.3 L76 69.2"></path><path d="M20.2 67.7 L78.8 33.7"></path><path d="M20.2 67.7 L76 69.2"></path></svg></span>세일링스톤</div>
   <div class="eyebrow">맺음</div>
   <h2>시나리오를 확정하면<br><em>검수 기준이 함께 정해집니다</em></h2>
   <p>각 시나리오의 단계와 완료 기준을 확정하면, 개발 우선순위와 인수 시험 항목을 같은 문서로 관리할 수 있습니다.</p>
