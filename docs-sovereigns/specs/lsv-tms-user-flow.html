@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LSV 골프카트 관제시스템 사용자 액션 플로우</title>
-<meta name="doc-version" content="0.1">
-<meta name="doc-description" content="역할별 사용 시나리오와 업무 플로우 - 관제 운영자·정비 담당자·관리자 기준 7개 시나리오와 권한 매트릭스">
+<meta name="doc-version" content="0.2">
+<meta name="doc-description" content="역할 5개와 업무 시나리오 7개 - 권한·화면 접근 맵, 상태 전이도, 예외 처리, 인수 시험 항목까지 정의">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -18,6 +18,8 @@
   --lilac:#EDE9FF; --peri:#D9D2FF; --chartreuse:#E7FF6E; --powder:#99CEFE;
   --bone:#FAFAF8; --paper:#FFFFFF; --ink:#18161A; --carbon:#333333;
   --slate:#898B91; --lavender:#9E99AB; --midnight:#1E1B22;
+  --rose:#E11D48;   /* 상태 전용 - 경고·정비 표시에만 사용 */
+  --line:#EFEDF5;
   --fd:'Plus Jakarta Sans','Pretendard Variable',Pretendard,sans-serif;
   --fu:'Inter','Pretendard Variable',Pretendard,sans-serif;
   --pad:3.5rem;
@@ -33,60 +35,57 @@ body{
 section.slide{
   width:min(100vw,177.7778vh); height:min(56.25vw,100vh);
   position:relative; overflow:hidden; background:var(--bone);
-  padding:2.9rem var(--pad) 2.2rem; display:flex; flex-direction:column;
+  padding:2.7rem var(--pad) 2rem; display:flex; flex-direction:column;
   font-size:1rem; line-height:1.5; letter-spacing:-0.001em;
 }
 .slide.tint{background:var(--lilac)}
-.slide.dark{background:var(--midnight); color:#FFFFFF}
 
-.s-head{margin-bottom:1.3rem}
-.eyebrow{font-weight:700; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
-.dark .eyebrow{color:var(--chartreuse)}
-h2.title{font-family:var(--fd); font-weight:800; font-size:2.2rem; letter-spacing:-0.032em; line-height:1.15; margin:0.5rem 0 0}
-.lead{font-weight:300; font-size:1.08rem; line-height:1.5; margin:0.6rem 0 0; max-width:64ch}
+.s-head{margin-bottom:1rem}
+.eyebrow{font-weight:700; font-size:0.7rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
+h2.title{font-family:var(--fd); font-weight:800; font-size:2rem; letter-spacing:-0.032em; line-height:1.15; margin:0.4rem 0 0}
+.lead{font-weight:300; font-size:1.02rem; line-height:1.5; margin:0.45rem 0 0; max-width:66ch}
 .lead b{font-weight:600; color:var(--violet)}
-.dark .lead{color:#EDEAF2}
-.dark .lead b{color:var(--chartreuse)}
 
 .body{flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center}
-.grid{display:grid; gap:1.2rem}
+.grid{display:grid; gap:1rem}
 .g2{grid-template-columns:1fr 1fr}
 .g3{grid-template-columns:repeat(3,1fr)}
 .g4{grid-template-columns:repeat(4,1fr)}
-.card{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1.2rem 1.3rem}
+.card{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1.05rem 1.15rem}
 .card.lil{background:var(--lilac)}
-.dark .card{background:#26222C; border-color:#3A3542}
-.card h3{font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:-0.02em; margin:0.45rem 0 0}
-.card p{font-size:0.88rem; line-height:1.55; color:var(--carbon); margin:0.5rem 0 0}
-.dark .card p{color:#C9C4D2}
-.card ul{margin:0.5rem 0 0; padding:0; list-style:none}
-.card li{position:relative; padding:0.26rem 0 0.26rem 0.9rem; font-size:0.86rem; color:var(--carbon); line-height:1.45}
-.card li::before{content:""; position:absolute; left:0; top:0.7rem; width:0.3rem; height:0.3rem; border-radius:50%; background:var(--violet)}
-.dark .card li{color:#C9C4D2}
-.dark .card li::before{background:var(--chartreuse)}
-.tag{display:inline-block; background:var(--lilac); color:var(--violet); font-weight:600; font-size:0.72rem; padding:0.18rem 0.68rem; border-radius:999px}
+.card h3{font-family:var(--fd); font-weight:800; font-size:1rem; letter-spacing:-0.02em; margin:0.4rem 0 0; line-height:1.25}
+.card p{font-size:0.84rem; line-height:1.5; color:var(--carbon); margin:0.45rem 0 0}
+.card ul{margin:0.45rem 0 0; padding:0; list-style:none}
+.card li{position:relative; padding:0.22rem 0 0.22rem 0.85rem; font-size:0.82rem; color:var(--carbon); line-height:1.42}
+.card li::before{content:""; position:absolute; left:0; top:0.62rem; width:0.28rem; height:0.28rem; border-radius:50%; background:var(--violet)}
+.card li b{font-weight:600; color:var(--ink)}
+.tag{display:inline-block; background:var(--lilac); color:var(--violet); font-weight:600; font-size:0.7rem; padding:0.16rem 0.62rem; border-radius:999px}
 .tag.gray{background:#F0EFF3; color:var(--slate)}
-.tag.ch{background:var(--chartreuse); color:var(--ink)}
-.num{font-family:var(--fd); font-weight:800; font-size:2rem; letter-spacing:-0.04em; line-height:1; color:var(--violet)}
-.unit{font-size:0.76rem; color:var(--slate); margin-top:0.3rem}
+.tag.r{background:#FDE7ED; color:var(--rose)}
+.tags{display:flex; gap:0.35rem; flex-wrap:wrap; margin-top:0.6rem}
+.num{font-family:var(--fd); font-weight:800; font-size:1.9rem; letter-spacing:-0.04em; line-height:1; color:var(--violet)}
+.unit{font-size:0.74rem; color:var(--slate); margin-top:0.28rem}
 
 table{width:100%; border-collapse:separate; border-spacing:0; background:var(--paper);
-  border:1px solid var(--peri); border-radius:1.25rem; overflow:hidden; font-size:0.84rem}
-th,td{text-align:left; padding:0.55rem 0.85rem; border-bottom:1px solid var(--lilac); vertical-align:top}
+  border:1px solid var(--peri); border-radius:1.25rem; overflow:hidden; font-size:0.82rem}
+th,td{text-align:left; padding:0.5rem 0.8rem; border-bottom:1px solid var(--lilac); vertical-align:top}
 tr:last-child td{border-bottom:0}
-th{font-weight:700; font-size:0.68rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--slate); white-space:nowrap}
+th{font-weight:700; font-size:0.66rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--slate); white-space:nowrap}
 td.g{color:var(--slate)}
 td b{font-weight:600}
-td .tag{font-size:0.68rem}
-table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 td.c{text-align:center}
+table.tight th, table.tight td{padding:0.4rem 0.75rem; font-size:0.77rem}
+table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
+.sid{font-family:var(--fd); font-weight:800; font-size:0.74rem; color:var(--violet)}
+.yes{color:var(--violet); font-weight:600}
+.no{color:var(--lavender)}
 
 .s-foot{display:flex; justify-content:space-between; align-items:center;
-  font-size:0.7rem; letter-spacing:0.04em; color:var(--slate); padding-top:0.9rem}
+  font-size:0.68rem; letter-spacing:0.04em; color:var(--slate); padding-top:0.7rem}
 .s-foot .mark{font-family:var(--fd); font-weight:800; letter-spacing:-0.02em}
 
 .note{background:var(--lilac); border:1px solid var(--peri); border-radius:1.25rem;
-  padding:0.85rem 1.15rem; font-size:0.85rem; color:var(--carbon); margin-top:1rem}
+  padding:0.8rem 1.1rem; font-size:0.82rem; color:var(--carbon); margin-top:0.85rem}
 .note b{font-weight:600; color:var(--violet)}
 
 /* 표지 */
@@ -109,38 +108,49 @@ td.c{text-align:center}
 .cover .meta b{display:block; font-family:var(--fd); font-weight:800; font-size:0.95rem; letter-spacing:-0.02em; color:var(--ink); margin-bottom:0.2rem}
 
 /* 단계 흐름 */
-.flow{display:flex; align-items:stretch; gap:0.6rem}
-.flow .step{flex:1; background:var(--paper); border:1px solid var(--peri); border-radius:1.1rem; padding:0.85rem 0.9rem}
-.flow .step .k{font-weight:700; font-size:0.64rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
-.flow .step h4{font-family:var(--fd); font-weight:800; font-size:0.95rem; letter-spacing:-0.02em; margin:0.35rem 0 0}
-.flow .step p{font-size:0.78rem; color:var(--carbon); margin:0.35rem 0 0; line-height:1.45}
-.flow .step .scr{display:inline-block; margin-top:0.45rem; font-family:var(--fd); font-weight:800;
-  font-size:0.68rem; color:var(--violet); background:var(--lilac); border-radius:999px; padding:0.15rem 0.6rem}
-.flow .arw{align-self:center; color:var(--lavender); font-size:0.9rem; flex:none}
+.flow{display:flex; align-items:stretch; gap:0.55rem}
+.flow .step{flex:1; background:var(--paper); border:1px solid var(--peri); border-radius:1rem; padding:0.75rem 0.8rem}
+.flow .step .k{font-weight:700; font-size:0.62rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
+.flow .step h4{font-family:var(--fd); font-weight:800; font-size:0.92rem; letter-spacing:-0.02em; margin:0.3rem 0 0}
+.flow .step p{font-size:0.76rem; color:var(--carbon); margin:0.3rem 0 0; line-height:1.42}
+.flow .step .scr{display:inline-block; margin-top:0.4rem; font-family:var(--fd); font-weight:800;
+  font-size:0.64rem; color:var(--violet); background:var(--lilac); border-radius:999px; padding:0.12rem 0.5rem}
+.flow .arw{align-self:center; color:var(--lavender); font-size:0.85rem; flex:none}
 
 /* 스윔레인 */
-.lanes{display:flex; flex-direction:column; gap:0.55rem}
-.lane{display:grid; grid-template-columns:7rem 1fr; gap:0.6rem}
-.lane .lb{display:flex; align-items:center; justify-content:center; text-align:center;
-  font-weight:600; font-size:0.8rem; color:var(--violet); background:var(--lilac);
-  border:1px solid var(--peri); border-radius:0.9rem; padding:0.5rem 0.6rem}
-.lane .steps{display:grid; grid-template-columns:repeat(5,1fr); gap:0.55rem}
-.lane .s{background:var(--paper); border:1px solid var(--peri); border-radius:0.9rem; padding:0.55rem 0.7rem;
-  font-size:0.76rem; color:var(--carbon); line-height:1.4}
-.lane .s b{display:block; font-size:0.8rem; color:var(--ink); font-weight:600; margin-bottom:0.15rem}
-.lane .s .scr{display:block; margin-top:0.3rem; font-family:var(--fd); font-weight:800; font-size:0.66rem; color:var(--violet)}
-.lane .s.hold{border-style:dashed; background:var(--bone); color:var(--lavender)}
+.axis{display:grid; grid-template-columns:6.4rem 1fr; gap:0.5rem; margin-bottom:0.35rem}
+.axis .ticks{display:grid; grid-template-columns:repeat(5,1fr); gap:0.5rem; font-size:0.6rem; color:var(--lavender)}
+.axis .ticks span{border-left:1px solid var(--peri); padding-left:0.3rem}
+.lanes{display:flex; flex-direction:column; gap:0.45rem}
+.lane{display:grid; grid-template-columns:6.4rem 1fr; gap:0.5rem}
+.lane .lb{display:flex; flex-direction:column; align-items:flex-start; justify-content:center;
+  font-weight:600; font-size:0.76rem; color:var(--violet); background:var(--lilac);
+  border:1px solid var(--peri); border-radius:0.8rem; padding:0.4rem 0.55rem; line-height:1.3}
+.lane .lb em{font-style:normal; font-size:0.6rem; color:var(--slate); font-weight:400}
+.lane .steps{display:grid; grid-template-columns:repeat(5,1fr); gap:0.5rem}
+.lane .s{background:var(--paper); border:1px solid var(--peri); border-radius:0.8rem; padding:0.45rem 0.6rem;
+  font-size:0.72rem; color:var(--carbon); line-height:1.35}
+.lane .s b{display:block; font-size:0.76rem; color:var(--ink); font-weight:600; margin-bottom:0.12rem}
+.lane .s .scr{display:block; margin-top:0.25rem; font-family:var(--fd); font-weight:800; font-size:0.62rem; color:var(--violet)}
+.lane .s.hold{border-style:dashed; background:var(--bone); color:var(--lavender); display:flex; align-items:center}
 .lane .s.on{background:var(--lilac); border-color:var(--violet)}
+.lane .s.warn{border-color:var(--rose)}
+.lane .s.warn b{color:var(--rose)}
 
 /* 타임라인 */
-.tl{display:grid; grid-template-columns:repeat(3,1fr); gap:1.1rem}
-.tl .seg{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1.1rem 1.2rem}
-.tl .seg .t{font-family:var(--fd); font-weight:800; font-size:0.78rem; color:var(--violet); letter-spacing:0.02em}
-.tl .seg h3{font-family:var(--fd); font-weight:800; font-size:1.1rem; letter-spacing:-0.02em; margin:0.4rem 0 0}
-.tl .seg ul{margin:0.6rem 0 0; padding:0; list-style:none}
-.tl .seg li{font-size:0.84rem; color:var(--carbon); padding:0.28rem 0; border-bottom:1px solid var(--lilac); display:flex; gap:0.5rem}
+.tl{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.tl .seg{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1rem 1.1rem}
+.tl .seg .t{font-family:var(--fd); font-weight:800; font-size:0.76rem; color:var(--violet); letter-spacing:0.02em}
+.tl .seg h3{font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:-0.02em; margin:0.35rem 0 0}
+.tl .seg ul{margin:0.5rem 0 0; padding:0; list-style:none}
+.tl .seg li{font-size:0.8rem; color:var(--carbon); padding:0.24rem 0; border-bottom:1px solid var(--lilac); display:flex; gap:0.45rem}
 .tl .seg li:last-child{border-bottom:0}
-.tl .seg li .who{color:var(--slate); font-size:0.74rem; width:4.6rem; flex:none}
+.tl .seg li .who{color:var(--slate); font-size:0.7rem; width:4.4rem; flex:none}
+.tl .seg li .sid{margin-left:auto}
+
+/* 상태 전이도 */
+.dia{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:0.8rem; flex:1; min-height:0}
+.dia svg{width:100%; height:100%; display:block}
 
 /* 맺음 */
 .end{justify-content:center}
@@ -167,14 +177,14 @@ td.c{text-align:center}
       <div class="cov-rows">
         <div class="r"><span>사용자 역할</span><b>5개</b></div>
         <div class="r"><span>업무 시나리오</span><b>7개</b></div>
-        <div class="r"><span>연계 화면</span><b>14개</b></div>
-        <div class="r"><span>기준 문서</span><b>화면정의서</b></div>
+        <div class="r"><span>예외 시나리오</span><b>3개</b></div>
+        <div class="r"><span>인수 시험 항목</span><b>연계 정의</b></div>
       </div>
     </div>
   </div>
   <div class="meta">
     <div><b>LSV 귀중</b>제출처</div>
-    <div><b>v0.1 · 2026. 08</b>문서 버전</div>
+    <div><b>v0.2 · 2026. 08</b>문서 버전</div>
     <div><b>소버린즈 주식회사</b>작성</div>
   </div>
 </section>
@@ -187,26 +197,31 @@ td.c{text-align:center}
     <p class="lead">화면 목록만으로는 알 수 없는 <b>사용 순서와 역할 간 인계 지점</b>을 정의해, 개발 우선순위와 검수 시나리오의 기준으로 사용합니다.</p>
   </div>
   <div class="body">
-    <div class="grid g3">
+    <div class="grid g4" style="margin-bottom:0.85rem">
       <div class="card">
         <span class="tag">목적</span>
         <h3>업무 순서로 검증</h3>
-        <p>기능이 아니라 하루의 업무 순서대로 따라가며 빠진 단계와 화면을 찾습니다.</p>
+        <p>기능이 아니라 하루의 업무 순서를 따라가며 빠진 단계와 화면을 찾습니다.</p>
       </div>
       <div class="card">
         <span class="tag">구성</span>
         <h3>역할 · 시나리오 · 화면</h3>
-        <p>역할 5개와 시나리오 7개를 정의하고, 각 단계에 사용하는 화면 ID를 함께 표기합니다.</p>
+        <p>역할 5개와 시나리오 7개를 정의하고, 각 단계에 사용하는 화면 ID를 함께 적습니다.</p>
+      </div>
+      <div class="card">
+        <span class="tag">확장</span>
+        <h3>상태와 예외까지</h3>
+        <p>카트 상태와 알림 상태의 전이 규칙, 통신 두절 같은 예외 흐름을 함께 정의합니다.</p>
       </div>
       <div class="card">
         <span class="tag">활용</span>
-        <h3>검수 시나리오로 재사용</h3>
-        <p>각 시나리오는 인수 시험 항목으로 그대로 사용할 수 있도록 단계와 결과를 기술합니다.</p>
+        <h3>인수 시험으로 재사용</h3>
+        <p>각 시나리오는 사전 조건 · 절차 · 기대 결과 형태로 시험 항목에 그대로 옮깁니다.</p>
       </div>
     </div>
-    <div class="note"><b>표기</b> - 화면 ID(SCR-000)는 화면정의서와 동일합니다. 시간 · 임계값 표기는 협의 전 기준안이며 확정 후 갱신합니다.</div>
+    <div class="note"><b>표기</b> - 화면 ID(SCR-000)는 화면정의서와 동일합니다. 시간 · 임계값은 협의 전 기준안이며, 확정되면 이 문서와 화면정의서를 함께 갱신합니다.</div>
   </div>
-  <div class="s-foot"><span>기준 문서 - 화면정의서 v0.1</span><span class="mark">SOVEREIGNS · 02</span></div>
+  <div class="s-foot"><span>기준 문서 - 화면정의서 v0.3</span><span class="mark">SOVEREIGNS · 02</span></div>
 </section>
 
 <!-- 사용자 역할 -->
@@ -217,42 +232,42 @@ td.c{text-align:center}
     <p class="lead">역할은 <b>권한 등급 3단계</b>와 연결되며, 같은 화면이라도 역할에 따라 가능한 동작이 다릅니다.</p>
   </div>
   <div class="body">
-    <div class="grid g3" style="margin-bottom:1.1rem">
+    <div class="grid g3" style="margin-bottom:0.85rem">
       <div class="card">
         <span class="tag">전역 관리자</span>
         <h3>본사 운영 담당</h3>
-        <p>여러 골프장을 함께 관리합니다. 코스 · 차량 · 계정 등 기준 정보를 설정합니다.</p>
-        <ul><li>주 사용 화면 - SCR-080, 130, 140</li></ul>
+        <p>여러 골프장을 함께 관리하며 코스 · 차량 · 계정 등 기준 정보를 설정합니다.</p>
+        <ul><li>주 사용 화면 - <b>SCR-080 · 130 · 140</b></li><li>사용 빈도 - 주 1~2회</li></ul>
       </div>
       <div class="card">
         <span class="tag">골프장 관리자</span>
         <h3>현장 운영 책임</h3>
         <p>담당 골프장의 운영 현황과 리포트를 확인하고 차량 별칭을 관리합니다.</p>
-        <ul><li>주 사용 화면 - SCR-010, 050, 060</li></ul>
+        <ul><li>주 사용 화면 - <b>SCR-010 · 050 · 060</b></li><li>사용 빈도 - 매일 개장 · 마감</li></ul>
       </div>
       <div class="card">
         <span class="tag">관제 운영자</span>
         <h3>관제실 상시 근무</h3>
         <p>라운드 진행 중 실시간 화면을 지켜보며 이상 상황을 최초로 인지합니다.</p>
-        <ul><li>주 사용 화면 - SCR-010, 020, 030</li></ul>
+        <ul><li>주 사용 화면 - <b>SCR-010 · 020 · 030</b></li><li>사용 빈도 - 운영 시간 상시</li></ul>
       </div>
       <div class="card">
         <span class="tag">정비 담당자</span>
         <h3>차량 정비 · 점검</h3>
         <p>알림을 받아 조치하고 정비 이력과 소모품 교체를 기록합니다.</p>
-        <ul><li>주 사용 화면 - SCR-090, 100, 110, 120</li></ul>
+        <ul><li>주 사용 화면 - <b>SCR-090 · 100 · 110 · 120</b></li><li>사용 빈도 - 매일 개장 전 · 수시</li></ul>
       </div>
       <div class="card lil">
-        <span class="tag gray">2단계</span>
+        <span class="tag gray">조회 전용</span>
+        <h3>관제실 대형 화면</h3>
+        <p>DID는 조회 전용 계정으로 대시보드만 상시 표시하며 편집 컨트롤을 노출하지 않습니다.</p>
+        <ul><li>주 사용 화면 - <b>SCR-010 전체 화면</b></li></ul>
+      </div>
+      <div class="card lil">
+        <span class="tag gray">2단계 대상</span>
         <h3>경기 진행 요원</h3>
-        <p>코스 내 진행을 담당합니다. 지연 · 이탈 알림 수신과 카트 안내가 2단계 대상입니다.</p>
+        <p>코스 내 진행을 담당합니다. 지연 · 이탈 알림 수신과 카트 안내가 2단계 확장 대상입니다.</p>
         <ul><li>연계 기능 - 지연 알림, 메시지 템플릿</li></ul>
-      </div>
-      <div class="card lil">
-        <span class="tag gray">비계정</span>
-        <h3>대형 화면 열람</h3>
-        <p>관제실 DID는 조회 전용 계정으로 대시보드만 상시 표시합니다.</p>
-        <ul><li>주 사용 화면 - SCR-010(전체 화면)</li></ul>
       </div>
     </div>
   </div>
@@ -267,22 +282,49 @@ td.c{text-align:center}
     <p class="lead">요구사항정의서의 권한 표기(A / C)를 <b>역할 기준으로 재정의</b>한 안입니다.</p>
   </div>
   <div class="body">
-    <table class="tight">
+    <table class="tight dense">
       <tr><th>기능</th><th>전역 관리자</th><th>골프장 관리자</th><th>관제 운영자</th><th>정비 담당자</th><th>조회 전용</th></tr>
-      <tr><td><b>실시간 관제 · 대시보드</b></td><td class="c">조회</td><td class="c">조회</td><td class="c">조회</td><td class="c">조회</td><td class="c">조회</td></tr>
-      <tr><td><b>알림 확인 · 조치 등록</b></td><td class="c">조치</td><td class="c">조치</td><td class="c">조치</td><td class="c">조치</td><td class="c g">-</td></tr>
-      <tr><td><b>운행경로 · 트립 리포트</b></td><td class="c">조회 · 내보내기</td><td class="c">조회 · 내보내기</td><td class="c">조회</td><td class="c">조회</td><td class="c">조회</td></tr>
-      <tr><td><b>차량 조회</b></td><td class="c">조회</td><td class="c">조회</td><td class="c">조회</td><td class="c">조회</td><td class="c">조회</td></tr>
-      <tr><td><b>차량 등록 · 삭제</b></td><td class="c">등록 · 삭제</td><td class="c g">-</td><td class="c g">-</td><td class="c g">-</td><td class="c g">-</td></tr>
-      <tr><td><b>차량 별칭 수정</b></td><td class="c">수정</td><td class="c">수정</td><td class="c g">-</td><td class="c g">-</td><td class="c g">-</td></tr>
-      <tr><td><b>정비 이력 · 점검 작성</b></td><td class="c">조회</td><td class="c">조회</td><td class="c">조회</td><td class="c">작성 · 수정</td><td class="c g">-</td></tr>
-      <tr><td><b>고장 · DTC 진단</b></td><td class="c">조회</td><td class="c">조회</td><td class="c">조회</td><td class="c">조회 · 조치</td><td class="c g">-</td></tr>
-      <tr><td><b>코스 · 홀 마킹</b></td><td class="c">설정</td><td class="c g">-</td><td class="c g">-</td><td class="c g">-</td><td class="c g">-</td></tr>
-      <tr><td><b>이용자 · 권한 관리</b></td><td class="c">설정</td><td class="c g">-</td><td class="c g">-</td><td class="c g">-</td><td class="c g">-</td></tr>
+      <tr><td><b>실시간 관제 · 대시보드</b></td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td></tr>
+      <tr><td><b>알림 확인 · 조치 등록</b></td><td class="c yes">조치</td><td class="c yes">조치</td><td class="c yes">조치</td><td class="c yes">조치</td><td class="c no">-</td></tr>
+      <tr><td><b>운행경로 · 트립 리포트</b></td><td class="c yes">조회 · 내보내기</td><td class="c yes">조회 · 내보내기</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td></tr>
+      <tr><td><b>차량 조회</b></td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td></tr>
+      <tr><td><b>차량 등록 · 삭제</b></td><td class="c yes">등록 · 삭제</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td></tr>
+      <tr><td><b>차량 별칭 수정</b></td><td class="c yes">수정</td><td class="c yes">수정</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td></tr>
+      <tr><td><b>정비 이력 · 점검 작성</b></td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">작성 · 수정</td><td class="c no">-</td></tr>
+      <tr><td><b>고장 · DTC 진단</b></td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회 · 조치</td><td class="c no">-</td></tr>
+      <tr><td><b>코스 · 홀 마킹</b></td><td class="c yes">설정</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td></tr>
+      <tr><td><b>이용자 · 권한 관리</b></td><td class="c yes">설정</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td></tr>
     </table>
-    <div class="note"><b>확정 필요</b> - 골프장 관리자에게 계정 관리 권한을 일부 위임할지 여부는 운영 정책에 따라 결정합니다.</div>
+    <div class="note"><b>확정 필요</b> - 골프장 관리자에게 계정 관리 권한을 일부 위임할지, 조회 전용 계정에 리포트 내보내기를 허용할지는 운영 정책에 따라 결정합니다.</div>
   </div>
   <div class="s-foot"><span>요구사항정의서 권한 항목 재정의(안)</span><span class="mark">SOVEREIGNS · 04</span></div>
+</section>
+
+<!-- 화면 접근 맵 -->
+<section class="slide" data-title="역할별 화면 접근 맵">
+  <div class="s-head">
+    <div class="eyebrow">역할과 권한</div>
+    <h2 class="title">역할별 화면 접근 맵</h2>
+    <p class="lead">14개 화면을 역할별로 나누면 <b>상시 화면과 가끔 쓰는 화면</b>이 구분되고, 메뉴 노출 기준이 정해집니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense">
+      <tr><th>화면</th><th>전역 관리자</th><th>골프장 관리자</th><th>관제 운영자</th><th>정비 담당자</th><th>조회 전용</th></tr>
+      <tr><td><span class="sid">SCR-010</span> 대시보드</td><td class="c yes">상시</td><td class="c yes">상시</td><td class="c yes">상시</td><td class="c yes">수시</td><td class="c yes">상시</td></tr>
+      <tr><td><span class="sid">SCR-020</span> 실시간 관제</td><td class="c yes">수시</td><td class="c yes">수시</td><td class="c yes">상시</td><td class="c yes">수시</td><td class="c no">-</td></tr>
+      <tr><td><span class="sid">SCR-030</span> 알림 센터</td><td class="c yes">수시</td><td class="c yes">수시</td><td class="c yes">상시</td><td class="c yes">상시</td><td class="c no">-</td></tr>
+      <tr><td><span class="sid">SCR-040</span> 운행경로 재생</td><td class="c yes">가끔</td><td class="c yes">수시</td><td class="c yes">가끔</td><td class="c no">-</td><td class="c no">-</td></tr>
+      <tr><td><span class="sid">SCR-050</span> 트립 리포트</td><td class="c yes">주간</td><td class="c yes">매일</td><td class="c no">-</td><td class="c no">-</td><td class="c yes">조회</td></tr>
+      <tr><td><span class="sid">SCR-060 · 070</span> 차량 목록 · 상세</td><td class="c yes">수시</td><td class="c yes">수시</td><td class="c yes">수시</td><td class="c yes">상시</td><td class="c no">-</td></tr>
+      <tr><td><span class="sid">SCR-080</span> 차량 등록</td><td class="c yes">가끔</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td></tr>
+      <tr><td><span class="sid">SCR-090 · 100</span> 정비 이력 · 체크리스트</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">상시</td><td class="c no">-</td></tr>
+      <tr><td><span class="sid">SCR-110</span> 배터리 요약</td><td class="c yes">수시</td><td class="c yes">매일</td><td class="c yes">수시</td><td class="c yes">매일</td><td class="c no">-</td></tr>
+      <tr><td><span class="sid">SCR-120</span> DTC 진단</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">상시</td><td class="c no">-</td></tr>
+      <tr><td><span class="sid">SCR-130 · 140</span> 코스 마킹 · 계정</td><td class="c yes">설정</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td></tr>
+    </table>
+    <div class="note"><b>메뉴 노출 기준</b> - 접근 권한이 없는 화면은 메뉴에서 숨기고, 링크로 진입해도 접근을 차단합니다. 상시 화면은 로그인 직후 기본 화면 후보로 둡니다.</div>
+  </div>
+  <div class="s-foot"><span>상시 · 매일 · 수시 · 가끔은 사용 빈도 기준안</span><span class="mark">SOVEREIGNS · 05</span></div>
 </section>
 
 <!-- 하루 운영 타임라인 -->
@@ -298,106 +340,223 @@ td.c{text-align:center}
         <div class="t">05:00 - 07:00</div>
         <h3>개장 전</h3>
         <ul>
-          <li><span class="who">정비 담당자</span>배터리 · 정비 필요 차량 확인</li>
-          <li><span class="who">정비 담당자</span>점검 체크리스트 작성</li>
-          <li><span class="who">골프장 관리자</span>가동 가능 대수 확정</li>
-          <li><span class="who">관제 운영자</span>단말 통신 상태 확인</li>
+          <li><span class="who">정비 담당자</span>배터리 · 정비 필요 확인<span class="sid">110</span></li>
+          <li><span class="who">정비 담당자</span>점검 체크리스트 작성<span class="sid">100</span></li>
+          <li><span class="who">골프장 관리자</span>가동 가능 대수 확정<span class="sid">010</span></li>
+          <li><span class="who">관제 운영자</span>단말 통신 상태 확인<span class="sid">020</span></li>
         </ul>
       </div>
       <div class="seg">
         <div class="t">07:00 - 18:00</div>
         <h3>라운드 진행</h3>
         <ul>
-          <li><span class="who">관제 운영자</span>실시간 위치 · 상태 관제</li>
-          <li><span class="who">관제 운영자</span>알림 확인과 1차 판단</li>
-          <li><span class="who">정비 담당자</span>고장 차량 현장 조치</li>
-          <li><span class="who">골프장 관리자</span>지연 구간 확인</li>
+          <li><span class="who">관제 운영자</span>실시간 위치 · 상태 관제<span class="sid">020</span></li>
+          <li><span class="who">관제 운영자</span>알림 확인과 1차 판단<span class="sid">030</span></li>
+          <li><span class="who">정비 담당자</span>고장 차량 현장 조치<span class="sid">090</span></li>
+          <li><span class="who">골프장 관리자</span>지연 구간 확인<span class="sid">010</span></li>
         </ul>
       </div>
       <div class="seg">
         <div class="t">18:00 이후</div>
         <h3>마감 후</h3>
         <ul>
-          <li><span class="who">관제 운영자</span>복귀 · 충전 상태 확인</li>
-          <li><span class="who">골프장 관리자</span>일일 트립 리포트 확인</li>
-          <li><span class="who">정비 담당자</span>정비 이력 마감 기록</li>
-          <li><span class="who">전역 관리자</span>주간 · 월간 집계 확인</li>
+          <li><span class="who">관제 운영자</span>복귀 · 충전 상태 확인<span class="sid">110</span></li>
+          <li><span class="who">골프장 관리자</span>일일 트립 리포트 확인<span class="sid">050</span></li>
+          <li><span class="who">정비 담당자</span>정비 이력 마감 기록<span class="sid">090</span></li>
+          <li><span class="who">전역 관리자</span>주간 · 월간 집계 확인<span class="sid">050</span></li>
         </ul>
       </div>
     </div>
-    <div class="note"><b>운영 시간대와 인원 구성</b>은 골프장 운영 방식에 따라 조정합니다. 위 구간 구분은 시나리오 정의를 위한 기준안입니다.</div>
+    <div class="note"><b>운영 시간대와 인원 구성</b>은 골프장 운영 방식에 따라 조정합니다. 위 구간 구분은 시나리오 정의를 위한 기준안이며, 시나리오 01 · 02 · 05가 각 구간을 대표합니다.</div>
   </div>
-  <div class="s-foot"><span>역할 · 시간대별 사용 흐름</span><span class="mark">SOVEREIGNS · 05</span></div>
+  <div class="s-foot"><span>역할 · 시간대별 사용 흐름</span><span class="mark">SOVEREIGNS · 06</span></div>
 </section>
 
-<!-- 시나리오 1 -->
-<section class="slide" data-title="시나리오 1 개장 전 점검">
+<!-- 카트 상태 전이도 -->
+<section class="slide" data-title="카트 상태 전이도">
+  <div class="s-head">
+    <div class="eyebrow">상태 정의</div>
+    <h2 class="title">카트 상태 전이도</h2>
+    <p class="lead">관제 화면 · 리포트 · 알림이 <b>같은 상태 정의</b>를 쓰도록 전이 조건을 도식으로 고정합니다.</p>
+  </div>
+  <div class="body">
+    <div class="dia">
+      <svg viewBox="0 0 900 300" preserveAspectRatio="xMidYMid meet" aria-label="카트 상태 전이도">
+        <rect x="20" y="120" width="112" height="42" rx="21" fill="#FAFAF8" stroke="#D9D2FF" stroke-width="1.4"></rect>
+        <text x="76" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#18161A" text-anchor="middle">대기</text>
+        <text x="76" y="155" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">차고 · 배차 전</text>
+        <path d="M132 141 L186 141" stroke="#9E99AB" stroke-width="1.6"></path>
+        <path d="M186 141 L176 136 L176 146 Z" fill="#9E99AB"></path>
+        <text x="159" y="130" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">배차 지정</text>
+        <rect x="188" y="120" width="112" height="42" rx="21" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></rect>
+        <text x="244" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#4823FF" text-anchor="middle">배차</text>
+        <text x="244" y="155" font-family="Inter" font-size="11" fill="#7E78FF" text-anchor="middle">팀 배정 완료</text>
+        <path d="M300 141 L354 141" stroke="#9E99AB" stroke-width="1.6"></path>
+        <path d="M354 141 L344 136 L344 146 Z" fill="#9E99AB"></path>
+        <text x="327" y="130" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">속도 · 홀 진입</text>
+        <rect x="356" y="120" width="112" height="42" rx="21" fill="#4823FF"></rect>
+        <text x="412" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">운행</text>
+        <text x="412" y="155" font-family="Inter" font-size="11" fill="#D9D2FF" text-anchor="middle">트립 생성</text>
+        <path d="M468 141 L522 141" stroke="#9E99AB" stroke-width="1.6"></path>
+        <path d="M522 141 L512 136 L512 146 Z" fill="#9E99AB"></path>
+        <text x="495" y="130" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">차고 진입</text>
+        <rect x="524" y="120" width="112" height="42" rx="21" fill="#FAFAF8" stroke="#D9D2FF" stroke-width="1.4"></rect>
+        <text x="580" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#18161A" text-anchor="middle">복귀</text>
+        <text x="580" y="155" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">트립 종료</text>
+        <path d="M636 141 L690 141" stroke="#9E99AB" stroke-width="1.6"></path>
+        <path d="M690 141 L680 136 L680 146 Z" fill="#9E99AB"></path>
+        <text x="663" y="130" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">충전 연결</text>
+        <rect x="692" y="120" width="112" height="42" rx="21" fill="#FAFAF8" stroke="#99CEFE" stroke-width="1.6"></rect>
+        <text x="748" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#18161A" text-anchor="middle">충전</text>
+        <text x="748" y="155" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">SoC 상승</text>
+        <path d="M748 120 C 748 70, 400 60, 76 108" fill="none" stroke="#9E99AB" stroke-width="1.4" stroke-dasharray="5 5"></path>
+        <path d="M76 108 L86 102 L86 112 Z" fill="#9E99AB"></path>
+        <text x="412" y="72" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">충전 완료 · 다시 대기</text>
+        <rect x="356" y="228" width="112" height="42" rx="21" fill="#FDE7ED" stroke="#E11D48" stroke-width="1.4"></rect>
+        <text x="412" y="248" font-family="Inter" font-size="15" font-weight="600" fill="#E11D48" text-anchor="middle">정비</text>
+        <text x="412" y="263" font-family="Inter" font-size="11" fill="#E11D48" text-anchor="middle">운행 대상 제외</text>
+        <path d="M412 162 L412 226" stroke="#E11D48" stroke-width="1.6"></path>
+        <path d="M412 226 L407 216 L417 216 Z" fill="#E11D48"></path>
+        <text x="500" y="200" font-family="Inter" font-size="11" fill="#E11D48" text-anchor="middle">고장 코드 · 정비 등록</text>
+        <path d="M356 249 C 240 249, 180 210, 132 152" fill="none" stroke="#9E99AB" stroke-width="1.4" stroke-dasharray="5 5"></path>
+        <path d="M132 152 L142 150 L136 160 Z" fill="#9E99AB"></path>
+        <text x="212" y="238" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">정비 완료</text>
+      </svg>
+    </div>
+    <div class="note"><b>판정은 서버에서 일괄 수행</b>합니다. 화면 · 리포트 · 알림이 서로 다른 값을 보이지 않도록 상태는 한 곳에서 계산하고, 속도 · 지속 시간 등 임계값은 협의 후 확정합니다.</div>
+  </div>
+  <div class="s-foot"><span>트립 판정 기준 - 요구사항정의서 보완 제안 반영</span><span class="mark">SOVEREIGNS · 07</span></div>
+</section>
+
+<!-- 알림 상태 전이도 -->
+<section class="slide" data-title="알림 처리 상태와 대응 규칙">
+  <div class="s-head">
+    <div class="eyebrow">상태 정의</div>
+    <h2 class="title">알림 처리 상태와 대응 규칙</h2>
+    <p class="lead">모든 시나리오가 공유하는 <b>알림 처리 4단계</b>와 등급별 대응 기준(안)입니다.</p>
+  </div>
+  <div class="body">
+    <div class="dia" style="flex:none; height:8.6rem; margin-bottom:0.8rem">
+      <svg viewBox="0 0 900 200" preserveAspectRatio="xMidYMid meet" aria-label="알림 처리 상태 전이도">
+        <rect x="24" y="72" width="150" height="46" rx="23" fill="#4823FF"></rect>
+        <text x="99" y="93" font-family="Inter" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">발생</text>
+        <text x="99" y="109" font-family="Inter" font-size="11" fill="#D9D2FF" text-anchor="middle">시스템 판정 · 발송</text>
+        <path d="M174 95 L232 95" stroke="#9E99AB" stroke-width="1.6"></path>
+        <path d="M232 95 L222 90 L222 100 Z" fill="#9E99AB"></path>
+        <text x="203" y="84" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">열람</text>
+        <rect x="234" y="72" width="150" height="46" rx="23" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></rect>
+        <text x="309" y="93" font-family="Inter" font-size="15" font-weight="600" fill="#4823FF" text-anchor="middle">확인</text>
+        <text x="309" y="109" font-family="Inter" font-size="11" fill="#7E78FF" text-anchor="middle">확인자 · 시각 기록</text>
+        <path d="M384 95 L442 95" stroke="#9E99AB" stroke-width="1.6"></path>
+        <path d="M442 95 L432 90 L432 100 Z" fill="#9E99AB"></path>
+        <text x="413" y="84" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">정비 요청</text>
+        <rect x="444" y="72" width="150" height="46" rx="23" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></rect>
+        <text x="519" y="93" font-family="Inter" font-size="15" font-weight="600" fill="#4823FF" text-anchor="middle">조치 중</text>
+        <text x="519" y="109" font-family="Inter" font-size="11" fill="#7E78FF" text-anchor="middle">담당자 인계</text>
+        <path d="M594 95 L652 95" stroke="#9E99AB" stroke-width="1.6"></path>
+        <path d="M652 95 L642 90 L642 100 Z" fill="#9E99AB"></path>
+        <text x="623" y="84" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">결과 등록</text>
+        <rect x="654" y="72" width="150" height="46" rx="23" fill="#FAFAF8" stroke="#D9D2FF" stroke-width="1.4"></rect>
+        <text x="729" y="93" font-family="Inter" font-size="15" font-weight="600" fill="#18161A" text-anchor="middle">종결</text>
+        <text x="729" y="109" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">대응 시간 집계</text>
+        <path d="M99 72 C 99 26, 309 26, 309 68" fill="none" stroke="#E11D48" stroke-width="1.6" stroke-dasharray="5 5"></path>
+        <path d="M309 68 L304 58 L314 58 Z" fill="#E11D48"></path>
+        <text x="204" y="24" font-family="Inter" font-size="11" fill="#E11D48" text-anchor="middle">미확인 지속 시 재발송 · 관리자 승격</text>
+        <path d="M519 118 C 519 164, 309 164, 309 122" fill="none" stroke="#9E99AB" stroke-width="1.4" stroke-dasharray="5 5"></path>
+        <path d="M309 122 L304 132 L314 132 Z" fill="#9E99AB"></path>
+        <text x="414" y="160" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">재발 시 확인 단계로 복귀</text>
+      </svg>
+    </div>
+    <table class="tight dense">
+      <tr><th>등급</th><th>대상 이벤트</th><th>1차 담당</th><th>확인 목표(안)</th><th>미확인 시</th><th>연계 화면</th></tr>
+      <tr><td><span class="tag r">긴급</span></td><td class="g">고장 코드 발생, 코스 이탈(2단계)</td><td class="g">관제 운영자</td><td class="g">5분 이내</td><td class="g">재발송 후 관리자에게 승격</td><td class="g">SCR-030 · 120</td></tr>
+      <tr><td><span class="tag">경고</span></td><td class="g">배터리 방전 위험, 통신 두절</td><td class="g">관제 운영자</td><td class="g">15분 이내</td><td class="g">일간 요약에 누적 표기</td><td class="g">SCR-030 · 110</td></tr>
+      <tr><td><span class="tag gray">주의</span></td><td class="g">소모품 주기 도달, 정비 예정일 도래</td><td class="g">정비 담당자</td><td class="g">당일 이내</td><td class="g">다음 날 요약에 재표기</td><td class="g">SCR-090 · 100</td></tr>
+    </table>
+    <div class="note"><b>중복 억제</b> - 동일 카트의 동일 이벤트는 일정 시간 내 1회만 발송하고 반복 횟수로 묶어 표시합니다. 미확인 긴급 이벤트만 재발송 대상입니다.</div>
+  </div>
+  <div class="s-foot"><span>대응 시간 기준은 운영 인력 구성에 맞춰 확정</span><span class="mark">SOVEREIGNS · 08</span></div>
+</section>
+
+<!-- 시나리오 01 -->
+<section class="slide" data-title="시나리오 01 개장 전 차량 점검">
   <div class="s-head">
     <div class="eyebrow">시나리오 01 · 정비 담당자 · 골프장 관리자</div>
     <h2 class="title">개장 전 차량 점검</h2>
     <p class="lead">라운드 시작 전 <b>가동 가능한 카트 대수를 확정</b>하는 흐름입니다.</p>
   </div>
   <div class="body">
-    <div class="flow" style="margin-bottom:1.1rem">
-      <div class="step"><div class="k">01</div><h4>배터리 요약 확인</h4><p>SoC 경고 · 주의 차량과 충전 완료 여부를 확인합니다.</p><span class="scr">SCR-110</span></div>
+    <div class="flow" style="margin-bottom:0.9rem">
+      <div class="step"><div class="k">01 · 05:30</div><h4>배터리 요약 확인</h4><p>SoC 경고 · 주의 차량과 충전 완료 여부를 확인합니다.</p><span class="scr">SCR-110</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">02</div><h4>정비 필요 목록 확인</h4><p>정비 주기 도달과 미처리 고장 코드 차량을 추립니다.</p><span class="scr">SCR-060</span></div>
+      <div class="step"><div class="k">02 · 05:45</div><h4>정비 필요 목록</h4><p>정비 주기 도달과 미조치 고장 코드 차량을 추립니다.</p><span class="scr">SCR-060</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">03</div><h4>점검 수행 · 기록</h4><p>체크리스트를 작성하고 불량 항목은 정비로 등록합니다.</p><span class="scr">SCR-100</span></div>
+      <div class="step"><div class="k">03 · 06:00</div><h4>점검 수행 · 기록</h4><p>체크리스트를 작성하고 불량 항목은 정비로 등록합니다.</p><span class="scr">SCR-100</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">04</div><h4>통신 상태 확인</h4><p>최근 수신 시각이 지연된 단말을 찾아 조치합니다.</p><span class="scr">SCR-020</span></div>
+      <div class="step"><div class="k">04 · 06:40</div><h4>통신 상태 확인</h4><p>최근 수신이 지연된 단말을 찾아 조치합니다.</p><span class="scr">SCR-020</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">05</div><h4>가동 대수 확정</h4><p>대시보드 기준으로 운행 가능 대수를 공유합니다.</p><span class="scr">SCR-010</span></div>
+      <div class="step"><div class="k">05 · 06:50</div><h4>가동 대수 확정</h4><p>대시보드 기준으로 운행 가능 대수를 공유합니다.</p><span class="scr">SCR-010</span></div>
     </div>
-    <div class="grid g2">
+    <div class="grid g3">
       <div class="card">
         <span class="tag">완료 기준</span>
         <h3>이 시나리오가 끝나면</h3>
         <ul>
-          <li>정비 필요 차량이 운행 대상에서 제외됩니다</li>
+          <li>정비 필요 차량이 <b>운행 대상에서 제외</b>됩니다</li>
           <li>점검 결과가 카트별 이력으로 남습니다</li>
+          <li>가동 대수가 대시보드 KPI와 일치합니다</li>
         </ul>
       </div>
       <div class="card lil">
         <span class="tag gray">예외</span>
         <h3>예외 처리</h3>
         <ul>
-          <li>통신 미수신 단말은 목록에 별도 표기하고 현장 확인 대상으로 분류</li>
+          <li>통신 미수신 단말은 별도 표기하고 현장 확인 대상으로 분류</li>
           <li>점검 미완료 차량은 배차 대상에서 제외</li>
+          <li>충전 미완료 차량은 예상 완료 시각을 함께 표시</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">측정 지표</span>
+        <h3>운영이 보는 숫자</h3>
+        <ul>
+          <li>개장 시각 기준 가동률(가동 대수 / 전체)</li>
+          <li>점검 소요 시간과 불량 항목 건수</li>
+          <li>전일 대비 정비 필요 대수 증감</li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>검수 시나리오로 재사용</span><span class="mark">SOVEREIGNS · 06</span></div>
+  <div class="s-foot"><span>인수 시험 항목으로 재사용</span><span class="mark">SOVEREIGNS · 09</span></div>
 </section>
 
-<!-- 시나리오 2 -->
-<section class="slide" data-title="시나리오 2 라운드 중 실시간 관제">
+<!-- 시나리오 02 -->
+<section class="slide" data-title="시나리오 02 라운드 중 실시간 관제">
   <div class="s-head">
     <div class="eyebrow">시나리오 02 · 관제 운영자</div>
     <h2 class="title">라운드 중 실시간 관제</h2>
     <p class="lead">관제실 화면을 상시 띄워 두고 <b>이상 상황을 최초로 인지</b>하는 흐름입니다.</p>
   </div>
   <div class="body">
-    <div class="flow" style="margin-bottom:1.1rem">
-      <div class="step"><div class="k">01</div><h4>대시보드 상시 표시</h4><p>대형 화면에 KPI와 코스 현황을 전체 화면으로 유지합니다.</p><span class="scr">SCR-010</span></div>
+    <div class="flow" style="margin-bottom:0.9rem">
+      <div class="step"><div class="k">상시</div><h4>대시보드 표시</h4><p>대형 화면에 KPI와 코스 현황을 전체 화면으로 유지합니다.</p><span class="scr">SCR-010</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">02</div><h4>알림 인지</h4><p>긴급 이벤트는 토스트로, 나머지는 배지로 확인합니다.</p><span class="scr">SCR-030</span></div>
+      <div class="step"><div class="k">즉시</div><h4>알림 인지</h4><p>긴급은 토스트로, 나머지는 상단 배지로 확인합니다.</p><span class="scr">SCR-030</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">03</div><h4>대상 카트 확인</h4><p>지도에서 위치와 상태, 최근 신호를 확인합니다.</p><span class="scr">SCR-020</span></div>
+      <div class="step"><div class="k">1분 내</div><h4>대상 카트 확인</h4><p>지도에서 위치 · 속도 · SoC와 최근 신호를 확인합니다.</p><span class="scr">SCR-020</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">04</div><h4>1차 판단</h4><p>운행 지속 · 회수 · 정비 요청 중 하나로 분류합니다.</p><span class="scr">SCR-030</span></div>
+      <div class="step"><div class="k">5분 내</div><h4>1차 판단</h4><p>운행 지속 · 회수 · 정비 요청 중 하나로 분류합니다.</p><span class="scr">SCR-030</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">05</div><h4>인계 · 기록</h4><p>정비 요청은 담당자에게 인계하고 처리 상태를 남깁니다.</p><span class="scr">SCR-090</span></div>
+      <div class="step"><div class="k">인계</div><h4>기록 · 전달</h4><p>정비 요청은 담당자에게 넘기고 처리 상태를 남깁니다.</p><span class="scr">SCR-090</span></div>
     </div>
-    <div class="grid g2">
+    <div class="grid g3">
       <div class="card">
         <span class="tag">판단 기준(안)</span>
         <h3>1차 분류</h3>
         <ul>
-          <li>긴급 - 고장 코드 발생, 코스 이탈(2단계)</li>
-          <li>경고 - 배터리 방전 위험, 통신 두절</li>
-          <li>주의 - 소모품 주기 도달, 정비 예정일 도래</li>
+          <li><b>긴급</b> 고장 코드 발생, 코스 이탈(2단계)</li>
+          <li><b>경고</b> 배터리 임계 이하, 통신 두절</li>
+          <li><b>주의</b> 소모품 주기 도달, 정비 예정일</li>
         </ul>
       </div>
       <div class="card lil">
@@ -405,35 +564,49 @@ td.c{text-align:center}
         <h3>운영 규칙</h3>
         <ul>
           <li>등급별 대응 시간과 담당자 지정 규칙</li>
-          <li>미확인 알림의 재발송 주기</li>
+          <li>미확인 알림의 재발송 주기와 승격 대상</li>
+          <li>야간 · 비운영 시간대의 알림 수신 여부</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">화면 구성</span>
+        <h3>관제실 배치</h3>
+        <ul>
+          <li>대형 화면 - SCR-010 전체 화면 · 다크 모드</li>
+          <li>운영자 PC - SCR-020과 SCR-030을 나란히</li>
+          <li>연결 끊김은 화면 상단 배너로 즉시 표시</li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>상시 화면 - SCR-010 전체 화면 모드</span><span class="mark">SOVEREIGNS · 07</span></div>
+  <div class="s-foot"><span>상시 화면 - SCR-010 전체 화면 모드</span><span class="mark">SOVEREIGNS · 10</span></div>
 </section>
 
-<!-- 시나리오 3 -->
-<section class="slide" data-title="시나리오 3 고장 발생 대응">
+<!-- 시나리오 03 -->
+<section class="slide" data-title="시나리오 03 고장 발생 대응">
   <div class="s-head">
-    <div class="eyebrow">시나리오 03 · 시스템 · 관제 · 정비</div>
+    <div class="eyebrow">시나리오 03 · 시스템 · 관제 운영자 · 정비 담당자</div>
     <h2 class="title">고장 발생 대응</h2>
-    <p class="lead">고장 코드 수신부터 종결까지 <b>역할 간 인계 지점</b>을 정의합니다.</p>
+    <p class="lead">고장 코드 수신부터 종결까지 <b>역할 간 인계 지점</b>과 목표 시간을 정의합니다.</p>
   </div>
   <div class="body">
+    <div class="axis">
+      <span></span>
+      <div class="ticks"><span>0분 · 발생</span><span>2분 · 인지</span><span>5분 · 확인</span><span>15분 · 조치</span><span>30분 · 종결</span></div>
+    </div>
     <div class="lanes">
       <div class="lane">
-        <div class="lb">시스템</div>
+        <div class="lb">시스템<em>수집 · 판정</em></div>
         <div class="steps">
           <div class="s on"><b>고장 코드 수신</b>BMS · MCU 신호에서 코드 검출<span class="scr">수집 서버</span></div>
-          <div class="s on"><b>이벤트 생성</b>등급 판정과 수신자 결정<span class="scr">알림 규칙</span></div>
+          <div class="s on"><b>이벤트 생성</b>등급 판정 · 수신자 결정 · 토스트 발송<span class="scr">알림 규칙</span></div>
           <div class="s hold">대기</div>
           <div class="s hold">대기</div>
-          <div class="s on"><b>상태 종결</b>조치 등록 시 이벤트 종결<span class="scr">SCR-030</span></div>
+          <div class="s on"><b>상태 종결</b>조치 등록 시 이벤트 종결 · 대응 시간 집계<span class="scr">SCR-030</span></div>
         </div>
       </div>
       <div class="lane">
-        <div class="lb">관제 운영자</div>
+        <div class="lb">관제 운영자<em>1차 판단</em></div>
         <div class="steps">
           <div class="s hold">대기</div>
           <div class="s on"><b>알림 확인</b>토스트 · 배지로 인지 후 확인 처리<span class="scr">SCR-030</span></div>
@@ -443,42 +616,46 @@ td.c{text-align:center}
         </div>
       </div>
       <div class="lane">
-        <div class="lb">정비 담당자</div>
+        <div class="lb">정비 담당자<em>현장 조치</em></div>
         <div class="steps">
           <div class="s hold">대기</div>
           <div class="s hold">대기</div>
-          <div class="s on"><b>코드 확인</b>코드 명칭과 발생 이력 확인<span class="scr">SCR-120</span></div>
+          <div class="s on"><b>코드 확인</b>코드 명칭 · 발생 이력 · 신호 원문 확인<span class="scr">SCR-120</span></div>
           <div class="s on"><b>현장 조치</b>조치 수행 후 결과 입력<span class="scr">SCR-090</span></div>
           <div class="s on"><b>이력 기록</b>부품 교체 시 다음 주기 갱신<span class="scr">SCR-090</span></div>
         </div>
       </div>
     </div>
-    <div class="note"><b>인계 지점</b> - 관제 운영자의 정비 요청과 정비 담당자의 조치 완료 두 지점에서 처리자와 시각을 기록해, 대응 시간을 집계할 수 있게 합니다.</div>
+    <div class="note"><b>인계 지점 2곳</b> - 관제 운영자의 정비 요청과 정비 담당자의 조치 완료. 두 지점에서 처리자와 시각을 기록해 <b>인지 시간 · 조치 시간</b>을 나눠 집계합니다.</div>
   </div>
-  <div class="s-foot"><span>알림 처리 4단계 - 발생 · 확인 · 조치 중 · 종결</span><span class="mark">SOVEREIGNS · 08</span></div>
+  <div class="s-foot"><span>알림 처리 4단계 - 발생 · 확인 · 조치 중 · 종결</span><span class="mark">SOVEREIGNS · 11</span></div>
 </section>
 
-<!-- 시나리오 4 -->
-<section class="slide" data-title="시나리오 4 배터리 경고 대응">
+<!-- 시나리오 04 -->
+<section class="slide" data-title="시나리오 04 배터리 경고 대응">
   <div class="s-head">
-    <div class="eyebrow">시나리오 04 · 관제 · 정비</div>
+    <div class="eyebrow">시나리오 04 · 시스템 · 관제 운영자 · 정비 담당자</div>
     <h2 class="title">배터리 경고 대응</h2>
-    <p class="lead">라운드 중 방전 위험을 <b>회수 전에 인지</b>하기 위한 흐름입니다.</p>
+    <p class="lead">라운드 중 방전 위험을 <b>코스 위에서 멈추기 전에</b> 처리하는 흐름입니다.</p>
   </div>
   <div class="body">
+    <div class="axis">
+      <span></span>
+      <div class="ticks"><span>SoC 40% · 주의</span><span>SoC 20% · 경고</span><span>판단</span><span>조치</span><span>복구</span></div>
+    </div>
     <div class="lanes">
       <div class="lane">
-        <div class="lb">시스템</div>
+        <div class="lb">시스템<em>감시 · 추정</em></div>
         <div class="steps">
-          <div class="s on"><b>SoC 임계 감지</b>임계값 이하 지속 시 경고 생성<span class="scr">알림 규칙</span></div>
+          <div class="s on"><b>주의 구간 진입</b>SoC 40% 이하 · 목록에 표시<span class="scr">SCR-110</span></div>
+          <div class="s on"><b>경고 생성</b>임계 이하 지속 시 경고 이벤트 발송<span class="scr">알림 규칙</span></div>
           <div class="s on"><b>잔여 운행 추정</b>최근 소모율로 잔여 홀 수 추정(안)<span class="scr">수집 서버</span></div>
-          <div class="s hold">대기</div>
           <div class="s hold">대기</div>
           <div class="s on"><b>충전 상태 반영</b>충전 시작 시 상태 전환<span class="scr">SCR-110</span></div>
         </div>
       </div>
       <div class="lane">
-        <div class="lb">관제 운영자</div>
+        <div class="lb">관제 운영자<em>배차 판단</em></div>
         <div class="steps">
           <div class="s hold">대기</div>
           <div class="s on"><b>경고 확인</b>대상 카트와 현재 홀 확인<span class="scr">SCR-030</span></div>
@@ -488,7 +665,7 @@ td.c{text-align:center}
         </div>
       </div>
       <div class="lane">
-        <div class="lb">정비 담당자</div>
+        <div class="lb">정비 담당자<em>교체 · 충전</em></div>
         <div class="steps">
           <div class="s hold">대기</div>
           <div class="s hold">대기</div>
@@ -498,37 +675,38 @@ td.c{text-align:center}
         </div>
       </div>
     </div>
-    <div class="note"><b>임계값 확정 필요</b> - 경고 · 위험 SoC 기준과 잔여 운행 추정 방식은 실제 소모율 데이터를 확보한 뒤 조정합니다.</div>
+    <div class="note"><b>임계값 확정 필요</b> - 주의 · 경고 SoC 기준과 잔여 운행 추정 방식은 실제 소모율 데이터를 확보한 뒤 조정합니다. 코스 내 방전 정지 0건을 목표 지표로 둡니다.</div>
   </div>
-  <div class="s-foot"><span>대응 목표 - 코스 내 방전 정지 예방</span><span class="mark">SOVEREIGNS · 09</span></div>
+  <div class="s-foot"><span>대응 목표 - 코스 내 방전 정지 예방</span><span class="mark">SOVEREIGNS · 12</span></div>
 </section>
 
-<!-- 시나리오 5 -->
-<section class="slide" data-title="시나리오 5 마감 후 리포트 확인">
+<!-- 시나리오 05 -->
+<section class="slide" data-title="시나리오 05 마감 후 리포트 확인">
   <div class="s-head">
     <div class="eyebrow">시나리오 05 · 골프장 관리자</div>
     <h2 class="title">마감 후 운영 리포트 확인</h2>
-    <p class="lead">하루 운영 결과를 <b>수치로 정리하고 다음 날 준비</b>로 연결하는 흐름입니다.</p>
+    <p class="lead">하루 결과를 수치로 정리하고 <b>다음 날 준비로 연결</b>하는 흐름입니다.</p>
   </div>
   <div class="body">
-    <div class="flow" style="margin-bottom:1.1rem">
-      <div class="step"><div class="k">01</div><h4>복귀 상태 확인</h4><p>미복귀 · 미충전 카트가 있는지 확인합니다.</p><span class="scr">SCR-010</span></div>
+    <div class="flow" style="margin-bottom:0.9rem">
+      <div class="step"><div class="k">01 · 18:10</div><h4>복귀 상태 확인</h4><p>미복귀 · 미충전 카트가 있는지 확인합니다.</p><span class="scr">SCR-110</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">02</div><h4>일일 트립 확인</h4><p>총 트립 수, 이동 거리, 평균 소요 시간을 봅니다.</p><span class="scr">SCR-050</span></div>
+      <div class="step"><div class="k">02 · 18:20</div><h4>일일 트립 확인</h4><p>총 트립 수, 이동 거리, 평균 소요 시간을 봅니다.</p><span class="scr">SCR-050</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">03</div><h4>지연 구간 점검</h4><p>대기 시간이 긴 홀 구간을 확인합니다.</p><span class="scr">SCR-050</span></div>
+      <div class="step"><div class="k">03 · 18:30</div><h4>지연 구간 점검</h4><p>대기 시간이 긴 홀 구간을 확인합니다.</p><span class="scr">SCR-050</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">04</div><h4>원인 확인</h4><p>필요 시 해당 트립을 재생해 상황을 확인합니다.</p><span class="scr">SCR-040</span></div>
+      <div class="step"><div class="k">04 · 필요 시</div><h4>원인 확인</h4><p>해당 트립을 재생해 실제 상황을 확인합니다.</p><span class="scr">SCR-040</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">05</div><h4>공유 · 내보내기</h4><p>보고용 CSV · 엑셀을 내려받아 공유합니다.</p><span class="scr">SCR-050</span></div>
+      <div class="step"><div class="k">05 · 18:45</div><h4>공유 · 내보내기</h4><p>보고용 CSV · 엑셀을 내려받아 공유합니다.</p><span class="scr">SCR-050</span></div>
     </div>
-    <div class="grid g2">
+    <div class="grid g3">
       <div class="card">
         <span class="tag">활용</span>
         <h3>운영 개선으로 연결</h3>
         <ul>
-          <li>지연이 반복되는 홀 구간을 파악해 진행 방식을 조정</li>
+          <li>지연이 반복되는 홀 구간을 찾아 진행 방식을 조정</li>
           <li>카트별 주행 거리 편차로 배차 방식을 점검</li>
+          <li>정비 발생 패턴을 소모품 주기에 반영</li>
         </ul>
       </div>
       <div class="card lil">
@@ -536,122 +714,195 @@ td.c{text-align:center}
         <h3>리포트 항목</h3>
         <ul>
           <li>보고서에 포함할 지표와 집계 단위</li>
+          <li>대기 시간 산출 기준(정지 판정)</li>
           <li>정기 리포트 자동 발송 여부(2단계 검토)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">완료 기준</span>
+        <h3>이 시나리오가 끝나면</h3>
+        <ul>
+          <li>당일 트립이 모두 종료 상태로 확정됩니다</li>
+          <li>미복귀 · 미충전 차량이 없거나 사유가 기록됩니다</li>
+          <li>다음 날 정비 대상 목록이 정해집니다</li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대기 시간 산출 기준은 협의 후 확정</span><span class="mark">SOVEREIGNS · 10</span></div>
+  <div class="s-foot"><span>대기 시간 산출 기준은 협의 후 확정</span><span class="mark">SOVEREIGNS · 13</span></div>
 </section>
 
-<!-- 시나리오 6 -->
-<section class="slide" data-title="시나리오 6 신규 카트 등록·교체">
+<!-- 시나리오 06 -->
+<section class="slide" data-title="시나리오 06 신규 카트 등록·교체">
   <div class="s-head">
-    <div class="eyebrow">시나리오 06 · 전역 관리자</div>
+    <div class="eyebrow">시나리오 06 · 전역 관리자 · 골프장 관리자</div>
     <h2 class="title">신규 카트 등록과 단말 교체</h2>
     <p class="lead">차량과 단말을 <b>과거 데이터와 끊기지 않게</b> 등록하는 흐름입니다.</p>
   </div>
   <div class="body">
-    <div class="flow" style="margin-bottom:1.1rem">
+    <div class="flow" style="margin-bottom:0.9rem">
       <div class="step"><div class="k">01</div><h4>차량 정보 입력</h4><p>차대번호 · 연식 · 소속 골프장을 등록합니다.</p><span class="scr">SCR-080</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">02</div><h4>단말 연결</h4><p>단말 ID와 MAC · IMEI를 입력하고 중복을 검증합니다.</p><span class="scr">SCR-080</span></div>
+      <div class="step"><div class="k">02</div><h4>단말 연결 · 검증</h4><p>단말 ID와 MAC · IMEI 형식과 중복을 검증합니다.</p><span class="scr">SCR-080</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">03</div><h4>수신 확인</h4><p>첫 신호 수신과 위치 표시를 확인합니다.</p><span class="scr">SCR-020</span></div>
+      <div class="step"><div class="k">03</div><h4>부품 시리얼 연계</h4><p>MES에서 주요 부품 시리얼을 조회해 채웁니다.</p><span class="scr">SCR-080</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">04</div><h4>별칭 지정</h4><p>현장에서 부르는 이름을 골프장 관리자가 입력합니다.</p><span class="scr">SCR-070</span></div>
+      <div class="step"><div class="k">04</div><h4>수신 확인</h4><p>첫 신호 수신과 지도 표시를 확인합니다.</p><span class="scr">SCR-020</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">05</div><h4>운행 투입</h4><p>상태를 대기로 전환해 배차 대상에 포함합니다.</p><span class="scr">SCR-060</span></div>
+      <div class="step"><div class="k">05</div><h4>별칭 · 투입</h4><p>현장 별칭을 붙이고 상태를 대기로 전환합니다.</p><span class="scr">SCR-070</span></div>
     </div>
-    <div class="grid g2">
+    <div class="grid g3">
       <div class="card">
         <span class="tag">단말 교체</span>
         <h3>교체 시 규칙</h3>
         <ul>
-          <li>기존 단말은 해제 처리하고 교체 이력을 남깁니다</li>
+          <li>기존 단말은 해제 처리하고 <b>교체 이력</b>을 남깁니다</li>
           <li>과거 주행 · 정비 데이터는 차량 기준으로 유지합니다</li>
+          <li>교체 직후 첫 수신까지 상태를 확인합니다</li>
         </ul>
       </div>
       <div class="card lil">
         <span class="tag gray">폐차 · 대차</span>
         <h3>삭제 대신 비활성화</h3>
         <ul>
-          <li>이력 보존을 위해 삭제가 아닌 비활성화로 처리합니다</li>
-          <li>비활성 차량은 목록 기본 조건에서 제외합니다</li>
+          <li>이력 보존을 위해 삭제가 아닌 비활성화로 처리</li>
+          <li>비활성 차량은 목록 기본 조건에서 제외</li>
+          <li>확인 모달에 대상 차량 명칭을 표시</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">예외</span>
+        <h3>검증 실패</h3>
+        <ul>
+          <li>MAC · IMEI 중복 시 저장을 막고 기존 차량을 안내</li>
+          <li>MES 미등록 부품은 경고로 표시하되 등록은 허용</li>
+          <li>첫 수신이 없으면 미확인 상태로 두고 목록에 표기</li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 차량등록/삭제</span><span class="mark">SOVEREIGNS · 11</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 차량등록/삭제 · MES 연계</span><span class="mark">SOVEREIGNS · 14</span></div>
 </section>
 
-<!-- 시나리오 7 -->
-<section class="slide" data-title="시나리오 7 코스 홀 마킹 초기 세팅">
+<!-- 시나리오 07 -->
+<section class="slide" data-title="시나리오 07 코스 홀 마킹 초기 세팅">
   <div class="s-head">
     <div class="eyebrow">시나리오 07 · 전역 관리자 · 현장</div>
     <h2 class="title">코스 홀 마킹 초기 세팅</h2>
     <p class="lead">트립 분할과 이탈 판정의 기준이 되는 <b>코스 데이터를 최초 1회 구축</b>합니다.</p>
   </div>
   <div class="body">
-    <div class="flow" style="margin-bottom:1.1rem">
-      <div class="step"><div class="k">01</div><h4>실측 주행</h4><p>단말을 장착한 카트로 코스를 1회 주행해 궤적을 수집합니다.</p><span class="scr">현장</span></div>
+    <div class="flow" style="margin-bottom:0.9rem">
+      <div class="step"><div class="k">01 · 현장</div><h4>실측 주행</h4><p>단말을 장착한 카트로 코스를 1회 주행해 궤적을 수집합니다.</p><span class="scr">현장</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">02</div><h4>배경 궤적 표시</h4><p>수집 궤적을 지도에 겹쳐 카트도로를 확인합니다.</p><span class="scr">SCR-130</span></div>
+      <div class="step"><div class="k">02</div><h4>배경 지도 준비</h4><p>골프장 제공 이미지를 좌표 정합해 배경으로 올립니다.</p><span class="scr">SCR-130</span></div>
       <span class="arw">→</span>
       <div class="step"><div class="k">03</div><h4>홀 지점 마킹</h4><p>홀별 시작 · 종료 지점을 지도에서 지정합니다.</p><span class="scr">SCR-130</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">04</div><h4>지오펜스 설정</h4><p>지점별 반경(기본 15m)을 설정하고 중복을 검증합니다.</p><span class="scr">SCR-130</span></div>
+      <div class="step"><div class="k">04</div><h4>지오펜스 설정</h4><p>반경(기본 15m)을 정하고 중복 · 미설정을 검증합니다.</p><span class="scr">SCR-130</span></div>
       <span class="arw">→</span>
-      <div class="step"><div class="k">05</div><h4>검증 주행</h4><p>1회 재주행으로 홀 구간이 정확히 분할되는지 확인합니다.</p><span class="scr">SCR-040</span></div>
+      <div class="step"><div class="k">05 · 현장</div><h4>검증 주행</h4><p>1회 재주행으로 홀 구간이 정확히 분할되는지 확인합니다.</p><span class="scr">SCR-040</span></div>
     </div>
-    <div class="grid g2">
+    <div class="grid g3">
       <div class="card">
         <span class="tag">선행 조건</span>
         <h3>준비 사항</h3>
         <ul>
-          <li>코스 배경 이미지(항공 사진 · 조감도) - 골프장 제공</li>
-          <li>단말 장착 카트 1대와 코스 이용 가능 시간대 확보</li>
+          <li>코스 배경 이미지(항공 사진 · 조감도) - <b>골프장 제공</b></li>
+          <li>단말 장착 카트 1대와 코스 이용 가능 시간대</li>
           <li>코스 구성(OUT / IN, 홀 수) 정보</li>
         </ul>
       </div>
       <div class="card lil">
-        <span class="tag gray">유지 관리</span>
+        <span class="tag gray">미제공 시</span>
+        <h3>대비책</h3>
+        <ul>
+          <li>1차 - 공공 항공 · 정사영상을 좌표 정합해 사용</li>
+          <li>2차 - 실측 궤적으로 만든 도식 코스 지도로 대체</li>
+          <li>관제 · 트립 기능은 실측 좌표 기반이라 동일하게 동작</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">유지 관리</span>
         <h3>변경이 생기면</h3>
         <ul>
-          <li>코스 개보수 시 해당 홀만 재마킹하고 변경 이력을 남깁니다</li>
-          <li>이전 설정은 보관해 과거 트립 재계산 기준으로 사용합니다</li>
+          <li>코스 개보수 시 해당 홀만 재마킹하고 이력을 남김</li>
+          <li>이전 설정을 보관해 과거 트립 재계산 기준으로 사용</li>
+          <li>변경 후 검증 주행으로 분할을 다시 확인</li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>요구사항정의서 - 코스 설정(TBD) 항목 구체화</span><span class="mark">SOVEREIGNS · 12</span></div>
+  <div class="s-foot"><span>요구사항정의서 - 코스 설정(TBD) 항목 구체화</span><span class="mark">SOVEREIGNS · 15</span></div>
 </section>
 
-<!-- 알림 처리 상태 -->
-<section class="slide" data-title="알림 처리 상태와 대응 규칙">
+<!-- 예외 시나리오 -->
+<section class="slide" data-title="예외 시나리오">
   <div class="s-head">
-    <div class="eyebrow">운영 규칙</div>
-    <h2 class="title">알림 처리 상태와 대응 규칙</h2>
-    <p class="lead">모든 시나리오가 공유하는 <b>알림 처리 4단계</b>와 등급별 대응 기준(안)입니다.</p>
+    <div class="eyebrow">예외 처리</div>
+    <h2 class="title">예외 시나리오 3건</h2>
+    <p class="lead">정상 흐름만으로는 드러나지 않는 <b>끊김 · 오탐 · 미대응</b> 상황의 처리 방식을 정의합니다.</p>
   </div>
   <div class="body">
-    <div class="flow" style="margin-bottom:1.1rem">
-      <div class="step"><div class="k">상태 1</div><h4>발생</h4><p>시스템이 조건을 판정해 이벤트를 생성하고 수신자에게 전달합니다.</p></div>
-      <span class="arw">→</span>
-      <div class="step"><div class="k">상태 2</div><h4>확인</h4><p>담당자가 알림을 열람하고 확인 처리합니다. 확인자와 시각이 기록됩니다.</p></div>
-      <span class="arw">→</span>
-      <div class="step"><div class="k">상태 3</div><h4>조치 중</h4><p>정비 요청 · 회수 등 조치가 진행 중인 상태입니다.</p></div>
-      <span class="arw">→</span>
-      <div class="step"><div class="k">상태 4</div><h4>종결</h4><p>조치 결과를 기록하면 종결되고 대응 시간이 집계됩니다.</p></div>
+    <div class="lanes" style="margin-bottom:0.8rem">
+      <div class="lane">
+        <div class="lb">통신 두절<em>예외 01</em></div>
+        <div class="steps">
+          <div class="s warn"><b>수신 중단</b>마지막 수신 후 임계 시간 경과</div>
+          <div class="s"><b>경고 발생</b>대상 카트를 미수신으로 표시<span class="scr">SCR-020</span></div>
+          <div class="s"><b>현장 확인</b>단말 · 전원 상태 점검 요청<span class="scr">SCR-030</span></div>
+          <div class="s"><b>복구 수신</b>단말이 보관분을 재전송</div>
+          <div class="s on"><b>이력 보정</b>누락 구간을 궤적에 반영<span class="scr">SCR-040</span></div>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="lb">오탐 · 반복<em>예외 02</em></div>
+        <div class="steps">
+          <div class="s warn"><b>동일 코드 반복</b>짧은 시간에 같은 이벤트 다발</div>
+          <div class="s"><b>중복 억제</b>일정 시간 내 1회만 발송하고 묶음 표시<span class="scr">알림 규칙</span></div>
+          <div class="s"><b>원문 확인</b>발생 시점 신호 값으로 실제 여부 판단<span class="scr">SCR-120</span></div>
+          <div class="s"><b>오탐 처리</b>사유를 남기고 종결</div>
+          <div class="s on"><b>기준 조정</b>임계값 · 억제 시간 재설정 검토</div>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="lb">미확인 지속<em>예외 03</em></div>
+        <div class="steps">
+          <div class="s warn"><b>목표 시간 초과</b>긴급 이벤트가 확인되지 않음</div>
+          <div class="s"><b>재발송</b>동일 수신자에게 다시 발송<span class="scr">알림 규칙</span></div>
+          <div class="s"><b>승격</b>관리자 그룹으로 수신자 확대<span class="scr">SCR-030</span></div>
+          <div class="s"><b>확인 · 조치</b>담당자 지정 후 처리</div>
+          <div class="s on"><b>사후 점검</b>지연 사유를 일간 요약에 기록</div>
+        </div>
+      </div>
     </div>
-    <table class="tight">
-      <tr><th>등급</th><th>대상 이벤트</th><th>1차 담당</th><th>확인 목표(안)</th><th>미확인 시</th></tr>
-      <tr><td><span class="tag">긴급</span></td><td class="g">고장 코드 발생, 코스 이탈(2단계)</td><td class="g">관제 운영자</td><td class="g">5분 이내</td><td class="g">재발송 후 관리자에게 승격</td></tr>
-      <tr><td><span class="tag">경고</span></td><td class="g">배터리 방전 위험, 통신 두절</td><td class="g">관제 운영자</td><td class="g">15분 이내</td><td class="g">일간 요약에 누적 표기</td></tr>
-      <tr><td><span class="tag gray">주의</span></td><td class="g">소모품 주기 도달, 정비 예정일 도래</td><td class="g">정비 담당자</td><td class="g">당일 이내</td><td class="g">다음 날 요약에 재표기</td></tr>
+    <div class="note"><b>예외도 화면에 드러나야 합니다</b> - 미수신 · 오탐 · 미확인은 각각 목록 표기, 묶음 표시, 승격 배지로 화면에 나타내고, 조치 결과를 기록해 반복 여부를 볼 수 있게 합니다.</div>
+  </div>
+  <div class="s-foot"><span>임계 시간과 억제 시간은 협의 후 확정</span><span class="mark">SOVEREIGNS · 16</span></div>
+</section>
+
+<!-- 인수 시험 -->
+<section class="slide" data-title="인수 시험 항목">
+  <div class="s-head">
+    <div class="eyebrow">검수</div>
+    <h2 class="title">인수 시험 항목</h2>
+    <p class="lead">각 시나리오를 <b>사전 조건 · 절차 · 기대 결과</b>로 옮기면 그대로 검수 항목이 됩니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense">
+      <tr><th>번호</th><th>시나리오</th><th>사전 조건</th><th>절차 요약</th><th>기대 결과</th></tr>
+      <tr><td><b>AT-01</b></td><td>개장 전 점검</td><td class="g">점검 대상 카트 5대, 체크리스트 24항목</td><td class="g">배터리 요약 확인 → 체크리스트 작성 → 가동 대수 확정</td><td class="g">불량 차량이 운행 대상에서 제외되고 이력이 남는다</td></tr>
+      <tr><td><b>AT-02</b></td><td>실시간 관제</td><td class="g">운행 중 카트 3대, 관제 계정</td><td class="g">대시보드 → 마커 클릭 → 목록 연동 확인</td><td class="g">위치 · 속도 · SoC가 지도와 목록에서 일치한다</td></tr>
+      <tr><td><b>AT-03</b></td><td>고장 대응</td><td class="g">시험용 DTC 주입, 정비 담당 계정</td><td class="g">코드 발생 → 알림 확인 → 정비 요청 → 조치 등록</td><td class="g">이벤트가 종결되고 인지 · 조치 시간이 집계된다</td></tr>
+      <tr><td><b>AT-04</b></td><td>배터리 경고</td><td class="g">SoC 임계 이하 카트 1대</td><td class="g">경고 확인 → 대체 배차 판단 → 회수 · 충전 기록</td><td class="g">경고부터 회수까지 이력이 연결되어 남는다</td></tr>
+      <tr><td><b>AT-05</b></td><td>마감 리포트</td><td class="g">당일 트립 10건 이상</td><td class="g">복귀 확인 → 리포트 조회 → 재생 → 내보내기</td><td class="g">집계 값과 상세 표 · 내보내기 파일이 일치한다</td></tr>
+      <tr><td><b>AT-06</b></td><td>차량 등록</td><td class="g">미등록 단말 1대, 전역 관리자 계정</td><td class="g">차량 · 단말 입력 → 검증 → 첫 수신 확인</td><td class="g">중복 검증이 동작하고 등록 후 지도에 표시된다</td></tr>
+      <tr><td><b>AT-07</b></td><td>홀 마킹</td><td class="g">실측 궤적 1회분, 코스 배경 이미지</td><td class="g">마킹 → 반경 설정 → 저장 검증 → 검증 주행</td><td class="g">홀 구간이 의도한 지점에서 분할된다</td></tr>
+      <tr><td><b>AT-08</b></td><td>예외 - 통신 두절</td><td class="g">단말 통신 차단 환경</td><td class="g">통신 차단 → 경고 확인 → 복구 → 궤적 확인</td><td class="g">누락 구간이 복구 후 궤적에 반영된다</td></tr>
+      <tr><td><b>AT-09</b></td><td>예외 - 권한</td><td class="g">역할별 계정 5종</td><td class="g">각 계정으로 로그인 후 메뉴 · 버튼 확인</td><td class="g">권한 매트릭스와 노출 · 동작이 일치한다</td></tr>
     </table>
   </div>
-  <div class="s-foot"><span>대응 시간 기준은 운영 인력 구성에 맞춰 확정</span><span class="mark">SOVEREIGNS · 13</span></div>
+  <div class="s-foot"><span>시험 데이터와 환경은 착수 시 별도 협의</span><span class="mark">SOVEREIGNS · 17</span></div>
 </section>
 
 <!-- 맺음 -->
@@ -661,7 +912,7 @@ td.c{text-align:center}
   <p>각 시나리오의 단계와 완료 기준을 확정하면, 개발 우선순위와 인수 시험 항목을 같은 문서로 관리할 수 있습니다.</p>
   <div class="info">
     <div><b>소버린즈 주식회사</b>846-81-03834</div>
-    <div><b>문서</b>사용자 액션 플로우 v0.1</div>
+    <div><b>문서</b>사용자 액션 플로우 v0.2</div>
     <div><b>작성</b>2026. 08</div>
   </div>
 </section>

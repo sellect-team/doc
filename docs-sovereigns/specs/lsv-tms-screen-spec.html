@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LSV 골프카트 관제시스템 화면정의서</title>
-<meta name="doc-version" content="0.2">
-<meta name="doc-description" content="1단계 14개 화면을 실제 화면 시안으로 정의 - 공통 레이아웃·컴포넌트 규칙과 화면별 구성 요소·동작·예외">
+<meta name="doc-version" content="0.3">
+<meta name="doc-description" content="1단계 14개 화면을 실제 프로그램 화면 수준으로 정의 - 앱 셸·컴포넌트 규칙, 화면별 시안과 동작·예외·화면 전이">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +19,8 @@
   --lilac:#EDE9FF; --peri:#D9D2FF; --chartreuse:#E7FF6E; --powder:#99CEFE;
   --bone:#FAFAF8; --paper:#FFFFFF; --ink:#18161A; --carbon:#333333;
   --slate:#898B91; --lavender:#9E99AB; --midnight:#1E1B22;
-  --rose:#E11D48;   /* 상태 전용 - 경고·정비. 버튼이나 큰 면에는 쓰지 않는다 */
+  --rose:#E11D48;   /* 상태 전용 - 경고·정비 표시에만 사용, 버튼·큰 면 금지 */
+  --line:#EFEDF5;   /* 화면 시안 내부 구분선 */
   --fd:'Plus Jakarta Sans','Pretendard Variable',Pretendard,sans-serif;
   --fu:'Inter','Pretendard Variable',Pretendard,sans-serif;
   --pad:3.5rem;
@@ -35,16 +36,15 @@ body{
 section.slide{
   width:min(100vw,177.7778vh); height:min(56.25vw,100vh);
   position:relative; overflow:hidden; background:var(--bone);
-  padding:2.9rem var(--pad) 2.2rem; display:flex; flex-direction:column;
+  padding:2.6rem var(--pad) 2rem; display:flex; flex-direction:column;
   font-size:1rem; line-height:1.5; letter-spacing:-0.001em;
 }
 .slide.tint{background:var(--lilac)}
-.slide.dark{background:var(--midnight); color:#FFFFFF}
 
-.s-head{margin-bottom:1.1rem}
-.eyebrow{font-weight:700; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
-h2.title{font-family:var(--fd); font-weight:800; font-size:2.1rem; letter-spacing:-0.032em; line-height:1.15; margin:0.45rem 0 0}
-.lead{font-weight:300; font-size:1.02rem; line-height:1.5; margin:0.5rem 0 0; max-width:64ch}
+.s-head{margin-bottom:0.9rem}
+.eyebrow{font-weight:700; font-size:0.7rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
+h2.title{font-family:var(--fd); font-weight:800; font-size:1.95rem; letter-spacing:-0.032em; line-height:1.15; margin:0.4rem 0 0}
+.lead{font-weight:300; font-size:1rem; line-height:1.5; margin:0.45rem 0 0; max-width:64ch}
 .lead b{font-weight:600; color:var(--violet)}
 
 .body{flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center}
@@ -72,17 +72,16 @@ tr:last-child td{border-bottom:0}
 th{font-weight:700; font-size:0.68rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--slate); white-space:nowrap}
 td.g{color:var(--slate)}
 td b{font-weight:600}
-td .tag{font-size:0.68rem}
 table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
 .sid{font-family:var(--fd); font-weight:800; font-size:0.78rem; color:var(--violet); letter-spacing:0.01em}
 
 .s-foot{display:flex; justify-content:space-between; align-items:center;
-  font-size:0.7rem; letter-spacing:0.04em; color:var(--slate); padding-top:0.8rem}
+  font-size:0.68rem; letter-spacing:0.04em; color:var(--slate); padding-top:0.7rem}
 .s-foot .mark{font-family:var(--fd); font-weight:800; letter-spacing:-0.02em}
 
 .note{background:var(--lilac); border:1px solid var(--peri); border-radius:1.25rem;
-  padding:0.85rem 1.15rem; font-size:0.85rem; color:var(--carbon); margin-top:1rem}
+  padding:0.8rem 1.1rem; font-size:0.84rem; color:var(--carbon); margin-top:0.9rem}
 .note b{font-weight:600; color:var(--violet)}
 
 /* 표지 */
@@ -105,118 +104,170 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
 .cover .meta b{display:block; font-family:var(--fd); font-weight:800; font-size:0.95rem; letter-spacing:-0.02em; color:var(--ink); margin-bottom:0.2rem}
 
 /* ============================================================
-   화면 시안(UI 키트) - 실제 화면과 같은 구성 요소로 그린다.
-   축소 표시가 전제이므로 글자는 0.55~0.8rem 범위를 쓴다.
+   화면 시안(UI 키트) - 실제 프로그램 화면과 같은 골격으로 그린다.
+   1920 x 1080 화면을 축소해 보는 것이 전제이므로 글자는 0.5~0.8rem을 쓴다.
    ============================================================ */
-.scr{display:grid; grid-template-columns:1.62fr 1fr; gap:1.1rem; flex:1; min-height:0}
-.ui{position:relative; background:var(--paper); border:1px solid var(--peri); border-radius:1.1rem;
+.scr{display:grid; grid-template-columns:1.72fr 1fr; gap:1rem; flex:1; min-height:0}
+.ui{position:relative; background:var(--paper); border:1px solid var(--peri); border-radius:0.9rem;
   overflow:hidden; display:flex; flex-direction:column; min-height:0}
-.ui-top{display:flex; align-items:center; gap:0.5rem; padding:0.4rem 0.7rem;
-  border-bottom:1px solid var(--lilac); background:var(--bone); font-size:0.64rem; color:var(--slate)}
-.ui-top .lg{display:flex; align-items:center; gap:0.32rem; font-family:var(--fd); font-weight:800;
-  font-size:0.7rem; color:var(--ink); letter-spacing:-0.03em}
-.ui-top .lg i{width:0.8rem; height:0.8rem; border-radius:50%; background:var(--violet); display:inline-block}
-.ui-top .sel{border:1px solid var(--peri); border-radius:999px; padding:0.1rem 0.5rem; color:var(--carbon); background:var(--paper)}
-.ui-top .sp{flex:1}
-.ui-top .bell{position:relative; padding-right:0.75rem}
-.ui-top .bell b{position:absolute; top:-0.28rem; right:0; background:var(--violet); color:#FFFFFF;
-  border-radius:999px; font-size:0.52rem; padding:0 0.22rem; font-weight:600}
-.ui-top .av{width:1rem; height:1rem; border-radius:50%; background:var(--lilac); border:1px solid var(--peri)}
-.ui-head{display:flex; align-items:center; gap:0.4rem; padding:0.45rem 0.7rem; border-bottom:1px solid var(--lilac)}
-.ui-head h5{font-family:var(--fd); font-weight:800; font-size:0.8rem; margin:0; letter-spacing:-0.02em}
-.ui-head .sp{flex:1}
-.ui-body{padding:0.6rem 0.7rem; display:flex; flex-direction:column; gap:0.5rem; flex:1; min-height:0}
-.ui-cols{display:grid; gap:0.5rem; flex:1; min-height:0}
-.pane{border:1px solid var(--peri); border-radius:0.7rem; padding:0.45rem 0.55rem; display:flex;
-  flex-direction:column; gap:0.35rem; min-height:0; overflow:hidden; background:var(--paper)}
-.pane.bone{background:var(--bone)}
-.pane .ph{font-size:0.58rem; color:var(--slate); font-weight:600; letter-spacing:0.03em}
 
-.btn{border:0; border-radius:999px; font-family:var(--fu); font-size:0.6rem; font-weight:600;
-  padding:0.2rem 0.62rem; display:inline-block}
+/* 상단 바 */
+.ui-top{display:flex; align-items:center; gap:0.45rem; padding:0.36rem 0.6rem;
+  border-bottom:1px solid var(--line); background:var(--bone); font-size:0.6rem; color:var(--slate)}
+.ui-top .lg{display:flex; align-items:center; gap:0.3rem; font-family:var(--fd); font-weight:800;
+  font-size:0.66rem; color:var(--ink); letter-spacing:-0.03em}
+.ui-top .lg i{width:0.72rem; height:0.72rem; border-radius:50%; background:var(--violet); display:inline-block}
+.ui-top .sel{border:1px solid var(--peri); border-radius:999px; padding:0.08rem 0.45rem; color:var(--carbon); background:var(--paper)}
+.ui-top .sel::after{content:" ▾"; color:var(--lavender)}
+.ui-top .sp{flex:1}
+.ui-top .bell{position:relative; padding-right:0.9rem}
+.ui-top .bell b{position:absolute; top:-0.26rem; right:0; background:var(--rose); color:#FFFFFF;
+  border-radius:999px; font-size:0.48rem; padding:0 0.2rem; font-weight:600}
+.ui-top .av{width:0.95rem; height:0.95rem; border-radius:50%; background:var(--lilac); border:1px solid var(--peri)}
+
+/* 앱 셸 - 좌측 메뉴 + 본문 */
+.app{display:grid; grid-template-columns:4.3rem 1fr; flex:1; min-height:0}
+.gnb{border-right:1px solid var(--line); background:var(--bone); padding:0.4rem 0.35rem;
+  display:flex; flex-direction:column; gap:0.12rem; font-size:0.56rem; color:var(--slate)}
+.gnb a{display:flex; align-items:center; gap:0.3rem; padding:0.24rem 0.35rem; border-radius:0.4rem; text-decoration:none; color:inherit}
+.gnb a.on{background:var(--violet); color:#FFFFFF; font-weight:600}
+.gnb svg{width:0.62rem; height:0.62rem; flex:none; stroke:currentColor; fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round}
+.gnb .ver{margin-top:auto; font-size:0.5rem; color:var(--lavender); padding:0.2rem 0.35rem}
+.main{display:flex; flex-direction:column; min-height:0}
+.crumb{padding:0.28rem 0.6rem 0; font-size:0.52rem; color:var(--lavender)}
+.ui-head{display:flex; align-items:center; gap:0.35rem; padding:0.32rem 0.6rem 0.4rem; border-bottom:1px solid var(--line)}
+.ui-head h5{font-family:var(--fd); font-weight:800; font-size:0.76rem; margin:0; letter-spacing:-0.02em}
+.ui-head .sp{flex:1}
+.ui-body{padding:0.5rem 0.6rem; display:flex; flex-direction:column; gap:0.42rem; flex:1; min-height:0}
+.ui-cols{display:grid; gap:0.42rem; flex:1; min-height:0}
+.pane{border:1px solid var(--peri); border-radius:0.6rem; padding:0.4rem 0.5rem; display:flex;
+  flex-direction:column; gap:0.3rem; min-height:0; overflow:hidden; background:var(--paper)}
+.pane.bone{background:var(--bone)}
+.pane .ph{font-size:0.55rem; color:var(--slate); font-weight:600; letter-spacing:0.03em; display:flex; justify-content:space-between; align-items:center}
+.pane .ph em{font-style:normal; color:var(--lavender); font-weight:400}
+
+/* 컨트롤 */
+.btn{border:0; border-radius:999px; font-family:var(--fu); font-size:0.56rem; font-weight:600;
+  padding:0.18rem 0.55rem; display:inline-flex; align-items:center; gap:0.2rem}
 .btn.fill{background:var(--violet); color:#FFFFFF}
 .btn.out{background:transparent; border:1px solid var(--violet); color:var(--violet)}
 .btn.gh{background:transparent; color:var(--slate); border:1px solid var(--peri)}
-.fld{border:1px solid var(--peri); border-radius:999px; padding:0.2rem 0.6rem; font-size:0.6rem;
-  color:var(--lavender); background:var(--paper); display:inline-block}
-.fld.w{flex:1}
-.fld.box{border-radius:0.45rem; display:block; color:var(--carbon)}
-.chips{display:flex; gap:0.28rem; flex-wrap:wrap}
-.chips span{border:1px solid var(--peri); border-radius:999px; padding:0.14rem 0.55rem;
-  font-size:0.58rem; color:var(--carbon); background:var(--paper)}
+.fld{border:1px solid var(--peri); border-radius:999px; padding:0.16rem 0.5rem; font-size:0.56rem;
+  color:var(--lavender); background:var(--paper); display:inline-flex; align-items:center; gap:0.22rem}
+.fld.sel::after{content:"▾"; color:var(--lavender); font-size:0.5rem}
+.fld svg{width:0.55rem; height:0.55rem; stroke:var(--lavender); fill:none; stroke-width:2; stroke-linecap:round}
+.fld.box{border-radius:0.4rem; display:block; color:var(--carbon); padding:0.22rem 0.45rem}
+.chips{display:flex; gap:0.24rem; flex-wrap:wrap}
+.chips span{border:1px solid var(--peri); border-radius:999px; padding:0.12rem 0.48rem;
+  font-size:0.54rem; color:var(--carbon); background:var(--paper)}
 .chips span.on{background:var(--violet); border-color:var(--violet); color:#FFFFFF; font-weight:600}
+.seg{display:inline-flex; border:1px solid var(--peri); border-radius:999px; overflow:hidden; font-size:0.54rem}
+.seg span{padding:0.12rem 0.45rem; color:var(--slate)}
+.seg span.on{background:var(--violet); color:#FFFFFF; font-weight:600}
 
-.tbl{width:100%; border:0; border-radius:0; background:transparent; font-size:0.6rem; overflow:visible}
-.tbl th{padding:0.26rem 0.35rem; font-size:0.54rem; font-weight:600; color:var(--slate);
-  letter-spacing:0.03em; text-transform:none; border-bottom:1px solid var(--peri); white-space:nowrap}
-.tbl td{padding:0.28rem 0.35rem; border-bottom:1px solid var(--lilac); color:var(--carbon); vertical-align:middle}
+/* 데이터 표 */
+.tbl{width:100%; border:0; border-radius:0; background:transparent; font-size:0.57rem; overflow:visible}
+.tbl th{padding:0.22rem 0.3rem; font-size:0.51rem; font-weight:600; color:var(--slate);
+  letter-spacing:0.02em; text-transform:none; border-bottom:1px solid var(--peri); white-space:nowrap}
+.tbl th.s::after{content:" ↓"; color:var(--violet)}
+.tbl td{padding:0.24rem 0.3rem; border-bottom:1px solid var(--line); color:var(--carbon); vertical-align:middle}
 .tbl tr:last-child td{border-bottom:0}
 .tbl td.n{text-align:right; font-variant-numeric:tabular-nums}
-.tbl td.id{font-family:var(--fd); font-weight:800; font-size:0.58rem; color:var(--ink)}
+.tbl td.id{font-family:var(--fd); font-weight:800; font-size:0.55rem; color:var(--ink)}
 .tbl tr.sel td{background:var(--lilac)}
+.tbl tr.hov td{background:#F7F5FF}
+.cb{width:0.5rem; height:0.5rem; border:1px solid var(--peri); border-radius:0.14rem; display:inline-block}
+.cb.on{background:var(--violet); border-color:var(--violet)}
 
-.st{display:inline-flex; align-items:center; gap:0.22rem; font-size:0.56rem; color:var(--carbon); white-space:nowrap}
-.st i{width:0.38rem; height:0.38rem; border-radius:50%; display:inline-block; flex:none}
+/* 상태 */
+.st{display:inline-flex; align-items:center; gap:0.2rem; font-size:0.54rem; color:var(--carbon); white-space:nowrap}
+.st i{width:0.36rem; height:0.36rem; border-radius:50%; display:inline-block; flex:none}
 .st.run i{background:var(--violet)}
 .st.disp i{background:var(--voltage)}
 .st.wait i{background:var(--slate)}
 .st.back i{background:var(--lavender)}
 .st.chg i{background:var(--powder)}
 .st.fix i{background:var(--rose)}
+.pill{display:inline-block; font-size:0.5rem; font-weight:600; border-radius:999px; padding:0.06rem 0.35rem}
+.pill.v{background:var(--lilac); color:var(--violet)}
+.pill.r{background:#FDE7ED; color:var(--rose)}
+.pill.g{background:#F0EFF3; color:var(--slate)}
 
-.gauge{height:0.3rem; background:#EDEBF2; border-radius:999px; overflow:hidden; flex:1; min-width:2rem}
+.gauge{height:0.28rem; background:#EDEBF2; border-radius:999px; overflow:hidden; flex:1; min-width:1.8rem}
 .gauge i{display:block; height:100%; background:var(--violet); border-radius:999px}
 .gauge.warn i{background:var(--rose)}
 .gauge.mid i{background:var(--voltage)}
-.grow{display:flex; align-items:center; gap:0.3rem}
+.grow{display:flex; align-items:center; gap:0.26rem}
+.pager{display:flex; gap:0.2rem; justify-content:flex-end; align-items:center; font-size:0.52rem; color:var(--slate)}
+.pager b{background:var(--violet); color:#FFFFFF; border-radius:0.26rem; padding:0.02rem 0.28rem; font-weight:600}
+.pager span{border:1px solid var(--peri); border-radius:0.26rem; padding:0.02rem 0.28rem}
+.tabs{display:flex; gap:0.6rem; border-bottom:1px solid var(--line); font-size:0.58rem; color:var(--slate)}
+.tabs b{color:var(--violet); border-bottom:2px solid var(--violet); padding-bottom:0.18rem; font-weight:600}
+.kpi{display:grid; gap:0.35rem}
+.kpi div{border:1px solid var(--peri); border-radius:0.5rem; padding:0.28rem 0.4rem; background:var(--bone)}
+.kpi b{display:block; font-family:var(--fd); font-weight:800; font-size:0.88rem; line-height:1.15; letter-spacing:-0.03em}
+.kpi span{font-size:0.5rem; color:var(--slate)}
 
-.pager{display:flex; gap:0.22rem; justify-content:flex-end; align-items:center; font-size:0.56rem; color:var(--slate)}
-.pager b{background:var(--violet); color:#FFFFFF; border-radius:0.3rem; padding:0.04rem 0.32rem; font-weight:600}
-.pager span{border:1px solid var(--peri); border-radius:0.3rem; padding:0.04rem 0.32rem}
-.tabs{display:flex; gap:0.7rem; border-bottom:1px solid var(--lilac); font-size:0.62rem; color:var(--slate)}
-.tabs b{color:var(--violet); border-bottom:2px solid var(--violet); padding-bottom:0.2rem; font-weight:600}
-.toast{position:absolute; right:0.55rem; top:3.4rem; background:var(--midnight); color:#FFFFFF;
-  border-radius:0.55rem; padding:0.3rem 0.55rem; font-size:0.58rem; display:flex; align-items:center; gap:0.35rem}
-.toast i{width:0.36rem; height:0.36rem; border-radius:50%; background:var(--rose); flex:none}
-.kpi5{display:grid; grid-template-columns:repeat(5,1fr); gap:0.4rem}
-.kpi5 div{border:1px solid var(--peri); border-radius:0.6rem; padding:0.32rem 0.45rem; background:var(--bone)}
-.kpi5 b{display:block; font-family:var(--fd); font-weight:800; font-size:0.95rem; line-height:1.1; letter-spacing:-0.03em}
-.kpi5 span{font-size:0.53rem; color:var(--slate)}
-.map{position:relative; border:1px solid var(--peri); border-radius:0.7rem; background:var(--lilac); overflow:hidden; min-height:0}
+/* 지도 */
+.map{position:relative; border:1px solid var(--peri); border-radius:0.6rem; background:var(--lilac); overflow:hidden; min-height:0}
 .map svg{width:100%; height:100%; display:block}
-.map .lay{position:absolute; left:0.4rem; top:0.4rem; display:flex; gap:0.25rem}
+.map .lay{position:absolute; left:0.35rem; top:0.35rem; display:flex; gap:0.2rem}
 .map .lay span{background:rgba(255,255,255,0.92); border:1px solid var(--peri); border-radius:999px;
-  font-size:0.52rem; padding:0.1rem 0.4rem; color:var(--carbon)}
+  font-size:0.48rem; padding:0.08rem 0.35rem; color:var(--carbon)}
 .map .lay span.on{background:var(--violet); border-color:var(--violet); color:#FFFFFF}
-.map .tip{position:absolute; background:var(--paper); border:1px solid var(--peri); border-radius:0.45rem;
-  padding:0.25rem 0.4rem; font-size:0.54rem; color:var(--carbon); line-height:1.35}
-.map .tip b{display:block; font-size:0.58rem; color:var(--ink)}
-.form{display:grid; grid-template-columns:1fr 1fr; gap:0.4rem 0.5rem}
-.form label{display:block; font-size:0.54rem; color:var(--slate); margin-bottom:0.14rem}
+.map .zoom{position:absolute; right:0.35rem; top:0.35rem; display:flex; flex-direction:column;
+  border:1px solid var(--peri); border-radius:0.3rem; overflow:hidden; background:var(--paper); font-size:0.55rem}
+.map .zoom span{padding:0.02rem 0.28rem; color:var(--carbon); border-bottom:1px solid var(--line)}
+.map .zoom span:last-child{border-bottom:0}
+.map .tip{position:absolute; background:var(--paper); border:1px solid var(--peri); border-radius:0.4rem;
+  padding:0.22rem 0.35rem; font-size:0.51rem; color:var(--carbon); line-height:1.35}
+.map .tip b{display:block; font-size:0.55rem; color:var(--ink)}
+.map .scale{position:absolute; right:0.35rem; bottom:0.3rem; font-size:0.46rem; color:var(--slate)}
+
+/* 폼·체크·모달 */
+.form{display:grid; grid-template-columns:1fr 1fr; gap:0.3rem 0.4rem}
+.form label{display:block; font-size:0.5rem; color:var(--slate); margin-bottom:0.1rem}
 .form .full{grid-column:1 / -1}
-.chk{display:flex; align-items:center; gap:0.3rem; font-size:0.58rem; color:var(--carbon)}
-.chk i{width:0.55rem; height:0.55rem; border-radius:50%; border:1px solid var(--peri); display:inline-block; flex:none}
+.req{color:var(--rose)}
+.chk{display:flex; align-items:center; gap:0.26rem; font-size:0.55rem; color:var(--carbon)}
+.chk i{width:0.5rem; height:0.5rem; border-radius:50%; border:1px solid var(--peri); display:inline-block; flex:none}
 .chk i.on{background:var(--violet); border-color:var(--violet)}
 .chk i.warn{background:var(--rose); border-color:var(--rose)}
-.slider{display:flex; align-items:center; gap:0.4rem; font-size:0.55rem; color:var(--slate)}
-.slider .bar{position:relative; flex:1; height:0.28rem; background:#EDEBF2; border-radius:999px}
+.modal{position:absolute; inset:0; background:rgba(24,22,26,0.28); display:flex; align-items:center; justify-content:center}
+.modal .box{width:62%; background:var(--paper); border:1px solid var(--peri); border-radius:0.7rem; padding:0.6rem 0.7rem;
+  display:flex; flex-direction:column; gap:0.3rem}
+.modal h6{font-family:var(--fd); font-weight:800; font-size:0.72rem; margin:0}
+.modal p{font-size:0.56rem; color:var(--carbon); margin:0; line-height:1.5}
+.modal .act{display:flex; gap:0.3rem; justify-content:flex-end; margin-top:0.2rem}
+.toast{position:absolute; right:0.5rem; top:4.1rem; background:var(--midnight); color:#FFFFFF;
+  border-radius:0.5rem; padding:0.26rem 0.5rem; font-size:0.55rem; display:flex; align-items:center; gap:0.3rem}
+.toast i{width:0.34rem; height:0.34rem; border-radius:50%; background:var(--rose); flex:none}
+.slider{display:flex; align-items:center; gap:0.35rem; font-size:0.52rem; color:var(--slate)}
+.slider .bar{position:relative; flex:1; height:0.26rem; background:#EDEBF2; border-radius:999px}
 .slider .bar i{position:absolute; left:0; top:0; height:100%; width:46%; background:var(--violet); border-radius:999px}
-.slider .bar u{position:absolute; left:46%; top:-0.18rem; width:0.62rem; height:0.62rem; border-radius:50%;
+.slider .bar u{position:absolute; left:46%; top:-0.16rem; width:0.56rem; height:0.56rem; border-radius:50%;
   background:var(--paper); border:2px solid var(--violet)}
-.slider .bar em{position:absolute; top:-0.5rem; width:1px; height:0.32rem; background:var(--lavender)}
+.slider .bar em{position:absolute; top:-0.42rem; width:1px; height:0.28rem; background:var(--lavender)}
+.empty{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.2rem;
+  color:var(--lavender); font-size:0.56rem; flex:1}
+.skel{background:linear-gradient(90deg,#F1EFF7,#F8F7FC,#F1EFF7); border-radius:0.3rem; height:0.5rem}
 
 /* 화면 정의 패널 */
-.def{display:flex; flex-direction:column; gap:0.6rem; min-height:0}
-.def .blk{background:var(--paper); border:1px solid var(--peri); border-radius:1.1rem; padding:0.75rem 0.9rem}
-.def .blk .h{font-weight:700; font-size:0.6rem; letter-spacing:0.05em; text-transform:uppercase;
-  color:var(--slate); margin-bottom:0.35rem}
-.def .kv{display:flex; justify-content:space-between; gap:0.5rem; font-size:0.74rem; padding:0.12rem 0; color:var(--carbon)}
+.def{display:flex; flex-direction:column; gap:0.5rem; min-height:0}
+.def .blk{background:var(--paper); border:1px solid var(--peri); border-radius:1rem; padding:0.65rem 0.85rem}
+.def .blk .h{font-weight:700; font-size:0.58rem; letter-spacing:0.05em; text-transform:uppercase;
+  color:var(--slate); margin-bottom:0.3rem}
+.def .kv{display:flex; justify-content:space-between; gap:0.5rem; font-size:0.72rem; padding:0.1rem 0; color:var(--carbon)}
 .def .kv span:first-child{color:var(--slate); flex:none}
 .def .kv b{font-weight:600}
 .def ul{margin:0; padding:0; list-style:none}
-.def li{position:relative; padding:0.16rem 0 0.16rem 0.8rem; font-size:0.74rem; color:var(--carbon); line-height:1.4}
-.def li::before{content:""; position:absolute; left:0; top:0.55rem; width:0.26rem; height:0.26rem; border-radius:50%; background:var(--violet)}
+.def li{position:relative; padding:0.14rem 0 0.14rem 0.75rem; font-size:0.72rem; color:var(--carbon); line-height:1.4}
+.def li::before{content:""; position:absolute; left:0; top:0.5rem; width:0.24rem; height:0.24rem; border-radius:50%; background:var(--violet)}
 .def li b{font-weight:600; color:var(--ink)}
+.flowline{display:flex; align-items:center; gap:0.25rem; flex-wrap:wrap; font-size:0.62rem; color:var(--carbon)}
+.flowline span{border:1px solid var(--peri); border-radius:999px; padding:0.1rem 0.45rem; background:var(--bone)}
+.flowline span.on{background:var(--violet); border-color:var(--violet); color:#FFFFFF; font-weight:600}
+.flowline em{font-style:normal; color:var(--lavender)}
 
 /* 맺음 */
 .end{justify-content:center}
@@ -236,21 +287,21 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
     <div>
       <div class="eyebrow">설계 산출물 · Screen Specification</div>
       <h1>골프카트 관제시스템<br><em>화면정의서</em></h1>
-      <p class="sub">1단계 14개 화면을 실제 화면 시안으로 정의합니다.</p>
+      <p class="sub">1단계 14개 화면을 실제 프로그램 화면 수준으로 정의합니다.</p>
     </div>
     <div class="card cov-card">
       <div class="eyebrow">문서 요약</div>
       <div class="cov-rows">
         <div class="r"><span>정의 화면</span><b>14개</b></div>
         <div class="r"><span>메뉴 구성</span><b>6개</b></div>
-        <div class="r"><span>화면 시안</span><b>전 화면</b></div>
-        <div class="r"><span>기준 문서</span><b>구축 제안서</b></div>
+        <div class="r"><span>화면 시안</span><b>전 화면 + 상태</b></div>
+        <div class="r"><span>화면 전이</span><b>정의 포함</b></div>
       </div>
     </div>
   </div>
   <div class="meta">
     <div><b>LSV 귀중</b>제출처</div>
-    <div><b>v0.2 · 2026. 08</b>문서 버전</div>
+    <div><b>v0.3 · 2026. 08</b>문서 버전</div>
     <div><b>소버린즈 주식회사</b>작성</div>
   </div>
 </section>
@@ -263,14 +314,14 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
     <p class="lead">1단계 구축 대상 화면을 <b>화면 단위로 정의</b>하며, 개발 착수와 검수의 기준 문서로 사용합니다.</p>
   </div>
   <div class="body">
-    <div class="grid g3" style="margin-bottom:1.1rem">
+    <div class="grid g4" style="margin-bottom:0.9rem">
       <div class="card">
         <span class="tag">범위</span>
         <h3>포함하는 것</h3>
         <ul>
-          <li>화면 목록과 화면 ID 체계</li>
+          <li>화면 목록과 ID 체계</li>
           <li>화면별 시안과 구성 요소</li>
-          <li>주요 동작과 화면 전이</li>
+          <li>동작 · 예외 · 화면 전이</li>
           <li>권한별 노출 · 제어 규칙</li>
         </ul>
       </div>
@@ -278,20 +329,28 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
         <span class="tag">범위</span>
         <h3>포함하지 않는 것</h3>
         <ul>
-          <li>최종 비주얼 디자인(픽셀 단위 규격)</li>
-          <li>API 명세와 데이터 스키마</li>
-          <li>비기능 요구(성능 · 보관 기간)</li>
+          <li>최종 비주얼 디자인 규격</li>
+          <li>API 명세 · 데이터 스키마</li>
+          <li>비기능 요구(성능 · 보관)</li>
           <li>2단계 확장 화면</li>
         </ul>
       </div>
       <div class="card">
         <span class="tag">표기</span>
-        <h3>규칙</h3>
+        <h3>ID와 권한</h3>
         <ul>
-          <li>화면 ID는 SCR-000 형식, 메뉴 단위로 10 단위 부여</li>
-          <li>권한은 전역 관리자 · 골프장 관리자 · 조회 전용 3단계</li>
-          <li>시안의 수치와 카트 번호는 배치 확인용 예시</li>
-          <li>임계값 표기는 협의 전 기준안</li>
+          <li>화면 ID는 SCR-000, 메뉴 단위 10 간격</li>
+          <li>권한 3단계 - 전역 관리자 · 골프장 관리자 · 조회 전용</li>
+          <li>필수 입력은 별표(<span class="req">*</span>) 표기</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">시안</span>
+        <h3>읽는 법</h3>
+        <ul>
+          <li>1920 x 1080 화면을 축소한 비율</li>
+          <li>수치 · 카트 번호는 예시 데이터</li>
+          <li>임계값은 협의 전 기준안</li>
         </ul>
       </div>
     </div>
@@ -309,21 +368,21 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
   </div>
   <div class="body">
     <table class="tight dense">
-      <tr><th>ID</th><th>화면명</th><th>메뉴</th><th>접근 권한</th><th>대응 요구사항</th></tr>
-      <tr><td><span class="sid">SCR-010</span></td><td><b>종합 관제 대시보드</b></td><td class="g">대시보드</td><td class="g">전체</td><td class="g">종합 관제 대시보드</td></tr>
-      <tr><td><span class="sid">SCR-020</span></td><td><b>실시간 관제 지도</b></td><td class="g">관제</td><td class="g">전체</td><td class="g">실시간 위치 관제</td></tr>
-      <tr><td><span class="sid">SCR-030</span></td><td><b>알림 센터</b></td><td class="g">관제</td><td class="g">전체</td><td class="g">차량 정비 · 고장 알림</td></tr>
-      <tr><td><span class="sid">SCR-040</span></td><td><b>운행경로 조회 · 재생</b></td><td class="g">운행</td><td class="g">전체</td><td class="g">운행경로 조회</td></tr>
-      <tr><td><span class="sid">SCR-050</span></td><td><b>트립 리포트</b></td><td class="g">운행</td><td class="g">전체(등급별 항목 제한)</td><td class="g">트립 리포트</td></tr>
-      <tr><td><span class="sid">SCR-060</span></td><td><b>차량 목록 · 검색</b></td><td class="g">차량</td><td class="g">전체</td><td class="g">차량조회</td></tr>
-      <tr><td><span class="sid">SCR-070</span></td><td><b>차량 상세</b></td><td class="g">차량</td><td class="g">전체(별칭 수정은 관리자)</td><td class="g">차량조회 · 고장 코드</td></tr>
-      <tr><td><span class="sid">SCR-080</span></td><td><b>차량 등록 · 수정</b></td><td class="g">차량</td><td class="g">전역 관리자</td><td class="g">차량등록/삭제 · MES 연계</td></tr>
-      <tr><td><span class="sid">SCR-090</span></td><td><b>정비 · 점검 이력</b></td><td class="g">정비</td><td class="g">전체(작성은 정비 담당자)</td><td class="g">정비/점검 이력 관리</td></tr>
-      <tr><td><span class="sid">SCR-100</span></td><td><b>점검 체크리스트</b></td><td class="g">정비</td><td class="g">정비 담당자</td><td class="g">정비/점검 이력 관리</td></tr>
-      <tr><td><span class="sid">SCR-110</span></td><td><b>배터리 · 차량 요약</b></td><td class="g">정비</td><td class="g">전체</td><td class="g">배터리/차량 요약</td></tr>
-      <tr><td><span class="sid">SCR-120</span></td><td><b>고장 · DTC 진단</b></td><td class="g">정비</td><td class="g">관리자 · 정비 담당자</td><td class="g">고장/DTC 진단</td></tr>
-      <tr><td><span class="sid">SCR-130</span></td><td><b>코스 · 홀 마킹</b></td><td class="g">설정</td><td class="g">전역 관리자</td><td class="g">홀 마킹</td></tr>
-      <tr><td><span class="sid">SCR-140</span></td><td><b>이용자 · 권한 관리</b></td><td class="g">설정</td><td class="g">전역 관리자</td><td class="g">이용자 관리</td></tr>
+      <tr><th>ID</th><th>화면명</th><th>메뉴</th><th>접근 권한</th><th>주요 구성 요소</th></tr>
+      <tr><td><span class="sid">SCR-010</span></td><td><b>종합 관제 대시보드</b></td><td class="g">대시보드</td><td class="g">전체</td><td class="g">KPI 5 · 코스 지도 · 알림 요약 · 홀 타임라인</td></tr>
+      <tr><td><span class="sid">SCR-020</span></td><td><b>실시간 관제 지도</b></td><td class="g">관제</td><td class="g">전체</td><td class="g">상태 필터 · 지도 마커 · 카트 목록 · 요약 팝업</td></tr>
+      <tr><td><span class="sid">SCR-030</span></td><td><b>알림 센터</b></td><td class="g">관제</td><td class="g">전체</td><td class="g">등급 필터 · 이벤트 목록 · 상세 · 조치 등록</td></tr>
+      <tr><td><span class="sid">SCR-040</span></td><td><b>운행경로 조회 · 재생</b></td><td class="g">운행</td><td class="g">전체</td><td class="g">궤적 지도 · 타임라인 슬라이더 · 홀 구간표</td></tr>
+      <tr><td><span class="sid">SCR-050</span></td><td><b>트립 리포트</b></td><td class="g">운행</td><td class="g">전체(등급별 제한)</td><td class="g">기간 조건 · KPI · 통계 차트 · 상세표 · 내보내기</td></tr>
+      <tr><td><span class="sid">SCR-060</span></td><td><b>차량 목록 · 검색</b></td><td class="g">차량</td><td class="g">전체</td><td class="g">조건 검색 · 목록 · SoC 게이지 · 페이징</td></tr>
+      <tr><td><span class="sid">SCR-070</span></td><td><b>차량 상세</b></td><td class="g">차량</td><td class="g">전체(별칭은 관리자)</td><td class="g">기본 정보 · 탭 · 주행 추이 · 고장 코드</td></tr>
+      <tr><td><span class="sid">SCR-080</span></td><td><b>차량 등록 · 수정</b></td><td class="g">차량</td><td class="g">전역 관리자</td><td class="g">입력 폼 · 단말 검증 · MES 부품 연계</td></tr>
+      <tr><td><span class="sid">SCR-090</span></td><td><b>정비 · 점검 이력</b></td><td class="g">정비</td><td class="g">전체(작성은 담당자)</td><td class="g">타임라인 · 정비 등록 · 소모품 주기</td></tr>
+      <tr><td><span class="sid">SCR-100</span></td><td><b>점검 체크리스트</b></td><td class="g">정비</td><td class="g">정비 담당자</td><td class="g">항목 판정 · 불량 조치 · 사진 첨부</td></tr>
+      <tr><td><span class="sid">SCR-110</span></td><td><b>배터리 · 차량 요약</b></td><td class="g">정비</td><td class="g">전체</td><td class="g">SoC 구간 · 대상 목록 · 충전소 상태</td></tr>
+      <tr><td><span class="sid">SCR-120</span></td><td><b>고장 · DTC 진단</b></td><td class="g">정비</td><td class="g">관리자 · 담당자</td><td class="g">코드 목록 · 코드 사전 · 신호 원문</td></tr>
+      <tr><td><span class="sid">SCR-130</span></td><td><b>코스 · 홀 마킹</b></td><td class="g">설정</td><td class="g">전역 관리자</td><td class="g">마킹 도구 · 지오펜스 반경 · 홀 목록</td></tr>
+      <tr><td><span class="sid">SCR-140</span></td><td><b>이용자 · 권한 관리</b></td><td class="g">설정</td><td class="g">전역 관리자</td><td class="g">계정 목록 · 권한 편집 · 2단계 인증</td></tr>
     </table>
   </div>
   <div class="s-foot"><span>공통 화면 - 로그인 · 2단계 인증</span><span class="mark">SOVEREIGNS · 03</span></div>
@@ -340,30 +399,29 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
     <div class="scr">
       <div class="ui">
         <div class="ui-top">
-          <span class="lg"><i></i>LSV TMS</span>
-          <span class="sel">서울 CC · OUT/IN</span>
-          <span class="sp"></span>
-          <span class="bell">알림<b>7</b></span>
-          <span class="sel">관제 운영자</span>
-          <span class="av"></span>
+          <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
+          <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">관제 운영자</span><span class="av"></span>
         </div>
-        <div class="ui-cols" style="grid-template-columns:0.42fr 2fr; gap:0; flex:1">
-          <div style="border-right:1px solid var(--lilac); padding:0.5rem 0.55rem; display:flex; flex-direction:column; gap:0.3rem; font-size:0.6rem; color:var(--slate); background:var(--bone)">
-            <span style="background:var(--violet); color:#fff; border-radius:0.45rem; padding:0.2rem 0.45rem; font-weight:600">대시보드</span>
-            <span style="padding:0.2rem 0.45rem">관제</span>
-            <span style="padding:0.2rem 0.45rem">운행</span>
-            <span style="padding:0.2rem 0.45rem">차량</span>
-            <span style="padding:0.2rem 0.45rem">정비</span>
-            <span style="padding:0.2rem 0.45rem">설정</span>
-            <span style="flex:1"></span>
-            <span style="font-size:0.52rem; color:var(--lavender)">v1.0 · 서울 CC</span>
-          </div>
-          <div style="display:flex; flex-direction:column; min-height:0">
-            <div class="ui-head"><h5>화면 제목</h5><span class="sp"></span><span class="fld">조회 조건</span><span class="btn fill">주 동작</span></div>
+        <div class="app">
+          <nav class="gnb">
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">대시보드 · 종합 관제</div>
+            <div class="ui-head"><h5>화면 제목</h5><span class="sp"></span>
+              <span class="fld sel">조회 조건</span><span class="btn gh">보조</span><span class="btn fill">주 동작</span></div>
             <div class="ui-body">
-              <div class="pane bone" style="flex:1; align-items:center; justify-content:center; color:var(--lavender); font-size:0.62rem">
-                본문 영역 - 화면별 콘텐츠(목록 · 지도 · 폼)
+              <div class="chips"><span class="on">필터</span><span>필터</span><span>필터</span></div>
+              <div class="pane bone" style="flex:1; align-items:center; justify-content:center; color:var(--lavender); font-size:0.6rem">
+                본문 영역 - 목록 · 지도 · 폼 · 상세
               </div>
+              <div class="pager"><span>이전</span><b>1</b><span>2</span><span>다음</span></div>
             </div>
           </div>
         </div>
@@ -372,24 +430,26 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
         <div class="blk">
           <div class="h">영역 규칙</div>
           <ul>
-            <li><b>상단 바</b> 골프장 선택(전역 관리자만), 미확인 알림 수, 계정 메뉴</li>
-            <li><b>좌측 메뉴</b> 권한이 없는 메뉴는 노출하지 않음</li>
-            <li><b>본문</b> 화면 제목 · 조회 조건 · 콘텐츠 순서 고정</li>
+            <li><b>상단 바</b> 로고 · 골프장 선택(전역 관리자) · 알림 배지 · 계정</li>
+            <li><b>좌측 메뉴</b> 6개 대메뉴, 권한 없는 메뉴는 노출하지 않음</li>
+            <li><b>브레드크럼</b> 메뉴 · 화면명 순으로 현재 위치 표시</li>
+            <li><b>본문</b> 화면 제목 → 조회 조건 → 콘텐츠 → 페이징 순서 고정</li>
           </ul>
         </div>
         <div class="blk">
-          <div class="h">공통 동작</div>
+          <div class="h">버튼 배치</div>
           <ul>
-            <li>세션 만료 시 로그인 화면으로 이동하고 직전 화면을 기억</li>
-            <li>실시간 화면은 연결 상태를 표시하고 끊기면 재연결</li>
-            <li>대형 화면(DID) 출력을 위한 다크 모드와 전체 화면 모드 제공</li>
+            <li>주 동작은 화면 우측 상단에 채움 버튼 1개만 배치</li>
+            <li>보조 동작은 아웃라인 · 고스트 버튼으로 좌측에 나열</li>
+            <li>되돌릴 수 없는 동작은 확인 모달을 거침</li>
           </ul>
         </div>
         <div class="blk">
-          <div class="h">해상도</div>
+          <div class="h">해상도 · 모드</div>
           <ul>
             <li>기준 1920 x 1080, 최소 1366 x 768</li>
-            <li>관제실 대형 화면 4K 출력 시 배율 조정</li>
+            <li>전체 화면 모드에서 상단 바 · 좌측 메뉴 숨김(관제 화면)</li>
+            <li>관제실 대형 화면용 다크 모드 제공</li>
           </ul>
         </div>
       </div>
@@ -403,46 +463,105 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
   <div class="s-head">
     <div class="eyebrow">공통 규칙</div>
     <h2 class="title">공통 컴포넌트</h2>
-    <p class="lead">여러 화면에서 반복되는 요소는 <b>모양과 동작을 한 번만 정의</b>하고 각 화면에서 참조합니다.</p>
+    <p class="lead">반복되는 요소는 <b>모양과 동작을 한 번만 정의</b>하고 각 화면에서 참조합니다.</p>
   </div>
   <div class="body">
-    <div class="grid g4" style="margin-bottom:0.9rem">
+    <div class="grid g4" style="gap:0.8rem; margin-bottom:0.8rem">
       <div class="pane">
-        <span class="ph">버튼</span>
-        <div style="display:flex; gap:0.3rem; flex-wrap:wrap"><span class="btn fill">등록</span><span class="btn out">조회</span><span class="btn gh">초기화</span></div>
-        <span style="font-size:0.56rem; color:var(--slate)">채움은 주 동작 1개에만 사용합니다.</span>
+        <span class="ph">버튼 · 세그먼트</span>
+        <div style="display:flex; gap:0.25rem; flex-wrap:wrap"><span class="btn fill">등록</span><span class="btn out">조회</span><span class="btn gh">초기화</span></div>
+        <span class="seg"><span class="on">지도</span><span>목록</span><span>분할</span></span>
+        <span style="font-size:0.53rem; color:var(--slate)">채움 버튼은 화면당 1개</span>
       </div>
       <div class="pane">
-        <span class="ph">상태 배지</span>
-        <div style="display:flex; gap:0.4rem; flex-wrap:wrap">
+        <span class="ph">상태 배지 6종</span>
+        <div style="display:flex; gap:0.35rem; flex-wrap:wrap">
           <span class="st run"><i></i>운행</span><span class="st disp"><i></i>배차</span><span class="st wait"><i></i>대기</span>
           <span class="st back"><i></i>복귀</span><span class="st chg"><i></i>충전</span><span class="st fix"><i></i>정비</span>
         </div>
-        <span style="font-size:0.56rem; color:var(--slate)">6종 명칭과 색을 전 화면 동일하게 사용합니다.</span>
+        <div style="display:flex; gap:0.25rem"><span class="pill v">확인</span><span class="pill r">긴급</span><span class="pill g">종결</span></div>
+        <span style="font-size:0.53rem; color:var(--slate)">명칭 · 색을 전 화면 동일하게 사용</span>
       </div>
       <div class="pane">
-        <span class="ph">필터 칩 · 검색</span>
-        <div class="chips"><span class="on">전체</span><span>운행</span><span>충전</span><span>정비</span></div>
-        <span class="fld">카트 번호 · 별칭 검색</span>
+        <span class="ph">검색 · 필터</span>
+        <span class="fld"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>카트 번호 · 별칭</span>
+        <span class="fld sel">기간 · 최근 7일</span>
+        <div class="chips"><span class="on">전체</span><span>운행</span><span>정비</span></div>
       </div>
       <div class="pane">
-        <span class="ph">배터리 게이지</span>
-        <div class="grow"><span style="font-size:0.56rem; width:1.8rem">82%</span><span class="gauge"><i style="width:82%"></i></span></div>
-        <div class="grow"><span style="font-size:0.56rem; width:1.8rem">34%</span><span class="gauge mid"><i style="width:34%"></i></span></div>
-        <div class="grow"><span style="font-size:0.56rem; width:1.8rem">12%</span><span class="gauge warn"><i style="width:12%"></i></span></div>
+        <span class="ph">게이지 · 페이징</span>
+        <div class="grow"><span style="font-size:0.53rem; width:1.6rem">82%</span><span class="gauge"><i style="width:82%"></i></span></div>
+        <div class="grow"><span style="font-size:0.53rem; width:1.6rem">34%</span><span class="gauge mid"><i style="width:34%"></i></span></div>
+        <div class="grow"><span style="font-size:0.53rem; width:1.6rem">12%</span><span class="gauge warn"><i style="width:12%"></i></span></div>
+        <div class="pager"><span>이전</span><b>1</b><span>2</span><span>3</span><span>다음</span></div>
       </div>
     </div>
     <table class="tight dense">
       <tr><th>컴포넌트</th><th>사용 화면</th><th>동작 정의</th></tr>
-      <tr><td><b>검색 · 필터 바</b></td><td class="g">SCR-030, 050, 060, 090, 120</td><td class="g">조건 변경 시 즉시 조회, 조건은 화면 이탈 후 복귀 시 유지, 초기화 버튼 제공</td></tr>
-      <tr><td><b>목록 표 · 페이징</b></td><td class="g">SCR-030, 060, 090, 120, 140</td><td class="g">열 정렬, 기본 20건 페이징, 행 클릭 시 상세 이동, 권한 없는 행 동작은 비활성</td></tr>
-      <tr><td><b>카트 마커 · 툴팁</b></td><td class="g">SCR-010, 020, 040, 130</td><td class="g">마커에 카트 번호와 SoC 표시, 클릭 시 요약 팝업, 더블 클릭 시 차량 상세 이동</td></tr>
+      <tr><td><b>검색 · 필터 바</b></td><td class="g">SCR-030 · 050 · 060 · 090 · 120</td><td class="g">조건 변경 시 즉시 조회, 화면 이탈 후 복귀 시 조건 유지, 초기화 제공</td></tr>
+      <tr><td><b>목록 표 · 페이징</b></td><td class="g">SCR-030 · 060 · 090 · 120 · 140</td><td class="g">열 정렬(정렬 열에 방향 표시), 기본 20건, 행 클릭 시 상세 이동</td></tr>
+      <tr><td><b>카트 마커 · 툴팁</b></td><td class="g">SCR-010 · 020 · 040 · 130</td><td class="g">마커에 상태 색 적용, 클릭 시 요약 팝업, 더블 클릭 시 차량 상세로 이동</td></tr>
       <tr><td><b>알림 배지 · 토스트</b></td><td class="g">전 화면</td><td class="g">긴급 이벤트는 토스트로 즉시 표시, 확인 전까지 상단 배지 유지</td></tr>
-      <tr><td><b>기간 선택기 · 내보내기</b></td><td class="g">SCR-040, 050, 090</td><td class="g">오늘 · 7일 · 30일 · 직접 입력, 대용량 내보내기는 비동기 처리 후 알림</td></tr>
-      <tr><td><b>확인 모달</b></td><td class="g">SCR-080, 130, 140</td><td class="g">삭제 · 비활성화 등 되돌릴 수 없는 동작에 사용, 대상 명칭을 문구에 표시</td></tr>
+      <tr><td><b>확인 모달</b></td><td class="g">SCR-080 · 130 · 140</td><td class="g">되돌릴 수 없는 동작에 사용, 대상 명칭을 문구에 표시</td></tr>
+      <tr><td><b>내보내기</b></td><td class="g">SCR-050 · 090</td><td class="g">현재 조회 조건 기준 CSV · 엑셀 생성, 대용량은 비동기 처리 후 알림</td></tr>
     </table>
   </div>
   <div class="s-foot"><span>공통 컴포넌트</span><span class="mark">SOVEREIGNS · 05</span></div>
+</section>
+
+<!-- 상호작용 상태 -->
+<section class="slide" data-title="상호작용 상태 정의">
+  <div class="s-head">
+    <div class="eyebrow">공통 규칙</div>
+    <h2 class="title">상호작용 상태 정의</h2>
+    <p class="lead">데이터가 없거나 실패한 경우까지 <b>화면 상태를 미리 정의</b>해 개발 중 판단이 갈리지 않게 합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g4" style="gap:0.8rem">
+      <div class="ui" style="min-height:9rem">
+        <div class="ui-head"><h5>로딩</h5></div>
+        <div class="ui-body" style="gap:0.3rem">
+          <div class="skel" style="width:70%"></div><div class="skel" style="width:100%"></div>
+          <div class="skel" style="width:88%"></div><div class="skel" style="width:94%"></div>
+          <div class="skel" style="width:60%"></div>
+          <span style="font-size:0.52rem; color:var(--lavender); margin-top:auto">골격만 먼저 그리고 데이터가 오면 교체합니다.</span>
+        </div>
+      </div>
+      <div class="ui" style="min-height:9rem">
+        <div class="ui-head"><h5>빈 상태</h5></div>
+        <div class="ui-body">
+          <div class="empty">
+            <span style="font-size:0.8rem; color:var(--peri)">□</span>
+            조건에 맞는 데이터가 없습니다
+            <span class="btn out">조건 초기화</span>
+          </div>
+        </div>
+      </div>
+      <div class="ui" style="min-height:9rem">
+        <div class="ui-head"><h5>오류 · 재시도</h5></div>
+        <div class="ui-body">
+          <div class="empty" style="color:var(--rose)">
+            데이터를 불러오지 못했습니다
+            <span style="font-size:0.5rem; color:var(--slate)">코드 GW-503 · 14:22:07</span>
+            <span class="btn fill">다시 시도</span>
+          </div>
+        </div>
+      </div>
+      <div class="ui" style="min-height:9rem">
+        <div class="ui-head"><h5>확인 모달</h5></div>
+        <div class="ui-body"><div class="pane bone" style="flex:1"></div></div>
+        <div class="modal">
+          <div class="box" style="width:80%">
+            <h6>차량을 비활성화할까요</h6>
+            <p>#114 레이크8 · 단말 T-101103<br>주행 · 정비 이력은 보존되며 목록에서 제외됩니다.</p>
+            <div class="act"><span class="btn gh">취소</span><span class="btn fill">비활성화</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note"><b>연결 상태</b> - 실시간 화면은 상단에 연결됨 · 재연결 중 · 끊김 3단계를 표시하고, 끊긴 동안 수신하지 못한 데이터는 복구 시 반영합니다. 권한이 없는 동작은 버튼을 숨기고, 조회만 가능한 계정에는 편집 컨트롤을 노출하지 않습니다.</div>
+  </div>
+  <div class="s-foot"><span>상태 정의는 전 화면 공통</span><span class="mark">SOVEREIGNS · 06</span></div>
 </section>
 
 <!-- SCR-010 -->
@@ -458,57 +577,77 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">관제 운영자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>종합 관제 대시보드</h5><span class="sp"></span>
-          <span class="fld">자동 갱신 10초</span><span class="btn out">다크 모드</span><span class="btn fill">전체 화면</span></div>
-        <div class="ui-body">
-          <div class="kpi5">
-            <div><b>50</b><span>전체 카트</span></div>
-            <div><b>35</b><span>운행 중</span></div>
-            <div><b>8</b><span>충전 중</span></div>
-            <div><b style="color:var(--rose)">7</b><span>정비 필요</span></div>
-            <div><b>13%</b><span>코스 지연률</span></div>
-          </div>
-          <div class="ui-cols" style="grid-template-columns:1.9fr 1fr">
-            <div class="map" data-bleed>
-              <svg viewBox="0 0 400 360" preserveAspectRatio="xMidYMid meet" aria-label="코스 현황 지도">
-                <path d="M62 330 C 92 286, 124 254, 168 236" fill="none" stroke="#D9D2FF" stroke-width="34" stroke-linecap="round"></path>
-                <path d="M206 216 C 254 198, 302 202, 342 180" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
-                <path d="M118 118 C 168 92, 228 96, 282 74" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
-                <path d="M46 176 C 78 148, 126 152, 134 182 C 141 208, 108 226, 78 218 C 52 211, 30 192, 46 176" fill="#EFECFA" stroke="#9E99AB" stroke-width="1.2" stroke-dasharray="4 5"></path>
-                <text x="88" y="196" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">위험 구역</text>
-                <circle cx="182" cy="228" r="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                <circle cx="182" cy="228" r="24" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
-                <text x="182" y="272" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H4</text>
-                <circle cx="352" cy="174" r="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                <circle cx="352" cy="174" r="24" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
-                <text x="352" y="218" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H5</text>
-                <circle cx="286" cy="78" r="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                <path d="M68 326 C 100 284, 132 252, 176 234 C 226 216, 276 218, 316 198" fill="none" stroke="#4823FF" stroke-width="3" stroke-linecap="round"></path>
-                <circle cx="316" cy="198" r="7" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <circle cx="232" cy="214" r="6.5" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <circle cx="118" cy="278" r="6.5" fill="#7E78FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <circle cx="262" cy="96" r="6.5" fill="#E11D48" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <circle cx="164" cy="108" r="6.5" fill="#99CEFE" stroke="#FFFFFF" stroke-width="2.4"></circle>
-              </svg>
-              <div class="lay"><span class="on">궤적</span><span>지오펜스</span><span>위험 구역</span></div>
-              <div class="tip" style="right:0.5rem; bottom:0.5rem"><b>#101 스카이23</b>운행 · 12.4km/h · SoC 62%</div>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:0.5rem; min-height:0">
-              <div class="pane bone" style="flex:1">
-                <span class="ph">알림 센터</span>
-                <div class="st fix" style="justify-content:space-between"><span><i></i>DTC 발생 · #101</span><span style="color:var(--slate)">2분</span></div>
-                <div class="st fix" style="justify-content:space-between"><span><i></i>배터리 경고 · #118</span><span style="color:var(--slate)">6분</span></div>
-                <div class="st wait" style="justify-content:space-between"><span><i></i>소모품 주기 · #107</span><span style="color:var(--slate)">21분</span></div>
+        <div class="app">
+          <nav class="gnb">
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">대시보드 · 종합 관제</div>
+            <div class="ui-head"><h5>종합 관제 대시보드</h5><span class="st run"><i></i>연결됨</span><span class="sp"></span>
+              <span class="fld sel">자동 갱신 10초</span><span class="btn gh">다크 모드</span><span class="btn fill">전체 화면</span></div>
+            <div class="ui-body">
+              <div class="ui-cols" style="grid-template-columns:2fr 0.75fr">
+                <div style="display:flex; flex-direction:column; gap:0.42rem; min-height:0">
+                  <div class="kpi" style="grid-template-columns:repeat(5,1fr)">
+                    <div><b>50</b><span>전체 카트</span></div>
+                    <div><b>35</b><span>운행 중</span></div>
+                    <div><b>8</b><span>충전 중</span></div>
+                    <div><b style="color:var(--rose)">7</b><span>정비 필요</span></div>
+                    <div><b>13%</b><span>코스 지연률</span></div>
+                  </div>
+                  <div class="map" data-bleed style="flex:1">
+                    <svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid meet" aria-label="코스 현황 지도">
+                      <path d="M52 226 C 84 190, 118 162, 164 146" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
+                      <path d="M204 132 C 252 116, 300 120, 342 100" fill="none" stroke="#D9D2FF" stroke-width="28" stroke-linecap="round"></path>
+                      <path d="M116 66 C 166 44, 226 48, 278 30" fill="none" stroke="#D9D2FF" stroke-width="26" stroke-linecap="round"></path>
+                      <circle cx="180" cy="140" r="9" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.2"></circle>
+                      <circle cx="180" cy="140" r="20" fill="none" stroke="#7E78FF" stroke-width="1" stroke-dasharray="3 4"></circle>
+                      <circle cx="344" cy="96" r="9" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.2"></circle>
+                      <circle cx="344" cy="96" r="20" fill="none" stroke="#7E78FF" stroke-width="1" stroke-dasharray="3 4"></circle>
+                      <path d="M58 222 C 90 188, 124 160, 170 144 C 220 128, 268 132, 308 116" fill="none" stroke="#4823FF" stroke-width="2.6" stroke-linecap="round"></path>
+                      <circle cx="308" cy="116" r="6" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.2"></circle>
+                      <circle cx="228" cy="130" r="5.5" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.2"></circle>
+                      <circle cx="112" cy="182" r="5.5" fill="#7E78FF" stroke="#FFFFFF" stroke-width="2.2"></circle>
+                      <circle cx="256" cy="46" r="5.5" fill="#E11D48" stroke="#FFFFFF" stroke-width="2.2"></circle>
+                      <circle cx="158" cy="58" r="5.5" fill="#99CEFE" stroke="#FFFFFF" stroke-width="2.2"></circle>
+                    </svg>
+                    <div class="lay"><span class="on">궤적</span><span>지오펜스</span><span>위험 구역</span></div>
+                    <div class="zoom"><span>+</span><span>−</span></div>
+                    <div class="tip" style="left:4%; bottom:6%"><b>#101 스카이23</b>운행 · 12.4km/h · SoC 62%</div>
+                    <span class="scale">100m</span>
+                  </div>
+                  <div class="chips"><span>H1 12:04</span><span>H2 12:19</span><span>H3 12:41</span><span class="on">H4 진행 중</span><span>H5 -</span><span>H6 -</span><span>H7 -</span></div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:0.42rem; min-height:0">
+                  <div class="pane bone" style="flex:1.2">
+                    <span class="ph">알림 센터<em>미확인 7</em></span>
+                    <div class="st fix" style="justify-content:space-between"><span><i></i>DTC · #101</span><span style="color:var(--slate)">2분</span></div>
+                    <div class="st fix" style="justify-content:space-between"><span><i></i>배터리 · #118</span><span style="color:var(--slate)">6분</span></div>
+                    <div class="st disp" style="justify-content:space-between"><span><i></i>통신 두절 · #114</span><span style="color:var(--slate)">12분</span></div>
+                    <div class="st wait" style="justify-content:space-between"><span><i></i>소모품 · #107</span><span style="color:var(--slate)">21분</span></div>
+                  </div>
+                  <div class="pane bone" style="flex:1">
+                    <span class="ph">배터리 SoC</span>
+                    <div class="grow"><span style="font-size:0.53rem; width:1.5rem">정상</span><span class="gauge"><i style="width:72%"></i></span><span style="font-size:0.53rem">36</span></div>
+                    <div class="grow"><span style="font-size:0.53rem; width:1.5rem">주의</span><span class="gauge mid"><i style="width:20%"></i></span><span style="font-size:0.53rem">10</span></div>
+                    <div class="grow"><span style="font-size:0.53rem; width:1.5rem">경고</span><span class="gauge warn"><i style="width:8%"></i></span><span style="font-size:0.53rem">4</span></div>
+                  </div>
+                  <div class="pane bone" style="flex:1">
+                    <span class="ph">일일 운행 요약</span>
+                    <div style="font-size:0.53rem; color:var(--carbon); line-height:1.6">
+                      트립 42건 · 이동 268km<br>평균 소요 142분<br>지연 구간 H4 · H7
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="pane bone" style="flex:1">
-                <span class="ph">배터리 SoC</span>
-                <div class="grow"><span style="font-size:0.56rem; width:1.6rem">정상</span><span class="gauge"><i style="width:72%"></i></span><span style="font-size:0.56rem">36</span></div>
-                <div class="grow"><span style="font-size:0.56rem; width:1.6rem">주의</span><span class="gauge mid"><i style="width:20%"></i></span><span style="font-size:0.56rem">10</span></div>
-                <div class="grow"><span style="font-size:0.56rem; width:1.6rem">경고</span><span class="gauge warn"><i style="width:8%"></i></span><span style="font-size:0.56rem">4</span></div>
-              </div>
             </div>
           </div>
-          <div class="chips"><span>H1 12:04</span><span>H2 12:19</span><span>H3 12:41</span><span class="on">H4 진행 중</span><span>H5 -</span><span>H6 -</span></div>
         </div>
       </div>
       <div class="def">
@@ -520,26 +659,22 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <div class="kv"><span>갱신 방식</span><span>실시간 구독 + 10초 갱신</span></div>
         </div>
         <div class="blk">
-          <div class="h">구성 요소</div>
-          <ul>
-            <li><b>KPI 5종</b> 전체 · 운행 · 충전 · 정비 필요 · 코스 지연률</li>
-            <li><b>코스 지도</b> 카트 마커, 궤적 · 지오펜스 · 위험 구역 레이어</li>
-            <li><b>알림 · 배터리 요약</b> 최근 이벤트, SoC 3구간 대수</li>
-            <li><b>홀 타임라인</b> 홀별 진행 시각과 현재 홀</li>
-          </ul>
-        </div>
-        <div class="blk">
           <div class="h">주요 동작</div>
           <ul>
             <li>KPI 클릭 시 해당 상태 필터가 적용된 SCR-020으로 이동</li>
             <li>알림 항목 클릭 시 SCR-030 상세로 이동</li>
-            <li>전체 화면 모드에서 좌측 메뉴를 숨기고 다크 모드로 전환</li>
+            <li>전체 화면 모드에서 상단 바 · 좌측 메뉴를 숨기고 다크 모드 적용</li>
+            <li>홀 칩 클릭 시 해당 홀 구간으로 지도 확대</li>
           </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>로그인</em><span class="on">SCR-010</span>→<span>SCR-020</span><span>SCR-030</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 종합 관제 대시보드</span><span class="mark">SOVEREIGNS · 06</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 종합 관제 대시보드</span><span class="mark">SOVEREIGNS · 07</span></div>
 </section>
 
 <!-- SCR-020 -->
@@ -555,47 +690,63 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">관제 운영자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>실시간 관제</h5>
-          <span class="st run" style="margin-left:0.3rem"><i></i>연결됨</span>
-          <span class="sp"></span><span class="fld">카트 번호 · 별칭 검색</span><span class="btn out">전체 화면</span></div>
-        <div class="ui-body">
-          <div class="chips"><span class="on">전체 50</span><span>운행 35</span><span>충전 8</span><span>정비 7</span><span>대기 0</span></div>
-          <div class="ui-cols" style="grid-template-columns:1.75fr 1fr">
-            <div class="map" data-bleed>
-              <svg viewBox="0 0 400 360" preserveAspectRatio="xMidYMid meet" aria-label="실시간 카트 위치">
-                <path d="M62 330 C 92 286, 124 254, 168 236" fill="none" stroke="#D9D2FF" stroke-width="34" stroke-linecap="round"></path>
-                <path d="M206 216 C 254 198, 302 202, 342 180" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
-                <path d="M118 118 C 168 92, 228 96, 282 74" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
-                <path d="M46 176 C 78 148, 126 152, 134 182 C 141 208, 108 226, 78 218 C 52 211, 30 192, 46 176" fill="#EFECFA" stroke="#9E99AB" stroke-width="1.2" stroke-dasharray="4 5"></path>
-                <text x="88" y="196" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">위험 구역</text>
-                <circle cx="182" cy="228" r="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                <circle cx="182" cy="228" r="24" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
-                <text x="182" y="272" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H4</text>
-                <circle cx="352" cy="174" r="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                <circle cx="352" cy="174" r="24" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
-                <text x="352" y="218" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H5</text>
-                <circle cx="286" cy="78" r="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                <path d="M68 326 C 100 284, 132 252, 176 234 C 226 216, 276 218, 316 198" fill="none" stroke="#4823FF" stroke-width="3" stroke-linecap="round"></path>
-                <circle cx="316" cy="198" r="7" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <circle cx="232" cy="214" r="6.5" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <circle cx="118" cy="278" r="6.5" fill="#7E78FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <circle cx="262" cy="96" r="6.5" fill="#E11D48" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <circle cx="164" cy="108" r="6.5" fill="#99CEFE" stroke="#FFFFFF" stroke-width="2.4"></circle>
-              </svg>
-              <div class="lay"><span class="on">궤적</span><span class="on">지오펜스</span><span>위험 구역</span></div>
-              <div class="tip" style="left:5%; bottom:6%"><b>#101 스카이23</b>운행 · 12.4km/h · SoC 62%<br>최근 수신 2초 전</div>
-            </div>
-            <div class="pane" style="min-height:0">
-              <span class="ph">카트 목록 · 50대</span>
-              <table class="tbl">
-                <tr><th>카트</th><th>상태</th><th>SoC</th><th>수신</th></tr>
-                <tr class="sel"><td class="id">#101</td><td><span class="st run"><i></i>운행</span></td><td class="n">62%</td><td class="n">2초</td></tr>
-                <tr><td class="id">#102</td><td><span class="st run"><i></i>운행</span></td><td class="n">48%</td><td class="n">3초</td></tr>
-                <tr><td class="id">#107</td><td><span class="st disp"><i></i>배차</span></td><td class="n">88%</td><td class="n">5초</td></tr>
-                <tr><td class="id">#114</td><td><span class="st fix"><i></i>정비</span></td><td class="n">21%</td><td class="n">4분</td></tr>
-                <tr><td class="id">#118</td><td><span class="st chg"><i></i>충전</span></td><td class="n">34%</td><td class="n">8초</td></tr>
-                <tr><td class="id">#121</td><td><span class="st back"><i></i>복귀</span></td><td class="n">55%</td><td class="n">6초</td></tr>
-              </table>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">관제 · 실시간 관제</div>
+            <div class="ui-head"><h5>실시간 관제</h5><span class="st run"><i></i>연결됨 · 2초 전</span><span class="sp"></span>
+              <span class="fld"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>카트 번호 · 별칭</span>
+              <span class="seg"><span class="on">지도</span><span>목록</span></span><span class="btn fill">전체 화면</span></div>
+            <div class="ui-body">
+              <div class="chips"><span class="on">전체 50</span><span>운행 35</span><span>충전 8</span><span>정비 7</span><span>대기 0</span><span>미수신 1</span></div>
+              <div class="ui-cols" style="grid-template-columns:1.85fr 1fr">
+                <div class="map" data-bleed>
+                  <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-label="실시간 카트 위치">
+                    <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
+                    <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
+                    <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#D9D2FF" stroke-width="28" stroke-linecap="round"></path>
+                    <path d="M46 148 C 76 122, 122 126, 130 154 C 136 178, 104 194, 76 187 C 52 180, 32 162, 46 148" fill="#EFECFA" stroke="#9E99AB" stroke-width="1.2" stroke-dasharray="4 5"></path>
+                    <text x="86" y="166" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">위험 구역</text>
+                    <circle cx="182" cy="182" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
+                    <circle cx="182" cy="182" r="22" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
+                    <text x="182" y="220" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H4</text>
+                    <circle cx="344" cy="136" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
+                    <circle cx="344" cy="136" r="22" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
+                    <path d="M68 268 C 100 230, 132 202, 176 186 C 226 168, 272 172, 312 156" fill="none" stroke="#4823FF" stroke-width="3" stroke-linecap="round"></path>
+                    <circle cx="312" cy="156" r="7" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                    <circle cx="232" cy="170" r="6.5" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                    <circle cx="118" cy="226" r="6.5" fill="#7E78FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                    <circle cx="262" cy="76" r="6.5" fill="#E11D48" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                    <circle cx="164" cy="88" r="6.5" fill="#99CEFE" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                  </svg>
+                  <div class="lay"><span class="on">궤적</span><span class="on">지오펜스</span><span>위험 구역</span></div>
+                  <div class="zoom"><span>+</span><span>−</span></div>
+                  <div class="tip" style="left:4%; bottom:6%"><b>#101 스카이23</b>운행 · 12.4km/h · SoC 62%<br>4번 홀 · 최근 수신 2초 전</div>
+                  <span class="scale">100m</span>
+                </div>
+                <div class="pane">
+                  <span class="ph">카트 목록<em>50대</em></span>
+                  <table class="tbl">
+                    <tr><th>카트</th><th>상태</th><th class="s">SoC</th><th>수신</th></tr>
+                    <tr class="sel"><td class="id">#101</td><td><span class="st run"><i></i>운행</span></td><td class="n">62%</td><td class="n">2초</td></tr>
+                    <tr><td class="id">#102</td><td><span class="st run"><i></i>운행</span></td><td class="n">48%</td><td class="n">3초</td></tr>
+                    <tr class="hov"><td class="id">#107</td><td><span class="st disp"><i></i>배차</span></td><td class="n">88%</td><td class="n">5초</td></tr>
+                    <tr><td class="id">#114</td><td><span class="st fix"><i></i>정비</span></td><td class="n">21%</td><td class="n" style="color:var(--rose)">12분</td></tr>
+                    <tr><td class="id">#118</td><td><span class="st chg"><i></i>충전</span></td><td class="n">34%</td><td class="n">8초</td></tr>
+                    <tr><td class="id">#121</td><td><span class="st back"><i></i>복귀</span></td><td class="n">55%</td><td class="n">6초</td></tr>
+                    <tr><td class="id">#127</td><td><span class="st run"><i></i>운행</span></td><td class="n">18%</td><td class="n">4초</td></tr>
+                  </table>
+                  <div class="pager"><span>1 - 7 / 50</span><b>1</b><span>2</span><span>다음</span></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -613,21 +764,25 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <ul>
             <li>마커 클릭 시 위치 · 속도 · SoC · 최근 수신 시각 요약 표시</li>
             <li>목록 행 선택 시 지도 중심 이동과 마커 강조(상호 연동)</li>
-            <li>레이어 토글로 궤적 · 지오펜스 · 위험 구역 표시 전환</li>
+            <li>레이어 토글, 확대 · 축소, 지도 · 목록 보기 전환</li>
           </ul>
         </div>
         <div class="blk">
           <div class="h">예외 처리</div>
           <ul>
-            <li>연결 끊김 시 상단에 배너 표시, 복구되면 누락분을 반영</li>
-            <li>일정 시간 미수신 카트는 회색 처리하고 최근 수신 시각 표시</li>
+            <li>연결 끊김 시 배너 표시, 복구되면 누락분을 반영</li>
+            <li>미수신 카트는 수신 시각을 경고 색으로 표시하고 마커를 흐리게</li>
             <li>좌표 이상값은 표시에서 제외하고 로그로 남김</li>
           </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>SCR-010</em><span class="on">SCR-020</span>→<span>SCR-070</span><span>SCR-040</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 실시간 위치 관제</span><span class="mark">SOVEREIGNS · 07</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 실시간 위치 관제</span><span class="mark">SOVEREIGNS · 08</span></div>
 </section>
 
 <!-- SCR-030 -->
@@ -643,37 +798,53 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">관제 운영자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>알림 센터</h5><span class="sp"></span><span class="fld">2026-08-28</span><span class="btn gh">초기화</span><span class="btn fill">선택 확인</span></div>
         <div class="toast"><i></i>DTC 발생 · #101 BMS 과전류</div>
-        <div class="ui-body">
-          <div class="chips"><span class="on">미확인 7</span><span>긴급 3</span><span>경고 2</span><span>주의 2</span><span>종결 24</span></div>
-          <div class="ui-cols" style="grid-template-columns:1.5fr 1fr">
-            <div class="pane">
-              <table class="tbl">
-                <tr><th>시각</th><th>카트</th><th>이벤트</th><th>등급</th><th>상태</th></tr>
-                <tr class="sel"><td class="n">14:22</td><td class="id">#101</td><td>BMS 과전류(DC_OCP)</td><td><span class="st fix"><i></i>긴급</span></td><td>미확인</td></tr>
-                <tr><td class="n">14:18</td><td class="id">#118</td><td>배터리 방전 위험</td><td><span class="st disp"><i></i>경고</span></td><td>확인</td></tr>
-                <tr><td class="n">14:03</td><td class="id">#114</td><td>통신 두절 12분</td><td><span class="st disp"><i></i>경고</span></td><td>조치 중</td></tr>
-                <tr><td class="n">13:41</td><td class="id">#107</td><td>소모품 주기 도달</td><td><span class="st wait"><i></i>주의</span></td><td>확인</td></tr>
-                <tr><td class="n">13:12</td><td class="id">#132</td><td>MCU 과온 경고</td><td><span class="st fix"><i></i>긴급</span></td><td>종결</td></tr>
-                <tr><td class="n">12:58</td><td class="id">#109</td><td>정비 예정일 도래</td><td><span class="st wait"><i></i>주의</span></td><td>확인</td></tr>
-              </table>
-              <div class="pager"><span>이전</span><b>1</b><span>2</span><span>3</span><span>다음</span></div>
-            </div>
-            <div class="pane bone">
-              <span class="ph">이벤트 상세 · #101</span>
-              <div style="font-size:0.6rem; color:var(--carbon); line-height:1.5">
-                <b style="font-family:var(--fd); font-size:0.72rem">BMS 과전류 (DC_OCP)</b><br>
-                발생 14:22:07 · 반복 3회<br>
-                위치 4번 홀 페어웨이 · 속도 0km/h<br>
-                SoC 62% · 팩 전압 51.8V
-              </div>
-              <span class="ph">처리 이력</span>
-              <div style="font-size:0.56rem; color:var(--slate); line-height:1.5">
-                14:22 발생<br>14:24 확인 · 관제 운영자 김OO<br>대기 중 - 정비 요청 필요
-              </div>
-              <div style="display:flex; gap:0.3rem; margin-top:auto">
-                <span class="btn out">차량 상세</span><span class="btn fill">정비 요청</span>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">관제 · 알림 센터</div>
+            <div class="ui-head"><h5>알림 센터</h5><span class="sp"></span>
+              <span class="fld sel">2026-08-28</span><span class="btn gh">초기화</span><span class="btn fill">선택 확인</span></div>
+            <div class="ui-body">
+              <div class="chips"><span class="on">미확인 7</span><span>긴급 3</span><span>경고 2</span><span>주의 2</span><span>조치 중 1</span><span>종결 24</span></div>
+              <div class="ui-cols" style="grid-template-columns:1.55fr 1fr">
+                <div class="pane">
+                  <table class="tbl">
+                    <tr><th><span class="cb"></span></th><th class="s">시각</th><th>카트</th><th>이벤트</th><th>등급</th><th>상태</th><th>담당</th></tr>
+                    <tr class="sel"><td><span class="cb on"></span></td><td class="n">14:22</td><td class="id">#101</td><td>BMS 과전류(DC_OCP)</td><td><span class="pill r">긴급</span></td><td>미확인</td><td>-</td></tr>
+                    <tr><td><span class="cb"></span></td><td class="n">14:18</td><td class="id">#118</td><td>배터리 방전 위험</td><td><span class="pill r">경고</span></td><td>확인</td><td>김OO</td></tr>
+                    <tr class="hov"><td><span class="cb"></span></td><td class="n">14:03</td><td class="id">#114</td><td>통신 두절 12분</td><td><span class="pill r">경고</span></td><td>조치 중</td><td>이OO</td></tr>
+                    <tr><td><span class="cb"></span></td><td class="n">13:41</td><td class="id">#107</td><td>소모품 주기 도달</td><td><span class="pill g">주의</span></td><td>확인</td><td>이OO</td></tr>
+                    <tr><td><span class="cb"></span></td><td class="n">13:12</td><td class="id">#132</td><td>MCU 과온 경고</td><td><span class="pill r">긴급</span></td><td>종결</td><td>박OO</td></tr>
+                    <tr><td><span class="cb"></span></td><td class="n">12:58</td><td class="id">#109</td><td>정비 예정일 도래</td><td><span class="pill g">주의</span></td><td>확인</td><td>이OO</td></tr>
+                    <tr><td><span class="cb"></span></td><td class="n">12:31</td><td class="id">#121</td><td>지오펜스 이탈(2단계)</td><td><span class="pill g">비활성</span></td><td>-</td><td>-</td></tr>
+                  </table>
+                  <div class="pager"><span>전체 33건</span><span>이전</span><b>1</b><span>2</span><span>3</span><span>다음</span></div>
+                </div>
+                <div class="pane bone">
+                  <span class="ph">이벤트 상세<em>#101</em></span>
+                  <div style="font-size:0.57rem; color:var(--carbon); line-height:1.5">
+                    <b style="font-family:var(--fd); font-size:0.68rem">BMS 과전류 (DC_OCP)</b><br>
+                    발생 14:22:07 · 반복 3회<br>위치 4번 홀 페어웨이 · 속도 0km/h<br>SoC 62% · 팩 전압 51.8V
+                  </div>
+                  <span class="ph">처리 이력</span>
+                  <div style="font-size:0.53rem; color:var(--slate); line-height:1.55">
+                    14:22 발생 · 자동 등급 판정 긴급<br>14:24 확인 · 관제 운영자 김OO<br>대기 중 - 정비 요청 필요
+                  </div>
+                  <span class="ph">조치</span>
+                  <div class="fld box" style="font-size:0.53rem; color:var(--lavender)">조치 내용을 입력하세요</div>
+                  <div style="display:flex; gap:0.25rem; margin-top:auto">
+                    <span class="btn gh">차량 상세</span><span class="btn out">종결</span><span class="btn fill">정비 요청</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -690,22 +861,27 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
         <div class="blk">
           <div class="h">주요 동작</div>
           <ul>
-            <li>확인 처리 시 미확인 배지에서 제외하고 처리자 · 시각을 기록</li>
-            <li>동일 카트 · 동일 유형 반복 이벤트는 묶어 반복 횟수로 표시</li>
-            <li>상세에서 SCR-070 차량 상세, SCR-090 정비 등록으로 이동</li>
+            <li>다중 선택 후 일괄 확인 처리, 처리자 · 시각 자동 기록</li>
+            <li>동일 카트 · 동일 유형 반복은 묶어 반복 횟수로 표시</li>
+            <li>정비 요청 시 SCR-090 등록 화면에 이벤트가 자동 연계</li>
           </ul>
         </div>
         <div class="blk">
           <div class="h">상태 정의</div>
           <ul>
             <li>발생 → 확인 → 조치 중 → 종결 4단계</li>
-            <li>미확인 긴급 이벤트는 지정 시간 경과 시 재발송</li>
+            <li>미확인 긴급 이벤트는 지정 시간 경과 시 재발송 후 승격</li>
+            <li>2단계 대상 이벤트는 비활성으로 표기</li>
           </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>배지 · SCR-010</em><span class="on">SCR-030</span>→<span>SCR-070</span><span>SCR-090</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 차량 정비 · 고장 알림</span><span class="mark">SOVEREIGNS · 08</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 차량 정비 · 고장 알림</span><span class="mark">SOVEREIGNS · 09</span></div>
 </section>
 
 <!-- SCR-040 -->
@@ -721,51 +897,60 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">골프장 관리자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>운행경로 조회</h5><span class="sp"></span>
-          <span class="fld">#101 스카이23</span><span class="fld">2026-08-28</span><span class="fld">트립 3 · 12:04~14:37</span><span class="btn out">내보내기</span></div>
-        <div class="ui-body">
-          <div class="ui-cols" style="grid-template-columns:1.75fr 1fr">
-            <div class="map" data-bleed>
-              <svg viewBox="0 0 400 360" preserveAspectRatio="xMidYMid meet" aria-label="주행 궤적">
-                <path d="M62 330 C 92 286, 124 254, 168 236" fill="none" stroke="#D9D2FF" stroke-width="34" stroke-linecap="round"></path>
-                <path d="M206 216 C 254 198, 302 202, 342 180" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
-                <path d="M118 118 C 168 92, 228 96, 282 74" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
-                <path d="M46 176 C 78 148, 126 152, 134 182 C 141 208, 108 226, 78 218 C 52 211, 30 192, 46 176" fill="#EFECFA" stroke="#9E99AB" stroke-width="1.2" stroke-dasharray="4 5"></path>
-                <text x="88" y="196" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">위험 구역</text>
-                <circle cx="182" cy="228" r="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                <circle cx="182" cy="228" r="24" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
-                <text x="182" y="272" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H4</text>
-                <circle cx="352" cy="174" r="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                <circle cx="352" cy="174" r="24" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
-                <text x="352" y="218" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H5</text>
-                <circle cx="286" cy="78" r="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                <path d="M68 326 C 100 284, 132 252, 176 234 C 226 216, 268 218, 300 204" fill="none" stroke="#4823FF" stroke-width="3.2" stroke-linecap="round"></path>
-                <path d="M300 204 C 322 194, 338 186, 350 180" fill="none" stroke="#9E99AB" stroke-width="2.4" stroke-dasharray="6 6" stroke-linecap="round"></path>
-                <circle cx="300" cy="204" r="7" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <path d="M126 266 L136 258 L146 268 L136 276 Z" fill="#E11D48"></path>
-                <text x="136" y="296" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">이탈 구간</text>
-              </svg>
-              <div class="lay"><span class="on">실주행</span><span>예정 경로</span><span>이탈 구간</span></div>
-              <div class="tip" style="right:0.5rem; top:0.5rem"><b>13:26:41</b>4번 홀 · 9.8km/h</div>
-            </div>
-            <div class="pane">
-              <span class="ph">홀별 구간</span>
-              <table class="tbl">
-                <tr><th>홀</th><th>진입</th><th>소요</th><th>대기</th></tr>
-                <tr><td class="id">H1</td><td class="n">12:04</td><td class="n">13분</td><td class="n">2분</td></tr>
-                <tr><td class="id">H2</td><td class="n">12:19</td><td class="n">16분</td><td class="n">4분</td></tr>
-                <tr><td class="id">H3</td><td class="n">12:41</td><td class="n">12분</td><td class="n">1분</td></tr>
-                <tr class="sel"><td class="id">H4</td><td class="n">13:26</td><td class="n">진행</td><td class="n">-</td></tr>
-                <tr><td class="id">H5</td><td class="n">-</td><td class="n">-</td><td class="n">-</td></tr>
-              </table>
-            </div>
-          </div>
-          <div class="pane bone" style="gap:0.3rem">
-            <div class="slider">
-              <span class="btn fill" style="padding:0.12rem 0.5rem">재생</span>
-              <span>12:04</span>
-              <span class="bar"><i></i><u></u><em style="left:18%"></em><em style="left:34%"></em><em style="left:52%"></em><em style="left:70%"></em></span>
-              <span>14:37</span><span class="fld" style="padding:0.1rem 0.45rem">4배속</span>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">운행 · 운행경로 조회</div>
+            <div class="ui-head"><h5>운행경로 조회</h5><span class="sp"></span>
+              <span class="fld sel">#101 스카이23</span><span class="fld sel">2026-08-28</span><span class="fld sel">트립 3 · 12:04~14:37</span><span class="btn fill">내보내기</span></div>
+            <div class="ui-body">
+              <div class="ui-cols" style="grid-template-columns:1.85fr 1fr">
+                <div class="map" data-bleed>
+                  <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-label="주행 궤적">
+                    <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
+                    <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
+                    <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#D9D2FF" stroke-width="28" stroke-linecap="round"></path>
+                    <circle cx="182" cy="182" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
+                    <circle cx="344" cy="136" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
+                    <path d="M68 268 C 100 230, 132 202, 176 186 C 226 168, 268 172, 300 160" fill="none" stroke="#4823FF" stroke-width="3.2" stroke-linecap="round"></path>
+                    <path d="M300 160 C 322 152, 336 146, 348 140" fill="none" stroke="#9E99AB" stroke-width="2.4" stroke-dasharray="6 6" stroke-linecap="round"></path>
+                    <circle cx="300" cy="160" r="7" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                    <path d="M126 234 L136 226 L146 236 L136 244 Z" fill="#E11D48"></path>
+                    <text x="136" y="262" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">이탈 구간</text>
+                  </svg>
+                  <div class="lay"><span class="on">실주행</span><span>예정 경로</span><span class="on">이탈 구간</span></div>
+                  <div class="zoom"><span>+</span><span>−</span></div>
+                  <div class="tip" style="right:0.4rem; bottom:0.4rem"><b>13:26:41</b>4번 홀 · 9.8km/h · SoC 58%</div>
+                </div>
+                <div class="pane">
+                  <span class="ph">홀별 구간<em>OUT 9홀</em></span>
+                  <table class="tbl">
+                    <tr><th>홀</th><th>진입</th><th>소요</th><th>대기</th><th>거리</th></tr>
+                    <tr><td class="id">H1</td><td class="n">12:04</td><td class="n">13분</td><td class="n">2분</td><td class="n">0.7km</td></tr>
+                    <tr><td class="id">H2</td><td class="n">12:19</td><td class="n">16분</td><td class="n">4분</td><td class="n">0.8km</td></tr>
+                    <tr><td class="id">H3</td><td class="n">12:41</td><td class="n">12분</td><td class="n">1분</td><td class="n">0.6km</td></tr>
+                    <tr class="sel"><td class="id">H4</td><td class="n">13:26</td><td class="n">진행</td><td class="n">-</td><td class="n">0.4km</td></tr>
+                    <tr><td class="id">H5</td><td class="n">-</td><td class="n">-</td><td class="n">-</td><td class="n">-</td></tr>
+                  </table>
+                  <span style="font-size:0.52rem; color:var(--slate); margin-top:auto">행 선택 시 지도 · 슬라이더가 함께 이동</span>
+                </div>
+              </div>
+              <div class="pane bone" style="gap:0.25rem; flex:none">
+                <div class="slider">
+                  <span class="btn fill" style="padding:0.1rem 0.45rem">재생</span>
+                  <span>12:04</span>
+                  <span class="bar"><i></i><u></u><em style="left:18%"></em><em style="left:34%"></em><em style="left:52%"></em><em style="left:70%"></em></span>
+                  <span>14:37</span><span class="fld sel" style="padding:0.08rem 0.4rem">4배속</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -774,7 +959,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
         <div class="blk">
           <div class="h">화면 정보</div>
           <div class="kv"><span>화면 ID</span><b>SCR-040</b></div>
-          <div class="kv"><span>진입 경로</span><span>운행 &gt; 운행경로 조회</span></div>
+          <div class="kv"><span>진입 경로</span><span>운행 &gt; 운행경로, SCR-050</span></div>
           <div class="kv"><span>접근 권한</span><span>전체</span></div>
           <div class="kv"><span>갱신 방식</span><span>조회 시점 1회 로드</span></div>
         </div>
@@ -783,7 +968,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <ul>
             <li>재생 · 일시정지 · 배속(1 · 4 · 16배), 슬라이더로 시점 이동</li>
             <li>슬라이더 눈금은 홀 진입 시각, 클릭 시 해당 구간으로 확대</li>
-            <li>홀 구간 행 선택 시 지도와 슬라이더가 함께 이동</li>
+            <li>레이어로 실주행 · 예정 경로 · 이탈 구간 표시 전환</li>
           </ul>
         </div>
         <div class="blk">
@@ -791,13 +976,16 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <ul>
             <li>궤적은 실제 수신 좌표 기준, 이상값은 보정 후 표시</li>
             <li>홀 구간은 지오펜스 진입 · 이탈 시각으로 산출</li>
-            <li>지오펜스 밖 주행은 이탈 구간으로 표시</li>
           </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>SCR-050 · SCR-020</em><span class="on">SCR-040</span>→<span>SCR-070</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 운행경로 조회</span><span class="mark">SOVEREIGNS · 09</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 운행경로 조회</span><span class="mark">SOVEREIGNS · 10</span></div>
 </section>
 
 <!-- SCR-050 -->
@@ -813,48 +1001,76 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">골프장 관리자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>트립 리포트</h5><span class="sp"></span>
-          <span class="fld">2026-08-01 ~ 08-28</span><span class="fld">전체 카트</span><span class="btn gh">초기화</span><span class="btn fill">엑셀 내보내기</span></div>
-        <div class="ui-body">
-          <div class="chips"><span>오늘</span><span>7일</span><span class="on">30일</span><span>직접 입력</span><span>집계 단위 · 일</span></div>
-          <div class="kpi5" style="grid-template-columns:repeat(4,1fr)">
-            <div><b>1,284</b><span>총 트립</span></div>
-            <div><b>7,912km</b><span>총 이동 거리</span></div>
-            <div><b>142분</b><span>평균 소요</span></div>
-            <div><b>18분</b><span>평균 대기</span></div>
-          </div>
-          <div class="ui-cols" style="grid-template-columns:1.15fr 1fr">
-            <div class="pane">
-              <span class="ph">일자별 이동 거리 · 홀별 평균 소요</span>
-              <svg viewBox="0 0 300 120" preserveAspectRatio="none" style="width:100%; flex:1" aria-label="일자별 이동 거리 막대 그래프">
-                <line x1="0" y1="100" x2="300" y2="100" stroke="#D9D2FF" stroke-width="1"></line>
-                <line x1="0" y1="66" x2="300" y2="66" stroke="#EDE9FF" stroke-width="1"></line>
-                <line x1="0" y1="32" x2="300" y2="32" stroke="#EDE9FF" stroke-width="1"></line>
-                <rect x="10" y="52" width="16" height="48" rx="3" fill="#D9D2FF"></rect>
-                <rect x="36" y="38" width="16" height="62" rx="3" fill="#D9D2FF"></rect>
-                <rect x="62" y="60" width="16" height="40" rx="3" fill="#D9D2FF"></rect>
-                <rect x="88" y="28" width="16" height="72" rx="3" fill="#4823FF"></rect>
-                <rect x="114" y="44" width="16" height="56" rx="3" fill="#D9D2FF"></rect>
-                <rect x="140" y="34" width="16" height="66" rx="3" fill="#D9D2FF"></rect>
-                <rect x="166" y="56" width="16" height="44" rx="3" fill="#D9D2FF"></rect>
-                <rect x="192" y="24" width="16" height="76" rx="3" fill="#7E78FF"></rect>
-                <rect x="218" y="48" width="16" height="52" rx="3" fill="#D9D2FF"></rect>
-                <rect x="244" y="40" width="16" height="60" rx="3" fill="#D9D2FF"></rect>
-                <rect x="270" y="62" width="16" height="38" rx="3" fill="#D9D2FF"></rect>
-              </svg>
-              <span style="font-size:0.54rem; color:var(--slate)">08-18 최대 312km · 막대 선택 시 아래 표가 같은 조건으로 필터링</span>
-            </div>
-            <div class="pane">
-              <span class="ph">트립 상세 · 1,284건</span>
-              <table class="tbl">
-                <tr><th>일자</th><th>카트</th><th>거리</th><th>소요</th><th>대기</th></tr>
-                <tr class="sel"><td class="n">08-28</td><td class="id">#101</td><td class="n">6.2km</td><td class="n">148분</td><td class="n">21분</td></tr>
-                <tr><td class="n">08-28</td><td class="id">#102</td><td class="n">5.8km</td><td class="n">139분</td><td class="n">14분</td></tr>
-                <tr><td class="n">08-28</td><td class="id">#107</td><td class="n">6.0km</td><td class="n">151분</td><td class="n">26분</td></tr>
-                <tr><td class="n">08-27</td><td class="id">#101</td><td class="n">6.1km</td><td class="n">144분</td><td class="n">17분</td></tr>
-                <tr><td class="n">08-27</td><td class="id">#118</td><td class="n">5.4km</td><td class="n">132분</td><td class="n">12분</td></tr>
-              </table>
-              <div class="pager"><span>이전</span><b>1</b><span>2</span><span>3</span><span>다음</span></div>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">운행 · 트립 리포트</div>
+            <div class="ui-head"><h5>트립 리포트</h5><span class="sp"></span>
+              <span class="fld sel">2026-08-01 ~ 08-28</span><span class="fld sel">전체 카트</span><span class="btn gh">초기화</span><span class="btn fill">엑셀 내보내기</span></div>
+            <div class="ui-body">
+              <div class="chips"><span>오늘</span><span>7일</span><span class="on">30일</span><span>직접 입력</span><span>집계 단위 · 일</span><span>코스 · 전체</span></div>
+              <div class="kpi" style="grid-template-columns:repeat(4,1fr); flex:none">
+                <div><b>1,284</b><span>총 트립</span></div>
+                <div><b>7,912km</b><span>총 이동 거리</span></div>
+                <div><b>142분</b><span>평균 소요</span></div>
+                <div><b>18분</b><span>평균 대기</span></div>
+              </div>
+              <div class="ui-cols" style="grid-template-columns:1.1fr 1fr">
+                <div class="pane">
+                  <span class="ph">일자별 이동 거리<em>08-18 최대 312km</em></span>
+                  <svg viewBox="0 0 300 110" preserveAspectRatio="none" style="width:100%; flex:1" aria-label="일자별 이동 거리 막대 그래프">
+                    <line x1="0" y1="96" x2="300" y2="96" stroke="#D9D2FF" stroke-width="1"></line>
+                    <line x1="0" y1="64" x2="300" y2="64" stroke="#EFEDF5" stroke-width="1"></line>
+                    <line x1="0" y1="32" x2="300" y2="32" stroke="#EFEDF5" stroke-width="1"></line>
+                    <rect x="8" y="50" width="14" height="46" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="30" y="36" width="14" height="60" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="52" y="58" width="14" height="38" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="74" y="26" width="14" height="70" rx="3" fill="#4823FF"></rect>
+                    <rect x="96" y="42" width="14" height="54" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="118" y="32" width="14" height="64" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="140" y="54" width="14" height="42" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="162" y="22" width="14" height="74" rx="3" fill="#7E78FF"></rect>
+                    <rect x="184" y="46" width="14" height="50" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="206" y="38" width="14" height="58" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="228" y="60" width="14" height="36" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="250" y="44" width="14" height="52" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="272" y="30" width="14" height="66" rx="3" fill="#D9D2FF"></rect>
+                  </svg>
+                  <span class="ph">홀별 평균 소요<em>H4 · H7 지연</em></span>
+                  <svg viewBox="0 0 300 44" preserveAspectRatio="none" style="width:100%; height:2.1rem" aria-label="홀별 평균 소요 시간">
+                    <rect x="6" y="20" width="26" height="20" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="38" y="14" width="26" height="26" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="70" y="24" width="26" height="16" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="102" y="6" width="26" height="34" rx="3" fill="#E11D48"></rect>
+                    <rect x="134" y="18" width="26" height="22" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="166" y="22" width="26" height="18" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="198" y="10" width="26" height="30" rx="3" fill="#E11D48"></rect>
+                    <rect x="230" y="26" width="26" height="14" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="262" y="20" width="26" height="20" rx="3" fill="#D9D2FF"></rect>
+                  </svg>
+                </div>
+                <div class="pane">
+                  <span class="ph">트립 상세<em>1,284건</em></span>
+                  <table class="tbl">
+                    <tr><th class="s">일자</th><th>카트</th><th>코스</th><th>거리</th><th>소요</th><th>대기</th></tr>
+                    <tr class="sel"><td class="n">08-28</td><td class="id">#101</td><td>OUT</td><td class="n">6.2km</td><td class="n">148분</td><td class="n">21분</td></tr>
+                    <tr><td class="n">08-28</td><td class="id">#102</td><td>OUT</td><td class="n">5.8km</td><td class="n">139분</td><td class="n">14분</td></tr>
+                    <tr class="hov"><td class="n">08-28</td><td class="id">#107</td><td>IN</td><td class="n">6.0km</td><td class="n">151분</td><td class="n">26분</td></tr>
+                    <tr><td class="n">08-27</td><td class="id">#101</td><td>IN</td><td class="n">6.1km</td><td class="n">144분</td><td class="n">17분</td></tr>
+                    <tr><td class="n">08-27</td><td class="id">#118</td><td>OUT</td><td class="n">5.4km</td><td class="n">132분</td><td class="n">12분</td></tr>
+                    <tr><td class="n">08-27</td><td class="id">#121</td><td>IN</td><td class="n">5.9km</td><td class="n">137분</td><td class="n">15분</td></tr>
+                  </table>
+                  <div class="pager"><span>이전</span><b>1</b><span>2</span><span>3</span><span>다음</span></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -870,7 +1086,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
         <div class="blk">
           <div class="h">주요 동작</div>
           <ul>
-            <li>차트 막대 선택 시 상세 표가 동일 조건으로 필터링</li>
+            <li>차트 막대 선택 시 상세 표가 같은 조건으로 필터링</li>
             <li>표 행 클릭 시 SCR-040 재생 화면으로 이동</li>
             <li>CSV · 엑셀 내보내기, 대용량은 비동기 처리 후 알림</li>
           </ul>
@@ -880,12 +1096,17 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <ul>
             <li>대기 시간은 정지 판정 기준에 따라 산출(협의 후 확정)</li>
             <li>집계 값은 트립 종료 시점에 확정하고 재계산 이력을 남김</li>
+            <li>홀별 평균이 기준을 넘으면 지연 색으로 표시</li>
           </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>운행 메뉴</em><span class="on">SCR-050</span>→<span>SCR-040</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 트립 리포트</span><span class="mark">SOVEREIGNS · 10</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 트립 리포트</span><span class="mark">SOVEREIGNS · 11</span></div>
 </section>
 
 <!-- SCR-060 -->
@@ -901,22 +1122,38 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">전역 관리자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>차량 관리</h5><span class="sp"></span>
-          <span class="fld">카트 번호 · 별칭 · 단말 ID</span><span class="btn out">조회</span><span class="btn fill">차량 등록</span></div>
-        <div class="ui-body">
-          <div class="chips"><span class="on">전체 50</span><span>운행 35</span><span>충전 8</span><span>정비 7</span><span>비활성 2</span><span>정비 주기 임박 5</span></div>
-          <div class="pane" style="flex:1">
-            <table class="tbl">
-              <tr><th>카트</th><th>별칭</th><th>단말 ID</th><th>상태</th><th>SoC</th><th>최근 수신</th><th>정비 주기</th><th>고장</th></tr>
-              <tr class="sel"><td class="id">#101</td><td>스카이23</td><td>T-101356</td><td><span class="st run"><i></i>운행</span></td><td><span class="grow"><span class="gauge"><i style="width:62%"></i></span><span>62%</span></span></td><td class="n">2초</td><td class="n">D-12</td><td class="n">1</td></tr>
-              <tr><td class="id">#102</td><td>스카이24</td><td>T-101264</td><td><span class="st run"><i></i>운행</span></td><td><span class="grow"><span class="gauge"><i style="width:48%"></i></span><span>48%</span></span></td><td class="n">3초</td><td class="n">D-40</td><td class="n">0</td></tr>
-              <tr><td class="id">#107</td><td>레이크1</td><td>T-101208</td><td><span class="st disp"><i></i>배차</span></td><td><span class="grow"><span class="gauge"><i style="width:88%"></i></span><span>88%</span></span></td><td class="n">5초</td><td class="n">D-3</td><td class="n">0</td></tr>
-              <tr><td class="id">#114</td><td>레이크8</td><td>T-101103</td><td><span class="st fix"><i></i>정비</span></td><td><span class="grow"><span class="gauge warn"><i style="width:21%"></i></span><span>21%</span></span></td><td class="n" style="color:var(--rose)">4분</td><td class="n">지남</td><td class="n">3</td></tr>
-              <tr><td class="id">#118</td><td>힐1</td><td>T-101477</td><td><span class="st chg"><i></i>충전</span></td><td><span class="grow"><span class="gauge mid"><i style="width:34%"></i></span><span>34%</span></span></td><td class="n">8초</td><td class="n">D-21</td><td class="n">1</td></tr>
-              <tr><td class="id">#121</td><td>힐4</td><td>T-101512</td><td><span class="st back"><i></i>복귀</span></td><td><span class="grow"><span class="gauge"><i style="width:55%"></i></span><span>55%</span></span></td><td class="n">6초</td><td class="n">D-18</td><td class="n">0</td></tr>
-              <tr><td class="id">#132</td><td>밸리2</td><td>T-101690</td><td><span class="st wait"><i></i>대기</span></td><td><span class="grow"><span class="gauge"><i style="width:94%"></i></span><span>94%</span></span></td><td class="n">11초</td><td class="n">D-55</td><td class="n">0</td></tr>
-            </table>
-            <div class="pager"><span>전체 50건</span><span>이전</span><b>1</b><span>2</span><span>3</span><span>다음</span></div>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">차량 · 차량 목록</div>
+            <div class="ui-head"><h5>차량 관리</h5><span class="sp"></span>
+              <span class="fld"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>카트 번호 · 별칭 · 단말 ID</span>
+              <span class="btn gh">초기화</span><span class="btn out">조회</span><span class="btn fill">차량 등록</span></div>
+            <div class="ui-body">
+              <div class="chips"><span class="on">전체 50</span><span>운행 35</span><span>충전 8</span><span>정비 7</span><span>비활성 2</span><span>정비 주기 임박 5</span><span>고장 보유 4</span></div>
+              <div class="pane" style="flex:1">
+                <table class="tbl">
+                  <tr><th><span class="cb"></span></th><th class="s">카트</th><th>별칭</th><th>단말 ID</th><th>상태</th><th>SoC</th><th>최근 수신</th><th>정비 주기</th><th>고장</th><th>동작</th></tr>
+                  <tr class="sel"><td><span class="cb on"></span></td><td class="id">#101</td><td>스카이23</td><td>T-101356</td><td><span class="st run"><i></i>운행</span></td><td><span class="grow"><span class="gauge"><i style="width:62%"></i></span><span>62%</span></span></td><td class="n">2초</td><td class="n">D-12</td><td class="n">1</td><td><span class="pill v">상세</span></td></tr>
+                  <tr><td><span class="cb"></span></td><td class="id">#102</td><td>스카이24</td><td>T-101264</td><td><span class="st run"><i></i>운행</span></td><td><span class="grow"><span class="gauge"><i style="width:48%"></i></span><span>48%</span></span></td><td class="n">3초</td><td class="n">D-40</td><td class="n">0</td><td><span class="pill v">상세</span></td></tr>
+                  <tr class="hov"><td><span class="cb"></span></td><td class="id">#107</td><td>레이크1</td><td>T-101208</td><td><span class="st disp"><i></i>배차</span></td><td><span class="grow"><span class="gauge"><i style="width:88%"></i></span><span>88%</span></span></td><td class="n">5초</td><td class="n" style="color:var(--rose)">D-3</td><td class="n">0</td><td><span class="pill v">상세</span></td></tr>
+                  <tr><td><span class="cb"></span></td><td class="id">#114</td><td>레이크8</td><td>T-101103</td><td><span class="st fix"><i></i>정비</span></td><td><span class="grow"><span class="gauge warn"><i style="width:21%"></i></span><span>21%</span></span></td><td class="n" style="color:var(--rose)">12분</td><td class="n" style="color:var(--rose)">지남</td><td class="n">3</td><td><span class="pill v">상세</span></td></tr>
+                  <tr><td><span class="cb"></span></td><td class="id">#118</td><td>힐1</td><td>T-101477</td><td><span class="st chg"><i></i>충전</span></td><td><span class="grow"><span class="gauge mid"><i style="width:34%"></i></span><span>34%</span></span></td><td class="n">8초</td><td class="n">D-21</td><td class="n">1</td><td><span class="pill v">상세</span></td></tr>
+                  <tr><td><span class="cb"></span></td><td class="id">#121</td><td>힐4</td><td>T-101512</td><td><span class="st back"><i></i>복귀</span></td><td><span class="grow"><span class="gauge"><i style="width:55%"></i></span><span>55%</span></span></td><td class="n">6초</td><td class="n">D-18</td><td class="n">0</td><td><span class="pill v">상세</span></td></tr>
+                  <tr><td><span class="cb"></span></td><td class="id">#132</td><td>밸리2</td><td>T-101690</td><td><span class="st wait"><i></i>대기</span></td><td><span class="grow"><span class="gauge"><i style="width:94%"></i></span><span>94%</span></span></td><td class="n">11초</td><td class="n">D-55</td><td class="n">0</td><td><span class="pill v">상세</span></td></tr>
+                  <tr><td><span class="cb"></span></td><td class="id">#133</td><td>밸리3</td><td>T-101733</td><td><span class="st wait"><i></i>대기</span></td><td><span class="grow"><span class="gauge"><i style="width:100%"></i></span><span>100%</span></span></td><td class="n">15초</td><td class="n">신규</td><td class="n">0</td><td><span class="pill v">상세</span></td></tr>
+                </table>
+                <div class="pager"><span>전체 50건 · 20건씩</span><span>이전</span><b>1</b><span>2</span><span>3</span><span>다음</span></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -932,22 +1169,26 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <div class="h">주요 동작</div>
           <ul>
             <li>조건 조합 검색과 열 정렬, 화면 이탈 후 복귀 시 조건 유지</li>
-            <li>행 클릭 시 SCR-070 차량 상세로 이동</li>
-            <li>권한이 없으면 등록 · 삭제 버튼을 노출하지 않음</li>
+            <li>행 클릭 또는 상세 버튼으로 SCR-070 이동</li>
+            <li>다중 선택 후 일괄 비활성화(확인 모달 경유)</li>
           </ul>
         </div>
         <div class="blk">
           <div class="h">표시 규칙</div>
           <ul>
-            <li>미수신 카트는 최근 수신 시각을 경고 색으로 표시</li>
-            <li>정비 주기는 잔여 일수(D-n)로 표시하고 초과 시 지남으로 표기</li>
-            <li>비활성 차량은 기본 조건에서 제외</li>
+            <li>미수신 · 주기 초과는 경고 색으로 강조</li>
+            <li>정비 주기는 잔여 일수(D-n), 초과 시 지남으로 표기</li>
+            <li>권한이 없으면 등록 · 삭제 버튼을 노출하지 않음</li>
           </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>차량 메뉴</em><span class="on">SCR-060</span>→<span>SCR-070</span><span>SCR-080</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 차량조회</span><span class="mark">SOVEREIGNS · 11</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 차량조회</span><span class="mark">SOVEREIGNS · 12</span></div>
 </section>
 
 <!-- SCR-070 -->
@@ -963,38 +1204,53 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">골프장 관리자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>#101 스카이23</h5><span class="st run"><i></i>운행</span><span class="sp"></span>
-          <span class="btn gh">별칭 수정</span><span class="btn out">지도에서 보기</span><span class="btn fill">정비 등록</span></div>
-        <div class="ui-body">
-          <div class="ui-cols" style="grid-template-columns:1fr 1fr 1fr; flex:none">
-            <div class="pane bone"><span class="ph">기본 정보</span>
-              <span style="font-size:0.58rem; line-height:1.5; color:var(--carbon)">차대번호 KMHLSV2601<br>단말 T-101356 · 연식 2024</span></div>
-            <div class="pane bone"><span class="ph">현재 상태</span>
-              <span style="font-size:0.58rem; line-height:1.5; color:var(--carbon)">4번 홀 · 12.4km/h<br>SoC 62% · 배차 3팀</span></div>
-            <div class="pane bone"><span class="ph">정비</span>
-              <span style="font-size:0.58rem; line-height:1.5; color:var(--carbon)">다음 점검 D-12<br>최근 정비 08-14 브레이크</span></div>
-          </div>
-          <div class="tabs"><b>고장 코드</b><span>주행 이력</span><span>정비 이력</span><span>단말 이력</span></div>
-          <div class="ui-cols" style="grid-template-columns:1.1fr 1fr">
-            <div class="pane">
-              <span class="ph">일별 주행 거리 · 최근 14일</span>
-              <svg viewBox="0 0 300 110" preserveAspectRatio="none" style="width:100%; flex:1" aria-label="일별 주행 거리 추이">
-                <polyline points="6,86 28,72 50,78 72,54 94,60 116,40 138,48 160,30 182,44 204,26 226,38 248,22 270,34 292,18"
-                  fill="none" stroke="#4823FF" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"></polyline>
-                <line x1="0" y1="100" x2="300" y2="100" stroke="#D9D2FF" stroke-width="1"></line>
-                <circle cx="292" cy="18" r="3.5" fill="#4823FF"></circle>
-              </svg>
-              <span style="font-size:0.54rem; color:var(--slate)">최근 6.2km · 14일 평균 5.7km</span>
-            </div>
-            <div class="pane">
-              <span class="ph">고장 코드 이력</span>
-              <table class="tbl">
-                <tr><th>코드</th><th>제어기</th><th>발생</th><th>상태</th></tr>
-                <tr class="sel"><td class="id">DC_OCP</td><td>BMS</td><td class="n">14:22</td><td>미조치</td></tr>
-                <tr><td class="id">OverTempMotor</td><td>MCU</td><td class="n">08-24</td><td>종결</td></tr>
-                <tr><td class="id">CellV_Imbalance</td><td>BMS</td><td class="n">08-19</td><td>종결</td></tr>
-                <tr><td class="id">bUSensorDetect</td><td>VCU</td><td class="n">08-11</td><td>종결</td></tr>
-              </table>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">차량 · 차량 목록 · #101</div>
+            <div class="ui-head"><h5>#101 스카이23</h5><span class="st run"><i></i>운행</span><span class="pill v">배차 3팀</span><span class="sp"></span>
+              <span class="btn gh">별칭 수정</span><span class="btn out">지도에서 보기</span><span class="btn fill">정비 등록</span></div>
+            <div class="ui-body">
+              <div class="ui-cols" style="grid-template-columns:1fr 1fr 1fr; flex:none">
+                <div class="pane bone"><span class="ph">기본 정보</span>
+                  <span style="font-size:0.55rem; line-height:1.55; color:var(--carbon)">차대번호 KMHLSV2601101<br>단말 T-101356 · 연식 2024<br>소속 서울 CC · 등록 2024-03-11</span></div>
+                <div class="pane bone"><span class="ph">현재 상태</span>
+                  <span style="font-size:0.55rem; line-height:1.55; color:var(--carbon)">4번 홀 · 12.4km/h<br>SoC 62% · 팩 전압 51.8V<br>최근 수신 2초 전</span></div>
+                <div class="pane bone"><span class="ph">정비</span>
+                  <span style="font-size:0.55rem; line-height:1.55; color:var(--carbon)">다음 점검 D-12<br>최근 정비 08-14 브레이크 패드<br>미조치 고장 1건</span></div>
+              </div>
+              <div class="tabs"><b>고장 코드</b><span>주행 이력</span><span>정비 이력</span><span>단말 이력</span></div>
+              <div class="ui-cols" style="grid-template-columns:1.1fr 1fr">
+                <div class="pane">
+                  <span class="ph">일별 주행 거리<em>최근 14일 · 평균 5.7km</em></span>
+                  <svg viewBox="0 0 300 100" preserveAspectRatio="none" style="width:100%; flex:1" aria-label="일별 주행 거리 추이">
+                    <line x1="0" y1="90" x2="300" y2="90" stroke="#D9D2FF" stroke-width="1"></line>
+                    <line x1="0" y1="50" x2="300" y2="50" stroke="#EFEDF5" stroke-width="1"></line>
+                    <polyline points="6,78 28,64 50,70 72,48 94,54 116,36 138,44 160,28 182,40 204,24 226,34 248,20 270,30 292,16"
+                      fill="none" stroke="#4823FF" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"></polyline>
+                    <circle cx="292" cy="16" r="3.5" fill="#4823FF"></circle>
+                  </svg>
+                  <span style="font-size:0.52rem; color:var(--slate)">최근 6.2km · 누적 1,842km</span>
+                </div>
+                <div class="pane">
+                  <span class="ph">고장 코드 이력<em>4건</em></span>
+                  <table class="tbl">
+                    <tr><th>코드</th><th>제어기</th><th>발생</th><th>반복</th><th>상태</th></tr>
+                    <tr class="sel"><td class="id">DC_OCP</td><td>BMS</td><td class="n">14:22</td><td class="n">3</td><td><span class="pill r">미조치</span></td></tr>
+                    <tr><td class="id">OverTempMotor</td><td>MCU</td><td class="n">08-24</td><td class="n">2</td><td><span class="pill g">종결</span></td></tr>
+                    <tr><td class="id">CellV_Imbalance</td><td>BMS</td><td class="n">08-19</td><td class="n">7</td><td><span class="pill g">종결</span></td></tr>
+                    <tr><td class="id">bUSensorDetect</td><td>VCU</td><td class="n">08-11</td><td class="n">1</td><td><span class="pill g">종결</span></td></tr>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1003,8 +1259,8 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
         <div class="blk">
           <div class="h">화면 정보</div>
           <div class="kv"><span>화면 ID</span><b>SCR-070</b></div>
-          <div class="kv"><span>진입 경로</span><span>SCR-060 · SCR-020 · SCR-030</span></div>
-          <div class="kv"><span>접근 권한</span><span>조회 전체 · 별칭 수정은 관리자</span></div>
+          <div class="kv"><span>진입 경로</span><span>SCR-060 · 020 · 030</span></div>
+          <div class="kv"><span>접근 권한</span><span>조회 전체 · 별칭은 관리자</span></div>
           <div class="kv"><span>갱신 방식</span><span>진입 시 조회 · 상태는 실시간</span></div>
         </div>
         <div class="blk">
@@ -1012,20 +1268,24 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <ul>
             <li>탭 전환 - 고장 코드 · 주행 이력 · 정비 이력 · 단말 이력</li>
             <li>별칭 인라인 수정(골프장 관리자 이상)</li>
-            <li>고장 코드 행에서 SCR-120 진단 화면으로 이동</li>
+            <li>고장 코드 행에서 SCR-120 진단으로 이동</li>
           </ul>
         </div>
         <div class="blk">
           <div class="h">이력 관리</div>
           <ul>
             <li>단말 교체 이력을 남겨 과거 데이터 소속을 유지</li>
-            <li>비활성 차량은 조회만 가능하고 편집 버튼을 숨김</li>
+            <li>비활성 차량은 조회만 가능하고 편집 컨트롤을 숨김</li>
           </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>SCR-060</em><span class="on">SCR-070</span>→<span>SCR-120</span><span>SCR-090</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 차량조회 · 고장 코드 표시</span><span class="mark">SOVEREIGNS · 12</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 차량조회 · 고장 코드 표시</span><span class="mark">SOVEREIGNS · 13</span></div>
 </section>
 
 <!-- SCR-080 -->
@@ -1041,36 +1301,55 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">전역 관리자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>차량 등록</h5><span class="sp"></span><span class="btn gh">취소</span><span class="btn fill">저장</span></div>
-        <div class="ui-body">
-          <div class="pane">
-            <span class="ph">차량 정보</span>
-            <div class="form">
-              <div><label>카트 번호 *</label><span class="fld box">#133</span></div>
-              <div><label>별칭</label><span class="fld box">밸리3</span></div>
-              <div><label>차대번호 *</label><span class="fld box">KMHLSV2601133</span></div>
-              <div><label>연식</label><span class="fld box">2026</span></div>
-              <div><label>소속 골프장 *</label><span class="fld box">서울 CC</span></div>
-              <div><label>상태</label><span class="fld box">대기</span></div>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">차량 · 차량 목록 · 등록</div>
+            <div class="ui-head"><h5>차량 등록</h5><span class="pill v">신규</span><span class="sp"></span><span class="btn gh">취소</span><span class="btn fill">저장</span></div>
+            <div class="ui-body">
+              <div class="ui-cols" style="grid-template-columns:1fr 1fr; flex:none">
+                <div class="pane">
+                  <span class="ph">차량 정보</span>
+                  <div class="form">
+                    <div><label>카트 번호 <span class="req">*</span></label><span class="fld box">#133</span></div>
+                    <div><label>별칭</label><span class="fld box">밸리3</span></div>
+                    <div><label>차대번호 <span class="req">*</span></label><span class="fld box">KMHLSV2601133</span></div>
+                    <div><label>연식</label><span class="fld box">2026</span></div>
+                    <div><label>소속 골프장 <span class="req">*</span></label><span class="fld box">서울 CC</span></div>
+                    <div><label>초기 상태</label><span class="fld box">대기</span></div>
+                  </div>
+                </div>
+                <div class="pane">
+                  <span class="ph">단말 정보<em>자동 검증</em></span>
+                  <div class="form">
+                    <div><label>단말 ID <span class="req">*</span></label><span class="fld box">T-101733</span></div>
+                    <div><label>펌웨어</label><span class="fld box">2.3.1</span></div>
+                    <div><label>MAC 주소 <span class="req">*</span></label><span class="fld box">A4:CF:12:9B:07:5E</span></div>
+                    <div><label>IMEI <span class="req">*</span></label><span class="fld box">356938035643809</span></div>
+                    <div class="full"><label>검증 결과</label>
+                      <div class="chk"><i class="on"></i>형식 확인 · 중복 없음 · 통신 테스트 성공(14:31)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="pane bone" style="flex:1">
+                <span class="ph">MES 연계<em>주요 부품 시리얼</em></span>
+                <table class="tbl">
+                  <tr><th>부품</th><th>시리얼</th><th>제조일</th><th>보증</th><th>연계 상태</th></tr>
+                  <tr><td>배터리 팩</td><td class="id">BP-2026-00841</td><td class="n">2026-05-12</td><td class="n">36개월</td><td><span class="chk"><i class="on"></i>동기화 완료</span></td></tr>
+                  <tr><td>모터 제어기(MCU)</td><td class="id">MC-2026-01120</td><td class="n">2026-05-20</td><td class="n">24개월</td><td><span class="chk"><i class="on"></i>동기화 완료</span></td></tr>
+                  <tr class="sel"><td>차량 제어기(VCU)</td><td class="id">-</td><td class="n">-</td><td class="n">-</td><td><span class="chk"><i class="warn"></i>미등록 · 확인 필요</span></td></tr>
+                </table>
+              </div>
             </div>
-          </div>
-          <div class="pane">
-            <span class="ph">단말 정보 · 자동 검증</span>
-            <div class="form">
-              <div><label>단말 ID *</label><span class="fld box">T-101733</span></div>
-              <div><label>MAC 주소 *</label><span class="fld box">A4:CF:12:9B:07:5E</span></div>
-              <div><label>IMEI *</label><span class="fld box">356938035643809</span></div>
-              <div><label>검증 결과</label><span class="chk" style="padding-top:0.2rem"><i class="on"></i>형식 · 중복 확인 완료</span></div>
-            </div>
-          </div>
-          <div class="pane bone">
-            <span class="ph">MES 연계 · 주요 부품 시리얼</span>
-            <table class="tbl">
-              <tr><th>부품</th><th>시리얼</th><th>연계 상태</th></tr>
-              <tr><td>배터리 팩</td><td class="id">BP-2026-00841</td><td><span class="chk"><i class="on"></i>동기화 완료</span></td></tr>
-              <tr><td>모터 제어기(MCU)</td><td class="id">MC-2026-01120</td><td><span class="chk"><i class="on"></i>동기화 완료</span></td></tr>
-              <tr><td>차량 제어기(VCU)</td><td class="id">-</td><td><span class="chk"><i class="warn"></i>미등록 · 확인 필요</span></td></tr>
-            </table>
           </div>
         </div>
       </div>
@@ -1086,7 +1365,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <div class="h">검증 규칙</div>
           <ul>
             <li>MAC · IMEI 형식과 중복을 저장 전에 검증</li>
-            <li>필수 항목(*) 미입력 시 저장 불가</li>
+            <li>필수 항목(<span class="req">*</span>) 미입력 시 저장 불가</li>
             <li>부품 시리얼은 MES에서 조회해 채우고 미등록 항목을 표시</li>
           </ul>
         </div>
@@ -1094,14 +1373,18 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <div class="h">삭제 · 대차</div>
           <ul>
             <li>삭제 대신 비활성화로 처리해 과거 이력을 보존</li>
-            <li>단말 교체 시 이전 단말은 해제하고 교체 이력을 남김</li>
+            <li>단말 교체 시 이전 단말을 해제하고 교체 이력을 남김</li>
             <li>되돌릴 수 없는 동작은 대상 명칭을 넣은 확인 모달을 표시</li>
           </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>SCR-060</em><span class="on">SCR-080</span>→<span>SCR-070</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 차량등록/삭제 · MES 연계</span><span class="mark">SOVEREIGNS · 13</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 차량등록/삭제 · MES 연계</span><span class="mark">SOVEREIGNS · 14</span></div>
 </section>
 
 <!-- SCR-090 -->
@@ -1117,33 +1400,51 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">정비 담당자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>정비 · 점검 이력</h5><span class="sp"></span>
-          <span class="fld">#101 스카이23</span><span class="fld">최근 30일</span><span class="btn out">내보내기</span><span class="btn fill">정비 등록</span></div>
-        <div class="ui-body">
-          <div class="ui-cols" style="grid-template-columns:1.25fr 1fr">
-            <div class="pane">
-              <span class="ph">카트별 정비 타임라인</span>
-              <table class="tbl">
-                <tr><th>일자</th><th>구분</th><th>내용</th><th>담당</th><th>상태</th></tr>
-                <tr class="sel"><td class="n">08-28</td><td>고장 조치</td><td>BMS 과전류 점검 · 커넥터 재결선</td><td>이OO</td><td>진행</td></tr>
-                <tr><td class="n">08-14</td><td>소모품</td><td>브레이크 패드 교체(전륜)</td><td>이OO</td><td>완료</td></tr>
-                <tr><td class="n">07-30</td><td>정기 점검</td><td>월간 체크리스트 24항목</td><td>박OO</td><td>완료</td></tr>
-                <tr><td class="n">07-11</td><td>소모품</td><td>타이어 교체(후륜 2본)</td><td>박OO</td><td>완료</td></tr>
-                <tr><td class="n">06-28</td><td>정기 점검</td><td>월간 체크리스트 24항목</td><td>이OO</td><td>완료</td></tr>
-              </table>
-            </div>
-            <div class="pane bone">
-              <span class="ph">정비 등록</span>
-              <div class="form" style="grid-template-columns:1fr">
-                <div><label>구분</label><span class="fld box">고장 조치</span></div>
-                <div><label>연계 이벤트</label><span class="fld box">DTC · BMS 과전류(14:22)</span></div>
-                <div><label>조치 내용</label><span class="fld box" style="min-height:1.9rem">커넥터 재결선 후 재현 여부 확인</span></div>
-                <div><label>교체 부품</label><span class="fld box">없음</span></div>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">정비 · 정비 이력 · #101</div>
+            <div class="ui-head"><h5>정비 · 점검 이력</h5><span class="sp"></span>
+              <span class="fld sel">#101 스카이23</span><span class="fld sel">최근 30일</span><span class="btn gh">내보내기</span><span class="btn fill">정비 등록</span></div>
+            <div class="ui-body">
+              <div class="chips"><span class="on">전체 12</span><span>고장 조치 4</span><span>정기 점검 5</span><span>소모품 3</span><span>진행 1</span></div>
+              <div class="ui-cols" style="grid-template-columns:1.3fr 1fr">
+                <div class="pane">
+                  <span class="ph">정비 타임라인</span>
+                  <table class="tbl">
+                    <tr><th class="s">일자</th><th>구분</th><th>내용</th><th>부품</th><th>담당</th><th>상태</th></tr>
+                    <tr class="sel"><td class="n">08-28</td><td>고장 조치</td><td>BMS 과전류 점검 · 커넥터 재결선</td><td>-</td><td>이OO</td><td><span class="pill v">진행</span></td></tr>
+                    <tr><td class="n">08-14</td><td>소모품</td><td>브레이크 패드 교체(전륜)</td><td>BP-041</td><td>이OO</td><td><span class="pill g">완료</span></td></tr>
+                    <tr class="hov"><td class="n">07-30</td><td>정기 점검</td><td>월간 체크리스트 24항목</td><td>-</td><td>박OO</td><td><span class="pill g">완료</span></td></tr>
+                    <tr><td class="n">07-11</td><td>소모품</td><td>타이어 교체(후륜 2본)</td><td>TR-118</td><td>박OO</td><td><span class="pill g">완료</span></td></tr>
+                    <tr><td class="n">06-28</td><td>정기 점검</td><td>월간 체크리스트 24항목</td><td>-</td><td>이OO</td><td><span class="pill g">완료</span></td></tr>
+                    <tr><td class="n">06-05</td><td>고장 조치</td><td>MCU 과온 - 냉각 팬 청소</td><td>-</td><td>이OO</td><td><span class="pill g">완료</span></td></tr>
+                  </table>
+                  <div class="pager"><span>전체 12건</span><b>1</b><span>2</span><span>다음</span></div>
+                </div>
+                <div class="pane bone">
+                  <span class="ph">정비 등록<em>알림에서 연계됨</em></span>
+                  <div class="form" style="grid-template-columns:1fr">
+                    <div><label>구분 <span class="req">*</span></label><span class="fld box">고장 조치</span></div>
+                    <div><label>연계 이벤트</label><span class="fld box">DTC · BMS 과전류(14:22)</span></div>
+                    <div><label>조치 내용 <span class="req">*</span></label><span class="fld box" style="min-height:1.7rem">커넥터 재결선 후 재현 여부 확인</span></div>
+                    <div><label>교체 부품</label><span class="fld box">없음</span></div>
+                  </div>
+                  <span class="ph">소모품 주기</span>
+                  <div class="grow"><span style="font-size:0.53rem; width:3rem">브레이크</span><span class="gauge"><i style="width:38%"></i></span><span style="font-size:0.52rem">D-62</span></div>
+                  <div class="grow"><span style="font-size:0.53rem; width:3rem">타이어</span><span class="gauge mid"><i style="width:74%"></i></span><span style="font-size:0.52rem">D-18</span></div>
+                  <div class="grow"><span style="font-size:0.53rem; width:3rem">배터리</span><span class="gauge"><i style="width:22%"></i></span><span style="font-size:0.52rem">D-310</span></div>
+                  <div style="display:flex; gap:0.25rem; margin-top:auto"><span class="btn gh">임시 저장</span><span class="btn fill">등록 · 이벤트 종결</span></div>
+                </div>
               </div>
-              <span class="ph">소모품 주기</span>
-              <div class="grow"><span style="font-size:0.56rem; width:3.2rem">브레이크</span><span class="gauge"><i style="width:38%"></i></span><span style="font-size:0.55rem">D-62</span></div>
-              <div class="grow"><span style="font-size:0.56rem; width:3.2rem">타이어</span><span class="gauge mid"><i style="width:74%"></i></span><span style="font-size:0.55rem">D-18</span></div>
-              <div style="display:flex; gap:0.3rem; margin-top:auto"><span class="btn gh">임시 저장</span><span class="btn fill">등록</span></div>
             </div>
           </div>
         </div>
@@ -1152,7 +1453,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
         <div class="blk">
           <div class="h">화면 정보</div>
           <div class="kv"><span>화면 ID</span><b>SCR-090</b></div>
-          <div class="kv"><span>진입 경로</span><span>정비 &gt; 정비 이력, SCR-030 · 070</span></div>
+          <div class="kv"><span>진입 경로</span><span>정비 메뉴, SCR-030 · 070 · 100</span></div>
           <div class="kv"><span>접근 권한</span><span>조회 전체 · 작성은 정비 담당자</span></div>
           <div class="kv"><span>갱신 방식</span><span>등록 시 즉시 반영</span></div>
         </div>
@@ -1161,20 +1462,24 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <ul>
             <li>알림에서 넘어오면 연계 이벤트가 자동으로 채워짐</li>
             <li>부품 교체 등록 시 다음 정비 주기를 자동 계산</li>
-            <li>작성 · 수정 시 변경 이력과 작성자를 기록</li>
+            <li>등록 완료 시 연계 이벤트를 종결 처리</li>
           </ul>
         </div>
         <div class="blk">
-          <div class="h">연계</div>
+          <div class="h">기록 규칙</div>
           <ul>
-            <li>등록 완료 시 연계된 알림 이벤트를 종결 처리</li>
-            <li>정비 상태 차량은 관제 목록에서 운행 대상에서 제외</li>
+            <li>작성 · 수정 시 변경 이력과 작성자를 남김</li>
+            <li>정비 상태 차량은 관제 목록의 운행 대상에서 제외</li>
           </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>SCR-030 · 100</em><span class="on">SCR-090</span>→<span>SCR-070</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 정비/점검 이력 관리</span><span class="mark">SOVEREIGNS · 14</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 정비/점검 이력 관리</span><span class="mark">SOVEREIGNS · 15</span></div>
 </section>
 
 <!-- SCR-100 -->
@@ -1190,38 +1495,52 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">정비 담당자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>월간 점검 · #101 스카이23</h5><span class="sp"></span>
-          <span class="fld">2026-08-28 · 이OO</span><span class="btn gh">임시 저장</span><span class="btn fill">점검 완료</span></div>
-        <div class="ui-body">
-          <div class="chips"><span class="on">전체 24</span><span>정상 20</span><span>주의 3</span><span>불량 1</span><span>미입력 0</span></div>
-          <div class="ui-cols" style="grid-template-columns:1.3fr 1fr">
-            <div class="pane">
-              <table class="tbl">
-                <tr><th>구분</th><th>점검 항목</th><th>정상</th><th>주의</th><th>불량</th></tr>
-                <tr><td>제동</td><td>브레이크 패드 마모</td><td><span class="chk"><i></i></span></td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td></tr>
-                <tr><td>제동</td><td>주차 브레이크 작동</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td></tr>
-                <tr><td>구동</td><td>모터 소음 · 진동</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td></tr>
-                <tr class="sel"><td>전기</td><td>배터리 커넥터 체결</td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i class="warn"></i></span></td></tr>
-                <tr><td>전기</td><td>충전 포트 상태</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td></tr>
-                <tr><td>주행</td><td>타이어 공기압 · 마모</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td></tr>
-                <tr><td>단말</td><td>통신 · GPS 수신 상태</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td></tr>
-              </table>
-              <div class="pager"><span>1 - 7 / 24</span><span>이전</span><b>1</b><span>2</span><span>3</span><span>다음</span></div>
-            </div>
-            <div class="pane bone">
-              <span class="ph">불량 항목 조치</span>
-              <div style="font-size:0.6rem; color:var(--carbon); line-height:1.5">
-                <b style="font-family:var(--fd); font-size:0.7rem">배터리 커넥터 체결</b><br>
-                구분 전기 · 판정 불량
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">정비 · 점검 체크리스트 · #101</div>
+            <div class="ui-head"><h5>월간 점검 · #101 스카이23</h5><span class="pill v">진행률 7 / 24</span><span class="sp"></span>
+              <span class="fld sel">2026-08-28 · 이OO</span><span class="btn gh">임시 저장</span><span class="btn fill">점검 완료</span></div>
+            <div class="ui-body">
+              <div class="chips"><span class="on">전체 24</span><span>정상 20</span><span>주의 3</span><span>불량 1</span><span>미입력 0</span></div>
+              <div class="ui-cols" style="grid-template-columns:1.4fr 1fr">
+                <div class="pane">
+                  <table class="tbl">
+                    <tr><th>구분</th><th>점검 항목</th><th>정상</th><th>주의</th><th>불량</th><th>비고</th></tr>
+                    <tr><td>제동</td><td>브레이크 패드 마모</td><td><span class="chk"><i></i></span></td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td><td>잔량 40%</td></tr>
+                    <tr><td>제동</td><td>주차 브레이크 작동</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td><td>-</td></tr>
+                    <tr><td>구동</td><td>모터 소음 · 진동</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td><td>-</td></tr>
+                    <tr class="sel"><td>전기</td><td>배터리 커넥터 체결</td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i class="warn"></i></span></td><td>산화 확인</td></tr>
+                    <tr><td>전기</td><td>충전 포트 상태</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td><td>-</td></tr>
+                    <tr><td>주행</td><td>타이어 공기압 · 마모</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td><td>-</td></tr>
+                    <tr><td>단말</td><td>통신 · GPS 수신 상태</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i></i></span></td><td><span class="chk"><i></i></span></td><td>-</td></tr>
+                  </table>
+                  <div class="pager"><span>1 - 7 / 24</span><span>이전</span><b>1</b><span>2</span><span>3</span><span>다음</span></div>
+                </div>
+                <div class="pane bone">
+                  <span class="ph">불량 항목 조치<em>1건</em></span>
+                  <div style="font-size:0.57rem; color:var(--carbon); line-height:1.5">
+                    <b style="font-family:var(--fd); font-size:0.68rem">배터리 커넥터 체결</b><br>구분 전기 · 판정 불량
+                  </div>
+                  <div class="form" style="grid-template-columns:1fr">
+                    <div><label>비고 <span class="req">*</span></label><span class="fld box" style="min-height:1.5rem">체결부 산화 확인, 커넥터 교체 필요</span></div>
+                    <div><label>사진 첨부 <span class="req">*</span></label><span class="fld box">IMG_2841.jpg · IMG_2842.jpg</span></div>
+                  </div>
+                  <span class="ph">연계 처리</span>
+                  <div class="chk"><i class="on"></i>정비 등록(SCR-090)으로 이동</div>
+                  <div class="chk"><i class="on"></i>차량 상태를 정비로 전환</div>
+                  <div class="chk"><i></i>다음 점검 예정일 앞당김</div>
+                  <div style="display:flex; gap:0.25rem; margin-top:auto"><span class="btn fill">정비 등록</span></div>
+                </div>
               </div>
-              <div class="form" style="grid-template-columns:1fr">
-                <div><label>비고</label><span class="fld box" style="min-height:1.7rem">체결부 산화 확인, 커넥터 교체 필요</span></div>
-                <div><label>사진 첨부</label><span class="fld box">IMG_2841.jpg · IMG_2842.jpg</span></div>
-              </div>
-              <span class="ph">연계 처리</span>
-              <div class="chk"><i class="on"></i>정비 등록(SCR-090)으로 이동</div>
-              <div class="chk"><i class="on"></i>해당 차량 상태를 정비로 전환</div>
-              <div style="display:flex; gap:0.3rem; margin-top:auto"><span class="btn fill">정비 등록</span></div>
             </div>
           </div>
         </div>
@@ -1239,20 +1558,24 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <ul>
             <li>항목당 정상 · 주의 · 불량 중 하나를 필수 선택</li>
             <li>미입력 항목이 있으면 점검 완료 처리 불가</li>
-            <li>불량 선택 시 비고 입력과 사진 첨부를 요구</li>
+            <li>불량 선택 시 비고와 사진 첨부를 필수로 요구</li>
           </ul>
         </div>
         <div class="blk">
           <div class="h">연계</div>
           <ul>
-            <li>불량 항목은 정비 등록(SCR-090)으로 바로 연결</li>
+            <li>불량 항목은 정비 등록으로 바로 연결</li>
             <li>점검 완료 시 다음 점검 예정일을 자동 계산</li>
           </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>정비 메뉴</em><span class="on">SCR-100</span>→<span>SCR-090</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 정비/점검 이력 관리</span><span class="mark">SOVEREIGNS · 15</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 정비/점검 이력 관리</span><span class="mark">SOVEREIGNS · 16</span></div>
 </section>
 
 <!-- SCR-110 -->
@@ -1268,39 +1591,54 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">정비 담당자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>배터리 · 차량 요약</h5><span class="sp"></span>
-          <span class="fld">임계값 경고 20% · 주의 40%</span><span class="btn out">임계값 설정</span></div>
-        <div class="ui-body">
-          <div class="kpi5" style="grid-template-columns:repeat(4,1fr)">
-            <div><b>36</b><span>정상 40% 초과</span></div>
-            <div><b style="color:var(--voltage)">10</b><span>주의 20~40%</span></div>
-            <div><b style="color:var(--rose)">4</b><span>경고 20% 이하</span></div>
-            <div><b>8</b><span>충전 중</span></div>
-          </div>
-          <div class="ui-cols" style="grid-template-columns:1.2fr 1fr">
-            <div class="pane">
-              <span class="ph">주의 · 경고 차량</span>
-              <table class="tbl">
-                <tr><th>카트</th><th>SoC</th><th>상태</th><th>위치</th><th>예상 잔여</th></tr>
-                <tr class="sel"><td class="id">#114</td><td><span class="grow"><span class="gauge warn"><i style="width:12%"></i></span><span>12%</span></span></td><td><span class="st fix"><i></i>정비</span></td><td>정비고</td><td class="n">-</td></tr>
-                <tr><td class="id">#127</td><td><span class="grow"><span class="gauge warn"><i style="width:18%"></i></span><span>18%</span></span></td><td><span class="st run"><i></i>운행</span></td><td>7번 홀</td><td class="n">2홀</td></tr>
-                <tr><td class="id">#118</td><td><span class="grow"><span class="gauge mid"><i style="width:34%"></i></span><span>34%</span></span></td><td><span class="st chg"><i></i>충전</span></td><td>충전소 A</td><td class="n">-</td></tr>
-                <tr><td class="id">#109</td><td><span class="grow"><span class="gauge mid"><i style="width:38%"></i></span><span>38%</span></span></td><td><span class="st run"><i></i>운행</span></td><td>3번 홀</td><td class="n">5홀</td></tr>
-              </table>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:0.5rem; min-height:0">
-              <div class="pane bone" style="flex:1">
-                <span class="ph">충전소 · 충전기 상태</span>
-                <div class="st run" style="justify-content:space-between"><span><i></i>충전소 A · 6기</span><span style="color:var(--slate)">사용 4 / 대기 2</span></div>
-                <div class="st run" style="justify-content:space-between"><span><i></i>충전소 B · 4기</span><span style="color:var(--slate)">사용 4 / 대기 0</span></div>
-                <div class="st fix" style="justify-content:space-between"><span><i></i>충전소 B · 3번기</span><span style="color:var(--slate)">연결 오류</span></div>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">정비 · 배터리 요약</div>
+            <div class="ui-head"><h5>배터리 · 차량 요약</h5><span class="sp"></span>
+              <span class="fld sel">임계값 경고 20% · 주의 40%</span><span class="btn out">임계값 설정</span></div>
+            <div class="ui-body">
+              <div class="kpi" style="grid-template-columns:repeat(4,1fr); flex:none">
+                <div><b>36</b><span>정상 40% 초과</span></div>
+                <div><b style="color:var(--voltage)">10</b><span>주의 20~40%</span></div>
+                <div><b style="color:var(--rose)">4</b><span>경고 20% 이하</span></div>
+                <div><b>8</b><span>충전 중</span></div>
               </div>
-              <div class="pane bone" style="flex:1">
-                <span class="ph">정비 필요 차량 · 7대</span>
-                <div style="font-size:0.58rem; color:var(--carbon); line-height:1.6">
-                  고장 코드 미조치 3 · 정비 주기 초과 2<br>점검 불량 항목 1 · 통신 두절 1
+              <div class="ui-cols" style="grid-template-columns:1.25fr 1fr">
+                <div class="pane">
+                  <span class="ph">주의 · 경고 차량<em>14대</em></span>
+                  <table class="tbl">
+                    <tr><th class="s">SoC</th><th>카트</th><th>상태</th><th>위치</th><th>소모율</th><th>예상 잔여</th></tr>
+                    <tr class="sel"><td><span class="grow"><span class="gauge warn"><i style="width:12%"></i></span><span>12%</span></span></td><td class="id">#114</td><td><span class="st fix"><i></i>정비</span></td><td>정비고</td><td class="n">-</td><td class="n">-</td></tr>
+                    <tr><td><span class="grow"><span class="gauge warn"><i style="width:18%"></i></span><span>18%</span></span></td><td class="id">#127</td><td><span class="st run"><i></i>운행</span></td><td>7번 홀</td><td class="n">6%/홀</td><td class="n">2홀</td></tr>
+                    <tr><td><span class="grow"><span class="gauge mid"><i style="width:34%"></i></span><span>34%</span></span></td><td class="id">#118</td><td><span class="st chg"><i></i>충전</span></td><td>충전소 A</td><td class="n">-</td><td class="n">-</td></tr>
+                    <tr><td><span class="grow"><span class="gauge mid"><i style="width:38%"></i></span><span>38%</span></span></td><td class="id">#109</td><td><span class="st run"><i></i>운행</span></td><td>3번 홀</td><td class="n">5%/홀</td><td class="n">5홀</td></tr>
+                    <tr><td><span class="grow"><span class="gauge mid"><i style="width:39%"></i></span><span>39%</span></span></td><td class="id">#131</td><td><span class="st run"><i></i>운행</span></td><td>5번 홀</td><td class="n">5%/홀</td><td class="n">6홀</td></tr>
+                  </table>
                 </div>
-                <span class="btn out" style="align-self:flex-start; margin-top:auto">정비 목록 보기</span>
+                <div style="display:flex; flex-direction:column; gap:0.42rem; min-height:0">
+                  <div class="pane bone" style="flex:1">
+                    <span class="ph">충전소 · 충전기 상태</span>
+                    <div class="st run" style="justify-content:space-between"><span><i></i>충전소 A · 6기</span><span style="color:var(--slate)">사용 4 / 대기 2</span></div>
+                    <div class="st run" style="justify-content:space-between"><span><i></i>충전소 B · 4기</span><span style="color:var(--slate)">사용 4 / 대기 0</span></div>
+                    <div class="st fix" style="justify-content:space-between"><span><i></i>B 3번기</span><span style="color:var(--slate)">연결 오류</span></div>
+                  </div>
+                  <div class="pane bone" style="flex:1">
+                    <span class="ph">정비 필요 차량<em>7대</em></span>
+                    <div style="font-size:0.54rem; color:var(--carbon); line-height:1.65">
+                      고장 코드 미조치 3<br>정비 주기 초과 2<br>점검 불량 항목 1 · 통신 두절 1
+                    </div>
+                    <span class="btn out" style="align-self:flex-start; margin-top:auto">정비 목록 보기</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1317,9 +1655,9 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
         <div class="blk">
           <div class="h">주요 동작</div>
           <ul>
-            <li>상태 구간(정상 · 주의 · 경고) 클릭 시 해당 차량 목록으로 이동</li>
+            <li>상태 구간 클릭 시 해당 차량 목록으로 이동</li>
             <li>임계값은 설정에서 관리하고 변경 이력을 남김</li>
-            <li>예상 잔여 홀 수는 최근 소모율 기준 추정치로 표시</li>
+            <li>예상 잔여 홀 수는 최근 소모율 기준 추정치</li>
           </ul>
         </div>
         <div class="blk">
@@ -1329,10 +1667,14 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
             <li>정비 필요 사유별 건수를 함께 제공</li>
           </ul>
         </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>정비 메뉴 · SCR-010</em><span class="on">SCR-110</span>→<span>SCR-060</span></div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 배터리/차량 요약 · 충전기 연동</span><span class="mark">SOVEREIGNS · 16</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 배터리/차량 요약 · 충전기 연동</span><span class="mark">SOVEREIGNS · 17</span></div>
 </section>
 
 <!-- SCR-120 -->
@@ -1348,38 +1690,52 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">정비 담당자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>고장 · DTC 진단</h5><span class="sp"></span>
-          <span class="fld">최근 7일</span><span class="fld">코드 사전 v2.3</span><span class="btn out">내보내기</span></div>
-        <div class="ui-body">
-          <div class="chips"><span class="on">전체 42</span><span>BMS 18</span><span>MCU 12</span><span>VCU 9</span><span>AGV 3</span><span>미조치 6</span></div>
-          <div class="ui-cols" style="grid-template-columns:1.35fr 1fr">
-            <div class="pane">
-              <table class="tbl">
-                <tr><th>코드</th><th>명칭</th><th>제어기</th><th>카트</th><th>최근 발생</th><th>반복</th><th>상태</th></tr>
-                <tr class="sel"><td class="id">DC_OCP</td><td>방전 과전류 보호</td><td>BMS</td><td class="id">#101</td><td class="n">14:22</td><td class="n">3</td><td>미조치</td></tr>
-                <tr><td class="id">CellV_Imbalance</td><td>셀 전압 불균형</td><td>BMS</td><td class="id">#114</td><td class="n">11:08</td><td class="n">7</td><td>조치 중</td></tr>
-                <tr><td class="id">OverTempMotor</td><td>모터 과온</td><td>MCU</td><td class="id">#127</td><td class="n">08-27</td><td class="n">2</td><td>종결</td></tr>
-                <tr><td class="id">FailEMBrake</td><td>전자 브레이크 이상</td><td>MCU</td><td class="id">#118</td><td class="n">08-26</td><td class="n">1</td><td>종결</td></tr>
-                <tr><td class="id">bLineOut</td><td>유도선 이탈 감지</td><td>VCU</td><td class="id">#132</td><td class="n">08-25</td><td class="n">4</td><td>종결</td></tr>
-                <tr><td class="id">0x5E21</td><td>미정의 코드</td><td>AGV</td><td class="id">#109</td><td class="n">08-24</td><td class="n">1</td><td>미분류</td></tr>
-              </table>
-            </div>
-            <div class="pane bone">
-              <span class="ph">코드 상세 · DC_OCP</span>
-              <div style="font-size:0.58rem; color:var(--carbon); line-height:1.55">
-                <b style="font-family:var(--fd); font-size:0.7rem">방전 과전류 보호</b><br>
-                제어기 BMS · 등급 긴급<br>
-                권장 조치 커넥터 체결 · 부하 확인 후 재현 여부 점검
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">정비 · 고장 진단</div>
+            <div class="ui-head"><h5>고장 · DTC 진단</h5><span class="sp"></span>
+              <span class="fld sel">최근 7일</span><span class="fld sel">코드 사전 v2.3</span><span class="btn fill">내보내기</span></div>
+            <div class="ui-body">
+              <div class="chips"><span class="on">전체 42</span><span>BMS 18</span><span>MCU 12</span><span>VCU 9</span><span>AGV 3</span><span>미조치 6</span><span>미분류 1</span></div>
+              <div class="ui-cols" style="grid-template-columns:1.45fr 1fr">
+                <div class="pane">
+                  <table class="tbl">
+                    <tr><th>코드</th><th>명칭</th><th>제어기</th><th>카트</th><th class="s">최근 발생</th><th>반복</th><th>상태</th></tr>
+                    <tr class="sel"><td class="id">DC_OCP</td><td>방전 과전류 보호</td><td>BMS</td><td class="id">#101</td><td class="n">14:22</td><td class="n">3</td><td><span class="pill r">미조치</span></td></tr>
+                    <tr><td class="id">CellV_Imbalance</td><td>셀 전압 불균형</td><td>BMS</td><td class="id">#114</td><td class="n">11:08</td><td class="n">7</td><td><span class="pill v">조치 중</span></td></tr>
+                    <tr class="hov"><td class="id">OverTempMotor</td><td>모터 과온</td><td>MCU</td><td class="id">#127</td><td class="n">08-27</td><td class="n">2</td><td><span class="pill g">종결</span></td></tr>
+                    <tr><td class="id">FailEMBrake</td><td>전자 브레이크 이상</td><td>MCU</td><td class="id">#118</td><td class="n">08-26</td><td class="n">1</td><td><span class="pill g">종결</span></td></tr>
+                    <tr><td class="id">bLineOut</td><td>유도선 이탈 감지</td><td>VCU</td><td class="id">#132</td><td class="n">08-25</td><td class="n">4</td><td><span class="pill g">종결</span></td></tr>
+                    <tr><td class="id">0x5E21</td><td>미정의 코드</td><td>AGV</td><td class="id">#109</td><td class="n">08-24</td><td class="n">1</td><td><span class="pill g">미분류</span></td></tr>
+                  </table>
+                  <div class="pager"><span>전체 42건</span><b>1</b><span>2</span><span>다음</span></div>
+                </div>
+                <div class="pane bone">
+                  <span class="ph">코드 상세<em>DC_OCP</em></span>
+                  <div style="font-size:0.56rem; color:var(--carbon); line-height:1.5">
+                    <b style="font-family:var(--fd); font-size:0.68rem">방전 과전류 보호</b><br>
+                    제어기 BMS · 등급 긴급<br>권장 조치 커넥터 체결 · 부하 확인 후 재현 점검
+                  </div>
+                  <span class="ph">발생 시점 신호 원문</span>
+                  <table class="tbl">
+                    <tr><td>Current</td><td class="n">-182.4 A</td></tr>
+                    <tr><td>PackV</td><td class="n">51.8 V</td></tr>
+                    <tr><td>Cell_T_Max</td><td class="n">47 ℃</td></tr>
+                    <tr><td>SOC</td><td class="n">62 %</td></tr>
+                    <tr><td>wSpeed</td><td class="n">0 km/h</td></tr>
+                  </table>
+                  <div style="display:flex; gap:0.25rem; margin-top:auto"><span class="btn gh">알림 보기</span><span class="btn fill">정비 등록</span></div>
+                </div>
               </div>
-              <span class="ph">발생 시점 신호 원문</span>
-              <table class="tbl">
-                <tr><td>Current</td><td class="n">-182.4 A</td></tr>
-                <tr><td>PackV</td><td class="n">51.8 V</td></tr>
-                <tr><td>Cell_T_Max</td><td class="n">47 ℃</td></tr>
-                <tr><td>SOC</td><td class="n">62 %</td></tr>
-                <tr><td>wSpeed</td><td class="n">0 km/h</td></tr>
-              </table>
-              <div style="display:flex; gap:0.3rem; margin-top:auto"><span class="btn out">알림 보기</span><span class="btn fill">정비 등록</span></div>
             </div>
           </div>
         </div>
@@ -1397,7 +1753,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <ul>
             <li>코드 사전과 매핑해 명칭 · 권장 조치를 표시</li>
             <li>동일 코드 반복 발생은 묶어 횟수로 표시</li>
-            <li>조치 등록 시 정비 이력(SCR-090)으로 연결</li>
+            <li>조치 등록 시 정비 이력으로 연결</li>
           </ul>
         </div>
         <div class="blk">
@@ -1405,13 +1761,17 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <ul>
             <li>코드 사전은 제조사 정의서를 기준으로 관리하고 버전을 표시</li>
             <li>미정의 코드는 원문 값 그대로 표시하고 미분류로 집계</li>
-            <li>발생 시점의 신호 원문을 함께 보관해 재분석에 사용</li>
+            <li>발생 시점 신호 원문을 함께 보관해 재분석에 사용</li>
           </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>SCR-070 · 정비 메뉴</em><span class="on">SCR-120</span>→<span>SCR-090</span><span>SCR-030</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 고장/DTC 진단</span><span class="mark">SOVEREIGNS · 17</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 고장/DTC 진단</span><span class="mark">SOVEREIGNS · 18</span></div>
 </section>
 
 <!-- SCR-130 -->
@@ -1427,41 +1787,56 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">전역 관리자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>코스 · 홀 마킹</h5><span class="sp"></span>
-          <span class="fld">OUT 코스</span><span class="btn gh">되돌리기</span><span class="btn fill">저장</span></div>
-        <div class="ui-body">
-          <div class="chips"><span class="on">시작 지점</span><span>종료 지점</span><span>이동</span><span>삭제</span><span>배경 궤적 표시</span></div>
-          <div class="ui-cols" style="grid-template-columns:1.6fr 1fr">
-            <div class="map" data-bleed>
-              <svg viewBox="0 0 400 330" preserveAspectRatio="xMidYMid meet" aria-label="코스 마킹 지도">
-                <path d="M62 300 C 92 258, 124 228, 168 210" fill="none" stroke="#D9D2FF" stroke-width="34" stroke-linecap="round"></path>
-                <path d="M206 192 C 254 176, 302 180, 342 158" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
-                <path d="M118 104 C 168 80, 228 84, 282 64" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
-                <path d="M66 296 C 98 256, 130 226, 174 208 C 224 190, 274 194, 314 176" fill="none" stroke="#9E99AB" stroke-width="2" stroke-dasharray="5 5"></path>
-                <circle cx="182" cy="204" r="10" fill="#4823FF" stroke="#FFFFFF" stroke-width="2"></circle>
-                <circle cx="182" cy="204" r="26" fill="rgba(72,35,255,0.10)" stroke="#4823FF" stroke-width="1.4" stroke-dasharray="4 4"></circle>
-                <text x="182" y="250" font-family="Inter" font-size="11" fill="#4823FF" text-anchor="middle">H4 시작 · 15m</text>
-                <circle cx="344" cy="154" r="9" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></circle>
-                <circle cx="344" cy="154" r="22" fill="none" stroke="#7E78FF" stroke-width="1.2" stroke-dasharray="4 4"></circle>
-                <text x="344" y="194" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H4 종료</text>
-                <circle cx="286" cy="68" r="9" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></circle>
-                <text x="286" y="42" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H5 시작</text>
-              </svg>
-              <div class="lay"><span class="on">지오펜스</span><span class="on">실측 궤적</span><span>위성 이미지</span></div>
-              <div class="tip" style="right:0.5rem; bottom:0.5rem"><b>H4 시작 지점</b>37.4021, 127.1094 · 반경 15m</div>
-            </div>
-            <div class="pane">
-              <span class="ph">홀 목록 · OUT 9홀</span>
-              <table class="tbl">
-                <tr><th>홀</th><th>시작</th><th>종료</th><th>반경</th></tr>
-                <tr><td class="id">H1</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i class="on"></i></span></td><td class="n">15m</td></tr>
-                <tr><td class="id">H2</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i class="on"></i></span></td><td class="n">15m</td></tr>
-                <tr><td class="id">H3</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i class="on"></i></span></td><td class="n">18m</td></tr>
-                <tr class="sel"><td class="id">H4</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i class="on"></i></span></td><td class="n">15m</td></tr>
-                <tr><td class="id">H5</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i class="warn"></i></span></td><td class="n">-</td></tr>
-                <tr><td class="id">H6</td><td><span class="chk"><i class="warn"></i></span></td><td><span class="chk"><i class="warn"></i></span></td><td class="n">-</td></tr>
-              </table>
-              <span style="font-size:0.54rem; color:var(--rose)">미설정 3건 · 저장 시 경고</span>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 서울 CC</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">설정 · 코스 · 홀 마킹</div>
+            <div class="ui-head"><h5>코스 · 홀 마킹</h5><span class="pill r">미설정 3</span><span class="sp"></span>
+              <span class="fld sel">OUT 코스</span><span class="btn gh">되돌리기</span><span class="btn fill">저장</span></div>
+            <div class="ui-body">
+              <div class="chips"><span class="on">시작 지점</span><span>종료 지점</span><span>이동</span><span>삭제</span><span>반경 일괄 15m</span></div>
+              <div class="ui-cols" style="grid-template-columns:1.7fr 1fr">
+                <div class="map" data-bleed>
+                  <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-label="코스 마킹 지도">
+                    <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
+                    <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
+                    <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#D9D2FF" stroke-width="28" stroke-linecap="round"></path>
+                    <path d="M66 268 C 98 230, 130 202, 176 186 C 226 168, 274 172, 314 152" fill="none" stroke="#9E99AB" stroke-width="2" stroke-dasharray="5 5"></path>
+                    <circle cx="182" cy="182" r="9" fill="#4823FF" stroke="#FFFFFF" stroke-width="2"></circle>
+                    <circle cx="182" cy="182" r="26" fill="rgba(72,35,255,0.10)" stroke="#4823FF" stroke-width="1.4" stroke-dasharray="4 4"></circle>
+                    <text x="182" y="226" font-family="Inter" font-size="10" fill="#4823FF" text-anchor="middle">H4 시작 · 15m</text>
+                    <circle cx="344" cy="136" r="8" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></circle>
+                    <circle cx="344" cy="136" r="20" fill="none" stroke="#7E78FF" stroke-width="1.2" stroke-dasharray="4 4"></circle>
+                    <text x="344" y="172" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H4 종료</text>
+                    <circle cx="282" cy="56" r="8" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></circle>
+                    <text x="282" y="34" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H5 시작</text>
+                  </svg>
+                  <div class="lay"><span class="on">지오펜스</span><span class="on">실측 궤적</span><span>위성 이미지</span></div>
+                  <div class="zoom"><span>+</span><span>−</span></div>
+                  <div class="tip" style="right:0.4rem; bottom:0.4rem"><b>H4 시작 지점</b>37.4021, 127.1094 · 반경 15m</div>
+                </div>
+                <div class="pane">
+                  <span class="ph">홀 목록<em>OUT 9홀</em></span>
+                  <table class="tbl">
+                    <tr><th>홀</th><th>시작</th><th>종료</th><th>반경</th><th>거리</th></tr>
+                    <tr><td class="id">H1</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i class="on"></i></span></td><td class="n">15m</td><td class="n">0.7km</td></tr>
+                    <tr><td class="id">H2</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i class="on"></i></span></td><td class="n">15m</td><td class="n">0.8km</td></tr>
+                    <tr><td class="id">H3</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i class="on"></i></span></td><td class="n">18m</td><td class="n">0.6km</td></tr>
+                    <tr class="sel"><td class="id">H4</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i class="on"></i></span></td><td class="n">15m</td><td class="n">0.5km</td></tr>
+                    <tr><td class="id">H5</td><td><span class="chk"><i class="on"></i></span></td><td><span class="chk"><i class="warn"></i></span></td><td class="n">-</td><td class="n">-</td></tr>
+                    <tr><td class="id">H6</td><td><span class="chk"><i class="warn"></i></span></td><td><span class="chk"><i class="warn"></i></span></td><td class="n">-</td><td class="n">-</td></tr>
+                  </table>
+                  <span style="font-size:0.52rem; color:var(--rose); margin-top:auto">미설정 3건 · 저장 시 경고</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1490,10 +1865,14 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
             <li>실측 주행 궤적을 겹쳐 표시해 마킹 정확도를 높임</li>
           </ul>
         </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>설정 메뉴</em><span class="on">SCR-130</span>→<span>SCR-040</span></div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 홀 마킹(코스 설정)</span><span class="mark">SOVEREIGNS · 18</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 홀 마킹(코스 설정)</span><span class="mark">SOVEREIGNS · 19</span></div>
 </section>
 
 <!-- SCR-140 -->
@@ -1509,35 +1888,51 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
           <span class="lg"><i></i>LSV TMS</span><span class="sel">전체 골프장</span>
           <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">전역 관리자</span><span class="av"></span>
         </div>
-        <div class="ui-head"><h5>이용자 · 권한 관리</h5><span class="sp"></span>
-          <span class="fld">이름 · 계정 검색</span><span class="btn out">권한 매트릭스</span><span class="btn fill">계정 등록</span></div>
-        <div class="ui-body">
-          <div class="chips"><span class="on">전체 24</span><span>전역 관리자 3</span><span>골프장 관리자 6</span><span>관제 운영자 8</span><span>정비 담당자 5</span><span>정지 2</span></div>
-          <div class="ui-cols" style="grid-template-columns:1.35fr 1fr">
-            <div class="pane">
-              <table class="tbl">
-                <tr><th>계정</th><th>이름</th><th>권한</th><th>소속</th><th>2단계</th><th>상태</th></tr>
-                <tr class="sel"><td class="id">kim.op</td><td>김OO</td><td>관제 운영자</td><td>서울 CC</td><td><span class="chk"><i class="on"></i></span></td><td>사용</td></tr>
-                <tr><td class="id">lee.mt</td><td>이OO</td><td>정비 담당자</td><td>서울 CC</td><td><span class="chk"><i class="on"></i></span></td><td>사용</td></tr>
-                <tr><td class="id">park.gm</td><td>박OO</td><td>골프장 관리자</td><td>서울 CC</td><td><span class="chk"><i class="on"></i></span></td><td>사용</td></tr>
-                <tr><td class="id">choi.ad</td><td>최OO</td><td>전역 관리자</td><td>본사</td><td><span class="chk"><i class="on"></i></span></td><td>사용</td></tr>
-                <tr><td class="id">did.view</td><td>관제실 DID</td><td>조회 전용</td><td>서울 CC</td><td><span class="chk"><i></i></span></td><td>사용</td></tr>
-                <tr><td class="id">jung.op</td><td>정OO</td><td>관제 운영자</td><td>남부 CC</td><td><span class="chk"><i class="warn"></i></span></td><td>정지</td></tr>
-              </table>
-            </div>
-            <div class="pane bone">
-              <span class="ph">계정 상세 · kim.op</span>
-              <div class="form" style="grid-template-columns:1fr">
-                <div><label>권한 등급</label><span class="fld box">관제 운영자</span></div>
-                <div><label>소속 골프장</label><span class="fld box">서울 CC</span></div>
-                <div><label>2단계 인증</label><span class="chk" style="padding-top:0.2rem"><i class="on"></i>앱 인증 사용</span></div>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>대시보드</a>
+            <a><svg viewBox="0 0 24 24"><path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z"></path></svg>관제</a>
+            <a><svg viewBox="0 0 24 24"><path d="M4 19c4 0 4-14 8-14s4 14 8 14"></path></svg>운행</a>
+            <a><svg viewBox="0 0 24 24"><path d="M5 16h14"></path><path d="M7 16V9h6l3 4h3v3"></path></svg>차량</a>
+            <a><svg viewBox="0 0 24 24"><path d="M14 7a4 4 0 1 0 3 6.8l3.5 3.5-2.8 2.8-3.5-3.5A4 4 0 0 0 14 7z"></path></svg>정비</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>설정</a>
+            <span class="ver">v1.0 · 전체</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">설정 · 이용자 · 권한</div>
+            <div class="ui-head"><h5>이용자 · 권한 관리</h5><span class="sp"></span>
+              <span class="fld"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>이름 · 계정</span>
+              <span class="btn gh">권한 매트릭스</span><span class="btn fill">계정 등록</span></div>
+            <div class="ui-body">
+              <div class="chips"><span class="on">전체 24</span><span>전역 관리자 3</span><span>골프장 관리자 6</span><span>관제 운영자 8</span><span>정비 담당자 5</span><span>조회 전용 2</span><span>정지 2</span></div>
+              <div class="ui-cols" style="grid-template-columns:1.4fr 1fr">
+                <div class="pane">
+                  <table class="tbl">
+                    <tr><th class="s">계정</th><th>이름</th><th>권한</th><th>소속</th><th>2단계</th><th>최근 접속</th><th>상태</th></tr>
+                    <tr class="sel"><td class="id">kim.op</td><td>김OO</td><td>관제 운영자</td><td>서울 CC</td><td><span class="chk"><i class="on"></i></span></td><td class="n">14:02</td><td><span class="pill v">사용</span></td></tr>
+                    <tr><td class="id">lee.mt</td><td>이OO</td><td>정비 담당자</td><td>서울 CC</td><td><span class="chk"><i class="on"></i></span></td><td class="n">13:47</td><td><span class="pill v">사용</span></td></tr>
+                    <tr class="hov"><td class="id">park.gm</td><td>박OO</td><td>골프장 관리자</td><td>서울 CC</td><td><span class="chk"><i class="on"></i></span></td><td class="n">11:20</td><td><span class="pill v">사용</span></td></tr>
+                    <tr><td class="id">choi.ad</td><td>최OO</td><td>전역 관리자</td><td>본사</td><td><span class="chk"><i class="on"></i></span></td><td class="n">09:15</td><td><span class="pill v">사용</span></td></tr>
+                    <tr><td class="id">did.view</td><td>관제실 DID</td><td>조회 전용</td><td>서울 CC</td><td><span class="chk"><i></i></span></td><td class="n">상시</td><td><span class="pill v">사용</span></td></tr>
+                    <tr><td class="id">jung.op</td><td>정OO</td><td>관제 운영자</td><td>남부 CC</td><td><span class="chk"><i class="warn"></i></span></td><td class="n">07-30</td><td><span class="pill r">정지</span></td></tr>
+                  </table>
+                  <div class="pager"><span>전체 24건</span><b>1</b><span>2</span><span>다음</span></div>
+                </div>
+                <div class="pane bone">
+                  <span class="ph">계정 상세<em>kim.op</em></span>
+                  <div class="form" style="grid-template-columns:1fr">
+                    <div><label>권한 등급 <span class="req">*</span></label><span class="fld box">관제 운영자</span></div>
+                    <div><label>소속 골프장 <span class="req">*</span></label><span class="fld box">서울 CC</span></div>
+                    <div><label>2단계 인증</label><div class="chk" style="padding-top:0.15rem"><i class="on"></i>앱 인증 사용 · 등록 2026-06-11</div></div>
+                  </div>
+                  <span class="ph">허용 기능</span>
+                  <div class="chk"><i class="on"></i>실시간 관제 · 대시보드 조회</div>
+                  <div class="chk"><i class="on"></i>알림 확인 · 조치 등록</div>
+                  <div class="chk"><i></i>차량 등록 · 삭제</div>
+                  <div class="chk"><i></i>코스 · 홀 마킹 설정</div>
+                  <div style="display:flex; gap:0.25rem; margin-top:auto"><span class="btn gh">비밀번호 초기화</span><span class="btn fill">저장</span></div>
+                </div>
               </div>
-              <span class="ph">허용 기능</span>
-              <div class="chk"><i class="on"></i>실시간 관제 · 대시보드 조회</div>
-              <div class="chk"><i class="on"></i>알림 확인 · 조치 등록</div>
-              <div class="chk"><i></i>차량 등록 · 삭제</div>
-              <div class="chk"><i></i>코스 · 홀 마킹 설정</div>
-              <div style="display:flex; gap:0.3rem; margin-top:auto"><span class="btn gh">비밀번호 초기화</span><span class="btn fill">저장</span></div>
             </div>
           </div>
         </div>
@@ -1561,15 +1956,61 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
         <div class="blk">
           <div class="h">권한 규칙</div>
           <ul>
-            <li>허용 기능은 권한 등급의 기본값을 따르고 개별 조정 이력을 남김</li>
+            <li>허용 기능은 등급 기본값을 따르고 개별 조정 이력을 남김</li>
             <li>골프장 관리자는 소속 골프장 데이터만 조회</li>
             <li>조회 전용 계정은 대형 화면 표시용으로 사용</li>
           </ul>
         </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>설정 메뉴</em><span class="on">SCR-140</span>→<span>권한 매트릭스</span></div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 이용자 관리</span><span class="mark">SOVEREIGNS · 19</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 이용자 관리</span><span class="mark">SOVEREIGNS · 20</span></div>
+</section>
+
+<!-- 화면 전이 맵 -->
+<section class="slide" data-title="화면 전이 맵">
+  <div class="s-head">
+    <div class="eyebrow">화면 관계</div>
+    <h2 class="title">화면 전이 맵</h2>
+    <p class="lead">화면 사이의 이동을 한 장으로 정리해 <b>진입 경로가 빠진 화면</b>이 없는지 확인합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g3" style="gap:0.9rem; margin-bottom:0.9rem">
+      <div class="card">
+        <span class="tag">관제 흐름</span>
+        <h3>상시 감시에서 조치까지</h3>
+        <div class="flowline" style="margin-top:0.6rem"><span class="on">SCR-010</span>→<span>SCR-020</span>→<span>SCR-070</span></div>
+        <div class="flowline" style="margin-top:0.35rem"><span class="on">SCR-030</span>→<span>SCR-090</span>→<em>이벤트 종결</em></div>
+      </div>
+      <div class="card">
+        <span class="tag">분석 흐름</span>
+        <h3>운행 결과 확인</h3>
+        <div class="flowline" style="margin-top:0.6rem"><span class="on">SCR-050</span>→<span>SCR-040</span>→<span>SCR-070</span></div>
+        <div class="flowline" style="margin-top:0.35rem"><em>기간 · 카트 조건</em>→<span>내보내기</span></div>
+      </div>
+      <div class="card">
+        <span class="tag">관리 흐름</span>
+        <h3>기준 정보 설정</h3>
+        <div class="flowline" style="margin-top:0.6rem"><span class="on">SCR-060</span>→<span>SCR-080</span>→<span>SCR-070</span></div>
+        <div class="flowline" style="margin-top:0.35rem"><span class="on">SCR-130</span><span>SCR-140</span>→<em>운영 준비 완료</em></div>
+      </div>
+    </div>
+    <table class="tight dense">
+      <tr><th>화면</th><th>진입 경로</th><th>이동 가능 화면</th><th>비고</th></tr>
+      <tr><td><span class="sid">SCR-010</span> 대시보드</td><td class="g">로그인 직후</td><td class="g">SCR-020 · 030 · 110</td><td class="g">KPI · 알림 클릭으로 이동</td></tr>
+      <tr><td><span class="sid">SCR-020</span> 실시간 관제</td><td class="g">관제 메뉴 · SCR-010</td><td class="g">SCR-070 · 040</td><td class="g">마커 더블 클릭 시 차량 상세</td></tr>
+      <tr><td><span class="sid">SCR-030</span> 알림 센터</td><td class="g">상단 배지 · SCR-010</td><td class="g">SCR-070 · 090 · 120</td><td class="g">정비 요청 시 이벤트 연계</td></tr>
+      <tr><td><span class="sid">SCR-040</span> 운행경로</td><td class="g">운행 메뉴 · SCR-050</td><td class="g">SCR-070</td><td class="g">트립 선택 후 재생</td></tr>
+      <tr><td><span class="sid">SCR-060</span> 차량 목록</td><td class="g">차량 메뉴</td><td class="g">SCR-070 · 080</td><td class="g">등록은 전역 관리자만</td></tr>
+      <tr><td><span class="sid">SCR-100</span> 체크리스트</td><td class="g">정비 메뉴</td><td class="g">SCR-090</td><td class="g">불량 항목이 정비로 이어짐</td></tr>
+      <tr><td><span class="sid">SCR-130</span> 홀 마킹</td><td class="g">설정 메뉴</td><td class="g">SCR-040</td><td class="g">설정 후 검증 주행으로 확인</td></tr>
+    </table>
+  </div>
+  <div class="s-foot"><span>진입 경로가 하나뿐인 화면은 메뉴에서도 접근할 수 있게 합니다</span><span class="mark">SOVEREIGNS · 21</span></div>
 </section>
 
 <!-- 맺음 -->
@@ -1579,7 +2020,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
   <p>검토 의견을 반영해 화면별 정의를 확정한 뒤, 확정본을 개발과 검수의 기준 문서로 관리합니다.</p>
   <div class="info">
     <div><b>소버린즈 주식회사</b>846-81-03834</div>
-    <div><b>문서</b>화면정의서 v0.2</div>
+    <div><b>문서</b>화면정의서 v0.3</div>
     <div><b>작성</b>2026. 08</div>
   </div>
 </section>

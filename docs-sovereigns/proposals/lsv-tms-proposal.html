@@ -231,6 +231,20 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 .def li{position:relative; padding:0.2rem 0 0.2rem 0.85rem; font-size:0.78rem; color:var(--carbon); line-height:1.42}
 .def li::before{content:""; position:absolute; left:0; top:0.62rem; width:0.28rem; height:0.28rem; border-radius:50%; background:var(--violet)}
 
+/* 주요 쟁점 - 도식이 있는 카드 */
+.iss{display:grid; grid-template-columns:repeat(3,1fr); gap:1.1rem; flex:1; min-height:0}
+.iss .it{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem;
+  padding:1rem 1.1rem; display:flex; flex-direction:column; gap:0.5rem; min-height:0}
+.iss .it h3{font-family:var(--fd); font-weight:800; font-size:1.02rem; letter-spacing:-0.02em; margin:0.35rem 0 0; line-height:1.25}
+.iss .fig{background:var(--bone); border:1px solid var(--lilac); border-radius:0.8rem; padding:0.4rem;
+  height:6.4rem; display:flex; align-items:center; justify-content:center}
+.iss .fig svg{width:100%; height:100%; display:block}
+.iss dl{margin:0; display:flex; flex-direction:column; gap:0.34rem}
+.iss dt{font-size:0.6rem; font-weight:700; letter-spacing:0.04em; color:var(--violet); text-transform:uppercase}
+.iss dd{margin:0.1rem 0 0; font-size:0.8rem; line-height:1.45; color:var(--carbon)}
+.iss dd b{font-weight:600; color:var(--ink)}
+.iss .sep{border-top:1px solid var(--lilac); margin:0.05rem 0}
+
 /* 설계 산출물 예시 - 실제 화면 시안(UI 키트, 화면정의서와 동일) */
 .ui{position:relative; background:var(--paper); border:1px solid var(--peri); border-radius:1.1rem;
   overflow:hidden; display:flex; flex-direction:column; min-height:0}
@@ -434,28 +448,110 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
   <div class="s-head">
     <div class="eyebrow">01. 과제 이해</div>
     <h2 class="title">구현 난도를 좌우하는 주요 쟁점</h2>
-    <p class="lead">요구사항정의서에 명시된 제약 조건 중 <b>설계 초기에 반영해야 하는 항목</b>입니다.</p>
+    <p class="lead">요구사항정의서에 명시된 제약 조건 중 <b>설계 초기에 반영해야 하는 항목</b>과 대응 방안입니다.</p>
   </div>
   <div class="body">
-    <div class="grid g3">
-      <div class="card">
-        <span class="tag">위치 정확도</span>
+    <div class="iss">
+      <div class="it">
+        <span class="tag">쟁점 01 · 위치 정확도</span>
         <h3>지도 API 기반<br>거리 계산의 한계</h3>
-        <p>범용 지도의 경로 기반 계산은 페어웨이 구간에서 오차가 발생합니다. 실제 주행 궤적을 누적해 이동 거리와 홀별 소요 시간을 산출합니다.</p>
+        <div class="fig">
+          <svg viewBox="0 0 260 120" preserveAspectRatio="xMidYMid meet" aria-label="지도 경로와 실제 주행 궤적 비교">
+            <path d="M24 96 C 70 84, 110 60, 160 46 C 190 38, 214 32, 236 28" fill="none" stroke="#9E99AB" stroke-width="2.4" stroke-dasharray="6 6" stroke-linecap="round"></path>
+            <path d="M24 96 C 48 78, 60 96, 92 78 C 124 60, 128 78, 158 60 C 188 42, 208 44, 236 28" fill="none" stroke="#4823FF" stroke-width="3" stroke-linecap="round"></path>
+            <circle cx="24" cy="96" r="4.5" fill="#18161A"></circle>
+            <circle cx="236" cy="28" r="4.5" fill="#4823FF"></circle>
+            <text x="150" y="104" font-family="Inter" font-size="10" fill="#898B91">지도 경로 4.8km</text>
+            <text x="30" y="34" font-family="Inter" font-size="10" fill="#4823FF">실측 궤적 6.2km</text>
+          </svg>
+        </div>
+        <dl>
+          <dt>현상</dt>
+          <dd>범용 지도의 경로 기반 계산은 페어웨이 · 카트도로를 반영하지 못해 <b>이동 거리와 소요 시간이 실제와 어긋납니다.</b></dd>
+          <div class="sep"></div>
+          <dt>대응</dt>
+          <dd>수신 좌표를 누적한 <b>실주행 궤적</b>으로 거리를 계산하고, 홀 구간은 지오펜스 진입 · 이탈 시각으로 끊습니다.</dd>
+          <div class="sep"></div>
+          <dt>검증</dt>
+          <dd>실측 주행 1회로 홀별 구간 분할과 거리 오차를 확인한 뒤 보정 기준을 확정합니다.</dd>
+        </dl>
       </div>
-      <div class="card">
-        <span class="tag">통신 단절</span>
+      <div class="it">
+        <span class="tag">쟁점 02 · 통신 단절</span>
         <h3>코스 내<br>통신 음영 구간</h3>
-        <p>코스 특성상 통신 단절 구간이 존재합니다. 단말이 데이터를 로컬에 저장한 뒤 통신 복구 시 재전송하는 구조를 전제로 설계합니다.</p>
+        <div class="fig">
+          <svg viewBox="0 0 260 120" preserveAspectRatio="xMidYMid meet" aria-label="통신 음영 구간과 재전송">
+            <line x1="18" y1="86" x2="242" y2="86" stroke="#D9D2FF" stroke-width="1.4"></line>
+            <rect x="18" y="60" width="10" height="26" rx="2" fill="#4823FF"></rect>
+            <rect x="34" y="56" width="10" height="30" rx="2" fill="#4823FF"></rect>
+            <rect x="50" y="62" width="10" height="24" rx="2" fill="#4823FF"></rect>
+            <rect x="66" y="58" width="10" height="28" rx="2" fill="#4823FF"></rect>
+            <rect x="86" y="70" width="10" height="16" rx="2" fill="#D9D2FF"></rect>
+            <rect x="102" y="70" width="10" height="16" rx="2" fill="#D9D2FF"></rect>
+            <rect x="118" y="70" width="10" height="16" rx="2" fill="#D9D2FF"></rect>
+            <rect x="134" y="70" width="10" height="16" rx="2" fill="#D9D2FF"></rect>
+            <rect x="156" y="56" width="10" height="30" rx="2" fill="#4823FF"></rect>
+            <rect x="172" y="60" width="10" height="26" rx="2" fill="#4823FF"></rect>
+            <rect x="188" y="54" width="10" height="32" rx="2" fill="#4823FF"></rect>
+            <rect x="204" y="60" width="10" height="26" rx="2" fill="#4823FF"></rect>
+            <rect x="220" y="58" width="10" height="28" rx="2" fill="#4823FF"></rect>
+            <rect x="84" y="44" width="62" height="14" rx="7" fill="#EFECFA" stroke="#9E99AB" stroke-width="1"></rect>
+            <text x="115" y="54" font-family="Inter" font-size="9" fill="#898B91" text-anchor="middle">음영 구간</text>
+            <path d="M146 34 C 168 22, 190 24, 200 40" fill="none" stroke="#E11D48" stroke-width="1.8" stroke-linecap="round"></path>
+            <path d="M200 40 L194 30 L204 32 Z" fill="#E11D48"></path>
+            <text x="176" y="18" font-family="Inter" font-size="9" fill="#E11D48" text-anchor="middle">복구 시 재전송</text>
+            <text x="18" y="104" font-family="Inter" font-size="9" fill="#898B91">정상 수신</text>
+            <text x="200" y="104" font-family="Inter" font-size="9" fill="#898B91">누락분 반영</text>
+          </svg>
+        </div>
+        <dl>
+          <dt>현상</dt>
+          <dd>코스 지형과 기지국 배치 때문에 <b>수신이 끊기는 구간</b>이 생기고, 그 구간의 궤적과 이벤트가 비어 버립니다.</dd>
+          <div class="sep"></div>
+          <dt>대응</dt>
+          <dd>단말이 미전송분을 <b>로컬에 저장</b>했다가 복구 시 재전송하고, 화면은 연결 상태와 최근 수신 시각을 항상 표시합니다.</dd>
+          <div class="sep"></div>
+          <dt>검증</dt>
+          <dd>실측 주행에서 음영 구간을 기록해 저장 용량과 재전송 주기를 결정합니다.</dd>
+        </dl>
       </div>
-      <div class="card">
-        <span class="tag">권한 분리</span>
+      <div class="it">
+        <span class="tag">쟁점 03 · 권한 분리</span>
         <h3>관리 주체별<br>권한 체계</h3>
-        <p>홀 마킹과 차량 등록은 전역 관리자, 별칭 입력과 조회는 골프장 관리자 권한입니다. 데이터 계층에서 골프장 단위로 분리합니다.</p>
+        <div class="fig">
+          <svg viewBox="0 0 260 120" preserveAspectRatio="xMidYMid meet" aria-label="권한 계층 구조">
+            <rect x="86" y="10" width="88" height="22" rx="11" fill="#4823FF"></rect>
+            <text x="130" y="25" font-family="Inter" font-size="10" fill="#FFFFFF" text-anchor="middle">전역 관리자</text>
+            <path d="M130 32 L130 44" stroke="#9E99AB" stroke-width="1.4"></path>
+            <path d="M60 44 L200 44" stroke="#9E99AB" stroke-width="1.4"></path>
+            <path d="M60 44 L60 56" stroke="#9E99AB" stroke-width="1.4"></path>
+            <path d="M200 44 L200 56" stroke="#9E99AB" stroke-width="1.4"></path>
+            <rect x="16" y="56" width="88" height="22" rx="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.2"></rect>
+            <text x="60" y="71" font-family="Inter" font-size="10" fill="#4823FF" text-anchor="middle">서울 CC 관리자</text>
+            <rect x="156" y="56" width="88" height="22" rx="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.2"></rect>
+            <text x="200" y="71" font-family="Inter" font-size="10" fill="#4823FF" text-anchor="middle">남부 CC 관리자</text>
+            <path d="M60 78 L60 90" stroke="#9E99AB" stroke-width="1.4"></path>
+            <path d="M200 78 L200 90" stroke="#9E99AB" stroke-width="1.4"></path>
+            <rect x="16" y="90" width="88" height="20" rx="10" fill="#FAFAF8" stroke="#D9D2FF" stroke-width="1.2"></rect>
+            <text x="60" y="104" font-family="Inter" font-size="9" fill="#898B91" text-anchor="middle">운영 · 정비 · 조회</text>
+            <rect x="156" y="90" width="88" height="20" rx="10" fill="#FAFAF8" stroke="#D9D2FF" stroke-width="1.2"></rect>
+            <text x="200" y="104" font-family="Inter" font-size="9" fill="#898B91" text-anchor="middle">운영 · 정비 · 조회</text>
+          </svg>
+        </div>
+        <dl>
+          <dt>현상</dt>
+          <dd>정의서에 전역 설정과 골프장별 권한이 함께 있으나 <b>등급 정의와 기능별 허용 범위가 없습니다.</b></dd>
+          <div class="sep"></div>
+          <dt>대응</dt>
+          <dd>권한 3단계와 기능별 매트릭스를 먼저 정의하고, <b>데이터 계층에서 골프장 단위로 격리</b>합니다.</dd>
+          <div class="sep"></div>
+          <dt>검증</dt>
+          <dd>역할별 계정으로 화면 · 기능 접근을 시험해 노출 범위를 확인합니다.</dd>
+        </dl>
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>출처 - 요구사항정의서 기타 항목</span><span class="mark">SOVEREIGNS · 05</span></div>
+  <div class="s-foot"><span>출처 - 요구사항정의서 기타 항목 · 대응 방안은 소버린즈 제안</span><span class="mark">SOVEREIGNS · 05</span></div>
 </section>
 
 <!-- 정의서 보완 제안 -->
@@ -648,7 +744,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
   <div class="s-head">
     <div class="eyebrow">02. 1단계 구축 범위 · 산출물 예시</div>
     <h2 class="title">화면정의서 작성 예시</h2>
-    <p class="lead">14개 화면 각각을 <b>실제 화면 시안과 동작 정의</b>로 작성해 별도 문서(20페이지)로 제출합니다.</p>
+    <p class="lead">14개 화면 각각을 <b>실제 화면 시안과 동작 · 예외 · 화면 전이</b>까지 정의해 별도 문서(22페이지)로 제출합니다.</p>
   </div>
   <div class="body">
     <div class="scr">
@@ -723,7 +819,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>별도 산출물 - 화면정의서 v0.2 (14개 화면 · 20페이지)</span><span class="mark">SOVEREIGNS · 12</span></div>
+  <div class="s-foot"><span>별도 산출물 - 화면정의서 v0.3 (14개 화면 · 22페이지)</span><span class="mark">SOVEREIGNS · 12</span></div>
 </section>
 
 <!-- 설계 산출물 예시 - 액션 플로우 -->
@@ -731,7 +827,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
   <div class="s-head">
     <div class="eyebrow">02. 1단계 구축 범위 · 산출물 예시</div>
     <h2 class="title">사용자 액션 플로우 작성 예시</h2>
-    <p class="lead">역할 5개 · 시나리오 7개를 정의해 별도 문서(14페이지)로 제출하며, 각 시나리오는 <b>인수 시험 항목으로 재사용</b>합니다.</p>
+    <p class="lead">역할 5개 · 시나리오 7개와 예외 3건을 정의해 별도 문서(18페이지)로 제출하며, 각 시나리오는 <b>인수 시험 항목으로 재사용</b>합니다.</p>
   </div>
   <div class="body">
     <div class="lanes">
@@ -768,7 +864,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
     </div>
     <div class="note"><b>시나리오 7개</b> - 개장 전 차량 점검, 라운드 중 실시간 관제, 고장 발생 대응(위 예시), 배터리 경고 대응, 마감 후 리포트 확인, 신규 카트 등록 · 교체, 코스 홀 마킹 초기 세팅.</div>
   </div>
-  <div class="s-foot"><span>별도 산출물 - 사용자 액션 플로우 v0.1 (역할 5개 · 시나리오 7개 · 14페이지)</span><span class="mark">SOVEREIGNS · 13</span></div>
+  <div class="s-foot"><span>별도 산출물 - 사용자 액션 플로우 v0.2 (역할 5개 · 시나리오 7개 · 18페이지)</span><span class="mark">SOVEREIGNS · 13</span></div>
 </section>
 
 <!-- 실시간 관제와 운행 이력 -->
