@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LSV 골프카트 관제시스템 화면정의서</title>
-<meta name="doc-version" content="0.3">
-<meta name="doc-description" content="1단계 14개 화면을 실제 프로그램 화면 수준으로 정의 - 앱 셸·컴포넌트 규칙, 화면별 시안과 동작·예외·화면 전이">
+<meta name="doc-version" content="0.4">
+<meta name="doc-description" content="1단계 14개 화면과 공통·변형 화면을 실제 프로그램 수준으로 정의 - 앱 셸, 로그인, 대형 화면, 모바일, 데이터 항목까지">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -252,6 +252,50 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
   color:var(--lavender); font-size:0.56rem; flex:1}
 .skel{background:linear-gradient(90deg,#F1EFF7,#F8F7FC,#F1EFF7); border-radius:0.3rem; height:0.5rem}
 
+/* 대형 화면(DID) 다크 모드 */
+.ui.dk{background:var(--midnight); border-color:#332E3C}
+.ui.dk .ui-head{border-bottom-color:#332E3C}
+.ui.dk .ui-head h5{color:#FFFFFF}
+.ui.dk .pane{background:#26222C; border-color:#3A3542; color:#C9C4D2}
+.ui.dk .pane .ph{color:#9E99AB}
+.ui.dk .kpi div{background:#26222C; border-color:#3A3542}
+.ui.dk .kpi b{color:#FFFFFF}
+.ui.dk .kpi span{color:#9E99AB}
+.ui.dk .map{background:#221E29; border-color:#3A3542}
+.ui.dk .chips span{background:#26222C; border-color:#3A3542; color:#C9C4D2}
+.ui.dk .chips span.on{background:var(--chartreuse); border-color:var(--chartreuse); color:var(--ink)}
+.ui.dk .tbl td{color:#C9C4D2; border-bottom-color:#332E3C}
+.ui.dk .tbl th{color:#9E99AB; border-bottom-color:#3A3542}
+.ui.dk .st{color:#C9C4D2}
+.ui.dk .gauge{background:#3A3542}
+.ui.dk .accent{color:var(--chartreuse)}
+
+/* 로그인 화면 */
+.login{flex:1; display:flex; align-items:center; justify-content:center; background:var(--bone)}
+.login .box{width:56%; background:var(--paper); border:1px solid var(--peri); border-radius:0.9rem;
+  padding:1rem 1.1rem; display:flex; flex-direction:column; gap:0.4rem}
+.login .box .lg{display:flex; align-items:center; gap:0.35rem; font-family:var(--fd); font-weight:800;
+  font-size:0.8rem; letter-spacing:-0.03em; margin-bottom:0.2rem}
+.login .box .lg i{width:0.85rem; height:0.85rem; border-radius:50%; background:var(--violet); display:inline-block}
+.login .box label{font-size:0.52rem; color:var(--slate)}
+.login .otp{display:flex; gap:0.3rem; justify-content:center; margin:0.2rem 0}
+.login .otp span{width:1.5rem; height:1.8rem; border:1px solid var(--peri); border-radius:0.35rem;
+  display:grid; place-items:center; font-family:var(--fd); font-weight:800; font-size:0.8rem; color:var(--ink)}
+.login .otp span.em{color:var(--lavender); border-style:dashed}
+
+/* 모바일 화면 */
+.phone{width:11rem; border:1px solid var(--peri); border-radius:1.1rem; background:var(--paper);
+  overflow:hidden; display:flex; flex-direction:column; margin:0 auto; min-height:0}
+.phone .bar{background:var(--bone); border-bottom:1px solid var(--line); padding:0.28rem 0.5rem;
+  font-size:0.5rem; color:var(--slate); display:flex; justify-content:space-between}
+.phone .push{margin:0.4rem; border:1px solid var(--peri); border-radius:0.6rem; padding:0.4rem 0.5rem;
+  background:var(--lilac)}
+.phone .push b{display:block; font-size:0.58rem; color:var(--ink)}
+.phone .push span{font-size:0.52rem; color:var(--carbon)}
+.phone .bd{padding:0 0.4rem 0.4rem; display:flex; flex-direction:column; gap:0.3rem; flex:1; min-height:0}
+.phone .row{display:flex; justify-content:space-between; font-size:0.54rem; color:var(--carbon)}
+.phone .act{display:flex; gap:0.25rem; margin-top:auto}
+
 /* 화면 정의 패널 */
 .def{display:flex; flex-direction:column; gap:0.5rem; min-height:0}
 .def .blk{background:var(--paper); border:1px solid var(--peri); border-radius:1rem; padding:0.65rem 0.85rem}
@@ -294,14 +338,14 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       <div class="cov-rows">
         <div class="r"><span>정의 화면</span><b>14개</b></div>
         <div class="r"><span>메뉴 구성</span><b>6개</b></div>
-        <div class="r"><span>화면 시안</span><b>전 화면 + 상태</b></div>
-        <div class="r"><span>화면 전이</span><b>정의 포함</b></div>
+        <div class="r"><span>화면 시안</span><b>전 화면 + 변형</b></div>
+        <div class="r"><span>공통 · 변형 화면</span><b>4종</b></div>
       </div>
     </div>
   </div>
   <div class="meta">
     <div><b>LSV 귀중</b>제출처</div>
-    <div><b>v0.3 · 2026. 08</b>문서 버전</div>
+    <div><b>v0.4 · 2026. 08</b>문서 버전</div>
     <div><b>소버린즈 주식회사</b>작성</div>
   </div>
 </section>
@@ -1971,6 +2015,263 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
   <div class="s-foot"><span>대응 요구사항 - 이용자 관리</span><span class="mark">SOVEREIGNS · 20</span></div>
 </section>
 
+<!-- 공통 화면 - 로그인 -->
+<section class="slide" data-title="공통 화면 로그인 · 2단계 인증">
+  <div class="s-head">
+    <div class="eyebrow">공통 화면 · 로그인</div>
+    <h2 class="title">로그인과 2단계 인증</h2>
+  </div>
+  <div class="body">
+    <div class="scr">
+      <div class="ui">
+        <div class="ui-top"><span class="lg"><i></i>LSV TMS</span><span class="sp"></span><span class="sel">한국어</span></div>
+        <div class="ui-cols" style="grid-template-columns:1fr 1fr; gap:0; flex:1">
+          <div class="login" style="border-right:1px solid var(--line)">
+            <div class="box">
+              <div class="lg"><i></i>LSV TMS 로그인</div>
+              <div><label>계정</label><span class="fld box">kim.op</span></div>
+              <div><label>비밀번호</label><span class="fld box">••••••••••</span></div>
+              <div class="chk" style="margin-top:0.15rem"><i class="on"></i>이 브라우저 기억(30일)</div>
+              <span class="btn fill" style="justify-content:center; margin-top:0.25rem">로그인</span>
+              <span style="font-size:0.5rem; color:var(--lavender); text-align:center">비밀번호를 잊으셨나요</span>
+            </div>
+          </div>
+          <div class="login">
+            <div class="box">
+              <div class="lg"><i></i>2단계 인증</div>
+              <span style="font-size:0.55rem; color:var(--carbon)">등록된 인증 앱의 6자리 코드를 입력하세요.</span>
+              <div class="otp"><span>4</span><span>8</span><span>2</span><span>3</span><span class="em">·</span><span class="em">·</span></div>
+              <span style="font-size:0.5rem; color:var(--slate); text-align:center">남은 시간 00:24</span>
+              <span class="btn fill" style="justify-content:center">확인</span>
+              <span style="font-size:0.5rem; color:var(--rose); text-align:center">코드가 일치하지 않습니다 (2회 남음)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="def">
+        <div class="blk">
+          <div class="h">화면 정보</div>
+          <div class="kv"><span>화면 ID</span><b>SCR-000</b></div>
+          <div class="kv"><span>진입 경로</span><span>미인증 접근 · 세션 만료</span></div>
+          <div class="kv"><span>접근 권한</span><span>비인증</span></div>
+          <div class="kv"><span>후속 화면</span><span>SCR-010 또는 직전 화면</span></div>
+        </div>
+        <div class="blk">
+          <div class="h">인증 규칙</div>
+          <ul>
+            <li>비밀번호 규칙(길이 · 문자 조합)과 변경 주기를 정책으로 강제</li>
+            <li>2단계 인증은 인증 앱 코드 6자리, 유효 시간 30초</li>
+            <li>연속 5회 실패 시 계정 잠금, 관리자만 해제</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <div class="h">세션 처리</div>
+          <ul>
+            <li>세션 만료 시 이 화면으로 이동하고 <b>직전 화면을 기억</b></li>
+            <li>조회 전용(DID) 계정은 장기 세션을 허용하되 편집 권한 없음</li>
+            <li>IP 기반 접속 제한은 관리자 계정에 우선 적용</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>미인증</em><span class="on">SCR-000</span>→<span>SCR-010</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>대응 요구사항 - 이용자 관리(패스워드 규칙 · 2단계 인증)</span><span class="mark">SOVEREIGNS · 21</span></div>
+</section>
+
+<!-- 대형 화면(DID) -->
+<section class="slide" data-title="대형 화면(DID) 다크 모드">
+  <div class="s-head">
+    <div class="eyebrow">화면 변형 · 대형 화면</div>
+    <h2 class="title">관제실 대형 화면 레이아웃</h2>
+    <p class="lead">관제실 DID는 조작 없이 읽는 화면이므로 <b>글자를 키우고 다크 모드로 전환</b>합니다.</p>
+  </div>
+  <div class="body">
+    <div class="scr">
+      <div class="ui dk">
+        <div class="ui-head" style="padding:0.5rem 0.7rem">
+          <h5>서울 CC 종합 관제</h5><span class="st run"><i></i><span style="color:#C9C4D2">연결됨</span></span>
+          <span class="sp"></span><span style="font-size:0.6rem; color:#9E99AB">2026-08-28 14:22 · 자동 갱신</span></div>
+        <div class="ui-body">
+          <div class="kpi" style="grid-template-columns:repeat(5,1fr); flex:none">
+            <div><b style="font-size:1.35rem">50</b><span>전체 카트</span></div>
+            <div><b style="font-size:1.35rem" class="accent">35</b><span>운행 중</span></div>
+            <div><b style="font-size:1.35rem">8</b><span>충전 중</span></div>
+            <div><b style="font-size:1.35rem; color:#FF7A94">7</b><span>정비 필요</span></div>
+            <div><b style="font-size:1.35rem">13%</b><span>코스 지연률</span></div>
+          </div>
+          <div class="ui-cols" style="grid-template-columns:2fr 1fr">
+            <div class="map" data-bleed>
+              <svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid meet" aria-label="대형 화면 코스 현황">
+                <path d="M52 216 C 84 182, 118 154, 164 140" fill="none" stroke="#3A3542" stroke-width="30" stroke-linecap="round"></path>
+                <path d="M204 126 C 252 110, 300 114, 342 96" fill="none" stroke="#3A3542" stroke-width="28" stroke-linecap="round"></path>
+                <path d="M116 62 C 166 42, 226 46, 278 28" fill="none" stroke="#3A3542" stroke-width="26" stroke-linecap="round"></path>
+                <circle cx="180" cy="134" r="9" fill="#2E2937" stroke="#7E78FF" stroke-width="1.4"></circle>
+                <circle cx="344" cy="92" r="9" fill="#2E2937" stroke="#7E78FF" stroke-width="1.4"></circle>
+                <path d="M58 212 C 90 180, 124 152, 170 138 C 220 122, 268 126, 308 110" fill="none" stroke="#E7FF6E" stroke-width="2.6" stroke-linecap="round"></path>
+                <circle cx="308" cy="110" r="6" fill="#E7FF6E" stroke="#1E1B22" stroke-width="2"></circle>
+                <circle cx="228" cy="124" r="5.5" fill="#E7FF6E" stroke="#1E1B22" stroke-width="2"></circle>
+                <circle cx="112" cy="176" r="5.5" fill="#7E78FF" stroke="#1E1B22" stroke-width="2"></circle>
+                <circle cx="256" cy="44" r="5.5" fill="#FF7A94" stroke="#1E1B22" stroke-width="2"></circle>
+                <circle cx="158" cy="56" r="5.5" fill="#99CEFE" stroke="#1E1B22" stroke-width="2"></circle>
+              </svg>
+              <div class="lay"><span class="on">궤적</span><span>지오펜스</span></div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:0.42rem; min-height:0">
+              <div class="pane" style="flex:1.1">
+                <span class="ph">긴급 알림</span>
+                <div class="st fix" style="justify-content:space-between; font-size:0.62rem"><span><i></i>DTC · #101</span><span>2분</span></div>
+                <div class="st fix" style="justify-content:space-between; font-size:0.62rem"><span><i></i>배터리 · #118</span><span>6분</span></div>
+                <div class="st disp" style="justify-content:space-between; font-size:0.62rem"><span><i></i>통신 · #114</span><span>12분</span></div>
+              </div>
+              <div class="pane" style="flex:1">
+                <span class="ph">배터리 요약</span>
+                <div class="grow"><span style="font-size:0.58rem; width:1.6rem">정상</span><span class="gauge"><i style="width:72%; background:#E7FF6E"></i></span><span style="font-size:0.58rem">36</span></div>
+                <div class="grow"><span style="font-size:0.58rem; width:1.6rem">주의</span><span class="gauge"><i style="width:20%; background:#7E78FF"></i></span><span style="font-size:0.58rem">10</span></div>
+                <div class="grow"><span style="font-size:0.58rem; width:1.6rem">경고</span><span class="gauge"><i style="width:8%; background:#FF7A94"></i></span><span style="font-size:0.58rem">4</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="chips"><span class="on">H4 진행 중</span><span>H5 대기</span><span>지연 H4 · H7</span><span>가동률 86%</span></div>
+        </div>
+      </div>
+      <div class="def">
+        <div class="blk">
+          <div class="h">화면 정보</div>
+          <div class="kv"><span>기준 화면</span><b>SCR-010 변형</b></div>
+          <div class="kv"><span>진입 경로</span><span>전체 화면 · 다크 모드 전환</span></div>
+          <div class="kv"><span>사용 계정</span><span>조회 전용(DID)</span></div>
+          <div class="kv"><span>출력</span><span>55인치 이상 · 4K 배율</span></div>
+        </div>
+        <div class="blk">
+          <div class="h">변형 규칙</div>
+          <ul>
+            <li>상단 바 · 좌측 메뉴를 숨기고 <b>본문만 표시</b></li>
+            <li>KPI 글자 크기를 키우고 보조 정보는 생략</li>
+            <li>강조는 다크 배경에서만 샤르트뢰즈를 사용</li>
+            <li>클릭 · 입력 컨트롤을 노출하지 않음</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <div class="h">운영 고려</div>
+          <ul>
+            <li>화면 보호와 번인 방지를 위해 일정 주기로 레이아웃 미세 이동</li>
+            <li>연결 끊김 시 화면 상단에 큰 배너로 표시</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>대응 요구사항 - 대형 모니터 · DID 출력용 다크 모드</span><span class="mark">SOVEREIGNS · 22</span></div>
+</section>
+
+<!-- 모바일 알림 -->
+<section class="slide" data-title="모바일 알림 화면">
+  <div class="s-head">
+    <div class="eyebrow">화면 변형 · 모바일</div>
+    <h2 class="title">정비 담당자 모바일 알림</h2>
+    <p class="lead">긴급 이벤트는 <b>현장에 있는 담당자</b>에게 바로 도달해야 하므로 모바일 화면을 함께 정의합니다.</p>
+  </div>
+  <div class="body">
+    <div class="scr" style="grid-template-columns:1.35fr 1fr">
+      <div class="ui" style="background:var(--bone)">
+        <div class="ui-head"><h5>모바일 알림 흐름</h5><span class="sp"></span><span class="fld sel">정비 담당자 계정</span></div>
+        <div class="ui-body">
+          <div class="ui-cols" style="grid-template-columns:1fr 1fr 1fr; gap:0.6rem">
+            <div class="phone">
+              <div class="bar"><span>14:22</span><span>LTE</span></div>
+              <div class="push">
+                <b>긴급 · DTC 발생</b>
+                <span>#101 스카이23 · BMS 과전류<br>4번 홀 페어웨이</span>
+              </div>
+              <div class="bd">
+                <span style="font-size:0.5rem; color:var(--lavender); text-align:center; margin-top:auto">잠금 화면 푸시</span>
+              </div>
+            </div>
+            <div class="phone">
+              <div class="bar"><span>알림 상세</span><span>·</span></div>
+              <div class="bd" style="padding-top:0.4rem">
+                <div class="row"><b style="font-family:var(--fd); font-size:0.62rem">BMS 과전류</b><span class="pill r">긴급</span></div>
+                <div class="row"><span>카트</span><span>#101 스카이23</span></div>
+                <div class="row"><span>발생</span><span>14:22 · 3회</span></div>
+                <div class="row"><span>위치</span><span>4번 홀</span></div>
+                <div class="row"><span>SoC</span><span>62%</span></div>
+                <div class="act"><span class="btn gh">지도</span><span class="btn fill">접수</span></div>
+              </div>
+            </div>
+            <div class="phone">
+              <div class="bar"><span>조치 등록</span><span>·</span></div>
+              <div class="bd" style="padding-top:0.4rem">
+                <span style="font-size:0.5rem; color:var(--slate)">조치 내용</span>
+                <span class="fld box" style="font-size:0.5rem; min-height:1.6rem">커넥터 재결선 완료</span>
+                <span style="font-size:0.5rem; color:var(--slate)">사진</span>
+                <span class="fld box" style="font-size:0.5rem">IMG_2841.jpg</span>
+                <div class="chk" style="font-size:0.5rem"><i class="on"></i>이벤트 종결</div>
+                <div class="act"><span class="btn fill" style="justify-content:center; width:100%">등록</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="def">
+        <div class="blk">
+          <div class="h">화면 정보</div>
+          <div class="kv"><span>대상</span><b>정비 담당자 · 관리자</b></div>
+          <div class="kv"><span>발송 대상</span><span>긴급 등급 이벤트</span></div>
+          <div class="kv"><span>채널</span><span>앱 푸시 · SMS(대체)</span></div>
+          <div class="kv"><span>연계 화면</span><span>SCR-030 · 090</span></div>
+        </div>
+        <div class="blk">
+          <div class="h">동작 규칙</div>
+          <ul>
+            <li>푸시 탭 시 알림 상세로 바로 진입하고 <b>접수</b>하면 확인 처리</li>
+            <li>접수한 담당자가 관제 화면에도 표시됨</li>
+            <li>조치 등록은 사진 첨부와 함께 저장하고 이벤트를 종결</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <div class="h">범위</div>
+          <ul>
+            <li>모바일은 <b>알림 수신과 조치 등록</b>에 한정하고 관제 · 설정 기능은 제외</li>
+            <li>푸시 미수신 대비로 SMS 대체 발송 여부를 정책으로 정함</li>
+            <li>웹앱(PWA)으로 제공해 별도 설치 부담을 줄임</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>대응 요구사항 - 긴급 고장 시 모바일 연동</span><span class="mark">SOVEREIGNS · 23</span></div>
+</section>
+
+<!-- 데이터 항목 정의 -->
+<section class="slide" data-title="화면 데이터 항목 정의">
+  <div class="s-head">
+    <div class="eyebrow">데이터</div>
+    <h2 class="title">화면 데이터 항목 정의</h2>
+    <p class="lead">화면에 보이는 값이 <b>어디에서 오고 언제 갱신되는지</b>를 항목 단위로 정리합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense">
+      <tr><th>항목</th><th>표시 화면</th><th>원천</th><th>형식 · 단위</th><th>갱신</th><th>비고</th></tr>
+      <tr><td><b>위치 좌표</b></td><td class="g">SCR-010 · 020 · 040</td><td class="g">단말 GPS</td><td class="g">위도 · 경도(소수점 6자리)</td><td class="g">수집 주기(협의)</td><td class="g">이상값은 보정 후 표시</td></tr>
+      <tr><td><b>속도</b></td><td class="g">SCR-020 · 040</td><td class="g">VCU wSpeed</td><td class="g">km/h · 정수</td><td class="g">수집 주기</td><td class="g">정지 판정에 사용</td></tr>
+      <tr><td><b>SoC</b></td><td class="g">SCR-010 · 020 · 060 · 110</td><td class="g">BMS · SOC 신호</td><td class="g">% · 정수</td><td class="g">수집 주기</td><td class="g">임계값으로 3구간 분류</td></tr>
+      <tr><td><b>팩 전압 · 전류</b></td><td class="g">SCR-070 · 120</td><td class="g">BMS PackV · Current</td><td class="g">V · A · 소수점 1자리</td><td class="g">수집 주기</td><td class="g">이벤트 시점 값 보관</td></tr>
+      <tr><td><b>고장 코드</b></td><td class="g">SCR-030 · 070 · 120</td><td class="g">BMS · MCU · VCU · AGV</td><td class="g">코드 문자열 + 사전 매핑</td><td class="g">발생 즉시</td><td class="g">미정의 코드는 원문 표시</td></tr>
+      <tr><td><b>카트 상태</b></td><td class="g">전 화면</td><td class="g">서버 판정</td><td class="g">6종 열거값</td><td class="g">상태 변경 시</td><td class="g">화면 · 리포트 공통</td></tr>
+      <tr><td><b>홀 구간 · 소요</b></td><td class="g">SCR-040 · 050</td><td class="g">지오펜스 진입 · 이탈</td><td class="g">시각 · 분</td><td class="g">트립 종료 시 확정</td><td class="g">재계산 이력 보관</td></tr>
+      <tr><td><b>이동 거리</b></td><td class="g">SCR-050 · 070</td><td class="g">궤적 누적</td><td class="g">km · 소수점 1자리</td><td class="g">트립 종료 시 확정</td><td class="g">지도 API 경로 미사용</td></tr>
+      <tr><td><b>정비 주기</b></td><td class="g">SCR-060 · 090</td><td class="g">정비 이력 · 소모품 규칙</td><td class="g">잔여 일수(D-n)</td><td class="g">교체 등록 시</td><td class="g">초과 시 지남 표기</td></tr>
+      <tr><td><b>부품 시리얼</b></td><td class="g">SCR-080</td><td class="g">MES 연계</td><td class="g">문자열</td><td class="g">등록 · 동기화 시</td><td class="g">미등록 시 경고 표시</td></tr>
+    </table>
+    <div class="note"><b>확정 후 반영</b> - 수집 주기와 보관 기간이 정해지면 갱신 열과 조회 가능 기간을 확정하고, 화면별 최대 조회 범위를 함께 표기합니다.</div>
+  </div>
+  <div class="s-foot"><span>상세 스키마와 API 명세는 착수 단계에서 별도 작성</span><span class="mark">SOVEREIGNS · 24</span></div>
+</section>
+
 <!-- 화면 전이 맵 -->
 <section class="slide" data-title="화면 전이 맵">
   <div class="s-head">
@@ -2010,7 +2311,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       <tr><td><span class="sid">SCR-130</span> 홀 마킹</td><td class="g">설정 메뉴</td><td class="g">SCR-040</td><td class="g">설정 후 검증 주행으로 확인</td></tr>
     </table>
   </div>
-  <div class="s-foot"><span>진입 경로가 하나뿐인 화면은 메뉴에서도 접근할 수 있게 합니다</span><span class="mark">SOVEREIGNS · 21</span></div>
+  <div class="s-foot"><span>진입 경로가 하나뿐인 화면은 메뉴에서도 접근할 수 있게 합니다</span><span class="mark">SOVEREIGNS · 25</span></div>
 </section>
 
 <!-- 맺음 -->
@@ -2020,7 +2321,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
   <p>검토 의견을 반영해 화면별 정의를 확정한 뒤, 확정본을 개발과 검수의 기준 문서로 관리합니다.</p>
   <div class="info">
     <div><b>소버린즈 주식회사</b>846-81-03834</div>
-    <div><b>문서</b>화면정의서 v0.3</div>
+    <div><b>문서</b>화면정의서 v0.4</div>
     <div><b>작성</b>2026. 08</div>
   </div>
 </section>
