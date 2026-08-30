@@ -231,6 +231,63 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 .def li{position:relative; padding:0.2rem 0 0.2rem 0.85rem; font-size:0.78rem; color:var(--carbon); line-height:1.42}
 .def li::before{content:""; position:absolute; left:0; top:0.62rem; width:0.28rem; height:0.28rem; border-radius:50%; background:var(--violet)}
 
+/* 설계 산출물 예시 - 실제 화면 시안(UI 키트, 화면정의서와 동일) */
+.ui{position:relative; background:var(--paper); border:1px solid var(--peri); border-radius:1.1rem;
+  overflow:hidden; display:flex; flex-direction:column; min-height:0}
+.ui-top{display:flex; align-items:center; gap:0.5rem; padding:0.4rem 0.7rem;
+  border-bottom:1px solid var(--lilac); background:var(--bone); font-size:0.64rem; color:var(--slate)}
+.ui-top .lg{display:flex; align-items:center; gap:0.32rem; font-family:var(--fd); font-weight:800;
+  font-size:0.7rem; color:var(--ink); letter-spacing:-0.03em}
+.ui-top .lg i{width:0.8rem; height:0.8rem; border-radius:50%; background:var(--violet); display:inline-block}
+.ui-top .sel{border:1px solid var(--peri); border-radius:999px; padding:0.1rem 0.5rem; color:var(--carbon); background:var(--paper)}
+.ui-top .sp{flex:1}
+.ui-top .bell{position:relative; padding-right:0.75rem}
+.ui-top .bell b{position:absolute; top:-0.28rem; right:0; background:var(--violet); color:#FFFFFF;
+  border-radius:999px; font-size:0.52rem; padding:0 0.22rem; font-weight:600}
+.ui-top .av{width:1rem; height:1rem; border-radius:50%; background:var(--lilac); border:1px solid var(--peri)}
+.ui-head{display:flex; align-items:center; gap:0.4rem; padding:0.45rem 0.7rem; border-bottom:1px solid var(--lilac)}
+.ui-head h5{font-family:var(--fd); font-weight:800; font-size:0.8rem; margin:0; letter-spacing:-0.02em}
+.ui-head .sp{flex:1}
+.ui-body{padding:0.6rem 0.7rem; display:flex; flex-direction:column; gap:0.5rem; flex:1; min-height:0}
+.ui-cols{display:grid; gap:0.5rem; flex:1; min-height:0}
+.pane{border:1px solid var(--peri); border-radius:0.7rem; padding:0.45rem 0.55rem; display:flex;
+  flex-direction:column; gap:0.35rem; min-height:0; overflow:hidden; background:var(--paper)}
+.pane .ph{font-size:0.58rem; color:var(--slate); font-weight:600; letter-spacing:0.03em}
+.btn{border:0; border-radius:999px; font-family:var(--fu); font-size:0.6rem; font-weight:600;
+  padding:0.2rem 0.62rem; display:inline-block}
+.btn.fill{background:var(--violet); color:#FFFFFF}
+.btn.out{background:transparent; border:1px solid var(--violet); color:var(--violet)}
+.fld{border:1px solid var(--peri); border-radius:999px; padding:0.2rem 0.6rem; font-size:0.6rem;
+  color:var(--lavender); background:var(--paper); display:inline-block}
+.chips{display:flex; gap:0.28rem; flex-wrap:wrap}
+.chips span{border:1px solid var(--peri); border-radius:999px; padding:0.14rem 0.55rem;
+  font-size:0.58rem; color:var(--carbon); background:var(--paper)}
+.chips span.on{background:var(--violet); border-color:var(--violet); color:#FFFFFF; font-weight:600}
+.tbl{width:100%; border:0; border-radius:0; background:transparent; font-size:0.6rem}
+.tbl th{padding:0.26rem 0.35rem; font-size:0.54rem; font-weight:600; color:var(--slate);
+  letter-spacing:0.03em; text-transform:none; border-bottom:1px solid var(--peri); white-space:nowrap}
+.tbl td{padding:0.28rem 0.35rem; border-bottom:1px solid var(--lilac); color:var(--carbon); vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td.n{text-align:right; font-variant-numeric:tabular-nums}
+.tbl td.id{font-family:var(--fd); font-weight:800; font-size:0.58rem; color:var(--ink)}
+.tbl tr.sel td{background:var(--lilac)}
+.st{display:inline-flex; align-items:center; gap:0.22rem; font-size:0.56rem; color:var(--carbon); white-space:nowrap}
+.st i{width:0.38rem; height:0.38rem; border-radius:50%; display:inline-block; flex:none}
+.st.run i{background:var(--violet)}
+.st.disp i{background:var(--voltage)}
+.st.back i{background:var(--lavender)}
+.st.chg i{background:var(--powder)}
+.st.fix i{background:#E11D48}
+.map{position:relative; border:1px solid var(--peri); border-radius:0.7rem; background:var(--lilac); overflow:hidden; min-height:0}
+.map svg{width:100%; height:100%; display:block}
+.map .lay{position:absolute; left:0.4rem; top:0.4rem; display:flex; gap:0.25rem}
+.map .lay span{background:rgba(255,255,255,0.92); border:1px solid var(--peri); border-radius:999px;
+  font-size:0.52rem; padding:0.1rem 0.4rem; color:var(--carbon)}
+.map .lay span.on{background:var(--violet); border-color:var(--violet); color:#FFFFFF}
+.map .tip{position:absolute; background:var(--paper); border:1px solid var(--peri); border-radius:0.45rem;
+  padding:0.25rem 0.4rem; font-size:0.54rem; color:var(--carbon); line-height:1.35}
+.map .tip b{display:block; font-size:0.58rem; color:var(--ink)}
+
 /* 설계 산출물 예시 - 역할 스윔레인 (액션 플로우와 동일 규칙) */
 .lanes{display:flex; flex-direction:column; gap:0.55rem}
 .lane{display:grid; grid-template-columns:7rem 1fr; gap:0.6rem}
@@ -591,19 +648,53 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
   <div class="s-head">
     <div class="eyebrow">02. 1단계 구축 범위 · 산출물 예시</div>
     <h2 class="title">화면정의서 작성 예시</h2>
-    <p class="lead">14개 화면 각각을 <b>와이어프레임 · 화면 정보 · 동작 · 예외</b> 구성으로 정의해 별도 문서(16페이지)로 제출합니다.</p>
+    <p class="lead">14개 화면 각각을 <b>실제 화면 시안과 동작 정의</b>로 작성해 별도 문서(20페이지)로 제출합니다.</p>
   </div>
   <div class="body">
     <div class="scr">
-      <div class="wf">
-        <div class="bar">SCR-020 실시간 관제 지도<span class="r">연결 상태 표시</span></div>
-        <div class="row" style="grid-template-columns:2fr 1fr">
-          <div class="box"><b>상태 필터</b>전체 / 운행 / 충전 / 정비 / 대기</div>
-          <div class="box"><b>레이어</b>지오펜스 · 위험 구역 · 궤적</div>
+      <div class="ui">
+        <div class="ui-top">
+          <span class="lg"><i></i>LSV TMS</span><span class="sel">서울 CC</span>
+          <span class="sp"></span><span class="bell">알림<b>7</b></span><span class="sel">관제 운영자</span><span class="av"></span>
         </div>
-        <div class="fill" style="grid-template-columns:2fr 1fr">
-          <div class="box on"><b>지도 캔버스</b>카트 마커(번호 · SoC · 상태), 선택 시 요약 팝업</div>
-          <div class="box"><b>카트 목록</b>번호 · 상태 · SoC · 최근 수신 시각. 지도와 상호 강조</div>
+        <div class="ui-head"><h5>실시간 관제</h5><span class="st run"><i></i>연결됨</span>
+          <span class="sp"></span><span class="fld">카트 번호 · 별칭 검색</span><span class="btn out">전체 화면</span></div>
+        <div class="ui-body">
+          <div class="chips"><span class="on">전체 50</span><span>운행 35</span><span>충전 8</span><span>정비 7</span><span>대기 0</span></div>
+          <div class="ui-cols" style="grid-template-columns:1.75fr 1fr">
+            <div class="map" data-bleed>
+              <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-label="실시간 카트 위치">
+                <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
+                <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
+                <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#D9D2FF" stroke-width="28" stroke-linecap="round"></path>
+                <path d="M46 148 C 76 122, 122 126, 130 154 C 136 178, 104 194, 76 187 C 52 180, 32 162, 46 148" fill="#EFECFA" stroke="#9E99AB" stroke-width="1.2" stroke-dasharray="4 5"></path>
+                <text x="86" y="166" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">위험 구역</text>
+                <circle cx="182" cy="182" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
+                <circle cx="182" cy="182" r="22" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
+                <circle cx="344" cy="136" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
+                <circle cx="344" cy="136" r="22" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
+                <path d="M68 268 C 100 230, 132 202, 176 186 C 226 168, 272 172, 312 156" fill="none" stroke="#4823FF" stroke-width="3" stroke-linecap="round"></path>
+                <circle cx="312" cy="156" r="7" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                <circle cx="232" cy="170" r="6.5" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                <circle cx="118" cy="226" r="6.5" fill="#7E78FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                <circle cx="262" cy="76" r="6.5" fill="#E11D48" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                <circle cx="164" cy="88" r="6.5" fill="#99CEFE" stroke="#FFFFFF" stroke-width="2.4"></circle>
+              </svg>
+              <div class="lay"><span class="on">궤적</span><span class="on">지오펜스</span><span>위험 구역</span></div>
+              <div class="tip" style="left:5%; bottom:6%"><b>#101 스카이23</b>운행 · 12.4km/h · SoC 62%</div>
+            </div>
+            <div class="pane">
+              <span class="ph">카트 목록 · 50대</span>
+              <table class="tbl">
+                <tr><th>카트</th><th>상태</th><th>SoC</th><th>수신</th></tr>
+                <tr class="sel"><td class="id">#101</td><td><span class="st run"><i></i>운행</span></td><td class="n">62%</td><td class="n">2초</td></tr>
+                <tr><td class="id">#102</td><td><span class="st run"><i></i>운행</span></td><td class="n">48%</td><td class="n">3초</td></tr>
+                <tr><td class="id">#107</td><td><span class="st disp"><i></i>배차</span></td><td class="n">88%</td><td class="n">5초</td></tr>
+                <tr><td class="id">#114</td><td><span class="st fix"><i></i>정비</span></td><td class="n">21%</td><td class="n">4분</td></tr>
+                <tr><td class="id">#118</td><td><span class="st chg"><i></i>충전</span></td><td class="n">34%</td><td class="n">8초</td></tr>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
       <div class="def">
@@ -632,7 +723,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>별도 산출물 - 화면정의서 v0.1 (14개 화면 · 16페이지)</span><span class="mark">SOVEREIGNS · 12</span></div>
+  <div class="s-foot"><span>별도 산출물 - 화면정의서 v0.2 (14개 화면 · 20페이지)</span><span class="mark">SOVEREIGNS · 12</span></div>
 </section>
 
 <!-- 설계 산출물 예시 - 액션 플로우 -->
