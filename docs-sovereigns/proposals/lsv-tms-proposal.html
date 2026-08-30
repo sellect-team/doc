@@ -7,28 +7,32 @@
 <meta name="doc-version" content="0.2">
 <meta name="doc-description" content="LSV 골프카트 관제시스템 1단계 구축 제안 - 요구사항 구성과 쟁점, 기능 12건 대응, 대시보드 구성, 시스템 구조, 2단계 확장 로드맵">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-SemiBold.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Light.woff2") format("woff2");font-weight:300;font-display:swap}
 /* ============================================================
-   문서 규격 - Cake Equity 기준 디자인 시스템
-   16:9 고정 캔버스 / 라틴은 Plus Jakarta Sans·Inter, 한글은 Pretendard 폴백
-   채움은 바이올렛 하나뿐 · 카드는 그림자 대신 1px 테두리 · 다크는 덱당 1장
+   세일링스톤 문서 규격 - SUIT · slate · teal
+   16:9 고정 캔버스 / 세일링스톤 SUIT · slate · teal 팔레트
+   채움 강조는 teal 하나뿐 · 카드는 그림자 대신 1px 테두리 · 다크는 덱당 1장
    ============================================================ */
 :root{
-  --violet:#4823FF; --voltage:#7E78FF; --iris:#6D67FB;
-  --lilac:#EDE9FF; --peri:#D9D2FF; --chartreuse:#E7FF6E; --powder:#99CEFE;
-  --bone:#FAFAF8; --paper:#FFFFFF; --ink:#18161A; --carbon:#333333;
-  --slate:#898B91; --lavender:#9E99AB; --midnight:#1E1B22;
+  --violet:#0D9488; --voltage:#2DD4BF; --iris:#0F766E;
+  --lilac:#F0FDFA; --peri:#CBD5E1; --chartreuse:#2DD4BF; --powder:#38BDF8;
+  --bone:#F8FAFC; --paper:#FFFFFF; --ink:#0F172A; --carbon:#334155;
+  --slate:#64748B; --lavender:#94A3B8; --midnight:#0F172A;
   --mint:#2DD4BF; --teal:#0D9488;   /* 세일링스톤 브랜드 - 회사소개서 기준 */
-  --fd:'Plus Jakarta Sans','Pretendard Variable',Pretendard,sans-serif;
-  --fu:'Inter','Pretendard Variable',Pretendard,sans-serif;
+  --fd:"SUIT","Pretendard Variable",Pretendard,-apple-system,sans-serif;
+  --fu:"SUIT","Pretendard Variable",Pretendard,-apple-system,sans-serif;
   --pad:3.5rem;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:min(1.25vw,2.2222vh)}
 body{
-  margin:0; background:#E8E5F0; font-family:var(--fu);
+  margin:0; background:#E2E8F0; font-family:var(--fu);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   min-height:100vh; color:var(--ink); -webkit-font-smoothing:antialiased;
   word-break:keep-all; /* 한글은 단어 단위로 줄바꿈 */
@@ -49,7 +53,7 @@ section.slide{
 h2.title{font-family:var(--fd); font-weight:800; font-size:2.25rem; letter-spacing:-0.032em; line-height:1.15; margin:0.5rem 0 0}
 .lead{font-weight:300; font-size:1.1rem; line-height:1.5; margin:0.65rem 0 0; max-width:62ch}
 .lead b{font-weight:600; color:var(--violet)}
-.dark .lead{color:#EDEAF2}
+.dark .lead{color:#E2E8F0}
 .dark .lead b{color:var(--chartreuse)}
 
 /* 본문 */
@@ -60,23 +64,23 @@ h2.title{font-family:var(--fd); font-weight:800; font-size:2.25rem; letter-spaci
 .g4{grid-template-columns:repeat(4,1fr)}
 .card{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1.3rem 1.35rem}
 .card.lil{background:var(--lilac)}
-.dark .card{background:#26222C; border-color:#3A3542}
+.dark .card{background:#1E293B; border-color:#334155}
 .card h3{font-family:var(--fd); font-weight:800; font-size:1.1rem; letter-spacing:-0.02em; margin:0.45rem 0 0}
 .card p{font-size:0.9rem; line-height:1.55; color:var(--carbon); margin:0.5rem 0 0}
-.dark .card p{color:#C9C4D2}
+.dark .card p{color:#CBD5E1}
 .card ul{margin:0.55rem 0 0; padding:0; list-style:none}
 .card li{position:relative; padding:0.28rem 0 0.28rem 0.9rem; font-size:0.88rem; color:var(--carbon); line-height:1.45}
 .card li::before{content:""; position:absolute; left:0; top:0.72rem; width:0.3rem; height:0.3rem; border-radius:50%; background:var(--violet)}
-.dark .card li{color:#C9C4D2}
+.dark .card li{color:#CBD5E1}
 .dark .card li::before{background:var(--chartreuse)}
 .tag{display:inline-block; background:var(--lilac); color:var(--violet); font-weight:600; font-size:0.72rem; padding:0.18rem 0.68rem; border-radius:999px}
-.tag.gray{background:#F0EFF3; color:var(--slate)}
+.tag.gray{background:#F1F5F9; color:var(--slate)}
 .tag.ch{background:var(--chartreuse); color:var(--ink)}
 .tags{display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.7rem}
 .num{font-family:var(--fd); font-weight:800; font-size:2rem; letter-spacing:-0.04em; line-height:1; color:var(--violet)}
 .dark .num{color:var(--chartreuse)}
 .unit{font-size:0.76rem; color:var(--slate); margin-top:0.3rem}
-.dark .unit{color:#9E99AB}
+.dark .unit{color:#94A3B8}
 
 /* 표 */
 table{width:100%; border-collapse:separate; border-spacing:0; background:var(--paper);
@@ -91,7 +95,7 @@ td .tag{font-size:0.68rem}
 /* 꼬리말 */
 .s-foot{display:flex; justify-content:space-between; align-items:center;
   font-size:0.7rem; letter-spacing:0.04em; color:var(--slate); padding-top:1rem}
-.dark .s-foot{color:#6F6A79}
+.dark .s-foot{color:#64748B}
 .s-foot .mark{font-family:var(--fd); font-weight:800; letter-spacing:-0.02em}
 
 /* 표지 */
@@ -177,9 +181,9 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
   padding:0.4rem 1rem; font-size:0.88rem; font-weight:600}
 .states .st.on{background:var(--violet); border-color:var(--violet); color:#FFFFFF}
 .states .ar{color:var(--lavender); font-size:0.85rem}
-.dark .flow .step{background:#26222C; border-color:#3A3542}
+.dark .flow .step{background:#1E293B; border-color:#334155}
 .dark .flow .step .k{color:var(--chartreuse)}
-.dark .flow .step p{color:#C9C4D2}
+.dark .flow .step p{color:#CBD5E1}
 
 /* 대시보드 구성안 */
 .mock{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:0.9rem;
@@ -253,9 +257,9 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 
 /* 제공 자료 표기 */
 .must{display:inline-block; font-size:0.66rem; font-weight:600; border-radius:999px; padding:0.06rem 0.45rem;
-  background:#FDE7ED; color:var(--rose)}
+  background:#FEE2E2; color:var(--rose)}
 .opt{display:inline-block; font-size:0.66rem; font-weight:600; border-radius:999px; padding:0.06rem 0.45rem;
-  background:#F0EFF3; color:var(--slate)}
+  background:#F1F5F9; color:var(--slate)}
 
 /* 도입 전후 대비 */
 .bax{display:grid; grid-template-columns:1.1fr 0.2fr 1.35fr; gap:0.35rem 0.6rem; align-items:center}
@@ -269,9 +273,9 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 
 /* 위험도 */
 .lv{display:inline-block; font-size:0.68rem; font-weight:600; border-radius:999px; padding:0.08rem 0.5rem}
-.lv.h{background:#FDE7ED; color:#E11D48}
+.lv.h{background:#FEE2E2; color:#E11D48}
 .lv.m{background:var(--lilac); color:var(--violet)}
-.lv.l{background:#F0EFF3; color:var(--slate)}
+.lv.l{background:#F1F5F9; color:var(--slate)}
 
 /* 주요 쟁점 - 도식이 있는 카드 */
 .iss{display:grid; grid-template-columns:repeat(3,1fr); gap:1.1rem; flex:1; min-height:0}
@@ -417,7 +421,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 <!-- 표지 -->
 <section class="slide cover" data-title="표지">
   <div class="cov-top">
-    <div class="brand"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
+    <div class="brand"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
     <span class="iwd">Intelligence with Data</span>
   </div>
   <div class="cov-mid">
@@ -518,12 +522,12 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
         <h3>지도 API 기반<br>거리 계산의 한계</h3>
         <div class="fig">
           <svg viewBox="0 0 260 120" preserveAspectRatio="xMidYMid meet" aria-label="지도 경로와 실제 주행 궤적 비교">
-            <path d="M24 96 C 70 84, 110 60, 160 46 C 190 38, 214 32, 236 28" fill="none" stroke="#9E99AB" stroke-width="2.4" stroke-dasharray="6 6" stroke-linecap="round"></path>
-            <path d="M24 96 C 48 78, 60 96, 92 78 C 124 60, 128 78, 158 60 C 188 42, 208 44, 236 28" fill="none" stroke="#4823FF" stroke-width="3" stroke-linecap="round"></path>
-            <circle cx="24" cy="96" r="4.5" fill="#18161A"></circle>
-            <circle cx="236" cy="28" r="4.5" fill="#4823FF"></circle>
-            <text x="150" y="104" font-family="Inter" font-size="10" fill="#898B91">지도 경로 4.8km</text>
-            <text x="30" y="34" font-family="Inter" font-size="10" fill="#4823FF">실측 궤적 6.2km</text>
+            <path d="M24 96 C 70 84, 110 60, 160 46 C 190 38, 214 32, 236 28" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-dasharray="6 6" stroke-linecap="round"></path>
+            <path d="M24 96 C 48 78, 60 96, 92 78 C 124 60, 128 78, 158 60 C 188 42, 208 44, 236 28" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round"></path>
+            <circle cx="24" cy="96" r="4.5" fill="#0F172A"></circle>
+            <circle cx="236" cy="28" r="4.5" fill="#0D9488"></circle>
+            <text x="150" y="104" font-family="Inter" font-size="10" fill="#64748B">지도 경로 4.8km</text>
+            <text x="30" y="34" font-family="Inter" font-size="10" fill="#0D9488">실측 궤적 6.2km</text>
           </svg>
         </div>
         <dl>
@@ -542,27 +546,27 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
         <h3>코스 내<br>통신 음영 구간</h3>
         <div class="fig">
           <svg viewBox="0 0 260 120" preserveAspectRatio="xMidYMid meet" aria-label="통신 음영 구간과 재전송">
-            <line x1="18" y1="86" x2="242" y2="86" stroke="#D9D2FF" stroke-width="1.4"></line>
-            <rect x="18" y="60" width="10" height="26" rx="2" fill="#4823FF"></rect>
-            <rect x="34" y="56" width="10" height="30" rx="2" fill="#4823FF"></rect>
-            <rect x="50" y="62" width="10" height="24" rx="2" fill="#4823FF"></rect>
-            <rect x="66" y="58" width="10" height="28" rx="2" fill="#4823FF"></rect>
-            <rect x="86" y="70" width="10" height="16" rx="2" fill="#D9D2FF"></rect>
-            <rect x="102" y="70" width="10" height="16" rx="2" fill="#D9D2FF"></rect>
-            <rect x="118" y="70" width="10" height="16" rx="2" fill="#D9D2FF"></rect>
-            <rect x="134" y="70" width="10" height="16" rx="2" fill="#D9D2FF"></rect>
-            <rect x="156" y="56" width="10" height="30" rx="2" fill="#4823FF"></rect>
-            <rect x="172" y="60" width="10" height="26" rx="2" fill="#4823FF"></rect>
-            <rect x="188" y="54" width="10" height="32" rx="2" fill="#4823FF"></rect>
-            <rect x="204" y="60" width="10" height="26" rx="2" fill="#4823FF"></rect>
-            <rect x="220" y="58" width="10" height="28" rx="2" fill="#4823FF"></rect>
-            <rect x="84" y="44" width="62" height="14" rx="7" fill="#EFECFA" stroke="#9E99AB" stroke-width="1"></rect>
-            <text x="115" y="54" font-family="Inter" font-size="9" fill="#898B91" text-anchor="middle">음영 구간</text>
+            <line x1="18" y1="86" x2="242" y2="86" stroke="#CBD5E1" stroke-width="1.4"></line>
+            <rect x="18" y="60" width="10" height="26" rx="2" fill="#0D9488"></rect>
+            <rect x="34" y="56" width="10" height="30" rx="2" fill="#0D9488"></rect>
+            <rect x="50" y="62" width="10" height="24" rx="2" fill="#0D9488"></rect>
+            <rect x="66" y="58" width="10" height="28" rx="2" fill="#0D9488"></rect>
+            <rect x="86" y="70" width="10" height="16" rx="2" fill="#CBD5E1"></rect>
+            <rect x="102" y="70" width="10" height="16" rx="2" fill="#CBD5E1"></rect>
+            <rect x="118" y="70" width="10" height="16" rx="2" fill="#CBD5E1"></rect>
+            <rect x="134" y="70" width="10" height="16" rx="2" fill="#CBD5E1"></rect>
+            <rect x="156" y="56" width="10" height="30" rx="2" fill="#0D9488"></rect>
+            <rect x="172" y="60" width="10" height="26" rx="2" fill="#0D9488"></rect>
+            <rect x="188" y="54" width="10" height="32" rx="2" fill="#0D9488"></rect>
+            <rect x="204" y="60" width="10" height="26" rx="2" fill="#0D9488"></rect>
+            <rect x="220" y="58" width="10" height="28" rx="2" fill="#0D9488"></rect>
+            <rect x="84" y="44" width="62" height="14" rx="7" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"></rect>
+            <text x="115" y="54" font-family="Inter" font-size="9" fill="#64748B" text-anchor="middle">음영 구간</text>
             <path d="M146 34 C 168 22, 190 24, 200 40" fill="none" stroke="#E11D48" stroke-width="1.8" stroke-linecap="round"></path>
             <path d="M200 40 L194 30 L204 32 Z" fill="#E11D48"></path>
             <text x="176" y="18" font-family="Inter" font-size="9" fill="#E11D48" text-anchor="middle">복구 시 재전송</text>
-            <text x="18" y="104" font-family="Inter" font-size="9" fill="#898B91">정상 수신</text>
-            <text x="200" y="104" font-family="Inter" font-size="9" fill="#898B91">누락분 반영</text>
+            <text x="18" y="104" font-family="Inter" font-size="9" fill="#64748B">정상 수신</text>
+            <text x="200" y="104" font-family="Inter" font-size="9" fill="#64748B">누락분 반영</text>
           </svg>
         </div>
         <dl>
@@ -581,22 +585,22 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
         <h3>관리 주체별<br>권한 체계</h3>
         <div class="fig">
           <svg viewBox="0 0 260 120" preserveAspectRatio="xMidYMid meet" aria-label="권한 계층 구조">
-            <rect x="86" y="10" width="88" height="22" rx="11" fill="#4823FF"></rect>
+            <rect x="86" y="10" width="88" height="22" rx="11" fill="#0D9488"></rect>
             <text x="130" y="25" font-family="Inter" font-size="10" fill="#FFFFFF" text-anchor="middle">전역 관리자</text>
-            <path d="M130 32 L130 44" stroke="#9E99AB" stroke-width="1.4"></path>
-            <path d="M60 44 L200 44" stroke="#9E99AB" stroke-width="1.4"></path>
-            <path d="M60 44 L60 56" stroke="#9E99AB" stroke-width="1.4"></path>
-            <path d="M200 44 L200 56" stroke="#9E99AB" stroke-width="1.4"></path>
-            <rect x="16" y="56" width="88" height="22" rx="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.2"></rect>
-            <text x="60" y="71" font-family="Inter" font-size="10" fill="#4823FF" text-anchor="middle">서울 CC 관리자</text>
-            <rect x="156" y="56" width="88" height="22" rx="11" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.2"></rect>
-            <text x="200" y="71" font-family="Inter" font-size="10" fill="#4823FF" text-anchor="middle">남부 CC 관리자</text>
-            <path d="M60 78 L60 90" stroke="#9E99AB" stroke-width="1.4"></path>
-            <path d="M200 78 L200 90" stroke="#9E99AB" stroke-width="1.4"></path>
-            <rect x="16" y="90" width="88" height="20" rx="10" fill="#FAFAF8" stroke="#D9D2FF" stroke-width="1.2"></rect>
-            <text x="60" y="104" font-family="Inter" font-size="9" fill="#898B91" text-anchor="middle">운영 · 정비 · 조회</text>
-            <rect x="156" y="90" width="88" height="20" rx="10" fill="#FAFAF8" stroke="#D9D2FF" stroke-width="1.2"></rect>
-            <text x="200" y="104" font-family="Inter" font-size="9" fill="#898B91" text-anchor="middle">운영 · 정비 · 조회</text>
+            <path d="M130 32 L130 44" stroke="#94A3B8" stroke-width="1.4"></path>
+            <path d="M60 44 L200 44" stroke="#94A3B8" stroke-width="1.4"></path>
+            <path d="M60 44 L60 56" stroke="#94A3B8" stroke-width="1.4"></path>
+            <path d="M200 44 L200 56" stroke="#94A3B8" stroke-width="1.4"></path>
+            <rect x="16" y="56" width="88" height="22" rx="11" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.2"></rect>
+            <text x="60" y="71" font-family="Inter" font-size="10" fill="#0D9488" text-anchor="middle">서울 CC 관리자</text>
+            <rect x="156" y="56" width="88" height="22" rx="11" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.2"></rect>
+            <text x="200" y="71" font-family="Inter" font-size="10" fill="#0D9488" text-anchor="middle">남부 CC 관리자</text>
+            <path d="M60 78 L60 90" stroke="#94A3B8" stroke-width="1.4"></path>
+            <path d="M200 78 L200 90" stroke="#94A3B8" stroke-width="1.4"></path>
+            <rect x="16" y="90" width="88" height="20" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"></rect>
+            <text x="60" y="104" font-family="Inter" font-size="9" fill="#64748B" text-anchor="middle">운영 · 정비 · 조회</text>
+            <rect x="156" y="90" width="88" height="20" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"></rect>
+            <text x="200" y="104" font-family="Inter" font-size="9" fill="#64748B" text-anchor="middle">운영 · 정비 · 조회</text>
           </svg>
         </div>
         <dl>
@@ -821,21 +825,21 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
           <div class="ui-cols" style="grid-template-columns:1.75fr 1fr">
             <div class="map" data-bleed>
               <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-label="실시간 카트 위치">
-                <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
-                <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
-                <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#D9D2FF" stroke-width="28" stroke-linecap="round"></path>
-                <path d="M46 148 C 76 122, 122 126, 130 154 C 136 178, 104 194, 76 187 C 52 180, 32 162, 46 148" fill="#EFECFA" stroke="#9E99AB" stroke-width="1.2" stroke-dasharray="4 5"></path>
-                <text x="86" y="166" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">위험 구역</text>
-                <circle cx="182" cy="182" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                <circle cx="182" cy="182" r="22" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
-                <circle cx="344" cy="136" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                <circle cx="344" cy="136" r="22" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
-                <path d="M68 268 C 100 230, 132 202, 176 186 C 226 168, 272 172, 312 156" fill="none" stroke="#4823FF" stroke-width="3" stroke-linecap="round"></path>
-                <circle cx="312" cy="156" r="7" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <circle cx="232" cy="170" r="6.5" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <circle cx="118" cy="226" r="6.5" fill="#7E78FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#CBD5E1" stroke-width="32" stroke-linecap="round"></path>
+                <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#CBD5E1" stroke-width="30" stroke-linecap="round"></path>
+                <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#CBD5E1" stroke-width="28" stroke-linecap="round"></path>
+                <path d="M46 148 C 76 122, 122 126, 130 154 C 136 178, 104 194, 76 187 C 52 180, 32 162, 46 148" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 5"></path>
+                <text x="86" y="166" font-family="Inter" font-size="10" fill="#64748B" text-anchor="middle">위험 구역</text>
+                <circle cx="182" cy="182" r="10" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.3"></circle>
+                <circle cx="182" cy="182" r="22" fill="none" stroke="#2DD4BF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
+                <circle cx="344" cy="136" r="10" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.3"></circle>
+                <circle cx="344" cy="136" r="22" fill="none" stroke="#2DD4BF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
+                <path d="M68 268 C 100 230, 132 202, 176 186 C 226 168, 272 172, 312 156" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round"></path>
+                <circle cx="312" cy="156" r="7" fill="#0D9488" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                <circle cx="232" cy="170" r="6.5" fill="#0D9488" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                <circle cx="118" cy="226" r="6.5" fill="#2DD4BF" stroke="#FFFFFF" stroke-width="2.4"></circle>
                 <circle cx="262" cy="76" r="6.5" fill="#E11D48" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                <circle cx="164" cy="88" r="6.5" fill="#99CEFE" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                <circle cx="164" cy="88" r="6.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="2.4"></circle>
               </svg>
               <div class="lay"><span class="on">궤적</span><span class="on">지오펜스</span><span>위험 구역</span></div>
               <div class="tip" style="left:5%; bottom:6%"><b>#101 스카이23</b>운행 · 12.4km/h · SoC 62%</div>
@@ -1094,29 +1098,29 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
       <div class="low">
         <div class="map">
           <svg viewBox="0 0 620 300" preserveAspectRatio="xMidYMid meet" aria-label="코스 지도와 카트 위치">
-            <path d="M64 262 C 118 230, 156 196, 214 176" fill="none" stroke="#D9D2FF" stroke-width="34" stroke-linecap="round"></path>
-            <path d="M276 158 C 340 136, 404 136, 462 104" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
-            <path d="M352 250 C 410 242, 456 232, 512 214" fill="none" stroke="#D9D2FF" stroke-width="28" stroke-linecap="round"></path>
-            <circle cx="540" cy="210" r="13" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></circle>
-            <path d="M96 84 C 138 60, 190 68, 202 98 C 212 124, 178 144, 146 137 C 114 130, 78 102, 96 84" fill="#EFECFA" stroke="#9E99AB" stroke-width="1.4" stroke-dasharray="5 6"></path>
-            <text x="148" y="112" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">위험 구역</text>
-            <text x="236" y="212" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">H1</text>
-            <text x="480" y="140" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">H4</text>
-            <circle cx="236" cy="166" r="15" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></circle>
-            <circle cx="480" cy="94" r="15" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></circle>
-            <circle cx="236" cy="166" r="30" fill="none" stroke="#7E78FF" stroke-width="1.3" stroke-dasharray="4 5"></circle>
-            <circle cx="480" cy="94" r="30" fill="none" stroke="#7E78FF" stroke-width="1.3" stroke-dasharray="4 5"></circle>
-            <path d="M236 166 L236 142" stroke="#18161A" stroke-width="1.6"></path>
-            <path d="M237 142 L253 148 L237 154 Z" fill="#4823FF"></path>
-            <path d="M480 94 L480 70" stroke="#18161A" stroke-width="1.6"></path>
-            <path d="M481 70 L497 76 L481 82 Z" fill="#4823FF"></path>
-            <path d="M70 264 C 124 228, 162 192, 220 172 C 286 150, 348 148, 404 130" fill="none" stroke="#4823FF" stroke-width="3.4" stroke-linecap="round"></path>
-            <path d="M404 130 C 438 120, 460 108, 476 98" fill="none" stroke="#9E99AB" stroke-width="2.4" stroke-dasharray="6 7" stroke-linecap="round"></path>
-            <circle cx="404" cy="130" r="8" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.5"></circle>
-            <circle cx="286" cy="152" r="7" fill="#18161A" stroke="#FFFFFF" stroke-width="2.5"></circle>
-            <circle cx="146" cy="216" r="7" fill="#18161A" stroke="#FFFFFF" stroke-width="2.5"></circle>
-            <circle cx="452" cy="216" r="7" fill="#6D67FB" stroke="#FFFFFF" stroke-width="2.5"></circle>
-            <circle cx="168" cy="118" r="7" fill="#9E99AB" stroke="#FFFFFF" stroke-width="2.5"></circle>
+            <path d="M64 262 C 118 230, 156 196, 214 176" fill="none" stroke="#CBD5E1" stroke-width="34" stroke-linecap="round"></path>
+            <path d="M276 158 C 340 136, 404 136, 462 104" fill="none" stroke="#CBD5E1" stroke-width="32" stroke-linecap="round"></path>
+            <path d="M352 250 C 410 242, 456 232, 512 214" fill="none" stroke="#CBD5E1" stroke-width="28" stroke-linecap="round"></path>
+            <circle cx="540" cy="210" r="13" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.4"></circle>
+            <path d="M96 84 C 138 60, 190 68, 202 98 C 212 124, 178 144, 146 137 C 114 130, 78 102, 96 84" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.4" stroke-dasharray="5 6"></path>
+            <text x="148" y="112" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">위험 구역</text>
+            <text x="236" y="212" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">H1</text>
+            <text x="480" y="140" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">H4</text>
+            <circle cx="236" cy="166" r="15" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.4"></circle>
+            <circle cx="480" cy="94" r="15" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.4"></circle>
+            <circle cx="236" cy="166" r="30" fill="none" stroke="#2DD4BF" stroke-width="1.3" stroke-dasharray="4 5"></circle>
+            <circle cx="480" cy="94" r="30" fill="none" stroke="#2DD4BF" stroke-width="1.3" stroke-dasharray="4 5"></circle>
+            <path d="M236 166 L236 142" stroke="#0F172A" stroke-width="1.6"></path>
+            <path d="M237 142 L253 148 L237 154 Z" fill="#0D9488"></path>
+            <path d="M480 94 L480 70" stroke="#0F172A" stroke-width="1.6"></path>
+            <path d="M481 70 L497 76 L481 82 Z" fill="#0D9488"></path>
+            <path d="M70 264 C 124 228, 162 192, 220 172 C 286 150, 348 148, 404 130" fill="none" stroke="#0D9488" stroke-width="3.4" stroke-linecap="round"></path>
+            <path d="M404 130 C 438 120, 460 108, 476 98" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-dasharray="6 7" stroke-linecap="round"></path>
+            <circle cx="404" cy="130" r="8" fill="#0D9488" stroke="#FFFFFF" stroke-width="2.5"></circle>
+            <circle cx="286" cy="152" r="7" fill="#0F172A" stroke="#FFFFFF" stroke-width="2.5"></circle>
+            <circle cx="146" cy="216" r="7" fill="#0F172A" stroke="#FFFFFF" stroke-width="2.5"></circle>
+            <circle cx="452" cy="216" r="7" fill="#0F766E" stroke="#FFFFFF" stroke-width="2.5"></circle>
+            <circle cx="168" cy="118" r="7" fill="#94A3B8" stroke="#FFFFFF" stroke-width="2.5"></circle>
           </svg>
           <div class="legend"><span>운행 궤적</span><span>지오펜스</span><span>위험 구역</span></div>
           <div class="holes"><span>H1 12:04</span><span>H2 12:19</span><span>H3 12:41</span><span class="on">H4 진행 중</span><span>H5 -</span></div>
@@ -1124,11 +1128,11 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
         <div class="side">
           <div class="panel">
             <div class="h">알림 센터</div>
-            <div class="row"><span class="dot" style="background:#4823FF"></span>DTC 발생 · #101/356<span class="cap">2분 전</span></div>
-            <div class="row"><span class="dot" style="background:#7E78FF"></span>배터리 경고 · #102<span class="cap">6분 전</span></div>
-            <div class="row"><span class="dot" style="background:#6D67FB"></span>지오펜스 이탈 · #114<span class="cap">14분 전</span></div>
-            <div class="row"><span class="dot" style="background:#9E99AB"></span>소모품 주기 도달 · #118<span class="cap">21분 전</span></div>
-            <div class="row"><span class="dot" style="background:#9E99AB"></span>정비 완료 등록 · #107<span class="cap">38분 전</span></div>
+            <div class="row"><span class="dot" style="background:#0D9488"></span>DTC 발생 · #101/356<span class="cap">2분 전</span></div>
+            <div class="row"><span class="dot" style="background:#2DD4BF"></span>배터리 경고 · #102<span class="cap">6분 전</span></div>
+            <div class="row"><span class="dot" style="background:#0F766E"></span>지오펜스 이탈 · #114<span class="cap">14분 전</span></div>
+            <div class="row"><span class="dot" style="background:#94A3B8"></span>소모품 주기 도달 · #118<span class="cap">21분 전</span></div>
+            <div class="row"><span class="dot" style="background:#94A3B8"></span>정비 완료 등록 · #107<span class="cap">38분 전</span></div>
           </div>
           <div class="panel">
             <div class="h">배터리 SoC 요약</div>
@@ -1138,9 +1142,9 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
           </div>
           <div class="panel">
             <div class="h">정비 대기</div>
-            <div class="row"><span class="dot" style="background:#4823FF"></span>브레이크 점검<span class="cap">3대</span></div>
-            <div class="row"><span class="dot" style="background:#7E78FF"></span>타이어 교체<span class="cap">2대</span></div>
-            <div class="row"><span class="dot" style="background:#9E99AB"></span>정기 점검<span class="cap">2대</span></div>
+            <div class="row"><span class="dot" style="background:#0D9488"></span>브레이크 점검<span class="cap">3대</span></div>
+            <div class="row"><span class="dot" style="background:#2DD4BF"></span>타이어 교체<span class="cap">2대</span></div>
+            <div class="row"><span class="dot" style="background:#94A3B8"></span>정기 점검<span class="cap">2대</span></div>
           </div>
         </div>
       </div>
@@ -1677,7 +1681,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 
 <!-- 맺음 -->
 <section class="slide end" data-title="맺음">
-  <div class="end-logo"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
+  <div class="end-logo"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
   <div class="end-mid">
     <div>
       <div class="eyebrow">맺음</div>

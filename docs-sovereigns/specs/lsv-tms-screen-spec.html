@@ -7,29 +7,33 @@
 <meta name="doc-version" content="0.4">
 <meta name="doc-description" content="1단계 14개 화면과 공통·변형 화면을 실제 프로그램 수준으로 정의 - 앱 셸, 로그인, 대형 화면, 모바일, 데이터 항목까지">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-SemiBold.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Light.woff2") format("woff2");font-weight:300;font-display:swap}
 /* ============================================================
-   문서 규격 - Cake Equity 기준 디자인 시스템
-   16:9 고정 캔버스 / 라틴은 Plus Jakarta Sans·Inter, 한글은 Pretendard 폴백
+   세일링스톤 문서 규격 - SUIT · slate · teal
+   16:9 고정 캔버스 / 세일링스톤 SUIT · slate · teal 팔레트
    ============================================================ */
 :root{
-  --violet:#4823FF; --voltage:#7E78FF; --iris:#6D67FB;
-  --lilac:#EDE9FF; --peri:#D9D2FF; --chartreuse:#E7FF6E; --powder:#99CEFE;
-  --bone:#FAFAF8; --paper:#FFFFFF; --ink:#18161A; --carbon:#333333;
-  --slate:#898B91; --lavender:#9E99AB; --midnight:#1E1B22;
+  --violet:#0D9488; --voltage:#2DD4BF; --iris:#0F766E;
+  --lilac:#F0FDFA; --peri:#CBD5E1; --chartreuse:#2DD4BF; --powder:#38BDF8;
+  --bone:#F8FAFC; --paper:#FFFFFF; --ink:#0F172A; --carbon:#334155;
+  --slate:#64748B; --lavender:#94A3B8; --midnight:#0F172A;
   --rose:#E11D48;   /* 상태 전용 - 경고·정비 표시에만 사용, 버튼·큰 면 금지 */
-  --line:#EFEDF5;   /* 화면 시안 내부 구분선 */
+  --line:#E2E8F0;   /* 화면 시안 내부 구분선 */
   --mint:#2DD4BF; --teal:#0D9488;   /* 세일링스톤 브랜드 - 회사소개서 기준 */
-  --fd:'Plus Jakarta Sans','Pretendard Variable',Pretendard,sans-serif;
-  --fu:'Inter','Pretendard Variable',Pretendard,sans-serif;
+  --fd:"SUIT","Pretendard Variable",Pretendard,-apple-system,sans-serif;
+  --fu:"SUIT","Pretendard Variable",Pretendard,-apple-system,sans-serif;
   --pad:3.5rem;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:min(1.25vw,2.2222vh)}
 body{
-  margin:0; background:#E8E5F0; font-family:var(--fu);
+  margin:0; background:#E2E8F0; font-family:var(--fu);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   min-height:100vh; color:var(--ink); -webkit-font-smoothing:antialiased;
   word-break:keep-all;
@@ -61,7 +65,7 @@ h2.title{font-family:var(--fd); font-weight:800; font-size:1.95rem; letter-spaci
 .card li{position:relative; padding:0.26rem 0 0.26rem 0.9rem; font-size:0.86rem; color:var(--carbon); line-height:1.45}
 .card li::before{content:""; position:absolute; left:0; top:0.7rem; width:0.3rem; height:0.3rem; border-radius:50%; background:var(--violet)}
 .tag{display:inline-block; background:var(--lilac); color:var(--violet); font-weight:600; font-size:0.72rem; padding:0.18rem 0.68rem; border-radius:999px}
-.tag.gray{background:#F0EFF3; color:var(--slate)}
+.tag.gray{background:#F1F5F9; color:var(--slate)}
 .tags{display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.7rem}
 .num{font-family:var(--fd); font-weight:800; font-size:2rem; letter-spacing:-0.04em; line-height:1; color:var(--violet)}
 .unit{font-size:0.76rem; color:var(--slate); margin-top:0.3rem}
@@ -176,7 +180,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
 .tbl td.n{text-align:right; font-variant-numeric:tabular-nums}
 .tbl td.id{font-family:var(--fd); font-weight:800; font-size:0.55rem; color:var(--ink)}
 .tbl tr.sel td{background:var(--lilac)}
-.tbl tr.hov td{background:#F7F5FF}
+.tbl tr.hov td{background:#F8FAFC}
 .cb{width:0.5rem; height:0.5rem; border:1px solid var(--peri); border-radius:0.14rem; display:inline-block}
 .cb.on{background:var(--violet); border-color:var(--violet)}
 
@@ -191,10 +195,10 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
 .st.fix i{background:var(--rose)}
 .pill{display:inline-block; font-size:0.5rem; font-weight:600; border-radius:999px; padding:0.06rem 0.35rem}
 .pill.v{background:var(--lilac); color:var(--violet)}
-.pill.r{background:#FDE7ED; color:var(--rose)}
-.pill.g{background:#F0EFF3; color:var(--slate)}
+.pill.r{background:#FEE2E2; color:var(--rose)}
+.pill.g{background:#F1F5F9; color:var(--slate)}
 
-.gauge{height:0.28rem; background:#EDEBF2; border-radius:999px; overflow:hidden; flex:1; min-width:1.8rem}
+.gauge{height:0.28rem; background:#E2E8F0; border-radius:999px; overflow:hidden; flex:1; min-width:1.8rem}
 .gauge i{display:block; height:100%; background:var(--violet); border-radius:999px}
 .gauge.warn i{background:var(--rose)}
 .gauge.mid i{background:var(--voltage)}
@@ -244,31 +248,31 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
   border-radius:0.5rem; padding:0.26rem 0.5rem; font-size:0.55rem; display:flex; align-items:center; gap:0.3rem}
 .toast i{width:0.34rem; height:0.34rem; border-radius:50%; background:var(--rose); flex:none}
 .slider{display:flex; align-items:center; gap:0.35rem; font-size:0.52rem; color:var(--slate)}
-.slider .bar{position:relative; flex:1; height:0.26rem; background:#EDEBF2; border-radius:999px}
+.slider .bar{position:relative; flex:1; height:0.26rem; background:#E2E8F0; border-radius:999px}
 .slider .bar i{position:absolute; left:0; top:0; height:100%; width:46%; background:var(--violet); border-radius:999px}
 .slider .bar u{position:absolute; left:46%; top:-0.16rem; width:0.56rem; height:0.56rem; border-radius:50%;
   background:var(--paper); border:2px solid var(--violet)}
 .slider .bar em{position:absolute; top:-0.42rem; width:1px; height:0.28rem; background:var(--lavender)}
 .empty{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.2rem;
   color:var(--lavender); font-size:0.56rem; flex:1}
-.skel{background:linear-gradient(90deg,#F1EFF7,#F8F7FC,#F1EFF7); border-radius:0.3rem; height:0.5rem}
+.skel{background:linear-gradient(90deg,#F1F5F9,#F8FAFC,#F1F5F9); border-radius:0.3rem; height:0.5rem}
 
 /* 대형 화면(DID) 다크 모드 */
-.ui.dk{background:var(--midnight); border-color:#332E3C}
-.ui.dk .ui-head{border-bottom-color:#332E3C}
+.ui.dk{background:var(--midnight); border-color:#334155}
+.ui.dk .ui-head{border-bottom-color:#334155}
 .ui.dk .ui-head h5{color:#FFFFFF}
-.ui.dk .pane{background:#26222C; border-color:#3A3542; color:#C9C4D2}
-.ui.dk .pane .ph{color:#9E99AB}
-.ui.dk .kpi div{background:#26222C; border-color:#3A3542}
+.ui.dk .pane{background:#1E293B; border-color:#334155; color:#CBD5E1}
+.ui.dk .pane .ph{color:#94A3B8}
+.ui.dk .kpi div{background:#1E293B; border-color:#334155}
 .ui.dk .kpi b{color:#FFFFFF}
-.ui.dk .kpi span{color:#9E99AB}
-.ui.dk .map{background:#221E29; border-color:#3A3542}
-.ui.dk .chips span{background:#26222C; border-color:#3A3542; color:#C9C4D2}
+.ui.dk .kpi span{color:#94A3B8}
+.ui.dk .map{background:#0F172A; border-color:#334155}
+.ui.dk .chips span{background:#1E293B; border-color:#334155; color:#CBD5E1}
 .ui.dk .chips span.on{background:var(--chartreuse); border-color:var(--chartreuse); color:var(--ink)}
-.ui.dk .tbl td{color:#C9C4D2; border-bottom-color:#332E3C}
-.ui.dk .tbl th{color:#9E99AB; border-bottom-color:#3A3542}
-.ui.dk .st{color:#C9C4D2}
-.ui.dk .gauge{background:#3A3542}
+.ui.dk .tbl td{color:#CBD5E1; border-bottom-color:#334155}
+.ui.dk .tbl th{color:#94A3B8; border-bottom-color:#334155}
+.ui.dk .st{color:#CBD5E1}
+.ui.dk .gauge{background:#334155}
 .ui.dk .accent{color:var(--chartreuse)}
 
 /* 로그인 화면 */
@@ -343,7 +347,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
 <!-- 표지 -->
 <section class="slide cover" data-title="표지">
   <div class="cov-top">
-    <div class="brand"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
+    <div class="brand"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
     <span class="iwd">Intelligence with Data</span>
   </div>
   <div class="cov-mid">
@@ -667,19 +671,19 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
                   </div>
                   <div class="map" data-bleed style="flex:1">
                     <svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid meet" aria-label="코스 현황 지도">
-                      <path d="M52 226 C 84 190, 118 162, 164 146" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
-                      <path d="M204 132 C 252 116, 300 120, 342 100" fill="none" stroke="#D9D2FF" stroke-width="28" stroke-linecap="round"></path>
-                      <path d="M116 66 C 166 44, 226 48, 278 30" fill="none" stroke="#D9D2FF" stroke-width="26" stroke-linecap="round"></path>
-                      <circle cx="180" cy="140" r="9" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.2"></circle>
-                      <circle cx="180" cy="140" r="20" fill="none" stroke="#7E78FF" stroke-width="1" stroke-dasharray="3 4"></circle>
-                      <circle cx="344" cy="96" r="9" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.2"></circle>
-                      <circle cx="344" cy="96" r="20" fill="none" stroke="#7E78FF" stroke-width="1" stroke-dasharray="3 4"></circle>
-                      <path d="M58 222 C 90 188, 124 160, 170 144 C 220 128, 268 132, 308 116" fill="none" stroke="#4823FF" stroke-width="2.6" stroke-linecap="round"></path>
-                      <circle cx="308" cy="116" r="6" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.2"></circle>
-                      <circle cx="228" cy="130" r="5.5" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.2"></circle>
-                      <circle cx="112" cy="182" r="5.5" fill="#7E78FF" stroke="#FFFFFF" stroke-width="2.2"></circle>
+                      <path d="M52 226 C 84 190, 118 162, 164 146" fill="none" stroke="#CBD5E1" stroke-width="30" stroke-linecap="round"></path>
+                      <path d="M204 132 C 252 116, 300 120, 342 100" fill="none" stroke="#CBD5E1" stroke-width="28" stroke-linecap="round"></path>
+                      <path d="M116 66 C 166 44, 226 48, 278 30" fill="none" stroke="#CBD5E1" stroke-width="26" stroke-linecap="round"></path>
+                      <circle cx="180" cy="140" r="9" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.2"></circle>
+                      <circle cx="180" cy="140" r="20" fill="none" stroke="#2DD4BF" stroke-width="1" stroke-dasharray="3 4"></circle>
+                      <circle cx="344" cy="96" r="9" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.2"></circle>
+                      <circle cx="344" cy="96" r="20" fill="none" stroke="#2DD4BF" stroke-width="1" stroke-dasharray="3 4"></circle>
+                      <path d="M58 222 C 90 188, 124 160, 170 144 C 220 128, 268 132, 308 116" fill="none" stroke="#0D9488" stroke-width="2.6" stroke-linecap="round"></path>
+                      <circle cx="308" cy="116" r="6" fill="#0D9488" stroke="#FFFFFF" stroke-width="2.2"></circle>
+                      <circle cx="228" cy="130" r="5.5" fill="#0D9488" stroke="#FFFFFF" stroke-width="2.2"></circle>
+                      <circle cx="112" cy="182" r="5.5" fill="#2DD4BF" stroke="#FFFFFF" stroke-width="2.2"></circle>
                       <circle cx="256" cy="46" r="5.5" fill="#E11D48" stroke="#FFFFFF" stroke-width="2.2"></circle>
-                      <circle cx="158" cy="58" r="5.5" fill="#99CEFE" stroke="#FFFFFF" stroke-width="2.2"></circle>
+                      <circle cx="158" cy="58" r="5.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="2.2"></circle>
                     </svg>
                     <div class="lay"><span class="on">궤적</span><span>지오펜스</span><span>위험 구역</span></div>
                     <div class="zoom"><span>+</span><span>−</span></div>
@@ -774,22 +778,22 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
               <div class="ui-cols" style="grid-template-columns:1.85fr 1fr">
                 <div class="map" data-bleed>
                   <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-label="실시간 카트 위치">
-                    <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
-                    <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
-                    <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#D9D2FF" stroke-width="28" stroke-linecap="round"></path>
-                    <path d="M46 148 C 76 122, 122 126, 130 154 C 136 178, 104 194, 76 187 C 52 180, 32 162, 46 148" fill="#EFECFA" stroke="#9E99AB" stroke-width="1.2" stroke-dasharray="4 5"></path>
-                    <text x="86" y="166" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">위험 구역</text>
-                    <circle cx="182" cy="182" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                    <circle cx="182" cy="182" r="22" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
-                    <text x="182" y="220" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H4</text>
-                    <circle cx="344" cy="136" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                    <circle cx="344" cy="136" r="22" fill="none" stroke="#7E78FF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
-                    <path d="M68 268 C 100 230, 132 202, 176 186 C 226 168, 272 172, 312 156" fill="none" stroke="#4823FF" stroke-width="3" stroke-linecap="round"></path>
-                    <circle cx="312" cy="156" r="7" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                    <circle cx="232" cy="170" r="6.5" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                    <circle cx="118" cy="226" r="6.5" fill="#7E78FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                    <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#CBD5E1" stroke-width="32" stroke-linecap="round"></path>
+                    <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#CBD5E1" stroke-width="30" stroke-linecap="round"></path>
+                    <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#CBD5E1" stroke-width="28" stroke-linecap="round"></path>
+                    <path d="M46 148 C 76 122, 122 126, 130 154 C 136 178, 104 194, 76 187 C 52 180, 32 162, 46 148" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2" stroke-dasharray="4 5"></path>
+                    <text x="86" y="166" font-family="Inter" font-size="10" fill="#64748B" text-anchor="middle">위험 구역</text>
+                    <circle cx="182" cy="182" r="10" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.3"></circle>
+                    <circle cx="182" cy="182" r="22" fill="none" stroke="#2DD4BF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
+                    <text x="182" y="220" font-family="Inter" font-size="10" fill="#64748B" text-anchor="middle">H4</text>
+                    <circle cx="344" cy="136" r="10" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.3"></circle>
+                    <circle cx="344" cy="136" r="22" fill="none" stroke="#2DD4BF" stroke-width="1.1" stroke-dasharray="4 5"></circle>
+                    <path d="M68 268 C 100 230, 132 202, 176 186 C 226 168, 272 172, 312 156" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round"></path>
+                    <circle cx="312" cy="156" r="7" fill="#0D9488" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                    <circle cx="232" cy="170" r="6.5" fill="#0D9488" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                    <circle cx="118" cy="226" r="6.5" fill="#2DD4BF" stroke="#FFFFFF" stroke-width="2.4"></circle>
                     <circle cx="262" cy="76" r="6.5" fill="#E11D48" stroke="#FFFFFF" stroke-width="2.4"></circle>
-                    <circle cx="164" cy="88" r="6.5" fill="#99CEFE" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                    <circle cx="164" cy="88" r="6.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="2.4"></circle>
                   </svg>
                   <div class="lay"><span class="on">궤적</span><span class="on">지오펜스</span><span>위험 구역</span></div>
                   <div class="zoom"><span>+</span><span>−</span></div>
@@ -979,16 +983,16 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
               <div class="ui-cols" style="grid-template-columns:1.85fr 1fr">
                 <div class="map" data-bleed>
                   <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-label="주행 궤적">
-                    <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
-                    <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
-                    <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#D9D2FF" stroke-width="28" stroke-linecap="round"></path>
-                    <circle cx="182" cy="182" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                    <circle cx="344" cy="136" r="10" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.3"></circle>
-                    <path d="M68 268 C 100 230, 132 202, 176 186 C 226 168, 268 172, 300 160" fill="none" stroke="#4823FF" stroke-width="3.2" stroke-linecap="round"></path>
-                    <path d="M300 160 C 322 152, 336 146, 348 140" fill="none" stroke="#9E99AB" stroke-width="2.4" stroke-dasharray="6 6" stroke-linecap="round"></path>
-                    <circle cx="300" cy="160" r="7" fill="#4823FF" stroke="#FFFFFF" stroke-width="2.4"></circle>
+                    <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#CBD5E1" stroke-width="32" stroke-linecap="round"></path>
+                    <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#CBD5E1" stroke-width="30" stroke-linecap="round"></path>
+                    <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#CBD5E1" stroke-width="28" stroke-linecap="round"></path>
+                    <circle cx="182" cy="182" r="10" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.3"></circle>
+                    <circle cx="344" cy="136" r="10" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.3"></circle>
+                    <path d="M68 268 C 100 230, 132 202, 176 186 C 226 168, 268 172, 300 160" fill="none" stroke="#0D9488" stroke-width="3.2" stroke-linecap="round"></path>
+                    <path d="M300 160 C 322 152, 336 146, 348 140" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-dasharray="6 6" stroke-linecap="round"></path>
+                    <circle cx="300" cy="160" r="7" fill="#0D9488" stroke="#FFFFFF" stroke-width="2.4"></circle>
                     <path d="M126 234 L136 226 L146 236 L136 244 Z" fill="#E11D48"></path>
-                    <text x="136" y="262" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">이탈 구간</text>
+                    <text x="136" y="262" font-family="Inter" font-size="10" fill="#64748B" text-anchor="middle">이탈 구간</text>
                   </svg>
                   <div class="lay"><span class="on">실주행</span><span>예정 경로</span><span class="on">이탈 구간</span></div>
                   <div class="zoom"><span>+</span><span>−</span></div>
@@ -1091,34 +1095,34 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
                 <div class="pane">
                   <span class="ph">일자별 이동 거리<em>08-18 최대 312km</em></span>
                   <svg viewBox="0 0 300 110" preserveAspectRatio="none" style="width:100%; flex:1" aria-label="일자별 이동 거리 막대 그래프">
-                    <line x1="0" y1="96" x2="300" y2="96" stroke="#D9D2FF" stroke-width="1"></line>
-                    <line x1="0" y1="64" x2="300" y2="64" stroke="#EFEDF5" stroke-width="1"></line>
-                    <line x1="0" y1="32" x2="300" y2="32" stroke="#EFEDF5" stroke-width="1"></line>
-                    <rect x="8" y="50" width="14" height="46" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="30" y="36" width="14" height="60" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="52" y="58" width="14" height="38" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="74" y="26" width="14" height="70" rx="3" fill="#4823FF"></rect>
-                    <rect x="96" y="42" width="14" height="54" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="118" y="32" width="14" height="64" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="140" y="54" width="14" height="42" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="162" y="22" width="14" height="74" rx="3" fill="#7E78FF"></rect>
-                    <rect x="184" y="46" width="14" height="50" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="206" y="38" width="14" height="58" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="228" y="60" width="14" height="36" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="250" y="44" width="14" height="52" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="272" y="30" width="14" height="66" rx="3" fill="#D9D2FF"></rect>
+                    <line x1="0" y1="96" x2="300" y2="96" stroke="#CBD5E1" stroke-width="1"></line>
+                    <line x1="0" y1="64" x2="300" y2="64" stroke="#E2E8F0" stroke-width="1"></line>
+                    <line x1="0" y1="32" x2="300" y2="32" stroke="#E2E8F0" stroke-width="1"></line>
+                    <rect x="8" y="50" width="14" height="46" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="30" y="36" width="14" height="60" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="52" y="58" width="14" height="38" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="74" y="26" width="14" height="70" rx="3" fill="#0D9488"></rect>
+                    <rect x="96" y="42" width="14" height="54" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="118" y="32" width="14" height="64" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="140" y="54" width="14" height="42" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="162" y="22" width="14" height="74" rx="3" fill="#2DD4BF"></rect>
+                    <rect x="184" y="46" width="14" height="50" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="206" y="38" width="14" height="58" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="228" y="60" width="14" height="36" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="250" y="44" width="14" height="52" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="272" y="30" width="14" height="66" rx="3" fill="#CBD5E1"></rect>
                   </svg>
                   <span class="ph">홀별 평균 소요<em>H4 · H7 지연</em></span>
                   <svg viewBox="0 0 300 44" preserveAspectRatio="none" style="width:100%; height:2.1rem" aria-label="홀별 평균 소요 시간">
-                    <rect x="6" y="20" width="26" height="20" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="38" y="14" width="26" height="26" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="70" y="24" width="26" height="16" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="6" y="20" width="26" height="20" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="38" y="14" width="26" height="26" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="70" y="24" width="26" height="16" rx="3" fill="#CBD5E1"></rect>
                     <rect x="102" y="6" width="26" height="34" rx="3" fill="#E11D48"></rect>
-                    <rect x="134" y="18" width="26" height="22" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="166" y="22" width="26" height="18" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="134" y="18" width="26" height="22" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="166" y="22" width="26" height="18" rx="3" fill="#CBD5E1"></rect>
                     <rect x="198" y="10" width="26" height="30" rx="3" fill="#E11D48"></rect>
-                    <rect x="230" y="26" width="26" height="14" rx="3" fill="#D9D2FF"></rect>
-                    <rect x="262" y="20" width="26" height="20" rx="3" fill="#D9D2FF"></rect>
+                    <rect x="230" y="26" width="26" height="14" rx="3" fill="#CBD5E1"></rect>
+                    <rect x="262" y="20" width="26" height="20" rx="3" fill="#CBD5E1"></rect>
                   </svg>
                 </div>
                 <div class="pane">
@@ -1296,11 +1300,11 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
                 <div class="pane">
                   <span class="ph">일별 주행 거리<em>최근 14일 · 평균 5.7km</em></span>
                   <svg viewBox="0 0 300 100" preserveAspectRatio="none" style="width:100%; flex:1" aria-label="일별 주행 거리 추이">
-                    <line x1="0" y1="90" x2="300" y2="90" stroke="#D9D2FF" stroke-width="1"></line>
-                    <line x1="0" y1="50" x2="300" y2="50" stroke="#EFEDF5" stroke-width="1"></line>
+                    <line x1="0" y1="90" x2="300" y2="90" stroke="#CBD5E1" stroke-width="1"></line>
+                    <line x1="0" y1="50" x2="300" y2="50" stroke="#E2E8F0" stroke-width="1"></line>
                     <polyline points="6,78 28,64 50,70 72,48 94,54 116,36 138,44 160,28 182,40 204,24 226,34 248,20 270,30 292,16"
-                      fill="none" stroke="#4823FF" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"></polyline>
-                    <circle cx="292" cy="16" r="3.5" fill="#4823FF"></circle>
+                      fill="none" stroke="#0D9488" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"></polyline>
+                    <circle cx="292" cy="16" r="3.5" fill="#0D9488"></circle>
                   </svg>
                   <span style="font-size:0.52rem; color:var(--slate)">최근 6.2km · 누적 1,842km</span>
                 </div>
@@ -1870,18 +1874,18 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
               <div class="ui-cols" style="grid-template-columns:1.7fr 1fr">
                 <div class="map" data-bleed>
                   <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-label="코스 마킹 지도">
-                    <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#D9D2FF" stroke-width="32" stroke-linecap="round"></path>
-                    <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#D9D2FF" stroke-width="30" stroke-linecap="round"></path>
-                    <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#D9D2FF" stroke-width="28" stroke-linecap="round"></path>
-                    <path d="M66 268 C 98 230, 130 202, 176 186 C 226 168, 274 172, 314 152" fill="none" stroke="#9E99AB" stroke-width="2" stroke-dasharray="5 5"></path>
-                    <circle cx="182" cy="182" r="9" fill="#4823FF" stroke="#FFFFFF" stroke-width="2"></circle>
-                    <circle cx="182" cy="182" r="26" fill="rgba(72,35,255,0.10)" stroke="#4823FF" stroke-width="1.4" stroke-dasharray="4 4"></circle>
-                    <text x="182" y="226" font-family="Inter" font-size="10" fill="#4823FF" text-anchor="middle">H4 시작 · 15m</text>
-                    <circle cx="344" cy="136" r="8" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></circle>
-                    <circle cx="344" cy="136" r="20" fill="none" stroke="#7E78FF" stroke-width="1.2" stroke-dasharray="4 4"></circle>
-                    <text x="344" y="172" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H4 종료</text>
-                    <circle cx="282" cy="56" r="8" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></circle>
-                    <text x="282" y="34" font-family="Inter" font-size="10" fill="#898B91" text-anchor="middle">H5 시작</text>
+                    <path d="M62 272 C 92 232, 124 204, 168 188" fill="none" stroke="#CBD5E1" stroke-width="32" stroke-linecap="round"></path>
+                    <path d="M206 172 C 254 156, 302 160, 342 140" fill="none" stroke="#CBD5E1" stroke-width="30" stroke-linecap="round"></path>
+                    <path d="M118 92 C 168 70, 228 74, 282 56" fill="none" stroke="#CBD5E1" stroke-width="28" stroke-linecap="round"></path>
+                    <path d="M66 268 C 98 230, 130 202, 176 186 C 226 168, 274 172, 314 152" fill="none" stroke="#94A3B8" stroke-width="2" stroke-dasharray="5 5"></path>
+                    <circle cx="182" cy="182" r="9" fill="#0D9488" stroke="#FFFFFF" stroke-width="2"></circle>
+                    <circle cx="182" cy="182" r="26" fill="rgba(72,35,255,0.10)" stroke="#0D9488" stroke-width="1.4" stroke-dasharray="4 4"></circle>
+                    <text x="182" y="226" font-family="Inter" font-size="10" fill="#0D9488" text-anchor="middle">H4 시작 · 15m</text>
+                    <circle cx="344" cy="136" r="8" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.4"></circle>
+                    <circle cx="344" cy="136" r="20" fill="none" stroke="#2DD4BF" stroke-width="1.2" stroke-dasharray="4 4"></circle>
+                    <text x="344" y="172" font-family="Inter" font-size="10" fill="#64748B" text-anchor="middle">H4 종료</text>
+                    <circle cx="282" cy="56" r="8" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.4"></circle>
+                    <text x="282" y="34" font-family="Inter" font-size="10" fill="#64748B" text-anchor="middle">H5 시작</text>
                   </svg>
                   <div class="lay"><span class="on">지오펜스</span><span class="on">실측 궤적</span><span>위성 이미지</span></div>
                   <div class="zoom"><span>+</span><span>−</span></div>
@@ -2113,30 +2117,30 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
     <div class="scr">
       <div class="ui dk">
         <div class="ui-head" style="padding:0.5rem 0.7rem">
-          <h5>서울 CC 종합 관제</h5><span class="st run"><i></i><span style="color:#C9C4D2">연결됨</span></span>
-          <span class="sp"></span><span style="font-size:0.6rem; color:#9E99AB">2026-08-28 14:22 · 자동 갱신</span></div>
+          <h5>서울 CC 종합 관제</h5><span class="st run"><i></i><span style="color:#CBD5E1">연결됨</span></span>
+          <span class="sp"></span><span style="font-size:0.6rem; color:#94A3B8">2026-08-28 14:22 · 자동 갱신</span></div>
         <div class="ui-body">
           <div class="kpi" style="grid-template-columns:repeat(5,1fr); flex:none">
             <div><b style="font-size:1.35rem">50</b><span>전체 카트</span></div>
             <div><b style="font-size:1.35rem" class="accent">35</b><span>운행 중</span></div>
             <div><b style="font-size:1.35rem">8</b><span>충전 중</span></div>
-            <div><b style="font-size:1.35rem; color:#FF7A94">7</b><span>정비 필요</span></div>
+            <div><b style="font-size:1.35rem; color:#FB7185">7</b><span>정비 필요</span></div>
             <div><b style="font-size:1.35rem">13%</b><span>코스 지연률</span></div>
           </div>
           <div class="ui-cols" style="grid-template-columns:2fr 1fr">
             <div class="map" data-bleed>
               <svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid meet" aria-label="대형 화면 코스 현황">
-                <path d="M52 216 C 84 182, 118 154, 164 140" fill="none" stroke="#3A3542" stroke-width="30" stroke-linecap="round"></path>
-                <path d="M204 126 C 252 110, 300 114, 342 96" fill="none" stroke="#3A3542" stroke-width="28" stroke-linecap="round"></path>
-                <path d="M116 62 C 166 42, 226 46, 278 28" fill="none" stroke="#3A3542" stroke-width="26" stroke-linecap="round"></path>
-                <circle cx="180" cy="134" r="9" fill="#2E2937" stroke="#7E78FF" stroke-width="1.4"></circle>
-                <circle cx="344" cy="92" r="9" fill="#2E2937" stroke="#7E78FF" stroke-width="1.4"></circle>
-                <path d="M58 212 C 90 180, 124 152, 170 138 C 220 122, 268 126, 308 110" fill="none" stroke="#E7FF6E" stroke-width="2.6" stroke-linecap="round"></path>
-                <circle cx="308" cy="110" r="6" fill="#E7FF6E" stroke="#1E1B22" stroke-width="2"></circle>
-                <circle cx="228" cy="124" r="5.5" fill="#E7FF6E" stroke="#1E1B22" stroke-width="2"></circle>
-                <circle cx="112" cy="176" r="5.5" fill="#7E78FF" stroke="#1E1B22" stroke-width="2"></circle>
-                <circle cx="256" cy="44" r="5.5" fill="#FF7A94" stroke="#1E1B22" stroke-width="2"></circle>
-                <circle cx="158" cy="56" r="5.5" fill="#99CEFE" stroke="#1E1B22" stroke-width="2"></circle>
+                <path d="M52 216 C 84 182, 118 154, 164 140" fill="none" stroke="#334155" stroke-width="30" stroke-linecap="round"></path>
+                <path d="M204 126 C 252 110, 300 114, 342 96" fill="none" stroke="#334155" stroke-width="28" stroke-linecap="round"></path>
+                <path d="M116 62 C 166 42, 226 46, 278 28" fill="none" stroke="#334155" stroke-width="26" stroke-linecap="round"></path>
+                <circle cx="180" cy="134" r="9" fill="#1E293B" stroke="#2DD4BF" stroke-width="1.4"></circle>
+                <circle cx="344" cy="92" r="9" fill="#1E293B" stroke="#2DD4BF" stroke-width="1.4"></circle>
+                <path d="M58 212 C 90 180, 124 152, 170 138 C 220 122, 268 126, 308 110" fill="none" stroke="#2DD4BF" stroke-width="2.6" stroke-linecap="round"></path>
+                <circle cx="308" cy="110" r="6" fill="#2DD4BF" stroke="#0F172A" stroke-width="2"></circle>
+                <circle cx="228" cy="124" r="5.5" fill="#2DD4BF" stroke="#0F172A" stroke-width="2"></circle>
+                <circle cx="112" cy="176" r="5.5" fill="#2DD4BF" stroke="#0F172A" stroke-width="2"></circle>
+                <circle cx="256" cy="44" r="5.5" fill="#FB7185" stroke="#0F172A" stroke-width="2"></circle>
+                <circle cx="158" cy="56" r="5.5" fill="#38BDF8" stroke="#0F172A" stroke-width="2"></circle>
               </svg>
               <div class="lay"><span class="on">궤적</span><span>지오펜스</span></div>
             </div>
@@ -2149,9 +2153,9 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
               </div>
               <div class="pane" style="flex:1">
                 <span class="ph">배터리 요약</span>
-                <div class="grow"><span style="font-size:0.58rem; width:1.6rem">정상</span><span class="gauge"><i style="width:72%; background:#E7FF6E"></i></span><span style="font-size:0.58rem">36</span></div>
-                <div class="grow"><span style="font-size:0.58rem; width:1.6rem">주의</span><span class="gauge"><i style="width:20%; background:#7E78FF"></i></span><span style="font-size:0.58rem">10</span></div>
-                <div class="grow"><span style="font-size:0.58rem; width:1.6rem">경고</span><span class="gauge"><i style="width:8%; background:#FF7A94"></i></span><span style="font-size:0.58rem">4</span></div>
+                <div class="grow"><span style="font-size:0.58rem; width:1.6rem">정상</span><span class="gauge"><i style="width:72%; background:#2DD4BF"></i></span><span style="font-size:0.58rem">36</span></div>
+                <div class="grow"><span style="font-size:0.58rem; width:1.6rem">주의</span><span class="gauge"><i style="width:20%; background:#2DD4BF"></i></span><span style="font-size:0.58rem">10</span></div>
+                <div class="grow"><span style="font-size:0.58rem; width:1.6rem">경고</span><span class="gauge"><i style="width:8%; background:#FB7185"></i></span><span style="font-size:0.58rem">4</span></div>
               </div>
             </div>
           </div>
@@ -2336,7 +2340,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
 
 <!-- 맺음 -->
 <section class="slide end" data-title="맺음">
-  <div class="end-logo"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
+  <div class="end-logo"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
   <div class="eyebrow">맺음</div>
   <h2>화면 단위로 확정하고<br><em>개발 착수 기준으로 사용합니다</em></h2>
   <p>검토 의견을 반영해 화면별 정의를 확정한 뒤, 확정본을 개발과 검수의 기준 문서로 관리합니다.</p>

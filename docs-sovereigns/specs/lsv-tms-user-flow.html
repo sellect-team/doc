@@ -7,28 +7,32 @@
 <meta name="doc-version" content="0.2">
 <meta name="doc-description" content="역할 5개와 업무 시나리오 7개 - 권한·화면 접근 맵, 상태 전이도, 예외 처리, 인수 시험 항목까지 정의">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-SemiBold.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Light.woff2") format("woff2");font-weight:300;font-display:swap}
 /* ============================================================
-   문서 규격 - Cake Equity 기준 디자인 시스템
+   세일링스톤 문서 규격 - SUIT · slate · teal
    ============================================================ */
 :root{
-  --violet:#4823FF; --voltage:#7E78FF; --iris:#6D67FB;
-  --lilac:#EDE9FF; --peri:#D9D2FF; --chartreuse:#E7FF6E; --powder:#99CEFE;
-  --bone:#FAFAF8; --paper:#FFFFFF; --ink:#18161A; --carbon:#333333;
-  --slate:#898B91; --lavender:#9E99AB; --midnight:#1E1B22;
+  --violet:#0D9488; --voltage:#2DD4BF; --iris:#0F766E;
+  --lilac:#F0FDFA; --peri:#CBD5E1; --chartreuse:#2DD4BF; --powder:#38BDF8;
+  --bone:#F8FAFC; --paper:#FFFFFF; --ink:#0F172A; --carbon:#334155;
+  --slate:#64748B; --lavender:#94A3B8; --midnight:#0F172A;
   --rose:#E11D48;   /* 상태 전용 - 경고·정비 표시에만 사용 */
-  --line:#EFEDF5;
+  --line:#E2E8F0;
   --mint:#2DD4BF; --teal:#0D9488;   /* 세일링스톤 브랜드 - 회사소개서 기준 */
-  --fd:'Plus Jakarta Sans','Pretendard Variable',Pretendard,sans-serif;
-  --fu:'Inter','Pretendard Variable',Pretendard,sans-serif;
+  --fd:"SUIT","Pretendard Variable",Pretendard,-apple-system,sans-serif;
+  --fu:"SUIT","Pretendard Variable",Pretendard,-apple-system,sans-serif;
   --pad:3.5rem;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:min(1.25vw,2.2222vh)}
 body{
-  margin:0; background:#E8E5F0; font-family:var(--fu);
+  margin:0; background:#E2E8F0; font-family:var(--fu);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   min-height:100vh; color:var(--ink); -webkit-font-smoothing:antialiased;
   word-break:keep-all;
@@ -61,8 +65,8 @@ h2.title{font-family:var(--fd); font-weight:800; font-size:2rem; letter-spacing:
 .card li::before{content:""; position:absolute; left:0; top:0.62rem; width:0.28rem; height:0.28rem; border-radius:50%; background:var(--violet)}
 .card li b{font-weight:600; color:var(--ink)}
 .tag{display:inline-block; background:var(--lilac); color:var(--violet); font-weight:600; font-size:0.7rem; padding:0.16rem 0.62rem; border-radius:999px}
-.tag.gray{background:#F0EFF3; color:var(--slate)}
-.tag.r{background:#FDE7ED; color:var(--rose)}
+.tag.gray{background:#F1F5F9; color:var(--slate)}
+.tag.r{background:#FEE2E2; color:var(--rose)}
 .tags{display:flex; gap:0.35rem; flex-wrap:wrap; margin-top:0.6rem}
 .num{font-family:var(--fd); font-weight:800; font-size:1.9rem; letter-spacing:-0.04em; line-height:1; color:var(--violet)}
 .unit{font-size:0.74rem; color:var(--slate); margin-top:0.28rem}
@@ -182,7 +186,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
 <!-- 표지 -->
 <section class="slide cover" data-title="표지">
   <div class="cov-top">
-    <div class="brand"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
+    <div class="brand"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
     <span class="iwd">Intelligence with Data</span>
   </div>
   <div class="cov-mid">
@@ -402,45 +406,45 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
   <div class="body">
     <div class="dia">
       <svg viewBox="0 0 900 300" preserveAspectRatio="xMidYMid meet" aria-label="카트 상태 전이도">
-        <rect x="20" y="120" width="112" height="42" rx="21" fill="#FAFAF8" stroke="#D9D2FF" stroke-width="1.4"></rect>
-        <text x="76" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#18161A" text-anchor="middle">대기</text>
-        <text x="76" y="155" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">차고 · 배차 전</text>
-        <path d="M132 141 L186 141" stroke="#9E99AB" stroke-width="1.6"></path>
-        <path d="M186 141 L176 136 L176 146 Z" fill="#9E99AB"></path>
-        <text x="159" y="130" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">배차 지정</text>
-        <rect x="188" y="120" width="112" height="42" rx="21" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></rect>
-        <text x="244" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#4823FF" text-anchor="middle">배차</text>
-        <text x="244" y="155" font-family="Inter" font-size="11" fill="#7E78FF" text-anchor="middle">팀 배정 완료</text>
-        <path d="M300 141 L354 141" stroke="#9E99AB" stroke-width="1.6"></path>
-        <path d="M354 141 L344 136 L344 146 Z" fill="#9E99AB"></path>
-        <text x="327" y="130" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">속도 · 홀 진입</text>
-        <rect x="356" y="120" width="112" height="42" rx="21" fill="#4823FF"></rect>
+        <rect x="20" y="120" width="112" height="42" rx="21" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.4"></rect>
+        <text x="76" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#0F172A" text-anchor="middle">대기</text>
+        <text x="76" y="155" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">차고 · 배차 전</text>
+        <path d="M132 141 L186 141" stroke="#94A3B8" stroke-width="1.6"></path>
+        <path d="M186 141 L176 136 L176 146 Z" fill="#94A3B8"></path>
+        <text x="159" y="130" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">배차 지정</text>
+        <rect x="188" y="120" width="112" height="42" rx="21" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.4"></rect>
+        <text x="244" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#0D9488" text-anchor="middle">배차</text>
+        <text x="244" y="155" font-family="Inter" font-size="11" fill="#2DD4BF" text-anchor="middle">팀 배정 완료</text>
+        <path d="M300 141 L354 141" stroke="#94A3B8" stroke-width="1.6"></path>
+        <path d="M354 141 L344 136 L344 146 Z" fill="#94A3B8"></path>
+        <text x="327" y="130" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">속도 · 홀 진입</text>
+        <rect x="356" y="120" width="112" height="42" rx="21" fill="#0D9488"></rect>
         <text x="412" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">운행</text>
-        <text x="412" y="155" font-family="Inter" font-size="11" fill="#D9D2FF" text-anchor="middle">트립 생성</text>
-        <path d="M468 141 L522 141" stroke="#9E99AB" stroke-width="1.6"></path>
-        <path d="M522 141 L512 136 L512 146 Z" fill="#9E99AB"></path>
-        <text x="495" y="130" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">차고 진입</text>
-        <rect x="524" y="120" width="112" height="42" rx="21" fill="#FAFAF8" stroke="#D9D2FF" stroke-width="1.4"></rect>
-        <text x="580" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#18161A" text-anchor="middle">복귀</text>
-        <text x="580" y="155" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">트립 종료</text>
-        <path d="M636 141 L690 141" stroke="#9E99AB" stroke-width="1.6"></path>
-        <path d="M690 141 L680 136 L680 146 Z" fill="#9E99AB"></path>
-        <text x="663" y="130" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">충전 연결</text>
-        <rect x="692" y="120" width="112" height="42" rx="21" fill="#FAFAF8" stroke="#99CEFE" stroke-width="1.6"></rect>
-        <text x="748" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#18161A" text-anchor="middle">충전</text>
-        <text x="748" y="155" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">SoC 상승</text>
-        <path d="M748 120 C 748 70, 400 60, 76 108" fill="none" stroke="#9E99AB" stroke-width="1.4" stroke-dasharray="5 5"></path>
-        <path d="M76 108 L86 102 L86 112 Z" fill="#9E99AB"></path>
-        <text x="412" y="72" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">충전 완료 · 다시 대기</text>
-        <rect x="356" y="228" width="112" height="42" rx="21" fill="#FDE7ED" stroke="#E11D48" stroke-width="1.4"></rect>
+        <text x="412" y="155" font-family="Inter" font-size="11" fill="#CBD5E1" text-anchor="middle">트립 생성</text>
+        <path d="M468 141 L522 141" stroke="#94A3B8" stroke-width="1.6"></path>
+        <path d="M522 141 L512 136 L512 146 Z" fill="#94A3B8"></path>
+        <text x="495" y="130" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">차고 진입</text>
+        <rect x="524" y="120" width="112" height="42" rx="21" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.4"></rect>
+        <text x="580" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#0F172A" text-anchor="middle">복귀</text>
+        <text x="580" y="155" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">트립 종료</text>
+        <path d="M636 141 L690 141" stroke="#94A3B8" stroke-width="1.6"></path>
+        <path d="M690 141 L680 136 L680 146 Z" fill="#94A3B8"></path>
+        <text x="663" y="130" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">충전 연결</text>
+        <rect x="692" y="120" width="112" height="42" rx="21" fill="#F8FAFC" stroke="#38BDF8" stroke-width="1.6"></rect>
+        <text x="748" y="140" font-family="Inter" font-size="15" font-weight="600" fill="#0F172A" text-anchor="middle">충전</text>
+        <text x="748" y="155" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">SoC 상승</text>
+        <path d="M748 120 C 748 70, 400 60, 76 108" fill="none" stroke="#94A3B8" stroke-width="1.4" stroke-dasharray="5 5"></path>
+        <path d="M76 108 L86 102 L86 112 Z" fill="#94A3B8"></path>
+        <text x="412" y="72" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">충전 완료 · 다시 대기</text>
+        <rect x="356" y="228" width="112" height="42" rx="21" fill="#FEE2E2" stroke="#E11D48" stroke-width="1.4"></rect>
         <text x="412" y="248" font-family="Inter" font-size="15" font-weight="600" fill="#E11D48" text-anchor="middle">정비</text>
         <text x="412" y="263" font-family="Inter" font-size="11" fill="#E11D48" text-anchor="middle">운행 대상 제외</text>
         <path d="M412 162 L412 226" stroke="#E11D48" stroke-width="1.6"></path>
         <path d="M412 226 L407 216 L417 216 Z" fill="#E11D48"></path>
         <text x="500" y="200" font-family="Inter" font-size="11" fill="#E11D48" text-anchor="middle">고장 코드 · 정비 등록</text>
-        <path d="M356 249 C 240 249, 180 210, 132 152" fill="none" stroke="#9E99AB" stroke-width="1.4" stroke-dasharray="5 5"></path>
-        <path d="M132 152 L142 150 L136 160 Z" fill="#9E99AB"></path>
-        <text x="212" y="238" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">정비 완료</text>
+        <path d="M356 249 C 240 249, 180 210, 132 152" fill="none" stroke="#94A3B8" stroke-width="1.4" stroke-dasharray="5 5"></path>
+        <path d="M132 152 L142 150 L136 160 Z" fill="#94A3B8"></path>
+        <text x="212" y="238" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">정비 완료</text>
       </svg>
     </div>
     <div class="note"><b>판정은 서버에서 일괄 수행</b>합니다. 화면 · 리포트 · 알림이 서로 다른 값을 보이지 않도록 상태는 한 곳에서 계산하고, 속도 · 지속 시간 등 임계값은 협의 후 확정합니다.</div>
@@ -458,33 +462,33 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
   <div class="body">
     <div class="dia" style="flex:none; height:8.6rem; margin-bottom:0.8rem">
       <svg viewBox="0 0 900 200" preserveAspectRatio="xMidYMid meet" aria-label="알림 처리 상태 전이도">
-        <rect x="24" y="72" width="150" height="46" rx="23" fill="#4823FF"></rect>
+        <rect x="24" y="72" width="150" height="46" rx="23" fill="#0D9488"></rect>
         <text x="99" y="93" font-family="Inter" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">발생</text>
-        <text x="99" y="109" font-family="Inter" font-size="11" fill="#D9D2FF" text-anchor="middle">시스템 판정 · 발송</text>
-        <path d="M174 95 L232 95" stroke="#9E99AB" stroke-width="1.6"></path>
-        <path d="M232 95 L222 90 L222 100 Z" fill="#9E99AB"></path>
-        <text x="203" y="84" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">열람</text>
-        <rect x="234" y="72" width="150" height="46" rx="23" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></rect>
-        <text x="309" y="93" font-family="Inter" font-size="15" font-weight="600" fill="#4823FF" text-anchor="middle">확인</text>
-        <text x="309" y="109" font-family="Inter" font-size="11" fill="#7E78FF" text-anchor="middle">확인자 · 시각 기록</text>
-        <path d="M384 95 L442 95" stroke="#9E99AB" stroke-width="1.6"></path>
-        <path d="M442 95 L432 90 L432 100 Z" fill="#9E99AB"></path>
-        <text x="413" y="84" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">정비 요청</text>
-        <rect x="444" y="72" width="150" height="46" rx="23" fill="#EDE9FF" stroke="#7E78FF" stroke-width="1.4"></rect>
-        <text x="519" y="93" font-family="Inter" font-size="15" font-weight="600" fill="#4823FF" text-anchor="middle">조치 중</text>
-        <text x="519" y="109" font-family="Inter" font-size="11" fill="#7E78FF" text-anchor="middle">담당자 인계</text>
-        <path d="M594 95 L652 95" stroke="#9E99AB" stroke-width="1.6"></path>
-        <path d="M652 95 L642 90 L642 100 Z" fill="#9E99AB"></path>
-        <text x="623" y="84" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">결과 등록</text>
-        <rect x="654" y="72" width="150" height="46" rx="23" fill="#FAFAF8" stroke="#D9D2FF" stroke-width="1.4"></rect>
-        <text x="729" y="93" font-family="Inter" font-size="15" font-weight="600" fill="#18161A" text-anchor="middle">종결</text>
-        <text x="729" y="109" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">대응 시간 집계</text>
+        <text x="99" y="109" font-family="Inter" font-size="11" fill="#CBD5E1" text-anchor="middle">시스템 판정 · 발송</text>
+        <path d="M174 95 L232 95" stroke="#94A3B8" stroke-width="1.6"></path>
+        <path d="M232 95 L222 90 L222 100 Z" fill="#94A3B8"></path>
+        <text x="203" y="84" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">열람</text>
+        <rect x="234" y="72" width="150" height="46" rx="23" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.4"></rect>
+        <text x="309" y="93" font-family="Inter" font-size="15" font-weight="600" fill="#0D9488" text-anchor="middle">확인</text>
+        <text x="309" y="109" font-family="Inter" font-size="11" fill="#2DD4BF" text-anchor="middle">확인자 · 시각 기록</text>
+        <path d="M384 95 L442 95" stroke="#94A3B8" stroke-width="1.6"></path>
+        <path d="M442 95 L432 90 L432 100 Z" fill="#94A3B8"></path>
+        <text x="413" y="84" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">정비 요청</text>
+        <rect x="444" y="72" width="150" height="46" rx="23" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.4"></rect>
+        <text x="519" y="93" font-family="Inter" font-size="15" font-weight="600" fill="#0D9488" text-anchor="middle">조치 중</text>
+        <text x="519" y="109" font-family="Inter" font-size="11" fill="#2DD4BF" text-anchor="middle">담당자 인계</text>
+        <path d="M594 95 L652 95" stroke="#94A3B8" stroke-width="1.6"></path>
+        <path d="M652 95 L642 90 L642 100 Z" fill="#94A3B8"></path>
+        <text x="623" y="84" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">결과 등록</text>
+        <rect x="654" y="72" width="150" height="46" rx="23" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.4"></rect>
+        <text x="729" y="93" font-family="Inter" font-size="15" font-weight="600" fill="#0F172A" text-anchor="middle">종결</text>
+        <text x="729" y="109" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">대응 시간 집계</text>
         <path d="M99 72 C 99 26, 309 26, 309 68" fill="none" stroke="#E11D48" stroke-width="1.6" stroke-dasharray="5 5"></path>
         <path d="M309 68 L304 58 L314 58 Z" fill="#E11D48"></path>
         <text x="204" y="24" font-family="Inter" font-size="11" fill="#E11D48" text-anchor="middle">미확인 지속 시 재발송 · 관리자 승격</text>
-        <path d="M519 118 C 519 164, 309 164, 309 122" fill="none" stroke="#9E99AB" stroke-width="1.4" stroke-dasharray="5 5"></path>
-        <path d="M309 122 L304 132 L314 132 Z" fill="#9E99AB"></path>
-        <text x="414" y="160" font-family="Inter" font-size="11" fill="#898B91" text-anchor="middle">재발 시 확인 단계로 복귀</text>
+        <path d="M519 118 C 519 164, 309 164, 309 122" fill="none" stroke="#94A3B8" stroke-width="1.4" stroke-dasharray="5 5"></path>
+        <path d="M309 122 L304 132 L314 132 Z" fill="#94A3B8"></path>
+        <text x="414" y="160" font-family="Inter" font-size="11" fill="#64748B" text-anchor="middle">재발 시 확인 단계로 복귀</text>
       </svg>
     </div>
     <table class="tight dense">
@@ -927,7 +931,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
 
 <!-- 맺음 -->
 <section class="slide end" data-title="맺음">
-  <div class="end-logo"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
+  <div class="end-logo"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
   <div class="eyebrow">맺음</div>
   <h2>시나리오를 확정하면<br><em>검수 기준이 함께 정해집니다</em></h2>
   <p>각 시나리오의 단계와 완료 기준을 확정하면, 개발 우선순위와 인수 시험 항목을 같은 문서로 관리할 수 있습니다.</p>

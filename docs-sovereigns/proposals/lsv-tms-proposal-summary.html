@@ -7,28 +7,32 @@
 <meta name="doc-version" content="0.2">
 <meta name="doc-description" content="구축 제안서 요약본 8페이지 - 범위 · 화면 · 구조 · 보완 제안을 한 번에 훑는 보고용">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-SemiBold.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Light.woff2") format("woff2");font-weight:300;font-display:swap}
 /* ============================================================
-   문서 규격 - Cake Equity 기준 디자인 시스템
-   16:9 고정 캔버스 / 라틴은 Plus Jakarta Sans·Inter, 한글은 Pretendard 폴백
-   채움은 바이올렛 하나뿐 · 카드는 그림자 대신 1px 테두리 · 다크는 덱당 1장
+   세일링스톤 문서 규격 - SUIT · slate · teal
+   16:9 고정 캔버스 / 세일링스톤 SUIT · slate · teal 팔레트
+   채움 강조는 teal 하나뿐 · 카드는 그림자 대신 1px 테두리 · 다크는 덱당 1장
    ============================================================ */
 :root{
-  --violet:#4823FF; --voltage:#7E78FF; --iris:#6D67FB;
-  --lilac:#EDE9FF; --peri:#D9D2FF; --chartreuse:#E7FF6E; --powder:#99CEFE;
-  --bone:#FAFAF8; --paper:#FFFFFF; --ink:#18161A; --carbon:#333333;
-  --slate:#898B91; --lavender:#9E99AB; --midnight:#1E1B22;
+  --violet:#0D9488; --voltage:#2DD4BF; --iris:#0F766E;
+  --lilac:#F0FDFA; --peri:#CBD5E1; --chartreuse:#2DD4BF; --powder:#38BDF8;
+  --bone:#F8FAFC; --paper:#FFFFFF; --ink:#0F172A; --carbon:#334155;
+  --slate:#64748B; --lavender:#94A3B8; --midnight:#0F172A;
   --mint:#2DD4BF; --teal:#0D9488;   /* 세일링스톤 브랜드 - 회사소개서 기준 */
-  --fd:'Plus Jakarta Sans','Pretendard Variable',Pretendard,sans-serif;
-  --fu:'Inter','Pretendard Variable',Pretendard,sans-serif;
+  --fd:"SUIT","Pretendard Variable",Pretendard,-apple-system,sans-serif;
+  --fu:"SUIT","Pretendard Variable",Pretendard,-apple-system,sans-serif;
   --pad:3.5rem;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:min(1.25vw,2.2222vh)}
 body{
-  margin:0; background:#E8E5F0; font-family:var(--fu);
+  margin:0; background:#E2E8F0; font-family:var(--fu);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   min-height:100vh; color:var(--ink); -webkit-font-smoothing:antialiased;
   word-break:keep-all; /* 한글은 단어 단위로 줄바꿈 */
@@ -49,7 +53,7 @@ section.slide{
 h2.title{font-family:var(--fd); font-weight:800; font-size:2.25rem; letter-spacing:-0.032em; line-height:1.15; margin:0.5rem 0 0}
 .lead{font-weight:300; font-size:1.1rem; line-height:1.5; margin:0.65rem 0 0; max-width:62ch}
 .lead b{font-weight:600; color:var(--violet)}
-.dark .lead{color:#EDEAF2}
+.dark .lead{color:#E2E8F0}
 .dark .lead b{color:var(--chartreuse)}
 
 /* 본문 */
@@ -60,23 +64,23 @@ h2.title{font-family:var(--fd); font-weight:800; font-size:2.25rem; letter-spaci
 .g4{grid-template-columns:repeat(4,1fr)}
 .card{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1.3rem 1.35rem}
 .card.lil{background:var(--lilac)}
-.dark .card{background:#26222C; border-color:#3A3542}
+.dark .card{background:#1E293B; border-color:#334155}
 .card h3{font-family:var(--fd); font-weight:800; font-size:1.1rem; letter-spacing:-0.02em; margin:0.45rem 0 0}
 .card p{font-size:0.9rem; line-height:1.55; color:var(--carbon); margin:0.5rem 0 0}
-.dark .card p{color:#C9C4D2}
+.dark .card p{color:#CBD5E1}
 .card ul{margin:0.55rem 0 0; padding:0; list-style:none}
 .card li{position:relative; padding:0.28rem 0 0.28rem 0.9rem; font-size:0.88rem; color:var(--carbon); line-height:1.45}
 .card li::before{content:""; position:absolute; left:0; top:0.72rem; width:0.3rem; height:0.3rem; border-radius:50%; background:var(--violet)}
-.dark .card li{color:#C9C4D2}
+.dark .card li{color:#CBD5E1}
 .dark .card li::before{background:var(--chartreuse)}
 .tag{display:inline-block; background:var(--lilac); color:var(--violet); font-weight:600; font-size:0.72rem; padding:0.18rem 0.68rem; border-radius:999px}
-.tag.gray{background:#F0EFF3; color:var(--slate)}
+.tag.gray{background:#F1F5F9; color:var(--slate)}
 .tag.ch{background:var(--chartreuse); color:var(--ink)}
 .tags{display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.7rem}
 .num{font-family:var(--fd); font-weight:800; font-size:2rem; letter-spacing:-0.04em; line-height:1; color:var(--violet)}
 .dark .num{color:var(--chartreuse)}
 .unit{font-size:0.76rem; color:var(--slate); margin-top:0.3rem}
-.dark .unit{color:#9E99AB}
+.dark .unit{color:#94A3B8}
 
 /* 표 */
 table{width:100%; border-collapse:separate; border-spacing:0; background:var(--paper);
@@ -91,7 +95,7 @@ td .tag{font-size:0.68rem}
 /* 꼬리말 */
 .s-foot{display:flex; justify-content:space-between; align-items:center;
   font-size:0.7rem; letter-spacing:0.04em; color:var(--slate); padding-top:1rem}
-.dark .s-foot{color:#6F6A79}
+.dark .s-foot{color:#64748B}
 .s-foot .mark{font-family:var(--fd); font-weight:800; letter-spacing:-0.02em}
 
 /* 표지 */
@@ -156,9 +160,9 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
   padding:0.4rem 1rem; font-size:0.88rem; font-weight:600}
 .states .st.on{background:var(--violet); border-color:var(--violet); color:#FFFFFF}
 .states .ar{color:var(--lavender); font-size:0.85rem}
-.dark .flow .step{background:#26222C; border-color:#3A3542}
+.dark .flow .step{background:#1E293B; border-color:#334155}
 .dark .flow .step .k{color:var(--chartreuse)}
-.dark .flow .step p{color:#C9C4D2}
+.dark .flow .step p{color:#CBD5E1}
 
 /* 대시보드 구성안 */
 .mock{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:0.9rem;
@@ -242,7 +246,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
 <!-- 표지 -->
 <section class="slide cover" data-title="표지">
   <div class="cov-top">
-    <div class="brand"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#FAFAF8)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
+    <div class="brand"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
     <span class="iwd">Intelligence with Data</span>
   </div>
   <div class="cov-mid">
