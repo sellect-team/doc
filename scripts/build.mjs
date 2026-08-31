@@ -40,13 +40,23 @@ function readTitle(html) {
   return m ? m[1].trim() : null;
 }
 
+// data-title 속성값은 HTML로 이스케이프돼 있다(R&amp;D).
+// 화면에서 다시 이스케이프하므로 여기서 본래 글자로 되돌려 둔다.
+function unescapeHtml(s) {
+  return s
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"').replace(/&#0?39;/g, "'").replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&");   // & 를 마지막에 풀어야 이중 복원이 안 생긴다
+}
+
 function readSlides(html) {
   const titles = [];
   const re = /<section[^>]*class=["'][^"']*\bslide\b[^"']*["'][^>]*>/gi;
   let m;
   while ((m = re.exec(html))) {
     const t = m[0].match(/data-title=["']([^"']*)["']/i);
-    titles.push(t ? t[1] : `페이지 ${titles.length + 1}`);
+    titles.push(t ? unescapeHtml(t[1]) : `페이지 ${titles.length + 1}`);
   }
   return titles;
 }
