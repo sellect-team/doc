@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>AI 놀이터 화면 정의서</title>
+  <meta name="doc-version" content="0.9">
+  <meta name="doc-description" content="AI 놀이터 솔루션 화면 정의서 - 화면 목록·권한·공통 레이아웃·사용자 플로우와 화면별 기능 명세">
+  <style>
+    @font-face { font-family: "SUIT"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "SUIT ExtraBold"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+    :root {
+      --f:  "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      --fx: "SUIT ExtraBold", "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+    }
+    * { font-synthesis: none; -webkit-font-synthesis: none; }
+    b, strong { font-family: var(--fx); font-weight: 400; }
+    h1, h2, h3, h4, h5, h6 { font-weight: 400; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: min(1.25vw, 2.2222vh); }
+    body { font-family: var(--f); background: #fff; color: #0F172A;
+           display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+    :root {
+      --s900: #0F172A; --s800: #1E293B; --s700: #334155; --s600: #475569; --s500: #64748B;
+      --s400: #94A3B8; --s300: #CBD5E1; --s200: #E2E8F0; --s100: #F1F5F9; --s50: #F8FAFC;
+      --t800: #115E59; --t700: #0F766E; --t600: #0D9488; --t400: #2DD4BF; --t100: #CCFBF1; --t50: #F0FDFA;
+    }
+    /* 문서 외곽 여백 2.6rem = 박스 가로 간격 - 전 페이지 동일 */
+    .slide { width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh);
+             overflow: hidden; position: relative; flex-shrink: 0;
+             padding: 1.6rem 2.6rem 0.9rem; display: flex; flex-direction: column; background: #fff; }
+    .s-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.8rem; }
+    .s-head h2 { font-size: 2rem; font-family: var(--fx); letter-spacing: -0.02em; color: var(--s900); }
+    .s-head h2 em { color: var(--t600); font-style: normal; }
+    .s-head h2 .sid { font-size: 1.05rem; color: var(--s400); font-family: var(--fx); margin-right: 0.6rem; }
+    .bullet { display: inline-block; width: 0.55rem; height: 0.55rem;
+              background: var(--t400); margin-right: 0.75rem; vertical-align: middle; }
+    .s-right { display: flex; align-items: center; gap: 0.75rem; }
+    .s-right .sec { font-size: 0.95rem; color: var(--s400); letter-spacing: 0.04em; }
+    .s-band { margin: 0 -2.6rem; background: var(--s50);
+              border-top: 1px solid var(--s200); border-bottom: 1px solid var(--s200);
+              padding: 0.8rem 2.6rem; }
+    .s-band p { font-size: 1.12rem; line-height: 1.6; color: var(--s600); }
+    .s-band strong { color: var(--t600); font-family: var(--fx); }
+    .s-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+              font-size: 0.78rem; color: var(--s400); margin-top: 0.75rem; }
+    .s-foot .pg { grid-column: 2; }
+    .s-foot .mark { grid-column: 3; justify-self: end; letter-spacing: 0.14em; color: var(--s400); }
+    .content { flex: 1; min-height: 0; display: flex; flex-direction: column;
+               gap: 1.3rem; padding-top: 1.1rem; }
+    .fill { flex: 1; min-height: 0; }
+    .stripe { background: var(--s900); color: #E2E8F0; border-radius: 0.7rem;
+              padding: 0.75rem 1.4rem; font-size: 1rem; display: flex; align-items: center; gap: 0.8rem; }
+    .stripe b { color: var(--t400); font-family: var(--fx); }
+    .stripe .sicon { color: var(--t400); display: flex; align-items: center; font-size: 1.15rem; }
+    .i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6;
+         stroke-linecap: round; stroke-linejoin: round; display: inline-block; vertical-align: -0.12em; }
+
+    /* 2단: 좌 목업 1.25 / 우 명세 1 - 간격은 외곽과 동일한 2.6rem */
+    .two { display: flex; gap: 2.6rem; align-items: stretch; }
+    .two > .lcol { flex: 1.25; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+    .two > .rcol { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+
+    /* 명세 표 */
+    .spec { border: 1px solid var(--s200); border-radius: 0.9rem; overflow: hidden;
+            display: flex; flex-direction: column; flex: 1; min-height: 0; }
+    .spec table { width: 100%; border-collapse: collapse; height: 100%; }
+    .spec th { background: var(--s50); border-bottom: 1px solid var(--s200);
+               font-family: var(--fx); font-weight: 400; font-size: 0.82rem; color: var(--s500);
+               text-align: left; padding: 0.45rem 0.8rem; }
+    .spec td { border-bottom: 1px solid var(--s100); padding: 0.45rem 0.8rem;
+               font-size: 0.85rem; color: var(--s600); vertical-align: top; line-height: 1.5; }
+    .spec tr:last-child td { border-bottom: none; }
+    .spec td b { color: var(--s800); }
+    .spec td em { font-style: normal; color: var(--t700); font-family: var(--fx); }
+    .spec .cno { width: 2.2rem; text-align: center; }
+
+    /* 콜아웃 번호 */
+    .co { display: inline-flex; width: 1.15rem; height: 1.15rem; border-radius: 50%;
+          background: var(--t600); color: #fff; font-family: var(--fx); font-size: 0.72rem;
+          align-items: center; justify-content: center; box-shadow: 0 0 0 2px #fff; }
+    .co.abs { position: absolute; z-index: 5; }
+
+    /* 플로우 다이어그램 */
+    .fl { display: flex; flex-direction: column; gap: 1.3rem; height: 100%; }
+    .flane { flex: 1; display: flex; align-items: stretch; gap: 0.5rem;
+             background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
+             padding: 0.7rem 1rem; }
+    .flane .who { flex: 0 0 6.4rem; display: flex; flex-direction: column; justify-content: center;
+                  gap: 0.15rem; border-right: 1px solid var(--s200); margin-right: 0.5rem; }
+    .flane .who b { font-size: 1.02rem; color: var(--s900); font-family: var(--fx); }
+    .flane .who small { font-size: 0.76rem; color: var(--s400); }
+    .fstep { flex: 1; display: flex; flex-direction: column; justify-content: center;
+             background: #fff; border: 1px solid var(--s200); border-radius: 0.6rem;
+             padding: 0.45rem 0.65rem; }
+    .fstep b { font-size: 0.85rem; color: var(--s800); font-family: var(--fx); }
+    .fstep small { font-size: 0.72rem; color: var(--s500); line-height: 1.4; margin-top: 0.12rem; }
+    .fstep.hl { border-color: var(--t400); background: var(--t50); }
+    .fstep.hl b { color: var(--t800); }
+    .farr { align-self: center; color: var(--s300); font-size: 0.9rem; flex: 0 0 auto; }
+
+    /* 화면 목록 표 */
+    .rt-wrap { border: 1px solid var(--s200); border-radius: 0.9rem; overflow: hidden;
+               display: flex; flex-direction: column; }
+    .rt { width: 100%; border-collapse: collapse; height: 100%; }
+    .rt th { background: var(--s50); border-bottom: 1px solid var(--s200);
+             font-family: var(--fx); font-weight: 400; font-size: 0.85rem; color: var(--s500);
+             text-align: left; padding: 0.5rem 0.9rem; }
+    .rt td { border-bottom: 1px solid var(--s100); padding: 0.48rem 0.9rem;
+             font-size: 0.88rem; color: var(--s600); vertical-align: middle; line-height: 1.45; }
+    .rt tr:last-child td { border-bottom: none; }
+    .rt td.org { font-family: var(--fx); color: var(--s900); white-space: nowrap; }
+    .rt td b { color: var(--t700); font-family: var(--fx); }
+    .pill { display: inline-block; font-size: 0.72rem; font-family: var(--fx); border-radius: 99rem;
+            padding: 0.12rem 0.55rem; margin-right: 0.25rem; }
+    .pill.t { background: var(--t50); color: var(--t700); border: 1px solid var(--t100); }
+    .pill.s { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+    .pill.a { background: var(--s100); color: var(--s600); border: 1px solid var(--s300); }
+
+    /* ── 목업 공용 (제안서와 동일 규격) ── */
+    .win { background: #fff; border: 1px solid var(--s200); border-radius: 0.9rem;
+           box-shadow: 0 14px 34px rgba(15,23,42,0.10); overflow: hidden;
+           display: flex; flex-direction: column; position: relative; }
+    .lcol .win { flex: 1; min-height: 0; }
+    .win .bar { display: flex; align-items: center; gap: 0.45rem; background: var(--s100);
+                border-bottom: 1px solid var(--s200); padding: 0.5rem 0.9rem; }
+    .win .dot { width: 0.52rem; height: 0.52rem; border-radius: 50%; background: var(--s300); }
+    .win .bar .t { margin-left: 0.4rem; font-size: 0.84rem; font-family: var(--fx); color: var(--s500); }
+    .win .bar .live { margin-left: auto; font-size: 0.7rem; font-family: var(--fx); color: var(--t600);
+                      background: var(--t50); border-radius: 99rem; padding: 0.14rem 0.6rem; }
+    .lcol .mcap { margin-top: 0.6rem; font-size: 0.9rem; line-height: 1.5; color: var(--s500); }
+    .lcol .mcap b { color: var(--s800); font-family: var(--fx); }
+
+    .app { flex: 1; min-height: 0; display: flex; background: #F6F8FB; font-size: 0.8rem; }
+    .mnav { width: 5.4rem; background: var(--s900); display: flex; flex-direction: column;
+            padding: 0.45rem 0.4rem; gap: 0.12rem; flex-shrink: 0; overflow: hidden; }
+    .mnav .mlogo { display: flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.4rem 0.45rem;
+                   color: #fff; font-family: var(--fx); font-size: 0.78rem; }
+    .mnav .mlogo .i { color: var(--t400); }
+    .mnav .ni { display: flex; align-items: center; gap: 0.4rem; color: var(--s400);
+                padding: 0.28rem 0.45rem; border-radius: 0.4rem; font-size: 0.68rem; }
+    .mnav .ni.on { background: var(--t700); color: #fff; font-family: var(--fx); }
+    .mmain { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .mtop { display: flex; align-items: center; gap: 0.6rem; background: #fff;
+            border-bottom: 1px solid var(--s200); padding: 0.45rem 0.8rem; }
+    .mtop b { font-size: 0.92rem; color: var(--s900); font-family: var(--fx); }
+    .mtop .msel { font-size: 0.72rem; color: var(--s600); border: 1px solid var(--s300);
+                  border-radius: 0.4rem; padding: 0.2rem 0.55rem; background: #fff; }
+    .mtop .mbtn { margin-left: auto; background: var(--t600); color: #fff; font-family: var(--fx);
+                  font-size: 0.72rem; border-radius: 0.45rem; padding: 0.28rem 0.7rem; }
+    .mtop .mbtn.ghost { background: #fff; color: var(--s600); border: 1px solid var(--s300); margin-left: 0; }
+    .mtop .mava { width: 1.35rem; height: 1.35rem; border-radius: 50%; background: var(--t100);
+                  color: var(--t800); display: flex; align-items: center; justify-content: center;
+                  font-size: 0.62rem; font-family: var(--fx); }
+    .mbody { flex: 1; min-height: 0; padding: 0.65rem 0.8rem; display: flex; flex-direction: column;
+             gap: 0.55rem; overflow: hidden; }
+    .mkpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+    .mkpi { background: #fff; border: 1px solid var(--s200); border-radius: 0.55rem;
+            padding: 0.42rem 0.6rem; position: relative; }
+    .mkpi .k { font-size: 0.64rem; color: var(--s500); }
+    .mkpi .v { font-size: 1.05rem; font-family: var(--fx); color: var(--s900); letter-spacing: -0.02em; }
+    .mkpi .v em { font-style: normal; font-size: 0.62rem; color: var(--t600); font-family: var(--fx);
+                  margin-left: 0.25rem; }
+    .mcards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .mcard { background: #fff; border: 1px solid var(--s200); border-radius: 0.6rem;
+             padding: 0.5rem 0.65rem; display: flex; flex-direction: column; gap: 0.3rem; position: relative; }
+    .mcard .mrow1 { display: flex; align-items: center; gap: 0.4rem; }
+    .mcard .tag { font-size: 0.6rem; font-family: var(--fx); border-radius: 0.3rem;
+                  padding: 0.08rem 0.4rem; background: var(--t50); color: var(--t700);
+                  border: 1px solid var(--t100); }
+    .mcard b { font-size: 0.82rem; color: var(--s900); font-family: var(--fx); }
+    .mcard small { font-size: 0.68rem; color: var(--s500); line-height: 1.4; }
+    .mcard .mfoot { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.1rem;
+                    font-size: 0.64rem; color: var(--s400); }
+    .mcard .mfoot .sp { margin-left: auto; }
+    .mstat { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.62rem;
+             font-family: var(--fx); border-radius: 99rem; padding: 0.1rem 0.45rem; }
+    .mstat.on { background: var(--t50); color: var(--t700); border: 1px solid var(--t400); }
+    .mstat.on::before { content: ""; width: 0.34rem; height: 0.34rem; border-radius: 50%; background: var(--t400); }
+    .mstat.off { background: var(--s100); color: var(--s500); border: 1px solid var(--s300); }
+    .mstat.warn { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+    .mg { display: flex; align-items: center; gap: 0.4rem; font-size: 0.64rem; color: var(--s400); }
+    .mg .mgb { flex: 1; height: 0.34rem; border-radius: 99rem; background: var(--s100);
+               overflow: hidden; position: relative; }
+    .mg .mgb i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99rem; background: #14B8A6; }
+    .mg b { font-family: var(--fx); color: var(--s700); font-size: 0.66rem; }
+    .mtbl { background: #fff; border: 1px solid var(--s200); border-radius: 0.6rem; overflow: hidden;
+            position: relative; }
+    .mtbl table { width: 100%; border-collapse: collapse; font-size: 0.68rem; }
+    .mtbl th { background: var(--s50); color: var(--s500); font-family: var(--fx); font-weight: 400;
+               text-align: left; padding: 0.3rem 0.6rem; border-bottom: 1px solid var(--s200);
+               font-size: 0.62rem; }
+    .mtbl td { padding: 0.32rem 0.6rem; border-bottom: 1px solid var(--s100); color: var(--s600); }
+    .mtbl tr:last-child td { border-bottom: none; }
+    .mtbl td b { color: var(--s800); font-family: var(--fx); }
+    .sgrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.35rem; }
+    .schip { background: #fff; border: 1px solid var(--s200); border-radius: 0.45rem;
+             padding: 0.28rem 0.2rem; text-align: center; }
+    .schip b { display: block; font-size: 0.62rem; color: var(--s700); font-family: var(--fx); }
+    .schip small { font-size: 0.54rem; color: var(--s400); }
+    .schip.ok { border-color: var(--t400); background: var(--t50); }
+    .schip.ok small { color: var(--t700); }
+    .schip.help { border-color: #FED7AA; background: #FFF7ED; }
+    .schip.help small { color: #C2410C; }
+    .mduo { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.05fr 1fr; }
+    .mchat { display: flex; flex-direction: column; gap: 0.4rem; padding: 0.55rem 0.65rem;
+             background: #fff; border-right: 1px solid var(--s200); overflow: hidden; position: relative; }
+    .mchat .mmsg { max-width: 90%; padding: 0.38rem 0.6rem; border-radius: 0.6rem;
+                   font-size: 0.68rem; line-height: 1.4; }
+    .mchat .mmsg.q { align-self: flex-end; background: var(--s900); color: #fff;
+                     border-bottom-right-radius: 0.15rem; }
+    .mchat .mmsg.a { align-self: flex-start; background: var(--s50); border: 1px solid var(--s200);
+                     color: var(--s600); border-bottom-left-radius: 0.15rem; }
+    .mchat .mmsg.a b { color: var(--t700); }
+    .mchat .minput { margin-top: auto; display: flex; align-items: center; gap: 0.4rem;
+                     border: 1px solid var(--s300); border-radius: 99rem; padding: 0.3rem 0.65rem;
+                     font-size: 0.64rem; color: var(--s400); }
+    .mchat .minput .send { margin-left: auto; width: 1.1rem; height: 1.1rem; border-radius: 50%;
+                           background: var(--t600); color: #fff; display: flex; align-items: center;
+                           justify-content: center; font-size: 0.55rem; }
+    .mprev { background: var(--s100); padding: 0.55rem; display: flex; flex-direction: column; position: relative; }
+    .mprev .purl { display: flex; align-items: center; gap: 0.35rem; background: #fff;
+                   border: 1px solid var(--s200); border-radius: 99rem; padding: 0.2rem 0.55rem;
+                   font-size: 0.6rem; color: var(--t700); font-family: var(--fx); margin-bottom: 0.45rem; }
+    .mprev .pframe { flex: 1; background: #fff; border: 1px solid var(--s200); border-radius: 0.5rem;
+                     padding: 0.5rem 0.6rem; display: flex; flex-direction: column; gap: 0.35rem; }
+    .mprev .ph1 { font-size: 0.85rem; font-family: var(--fx); color: var(--t800); text-align: center; }
+    .mprev .pimg { height: 1.7rem; border-radius: 0.35rem; background: var(--t50);
+                   border: 1px dashed var(--t100); display: flex; align-items: center;
+                   justify-content: center; color: var(--t400); font-size: 0.7rem; }
+    .mprev .pcards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.3rem; }
+    .mprev .pc { background: #EFF9FF; border: 1px solid #BAE6FD; border-radius: 0.35rem;
+                 padding: 0.25rem 0.3rem; font-size: 0.56rem; color: var(--s600); text-align: center; }
+    .mprev .pc b { display: block; font-size: 0.6rem; color: var(--s800); }
+    .ggrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+    .gcard { background: #fff; border: 1px solid var(--s200); border-radius: 0.55rem; overflow: hidden;
+             position: relative; }
+    .gcard .gth { height: 1.9rem; display: flex; align-items: center; justify-content: center;
+                  font-size: 1.05rem; color: var(--t600); background: var(--t50);
+                  border-bottom: 1px solid var(--s200); }
+    .gcard .gm { padding: 0.25rem 0.45rem; }
+    .gcard .gm b { font-size: 0.68rem; color: var(--s800); display: block; font-family: var(--fx); }
+    .gcard .gm small { font-size: 0.58rem; color: var(--s400); display: flex; gap: 0.4rem; margin-top: 0.12rem; }
+    .gbadge { font-size: 0.6rem; font-family: var(--fx); border-radius: 99rem; padding: 0.08rem 0.4rem; }
+    .gbadge.ok { background: var(--t50); color: var(--t700); border: 1px solid var(--t100); }
+    .gbadge.wait { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+
+    /* 마법사 스텝 */
+    .wiz { display: flex; align-items: center; gap: 0.4rem; font-size: 0.66rem; color: var(--s400); }
+    .wiz .wst { display: flex; align-items: center; gap: 0.3rem; }
+    .wiz .wn { width: 1.05rem; height: 1.05rem; border-radius: 50%; background: var(--s200);
+               color: var(--s500); display: inline-flex; align-items: center; justify-content: center;
+               font-family: var(--fx); font-size: 0.6rem; }
+    .wiz .wst.on .wn { background: var(--t600); color: #fff; }
+    .wiz .wst.on { color: var(--t700); font-family: var(--fx); }
+    .wiz .wl { flex: 1; height: 1px; background: var(--s200); }
+    .fld { background: #fff; border: 1px solid var(--s200); border-radius: 0.55rem;
+           padding: 0.4rem 0.6rem; position: relative; }
+    .fld small { display: block; font-size: 0.6rem; color: var(--s400); margin-bottom: 0.15rem; }
+    .fld b { font-size: 0.76rem; color: var(--s800); }
+    .fld .hinttx { font-size: 0.68rem; color: var(--s500); }
+    .fchips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .fchip { font-size: 0.62rem; border: 1px solid var(--s300); border-radius: 99rem;
+             padding: 0.12rem 0.5rem; color: var(--s600); background: #fff; }
+    .fchip.on { border-color: var(--t400); background: var(--t50); color: var(--t700); font-family: var(--fx); }
+
+    /* ── 목업 고도화 ── */
+    .win { box-shadow: 0 18px 44px rgba(15,23,42,0.13), 0 2px 6px rgba(15,23,42,0.06); }
+    .mnav .nuser { margin-top: auto; display: flex; align-items: center; gap: 0.35rem;
+                   background: var(--s800); border-radius: 0.45rem; padding: 0.3rem 0.4rem; }
+    .mnav .nuser .nava { width: 1.15rem; height: 1.15rem; border-radius: 50%; background: var(--t400);
+                         color: var(--s900); display: inline-flex; align-items: center; justify-content: center;
+                         font-family: var(--fx); font-size: 0.58rem; flex-shrink: 0; }
+    .mnav .nuser b { display: block; color: #fff; font-size: 0.6rem; font-family: var(--fx); line-height: 1.2; }
+    .mnav .nuser small { display: block; color: var(--s400); font-size: 0.52rem; line-height: 1.2; }
+    .mkpi { padding-left: 0.85rem; }
+    .mkpi .kbar { position: absolute; left: 0.32rem; top: 0.45rem; bottom: 0.45rem; width: 0.18rem;
+                  border-radius: 99rem; background: var(--t400); }
+    .mkpi .kbar.warn { background: #FB923C; }
+    .mtop .msch { display: flex; align-items: center; gap: 0.3rem; border: 1px solid var(--s200);
+                  background: var(--s50); border-radius: 99rem; padding: 0.18rem 0.6rem;
+                  font-size: 0.66rem; color: var(--s400); }
+    .mprev .pnav { display: flex; align-items: center; gap: 0.45rem; background: var(--t800);
+                   border-radius: 0.4rem 0.4rem 0 0; margin: -0.5rem -0.6rem 0.1rem; padding: 0.3rem 0.6rem; }
+    .mprev .pnav b { color: #fff; font-size: 0.62rem; font-family: var(--fx); }
+    .mprev .pnav span { color: var(--t100); font-size: 0.54rem; margin-left: auto; display: flex; gap: 0.4rem; }
+    /* 최신 스타일 디테일 */
+    .schip { display: flex; align-items: center; gap: 0.32rem; text-align: left; padding: 0.26rem 0.38rem; }
+    .schip .sava { width: 1.05rem; height: 1.05rem; border-radius: 50%; background: var(--s200);
+                   color: var(--s600); display: inline-flex; align-items: center; justify-content: center;
+                   font-family: var(--fx); font-size: 0.54rem; flex-shrink: 0; }
+    .schip.ok .sava { background: var(--t400); color: var(--s900); }
+    .schip.help .sava { background: #FDBA74; color: #7C2D12; }
+    .schip > span.sbody { min-width: 0; }
+    .schip b, .schip small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mcard { border-radius: 0.7rem; box-shadow: 0 3px 10px rgba(15,23,42,0.04); }
+    .mkpi { border-radius: 0.65rem; box-shadow: 0 2px 8px rgba(15,23,42,0.04); }
+    .mtop { box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
+    .gcard { box-shadow: 0 3px 10px rgba(15,23,42,0.05); }
+    /* 다크 표지 */
+    .dark { background:
+              linear-gradient(rgba(148,163,184,0.055) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(148,163,184,0.055) 1px, transparent 1px),
+              var(--s900);
+            background-size: 3.4rem 3.4rem, 3.4rem 3.4rem, auto;
+            color: #fff; justify-content: center; align-items: flex-start; padding: 2.2rem 2.8rem; }
+    .dark .glow { position: absolute; right: -12rem; top: 50%; transform: translateY(-50%);
+                  width: 46rem; height: 46rem; border-radius: 50%;
+                  background: radial-gradient(circle, rgba(45,212,191,0.11) 0%, rgba(45,212,191,0.035) 45%, transparent 72%); }
+    .dark .logo { position: absolute; right: 5.5rem; top: 50%; transform: translateY(-50%);
+                  width: 14rem; z-index: 0; }
+    .dark .top { position: absolute; top: 1.9rem; left: 2.8rem; right: 2.8rem;
+                 display: flex; justify-content: space-between; align-items: center; }
+    .dark .top .pillbadge { border: 1px solid var(--t400); color: var(--t400);
+                            font-size: 0.82rem; letter-spacing: 0.2em; padding: 0.5rem 1.6rem;
+                            border-radius: 99rem; }
+    .dark .top .iwd { color: var(--t400); font-size: 0.95rem; letter-spacing: 0.03em; font-family: var(--fx); }
+    .dark h1 { font-size: 3.4rem; font-family: var(--fx); letter-spacing: -0.03em; line-height: 1.16; }
+    .dark h1 em { color: var(--t400); font-style: normal; }
+    .dark .sub { font-size: 1.2rem; color: var(--s400); margin-top: 1.3rem; line-height: 1.65; }
+    .dark .pills { display: flex; gap: 0.6rem; margin-top: 1.9rem; flex-wrap: wrap; }
+    .dark .pill2 { border: 1px solid var(--s700); background: rgba(30,41,59,0.7); color: var(--s300);
+                   font-size: 0.9rem; padding: 0.42rem 1rem; border-radius: 99rem; }
+    .dark .pill2 b { color: var(--t400); margin-right: 0.35rem; }
+    .dark .corner { position: absolute; left: 2.8rem; bottom: 1.5rem; right: 2.8rem;
+                    display: flex; justify-content: flex-start; gap: 0.9rem; align-items: center;
+                    font-size: 0.82rem; letter-spacing: 0.16em; }
+    .dark .corner .ai { color: var(--t400); font-family: var(--fx); }
+    .dark .corner .div { color: var(--s600); }
+    .dark .corner .cp { color: var(--s500); }
+    .dark .notice { margin-top: 1.9rem; display: inline-flex; align-items: center; gap: 0.6rem;
+                    border: 1px solid var(--s700); border-radius: 0.6rem; background: rgba(30,41,59,0.7);
+                    padding: 0.55rem 1rem; font-size: 0.88rem; color: var(--s400); position: relative; z-index: 1; }
+    .dark .notice .i { color: var(--t400); }
+  </style>
+</head>
+<body>
+
+  <!-- 1. 표지 -->
+  <section class="slide dark" data-title="표지">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
+    <div class="top">
+      <span class="pillbadge">AI PLAYGROUND - SCREEN SPECIFICATION</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>AI 놀이터<br><em>화면 정의서</em></h1>
+    <p class="sub">교사 콘솔 · 학생 놀이터 · 관리 센터의 화면 목록과 레이아웃, 화면별 기능 명세,<br>
+      사용자 플로우를 정의합니다. 구축 제안서(v0.9)의 부속 문서입니다.</p>
+    <div class="pills">
+      <span class="pill2"><b>T</b>교사 화면 5종</span>
+      <span class="pill2"><b>S</b>학생 화면 3종</span>
+      <span class="pill2"><b>A</b>관리 화면 2종</span>
+      <span class="pill2"><b>+</b>공통 상태 · 예외</span>
+    </div>
+    <div class="notice"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      v0.9 설계안 - 화면·수치는 예시이며 상세 설계 단계에서 확정합니다.</div>
+    <div class="corner">
+      <span class="ai">AI · EDUCATION · PLAYGROUND</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
+    </div>
+  </section>
+
+  <!-- 2. 화면 목록 -->
+  <section class="slide" data-title="화면 목록과 권한">
+    <header class="s-head">
+      <h2><span class="bullet"></span>화면 목록과 <em>권한</em></h2>
+      <div class="s-right"><span class="sec">01 · Overview</span></div>
+    </header>
+    <div class="s-band"><p>화면 ID는 <strong>T(교사) · S(학생) · A(관리자)</strong> 접두로 부여합니다.
+      본 문서는 1단계(시범 구축) 범위의 10개 핵심 화면을 정의합니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:10%">화면 ID</th><th style="width:22%">화면명</th><th style="width:38%">핵심 기능</th><th style="width:16%">접근 권한</th><th>정의</th></tr>
+          <tr><td class="org">T-01</td><td>교사 대시보드 · 수업방 목록</td><td>수업방 카드 목록 · 상태 · 입장 코드 · 주간 사용량</td><td><span class="pill t">교사</span></td><td><b>5p</b></td></tr>
+          <tr><td class="org">T-02</td><td>수업방 만들기 (3단계 마법사)</td><td>기본 정보 → AI 규칙 → 한도·기간 설정</td><td><span class="pill t">교사</span></td><td><b>6p</b></td></tr>
+          <tr><td class="org">T-03</td><td>라이브 보드</td><td>학생 상태 그리드 · 도움 신호 · 일시 정지</td><td><span class="pill t">교사</span></td><td><b>7p</b></td></tr>
+          <tr><td class="org">T-04</td><td>수업 종료 정산 · 숙제 전환</td><td>사용량 정산 · 미사용 회수 · 숙제 설정</td><td><span class="pill t">교사</span></td><td><b>8p</b></td></tr>
+          <tr><td class="org">T-05</td><td>갤러리 승인함</td><td>제출물 검토 · 승인/반려/수정 요청</td><td><span class="pill t">교사</span></td><td><b>9p</b></td></tr>
+          <tr><td class="org">S-01</td><td>학생 입장</td><td>코드/QR 입장 · 별명 선택 · 동의 확인</td><td><span class="pill s">학생</span></td><td><b>10p</b></td></tr>
+          <tr><td class="org">S-02</td><td>놀이터 (만들기 스튜디오)</td><td>AI 대화 · 4가지 만들기 모드 · 실시간 미리보기 · 제출</td><td><span class="pill s">학생</span></td><td><b>11p</b></td></tr>
+          <tr><td class="org">S-03</td><td>학급 갤러리 · 작품 상세</td><td>작품 감상 · 문장틀 댓글 · 프롬프트 과정 보기</td><td><span class="pill s">학생</span><span class="pill t">교사</span></td><td><b>12p</b></td></tr>
+          <tr><td class="org">A-01</td><td>관리 센터 · AI 키와 예산</td><td>BYOK 등록 · 학급 배분 · 사용량 · 승인 요청</td><td><span class="pill a">관리자</span></td><td><b>13p</b></td></tr>
+          <tr><td class="org">A-02</td><td>안전 알림 센터</td><td>위험 신호 이력 · 처리 상태 · 통계</td><td><span class="pill a">관리자</span><span class="pill t">교사</span></td><td><b>14p</b></td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+        <span>2단계 화면(학부모 열람 · 템플릿 장터 · 학교 간 전시회)은 <b>본 문서 범위 밖</b>이며 확산 단계 설계서에서 다룹니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 2 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 3. 공통 레이아웃 -->
+  <section class="slide" data-title="공통 레이아웃">
+    <header class="s-head">
+      <h2><span class="bullet"></span>공통 레이아웃 - <em>모든 화면의 뼈대</em></h2>
+      <div class="s-right"><span class="sec">01 · Overview</span></div>
+    </header>
+    <div class="s-band"><p>교사·관리자 화면은 <strong>사이드바 + 상단바 + 콘텐츠</strong>의 3분할 구조를 공유합니다.
+      학생 화면은 사이드바 없이 몰입형 전체 화면을 씁니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">공통 레이아웃 (교사 · 관리자)</span></div>
+            <div class="app">
+              <span class="co abs" style="left:2.4rem; top:1.1rem">1</span>
+              <span class="co abs" style="left:50%; top:1.1rem">2</span>
+              <span class="co abs" style="left:50%; top:4rem">3</span>
+              <div class="mnav">
+                <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+                <div class="ni on"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+              <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
+              </div>
+              <div class="mmain">
+                <div class="mtop"><b>화면 제목</b><span class="msel">범위 선택 ▾</span><span class="mbtn">주요 동작</span><span class="mava">김</span></div>
+                <div class="mbody">
+                  <div class="mkpis">
+                    <div class="mkpi"><span class="kbar"></span><div class="k">요약 지표</div><div class="v">--</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">요약 지표</div><div class="v">--</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">요약 지표</div><div class="v">--</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">요약 지표</div><div class="v">--</div></div>
+                  </div>
+                  <div class="mtbl"><table>
+                    <tr><th>콘텐츠 영역</th></tr>
+                    <tr><td>화면별 본문 (카드 그리드 · 테이블 · 보드)</td></tr>
+                  </table></div>
+                </div>
+              </div>
+            </div></div>
+          <p class="mcap"><b>3분할 뼈대.</b> 모든 교사·관리자 화면이 같은 위치에 같은 요소를 두어
+             학습 비용을 없앱니다.</p>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:26%">영역</th><th>정의</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>사이드바 (GNB)</b></td>
+                  <td>6개 고정 메뉴. 권한에 따라 노출이 달라짐 - 교사는 전체, 관리자는 사용량·안전 중심.
+                      현재 화면은 <em>티일 배경</em>으로 표시</td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>상단바</b></td>
+                  <td>좌측: 화면 제목 + 범위 선택(학급·기간). 우측: 화면의 <em>주요 동작 버튼 1개</em>(티일)와
+                      사용자 아바타. 주요 동작은 화면당 하나만 둔다</td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>콘텐츠</b></td>
+                  <td>상단 요약(KPI 타일 최대 4개) + 본문(카드·테이블·보드). 위험·경고는
+                      <em>주황 계열</em>, 정상·진행은 <em>티일 계열</em>로 통일</td></tr>
+              <tr><td class="cno">-</td><td><b>학생 화면</b></td>
+                  <td>사이드바 없음. 상단에 수업방 이름·잔여 사용량·나가기만 두고
+                      본문을 전체 화면으로 - 저학년 몰입을 위해 요소를 최소화</td></tr>
+              <tr><td class="cno">-</td><td><b>반응형</b></td>
+                  <td>교사 노트북(1280+) 기준 설계, 학생 태블릿(1024) 우선.
+                      모바일은 조회 전용(승인·알림 확인)</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 3 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 4. 사용자 플로우 -->
+  <section class="slide" data-title="사용자 플로우">
+    <header class="s-head">
+      <h2><span class="bullet"></span>사용자 플로우 - <em>세 역할, 하나의 수업</em></h2>
+      <div class="s-right"><span class="sec">01 · Overview</span></div>
+    </header>
+    <div class="s-band"><p>한 차시 수업을 기준으로 세 역할의 이동 경로를 정의합니다.
+      <strong>화면 ID가 곧 이동 순서</strong>입니다.</p></div>
+    <div class="content">
+      <div class="fl fill">
+        <div class="flane">
+          <div class="who"><b>교사</b><small>수업 전 → 후</small></div>
+          <div class="fstep"><b>T-01 대시보드</b><small>수업방 확인</small></div>
+          <span class="farr">›</span>
+          <div class="fstep"><b>T-02 만들기</b><small>3단계 · 5분</small></div>
+          <span class="farr">›</span>
+          <div class="fstep hl"><b>T-03 라이브</b><small>수업 중 관제</small></div>
+          <span class="farr">›</span>
+          <div class="fstep"><b>T-05 승인함</b><small>제출물 검토</small></div>
+          <span class="farr">›</span>
+          <div class="fstep"><b>T-04 정산</b><small>회수 · 숙제 전환</small></div>
+        </div>
+        <div class="flane">
+          <div class="who"><b>학생</b><small>입장 → 제출</small></div>
+          <div class="fstep"><b>S-01 입장</b><small>코드 6자리 · QR</small></div>
+          <span class="farr">›</span>
+          <div class="fstep hl"><b>S-02 놀이터</b><small>대화 · 만들기 · 미리보기</small></div>
+          <span class="farr">›</span>
+          <div class="fstep"><b>S-02 제출</b><small>승인 대기 표시</small></div>
+          <span class="farr">›</span>
+          <div class="fstep"><b>S-03 갤러리</b><small>감상 · 문장틀 댓글</small></div>
+          <span class="farr">›</span>
+          <div class="fstep"><b>S-03 포트폴리오</b><small>내 작품 쌓임</small></div>
+        </div>
+        <div class="flane">
+          <div class="who"><b>관리자</b><small>학기 운영</small></div>
+          <div class="fstep"><b>A-01 키 등록</b><small>BYOK · 모델 용도 지정</small></div>
+          <span class="farr">›</span>
+          <div class="fstep"><b>A-01 예산 배분</b><small>학급 → 학생</small></div>
+          <span class="farr">›</span>
+          <div class="fstep hl"><b>A-01 모니터링</b><small>소진율 · 승인 요청</small></div>
+          <span class="farr">›</span>
+          <div class="fstep"><b>A-02 안전 센터</b><small>알림 이력 · 조치</small></div>
+          <span class="farr">›</span>
+          <div class="fstep"><b>리포트</b><small>월간 집계 내려받기</small></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <span>설계 원칙: 교사는 <b>수업 전 5분, 수업 후 5분</b> 안에 모든 관리 동작이 끝나야 합니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 4 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 5. T-01 -->
+  <section class="slide" data-title="T-01 교사 대시보드">
+    <header class="s-head">
+      <h2><span class="bullet"></span><span class="sid">T-01</span>교사 대시보드 · <em>수업방 목록</em></h2>
+      <div class="s-right"><span class="sec">02 · Teacher</span></div>
+    </header>
+    <div class="s-band"><p>교사의 홈 화면입니다. <strong>오늘 수업이 위, 관리가 아래</strong> -
+      로그인 후 3초 안에 오늘 할 일이 보이게 합니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">T-01 · 교사 대시보드</span><span class="live">김윤아 선생님</span></div>
+            <div class="app">
+              <div class="mnav">
+                <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+                <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+              <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
+              </div>
+              <div class="mmain">
+                <div class="mtop"><b>내 수업방</b><span class="msch">⌕ 검색</span><span class="msel">3학년 2반 ▾</span><span class="mbtn">+ 새 수업방</span><span class="mava">김</span>
+                  <span class="co abs" style="right:4.6rem; top:0.5rem">1</span></div>
+                <div class="mbody">
+                  <div class="mcards">
+                    <div class="mcard"><span class="co abs" style="right:0.4rem; top:0.4rem">2</span>
+                      <div class="mrow1"><span class="tag">국어</span><span class="mstat on">진행 중</span></div>
+                      <b>독서 토론 도우미</b><small>페르소나: 질문만 하는 사서 선생님 · 정답 금지</small>
+                      <div class="mfoot"><span>참여 28명</span><span class="sp">입장 코드 <b style="color:var(--t700)">QK73PT</b></span></div></div>
+                    <div class="mcard">
+                      <div class="mrow1"><span class="tag">사회</span><span class="mstat on">진행 중</span></div>
+                      <b>우리 동네 소개 웹 만들기</b><small>웹 작품 모드 · 제출 마감 금요일 21:00</small>
+                      <div class="mfoot"><span>참여 26명</span><span class="sp">제출 11 / 26</span></div></div>
+                    <div class="mcard"><span class="co abs" style="right:0.4rem; top:0.4rem">3</span>
+                      <div class="mrow1"><span class="tag">수학</span><span class="mstat off">일시 정지</span></div>
+                      <b>수학 문장제 연습</b><small>학습 모드 · 힌트 3단계 · 정답 금지</small>
+                      <div class="mfoot"><span>목요일 5교시 예약</span></div></div>
+                    <div class="mcard">
+                      <div class="mrow1"><span class="tag" style="background:var(--s100);color:var(--s500);border-color:var(--s200)">템플릿</span></div>
+                      <b>과학 실험 보고서 도우미</b><small>교육청 공유 템플릿 · 가져와서 시작</small>
+                      <div class="mfoot"><span>사용 1,204회</span><span class="sp">★ 4.8</span></div></div>
+                  </div>
+                  <div class="mg"><span class="co" style="margin-right:0.2rem">4</span><span>이번 주 우리 반 사용량</span><span class="mgb"><i style="width:62%"></i></span><b>62%</b></div>
+                </div>
+              </div>
+            </div></div>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:27%">구성 요소</th><th>기능 정의 · 동작</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>+ 새 수업방</b></td>
+                  <td>T-02 마법사를 연다. 템플릿에서 시작 시 1단계가 미리 채워짐</td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>수업방 카드</b></td>
+                  <td>과목 태그 · 상태 · 규칙 요약 · 참여/제출 현황 · 입장 코드.
+                      클릭 → 진행 중이면 <em>T-03 라이브</em>, 종료면 <em>T-04 정산</em>으로</td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>상태 칩</b></td>
+                  <td><em>진행 중</em>(티일) · <em>일시 정지</em>(회색) · <em>숙제 중</em> · <em>종료</em>.
+                      카드에서 바로 일시 정지/재개 가능</td></tr>
+              <tr><td class="cno"><span class="co">4</span></td><td><b>주간 사용량</b></td>
+                  <td>우리 반 배분량 대비 소진율. 80% 초과 시 주황 표시,
+                      클릭 → 학생별 상세(A-01의 학급 뷰)</td></tr>
+              <tr><td class="cno">-</td><td><b>빈 상태</b></td>
+                  <td>수업방이 없으면 "템플릿에서 5분 만에 시작" 안내와 추천 템플릿 3개 노출</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 5 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 6. T-02 -->
+  <section class="slide" data-title="T-02 수업방 만들기">
+    <header class="s-head">
+      <h2><span class="bullet"></span><span class="sid">T-02</span>수업방 만들기 · <em>3단계 마법사</em></h2>
+      <div class="s-right"><span class="sec">02 · Teacher</span></div>
+    </header>
+    <div class="s-band"><p>기본 정보 → AI 규칙 → 한도·기간의 3단계입니다.
+      <strong>모든 단계에 기본값</strong>이 있어 엔터만 눌러도 수업방이 만들어집니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">T-02 · 새 수업방 (2/3 단계)</span><span class="live">임시 저장됨</span></div>
+            <div class="app">
+              <div class="mnav">
+                <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+                <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+                <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
+              </div>
+              <div class="mmain">
+                <div class="mtop"><b>새 수업방 만들기</b><span class="mbtn ghost">이전</span><span class="mbtn">다음 단계</span>
+                  <span class="co abs" style="right:1rem; top:0.5rem">5</span></div>
+                <div class="mbody">
+                  <div class="wiz"><span class="co" style="margin-right:0.2rem">1</span>
+                    <span class="wst"><span class="wn">1</span>기본 정보</span><span class="wl"></span>
+                    <span class="wst on"><span class="wn">2</span>AI 규칙</span><span class="wl"></span>
+                    <span class="wst"><span class="wn">3</span>한도 · 기간</span></div>
+                  <div class="fld"><span class="co abs" style="right:0.4rem; top:0.4rem">2</span>
+                    <small>AI 페르소나 (말로 쓰면 규칙이 됩니다)</small>
+                    <span class="hinttx">"5학년 눈높이로, 답 대신 힌트만 주는 과학 실험 도우미.
+                    실험 안전 수칙을 항상 먼저 안내해 줘."</span></div>
+                  <div class="fld"><span class="co abs" style="right:0.4rem; top:0.4rem">3</span>
+                    <small>안전 규칙 (기본 적용 · 해제 불가)</small>
+                    <div class="fchips"><span class="fchip on">연령 필터</span><span class="fchip on">개인정보 차단</span>
+                      <span class="fchip on">전 대화 기록</span><span class="fchip on">주제 이탈 되돌림</span></div></div>
+                  <div class="fld"><span class="co abs" style="right:0.4rem; top:0.4rem">4</span>
+                    <small>선택 규칙</small>
+                    <div class="fchips"><span class="fchip on">학습 모드 (정답 금지)</span><span class="fchip">이미지 생성</span>
+                      <span class="fchip">외부 검색</span><span class="fchip on">힌트 3단계</span></div></div>
+                  <div class="mtbl"><table>
+                    <tr><th>미리보기 - 학생에게 이렇게 답합니다</th></tr>
+                    <tr><td>"실험 결과가 왜 이렇게 나왔을까? 온도부터 살펴볼까?
+                        <b>힌트 1</b>: 물의 온도가 반응 속도에 어떤 영향을 줄까?"</td></tr>
+                  </table></div>
+                </div>
+              </div>
+            </div></div>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:27%">구성 요소</th><th>기능 정의 · 동작</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>단계 표시기</b></td>
+                  <td>① 기본 정보(이름·과목·학급·템플릿) ② AI 규칙 ③ 한도·기간.
+                      클릭으로 이동 가능, 작성 중 자동 임시 저장</td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>페르소나 입력</b></td>
+                  <td>자연어 → 시스템 규칙 변환. 입력 즉시 우하단 <em>미리보기</em>가 갱신되어
+                      말투·힌트 수준을 확인하고 고칠 수 있음</td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>안전 규칙(고정)</b></td>
+                  <td>연령 필터·개인정보 차단·전 대화 기록·주제 이탈 되돌림은
+                      <em>항상 켜짐 · 해제 불가</em> - 정책상 보장 사항</td></tr>
+              <tr><td class="cno"><span class="co">4</span></td><td><b>선택 규칙</b></td>
+                  <td>학습 모드(정답 금지), 이미지 생성 on/off, 외부 검색 on/off,
+                      힌트 단계(1~3). 학교 정책으로 상한을 잠글 수 있음</td></tr>
+              <tr><td class="cno"><span class="co">5</span></td><td><b>다음 단계</b></td>
+                  <td>③에서 학생당 한도(기본값: 학급 배분량/인원), 수업 시간 예약,
+                      입장 방식(코드/QR/SSO)을 정하고 <em>완료 → T-01</em></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 6 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 7. T-03 -->
+  <section class="slide" data-title="T-03 라이브 보드">
+    <header class="s-head">
+      <h2><span class="bullet"></span><span class="sid">T-03</span>라이브 보드 · <em>수업 중 관제</em></h2>
+      <div class="s-right"><span class="sec">02 · Teacher</span></div>
+    </header>
+    <div class="s-band"><p>수업 중 교사의 화면입니다. 감시가 아니라 <strong>누구를 먼저 도울지</strong>를
+      보여 주는 것이 목적입니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">T-03 · 라이브 보드</span><span class="live">28명 접속</span></div>
+            <div class="app">
+              <div class="mnav">
+                <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni on"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+                <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
+              </div>
+              <div class="mmain">
+                <div class="mtop"><b>5교시 사회 · 진행 중</b><span class="msel">남은 시간 12:40</span><span class="mbtn">전체 일시 정지</span><span class="mava">김</span>
+                  <span class="co abs" style="right:1rem; top:0.5rem">4</span></div>
+                <div class="mbody">
+                  <div class="mkpis"><span class="co abs" style="left:0.4rem; top:0.3rem">1</span>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">제출 완료</div><div class="v">11명</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">만드는 중</div><div class="v">15명</div></div>
+                    <div class="mkpi"><span class="kbar warn"></span><div class="k">도움 필요</div><div class="v" style="color:#C2410C">2명</div></div>
+                    <div class="mkpi"><div class="k">위험 신호</div><div class="v">0건</div></div>
+                  </div>
+                  <div class="sgrid"><span class="co abs" style="left:0.4rem; top:4.2rem">2</span>
+                    <div class="schip ok"><span class="sava">이</span><span class="sbody"><b>이수민</b><small>제출 완료</small></span></div>
+                    <div class="schipNone"><span class="sava">김</span><span class="sbody"><b>김하늘</b><small>카드 편집</small></span></div>
+                    <div class="schip help"><span class="sava">박</span><span class="sbody"><b>박OO</b><small>10분 정체</small></span></div>
+                    <div class="schipNone"><span class="sava">최</span><span class="sbody"><b>최서연</b><small>지도 추가</small></span></div>
+                    <div class="schip help"><span class="sava">정</span><span class="sbody"><b>정OO</b><small>같은 질문 5회</small></span></div>
+                    <div class="schipNone"><span class="sava">강</span><span class="sbody"><b>강민준</b><small>제목 수정</small></span></div>
+                    <div class="schip ok"><span class="sava">윤</span><span class="sbody"><b>윤지아</b><small>제출 완료</small></span></div>
+                    <div class="schipNone"><span class="sava">서</span><span class="sbody"><b>서준호</b><small>색 바꾸기</small></span></div>
+                    <div class="schipNone"><span class="sava">한</span><span class="sbody"><b>한예린</b><small>글 다듬기</small></span></div>
+                    <div class="schip ok"><span class="sava">오</span><span class="sbody"><b>오도현</b><small>제출 완료</small></span></div>
+                    <div class="schipNone"><span class="sava">임</span><span class="sbody"><b>임채원</b><small>퀴즈 제작</small></span></div>
+                    <div class="schipNone"><span class="sava">+</span><span class="sbody"><b>+17</b><small>정상 진행</small></span></div>
+                  </div>
+                  <div class="mtbl"><span class="co abs" style="right:0.4rem; top:0.3rem">3</span><table>
+                    <tr><td><b>개인정보 차단</b></td><td>2건 - 전화번호 입력 시도, 자동 처리됨</td><td><span class="mstat on">조치 완료</span></td></tr>
+                  </table></div>
+                </div>
+              </div>
+            </div></div>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:27%">구성 요소</th><th>기능 정의 · 동작</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>진행 요약</b></td>
+                  <td>제출/진행/도움 필요/위험 신호 4개 지표. 10초 주기 갱신,
+                      도움 필요·위험은 <em>주황·적색</em>으로 강조</td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>학생 상태 그리드</b></td>
+                  <td>학생별 현재 활동을 요약. <em>10분 정체 · 같은 질문 반복</em>은 자동 감지되어
+                      주황 카드로. 카드 클릭 → 해당 학생 대화 열람 + 힌트 보내기</td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>안전 이벤트</b></td>
+                  <td>개인정보 차단·유해 시도 등 자동 처리 내역. 위기 신호(자해 등)는
+                      <em>즉시 상단 배너 + 상담교사 통지</em>(A-02 기록)</td></tr>
+              <tr><td class="cno"><span class="co">4</span></td><td><b>전체 일시 정지</b></td>
+                  <td>반 전체 AI 응답을 즉시 멈춤(설명 시간·주의 집중용).
+                      학생 화면에는 "선생님이 잠시 멈췄어요" 표시</td></tr>
+              <tr><td class="cno">-</td><td><b>종료 동작</b></td>
+                  <td>수업 시간 종료 또는 수동 종료 → 자동으로 <em>T-04 정산</em> 생성</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 7 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 8. T-04 -->
+  <section class="slide" data-title="T-04 종료 정산·숙제 전환">
+    <header class="s-head">
+      <h2><span class="bullet"></span><span class="sid">T-04</span>수업 종료 정산 · <em>회수와 숙제 전환</em></h2>
+      <div class="s-right"><span class="sec">02 · Teacher</span></div>
+    </header>
+    <div class="s-band"><p>수업 종료와 동시에 자동 생성됩니다. <strong>안 쓴 토큰은 학급 예산으로 회수</strong>되고,
+      필요하면 숙제 모드로 이어집니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">T-04 · 수업 종료 정산</span><span class="live">자동 생성</span></div>
+            <div class="app">
+              <div class="mnav">
+                <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+                <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+                <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
+              </div>
+              <div class="mmain">
+                <div class="mtop"><b>5교시 사회 · 종료 정산</b><span class="msel">14:20 종료</span><span class="mbtn">숙제로 전환</span><span class="mava">김</span>
+                  <span class="co abs" style="right:1rem; top:0.5rem">3</span></div>
+                <div class="mbody">
+                  <div class="mkpis"><span class="co abs" style="left:0.4rem; top:0.3rem">1</span>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">참여</div><div class="v">28명</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">완성작</div><div class="v">11개</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">질문 수</div><div class="v">214회</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">안전 이슈</div><div class="v">0건</div></div>
+                  </div>
+                  <div class="mg"><span class="co" style="margin-right:0.2rem">2</span><span>지급한 토큰</span><span class="mgb"><i style="width:100%"></i></span><b>100%</b></div>
+                  <div class="mg"><span style="width:1.35rem"></span><span>수업에서 사용</span><span class="mgb"><i style="width:64%"></i></span><b>64%</b></div>
+                  <div class="mg"><span style="width:1.35rem"></span><span>학급 예산으로 회수</span><span class="mgb"><i style="width:36%"></i></span><b>36%</b></div>
+                  <div class="mtbl"><span class="co abs" style="right:0.4rem; top:0.3rem">4</span><table>
+                    <tr><th>숙제 전환 설정</th><th>값</th></tr>
+                    <tr><td>마감</td><td><b>금요일 21:00</b> · 이후 자동 잠금</td></tr>
+                    <tr><td>추가 지급</td><td>1인 수업분의 1/2 · 미사용분 회수</td></tr>
+                    <tr><td>이용 시간</td><td>16:00~22:00 (밤 10시 이후 잠금)</td></tr>
+                  </table></div>
+                </div>
+              </div>
+            </div></div>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:27%">구성 요소</th><th>기능 정의 · 동작</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>수업 리포트</b></td>
+                  <td>참여·완성작·질문 수·안전 이슈 요약. 상세 보기 → 학생별 활동,
+                      베스트 프롬프트 3선, <em>수행평가 확인용 PDF 내보내기</em></td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>토큰 정산</b></td>
+                  <td>지급/사용/회수 3단 게이지. 종료 즉시 미사용분이 학급 예산으로
+                      자동 반환되고, 반환량은 <em>다른 수업방에 재배정 가능</em></td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>숙제로 전환</b></td>
+                  <td>수업방을 마감일까지 재개방. 숙제 전용 토큰이 별도 지급되며
+                      교실과 동일한 필터·기록·알림이 유지됨</td></tr>
+              <tr><td class="cno"><span class="co">4</span></td><td><b>숙제 설정</b></td>
+                  <td>마감일시(지나면 자동 잠금·회수), 1인 추가 지급량,
+                      이용 시간대(예: 밤 10시 이후 잠금). 저장 → 학생에게 알림</td></tr>
+              <tr><td class="cno">-</td><td><b>예외</b></td>
+                  <td>부스트를 받은 학생의 초과 사용은 리포트에 별도 표기 -
+                      학급 예산과 구분 회계</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 9. T-05 -->
+  <section class="slide" data-title="T-05 갤러리 승인함">
+    <header class="s-head">
+      <h2><span class="bullet"></span><span class="sid">T-05</span>갤러리 승인함 · <em>검토와 게시</em></h2>
+      <div class="s-right"><span class="sec">02 · Teacher</span></div>
+    </header>
+    <div class="s-band"><p>학생 제출물은 반드시 이 화면을 거칩니다.
+      <strong>승인 · 반려(사유) · 수정 요청</strong> 세 가지 처리만 두어 판단을 단순하게 합니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">T-05 · 갤러리 승인함</span><span class="live">대기 3건</span></div>
+            <div class="app">
+              <div class="mnav">
+                <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
+                <div class="ni on"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+                <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
+              </div>
+              <div class="mmain">
+                <div class="mtop"><b>승인 대기</b><span class="msel">우리 동네 프로젝트 ▾</span><span class="mbtn">모두 승인</span><span class="mava">김</span></div>
+                <div class="mbody">
+                  <div class="mduo" style="grid-template-columns: 1fr 1.1fr; background:#fff">
+                    <div style="padding:0.5rem 0.6rem; border-right:1px solid var(--s200); display:flex; flex-direction:column; gap:0.4rem">
+                      <span class="co">1</span>
+                      <div class="mcard" style="border-color:var(--t400); background:var(--t50)">
+                        <div class="mrow1"><span class="tag">웹 작품</span><span class="mstat warn">대기</span></div>
+                        <b>공원 안내 게임</b><small>정우진 · 5분 전 제출</small></div>
+                      <div class="mcard"><div class="mrow1"><span class="tag">이야기</span><span class="mstat warn">대기</span></div>
+                        <b>동네 전설 2편</b><small>박지호 · 12분 전</small></div>
+                      <div class="mcard"><div class="mrow1"><span class="tag">퀴즈</span><span class="mstat warn">대기</span></div>
+                        <b>교통 안전 퀴즈</b><small>한예린 · 30분 전</small></div>
+                    </div>
+                    <div style="padding:0.5rem 0.6rem; display:flex; flex-direction:column; gap:0.4rem">
+                      <span class="co abs" style="right:0.5rem; top:0.5rem">2</span>
+                      <div class="mtbl"><table>
+                        <tr><th>미리보기 · 공원 안내 게임</th></tr>
+                        <tr><td>작품 실행 화면 + <b>사전 필터 결과: 통과</b> (개인정보·유해어 없음)</td></tr>
+                        <tr><td>만든 과정: 프롬프트 14회 · 42분</td></tr>
+                      </table></div>
+                      <div class="fchips" style="position:relative; padding-left:1.4rem"><span class="co abs" style="left:0; top:0.05rem">3</span>
+                        <span class="fchip on">승인 · 게시</span><span class="fchip">수정 요청</span><span class="fchip">반려 (사유)</span></div>
+                      <div class="fld"><small>한 줄 코멘트 (학생에게 전달)</small>
+                        <span class="hinttx">"안내 문구가 친절하네! 지도에 출구 표시도 넣어 볼까?"</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div></div>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:27%">구성 요소</th><th>기능 정의 · 동작</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>대기 목록</b></td>
+                  <td>제출 순 정렬. 유형 태그(웹·이야기·퀴즈·그림)와 제출 시각.
+                      선택 시 우측에 상세가 열림</td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>검토 패널</b></td>
+                  <td>작품 실행 미리보기 + <em>자동 사전 필터 결과</em>(개인정보·유해어) +
+                      만든 과정(프롬프트 이력) 요약</td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>처리 3종</b></td>
+                  <td><em>승인</em> → 갤러리 게시 + 학생 알림. <em>수정 요청</em> → 코멘트와 함께 반환.
+                      <em>반려</em> → 사유 필수, 갤러리 미게시. 모든 처리는 기록됨</td></tr>
+              <tr><td class="cno">-</td><td><b>모두 승인</b></td>
+                  <td>사전 필터 통과 건만 일괄 승인. 필터 미통과 건은 제외되고 표시</td></tr>
+              <tr><td class="cno">-</td><td><b>정책</b></td>
+                  <td>저학년(초1~4)은 승인 없이는 어떤 작품도 상호 공개되지 않음.
+                      고학년은 학교 정책으로 "선게시 후검토" 선택 가능</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 10. S-01 -->
+  <section class="slide" data-title="S-01 학생 입장">
+    <header class="s-head">
+      <h2><span class="bullet"></span><span class="sid">S-01</span>학생 입장 · <em>코드 하나로 시작</em></h2>
+      <div class="s-right"><span class="sec">03 · Student</span></div>
+    </header>
+    <div class="s-band"><p>학생 화면의 관문입니다. <strong>계정·비밀번호 없이</strong> 수업 코드로 들어오고,
+      저학년도 30초 안에 시작합니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">S-01 · 입장</span><span class="live">태블릿 화면</span></div>
+            <div class="app" style="background:#fff">
+              <div class="mmain">
+                <div class="mbody" style="justify-content:center; align-items:center; gap:0.8rem">
+                  <div style="font-size:1.2rem; font-family:var(--fx); color:var(--s900)">AI 놀이터에 어서 와!</div>
+                  <div class="fld" style="width:60%; text-align:center"><span class="co abs" style="right:0.4rem; top:0.4rem">1</span>
+                    <small>선생님이 알려 준 코드 6자리</small>
+                    <b style="font-size:1.4rem; letter-spacing:0.35em; color:var(--t700)">QK73PT</b></div>
+                  <div class="fchips" style="justify-content:center"><span class="co" style="margin-right:0.1rem">2</span>
+                    <span class="fchip on">QR로 입장</span><span class="fchip">학교 계정으로 (고학년)</span></div>
+                  <div class="mtbl" style="width:80%"><span class="co abs" style="right:0.4rem; top:0.3rem">3</span><table>
+                    <tr><td>내 이름 고르기</td><td><b>3번 · 이수민</b> (명단에서 선택)</td></tr>
+                    <tr><td>오늘의 약속</td><td>"AI가 만든 건 꼭 내가 다시 확인해요" <span class="mstat on">확인</span></td></tr>
+                  </table></div>
+                </div>
+              </div>
+            </div></div>
+          <p class="mcap"><b>몰입형 전체 화면.</b> 학생 화면에는 사이드바가 없습니다 -
+             해야 할 일 하나만 크게 보여 줍니다.</p>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:27%">구성 요소</th><th>기능 정의 · 동작</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>코드 입력</b></td>
+                  <td>6자리 영숫자. 유효하면 즉시 명단 선택으로, 5회 오류 시 잠시 대기.
+                      수업 시간 밖이면 "아직 열리지 않았어요" 안내</td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>대체 입장</b></td>
+                  <td>QR 스캔(코드 자동 입력) · 학교 계정 SSO(고학년/중등 선택).
+                      숙제 모드에는 같은 코드로 허용 시간대에만 입장</td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>이름 선택 · 약속</b></td>
+                  <td>교사가 올린 명단에서 자기 이름 선택(중복 선택 시 교사 확인).
+                      첫 입장 시 <em>이용 약속 1문장</em> 확인 - AI 리터러시 상기</td></tr>
+              <tr><td class="cno">-</td><td><b>개인정보</b></td>
+                  <td>학생 식별은 학급 명단 별명 기준. 만 14세 미만 법정대리인 동의는
+                      학기 초 일괄 처리(관리자 A-01) 후 상태만 참조</td></tr>
+              <tr><td class="cno">-</td><td><b>접근성</b></td>
+                  <td>저학년용 큰 글씨 모드, 음성 안내(2단계) 고려</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 11. S-02 -->
+  <section class="slide" data-title="S-02 놀이터 스튜디오">
+    <header class="s-head">
+      <h2><span class="bullet"></span><span class="sid">S-02</span>놀이터 · <em>만들기 스튜디오</em></h2>
+      <div class="s-right"><span class="sec">03 · Student</span></div>
+    </header>
+    <div class="s-band"><p>학생이 수업 시간의 대부분을 보내는 화면입니다.
+      <strong>왼쪽에서 말하고, 오른쪽에서 즉시 확인</strong>하는 2패널 구조입니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">S-02 · 우리 동네 소개 웹 만들기</span><span class="live">이수민 · 잔여 71%</span></div>
+            <div class="mduo">
+              <div class="mchat"><span class="co abs" style="left:0.5rem; top:0.5rem">1</span>
+                <div class="mmsg q">우리 동네 맛집 지도를 소개하는 홈페이지 만들어 줘! 제목은 크게, 사진 넣을 자리도.</div>
+                <div class="mmsg a"><b>좋아요!</b> 제목·지도 자리·맛집 카드 3개로 뼈대를 만들었어요. 오른쪽 미리보기를 봐요. 카드 색을 바꿔 볼까요?</div>
+                <div class="mmsg q">카드를 하늘색으로! 우리 학교 자랑 칸도 추가해 줘.</div>
+                <div class="mmsg a">하늘색으로 바꾸고 <b>'우리 학교 자랑'</b> 칸을 추가했어요. 완성되면 [제출]을 눌러요!</div>
+                <div class="minput"><span class="co" style="margin-right:0.15rem">2</span>만들고 싶은 것을 말해 보세요<span class="send">▶</span></div>
+              </div>
+              <div class="mprev"><span class="co abs" style="right:0.5rem; top:0.5rem">3</span>
+                <div class="purl"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg>class3-2.play.school.kr/sumin</div>
+                <div class="pframe">
+                  <div class="pnav"><b>수민이네 동네지도</b><span>홈 · 맛집 · 학교</span></div>
+                  <div class="ph1">우리 동네 맛집 지도</div>
+                  <div class="pimg">지도 들어갈 자리</div>
+                  <div class="pcards">
+                    <div class="pc"><b>분식왕</b>떡볶이 맛집</div>
+                    <div class="pc"><b>진순대</b>순대국 최고</div>
+                    <div class="pc"><b>빵굽는집</b>소금빵 유명</div>
+                  </div>
+                  <div class="ph1" style="font-size:0.66rem">우리 학교 자랑</div>
+                </div>
+              </div>
+            </div></div>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:27%">구성 요소</th><th>기능 정의 · 동작</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>대화 패널</b></td>
+                  <td>수업방 규칙이 적용된 AI 대화. 개인정보 입력은 전송 전 차단 안내,
+                      주제 이탈 질문은 수업 주제로 유도. 잔여 사용량이 상단에 상시 표시</td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>입력창</b></td>
+                  <td>텍스트 기본, 음성 입력(저학년 · 2단계). 한도 소진 시 입력 잠금 +
+                      "선생님께 부스트 요청" 버튼으로 대체</td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>미리보기 패널</b></td>
+                  <td>만들기 모드에 따라 전환 - 웹 작품(실행 화면+전용 주소) · 글(문서) ·
+                      그림(캔버스) · 퀴즈(카드). 변경 즉시 반영</td></tr>
+              <tr><td class="cno">-</td><td><b>제출</b></td>
+                  <td>[제출] → 자동 사전 필터 → T-05 승인함으로. 상태는
+                      <em>대기 → 게시/수정 요청/반려</em>로 학생에게 표시</td></tr>
+              <tr><td class="cno">-</td><td><b>이어 하기</b></td>
+                  <td>숙제 모드에서 같은 화면 그대로 재입장. 대화·작품·잔여량이 이어짐</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 12. S-03 -->
+  <section class="slide" data-title="S-03 갤러리·작품 상세">
+    <header class="s-head">
+      <h2><span class="bullet"></span><span class="sid">S-03</span>학급 갤러리 · <em>작품 상세</em></h2>
+      <div class="s-right"><span class="sec">03 · Student</span></div>
+    </header>
+    <div class="s-band"><p>승인된 작품만 보이는 우리 반 전시장입니다.
+      <strong>작품과 함께 "만든 과정"</strong>이 공개되어 서로의 방법을 배웁니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">S-03 · 학급 갤러리</span><span class="live">작품 21개</span></div>
+            <div class="app">
+              <div class="mmain">
+                <div class="mtop"><b>우리 동네 프로젝트</b><span class="msch">⌕ 검색</span><span class="msel">최신순 ▾</span><span class="mava">수</span></div>
+                <div class="mbody">
+                  <div class="ggrid"><span class="co abs" style="left:0.4rem; top:0.3rem">1</span>
+                    <div class="gcard"><div class="gth"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>
+                      <div class="gm"><b>맛집 지도 홈페이지</b><small><span>이수민</span><span>♥ 12 · 💬 5</span></small></div></div>
+                    <div class="gcard"><div class="gth"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+                      <div class="gm"><b>동네 전설 이야기책</b><small><span>박지호</span><span>♥ 9 · 💬 3</span></small></div></div>
+                    <div class="gcard"><div class="gth"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                      <div class="gm"><b>동네 상식 퀴즈</b><small><span>김하늘</span><span>풀기 17회</span></small></div></div>
+                  </div>
+                  <div class="mtbl"><span class="co abs" style="right:0.4rem; top:0.3rem">2</span><table>
+                    <tr><th>작품 상세 · 맛집 지도 홈페이지</th></tr>
+                    <tr><td>실행 화면 + <b>만든 과정 보기</b> (프롬프트 14회 · 42분)</td></tr>
+                  </table></div>
+                  <div class="fchips"><span class="co" style="margin-right:0.1rem">3</span>
+                    <span class="fchip on">👍 이 부분이 좋았어</span><span class="fchip">🤔 이건 어떻게 했어?</span>
+                    <span class="fchip">💡 이렇게 해 보면 어때?</span></div>
+                </div>
+              </div>
+            </div></div>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:27%">구성 요소</th><th>기능 정의 · 동작</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>작품 그리드</b></td>
+                  <td>승인작만 노출. 유형 아이콘·작성자·반응 수. 웹 작품은
+                      클릭 즉시 전용 주소에서 실행</td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>만든 과정 보기</b></td>
+                  <td>작품별 프롬프트 이력을 타임라인으로 공개(작성자·교사 설정에 따름) -
+                      "어떻게 만들었는지"가 학습 자료가 됨</td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>문장틀 댓글</b></td>
+                  <td>기본은 3종 문장틀 + 이어쓰기. 자유 댓글은 교사가 열었을 때만,
+                      승인제·신고 버튼 상시. 댓글도 갤러리 정책에 따라 기록</td></tr>
+              <tr><td class="cno">-</td><td><b>내 포트폴리오</b></td>
+                  <td>내 작품·받은 피드백·배지 모음. 학기말 전시회 출품작 선택</td></tr>
+              <tr><td class="cno">-</td><td><b>퀴즈 상호작용</b></td>
+                  <td>퀴즈 작품은 갤러리에서 바로 풀기 - 정답률이 작성자에게 보임</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 13. A-01 -->
+  <section class="slide" data-title="A-01 관리 센터">
+    <header class="s-head">
+      <h2><span class="bullet"></span><span class="sid">A-01</span>관리 센터 · <em>AI 키와 예산</em></h2>
+      <div class="s-right"><span class="sec">04 · Admin</span></div>
+    </header>
+    <div class="s-band"><p>학교(또는 교육청) 관리자의 화면입니다.
+      <strong>키는 안전하게, 예산은 투명하게</strong>가 이 화면의 전부입니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">A-01 · 관리 센터</span><span class="live">OO초등학교</span></div>
+            <div class="app">
+              <div class="mnav">
+                <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
+                <div class="ni on"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+                <div class="nuser"><span class="nava">관</span><span><b>정보부장</b><small>학교 관리자</small></span></div>
+              </div>
+              <div class="mmain">
+                <div class="mtop"><b>AI 키 · 예산</b><span class="msel">이번 달 ▾</span><span class="mbtn">리포트 내려받기</span><span class="mava">관</span></div>
+                <div class="mbody">
+                  <div class="mtbl"><span class="co abs" style="left:0.4rem; top:0.3rem">1</span><table>
+                    <tr><th>등록 AI</th><th>용도</th><th>상태</th></tr>
+                    <tr><td><b>Claude Sonnet</b></td><td>기본 대화 · 글쓰기</td><td><span class="mstat on">정상</span></td></tr>
+                    <tr><td><b>GPT 계열</b></td><td>이미지 생성 (허용 수업방만)</td><td><span class="mstat on">정상</span></td></tr>
+                  </table></div>
+                  <div class="mg"><span class="co" style="margin-right:0.2rem">2</span><span>3-1반</span><span class="mgb"><i style="width:48%"></i></span><b>48%</b></div>
+                  <div class="mg"><span style="width:1.35rem"></span><span>3-2반</span><span class="mgb"><i style="width:62%"></i></span><b>62%</b></div>
+                  <div class="mg"><span style="width:1.35rem"></span><span>3-3반</span><span class="mgb"><i style="width:35%"></i></span><b>35%</b></div>
+                  <div class="mtbl"><span class="co abs" style="right:0.4rem; top:0.3rem">3</span><table>
+                    <tr><th>요청</th><th>내용</th><th>처리</th></tr>
+                    <tr><td><b>부스트</b></td><td>3-2 김OO · 잔여 소진</td><td><span class="mstat warn">대기</span></td></tr>
+                    <tr><td><b>한도 상향</b></td><td>수행평가 기간 2주</td><td><span class="mstat on">승인</span></td></tr>
+                  </table></div>
+                  <div class="mg"><span class="co" style="margin-right:0.2rem">4</span><span>예산 소진 예상</span><span class="mgb"><i style="width:80%"></i></span><b>27일</b></div>
+                </div>
+              </div>
+            </div></div>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:27%">구성 요소</th><th>기능 정의 · 동작</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>AI 키 관리</b></td>
+                  <td>키 등록(암호화 저장·마스킹 표시)·헬스 체크·용도 지정.
+                      키는 <em>어떤 화면에도 원문 노출되지 않음</em>. 교체 시 무중단 전환</td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>학급 배분</b></td>
+                  <td>월 예산을 학급별 배분(균등/가중). 소진율 실시간, 80% 초과 주황.
+                      학급 클릭 → 학생별 상세</td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>요청 처리</b></td>
+                  <td>부스트·한도 상향 요청을 승인/보류. 처리 이력은 감사 로그에 기록</td></tr>
+              <tr><td class="cno"><span class="co">4</span></td><td><b>소진 예측</b></td>
+                  <td>사용 추세로 예산 소진일 예측. 방학·시험 기간은 학사 일정을 반영해 보정</td></tr>
+              <tr><td class="cno">-</td><td><b>동의 관리</b></td>
+                  <td>만 14세 미만 법정대리인 동의 현황(학급별) · 미동의 학생은
+                      입장 시 제한 안내. 문자 재발송(2단계)</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 14. A-02 -->
+  <section class="slide" data-title="A-02 안전 알림 센터">
+    <header class="s-head">
+      <h2><span class="bullet"></span><span class="sid">A-02</span>안전 알림 센터 · <em>신호와 조치</em></h2>
+      <div class="s-right"><span class="sec">04 · Admin</span></div>
+    </header>
+    <div class="s-band"><p>플랫폼의 모든 안전 이벤트가 모이는 화면입니다.
+      <strong>자동 처리는 통계로, 위기 신호는 사람에게</strong> - 이 원칙으로 나눕니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">A-02 · 안전 알림 센터</span><span class="live">이번 주</span></div>
+            <div class="app">
+              <div class="mnav">
+                <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
+                <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+                <div class="nuser"><span class="nava">관</span><span><b>정보부장</b><small>학교 관리자</small></span></div>
+              </div>
+              <div class="mmain">
+                <div class="mtop"><b>안전 알림</b><span class="msel">전체 학급 ▾</span><span class="mbtn">주간 보고서</span><span class="mava">관</span></div>
+                <div class="mbody">
+                  <div class="mkpis"><span class="co abs" style="left:0.4rem; top:0.3rem">1</span>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">자동 차단</div><div class="v">14건</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">개인정보</div><div class="v">9건</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">주제 이탈</div><div class="v">5건</div></div>
+                    <div class="mkpi"><div class="k">위기 신호</div><div class="v" style="color:#C2410C">1건</div></div>
+                  </div>
+                  <div class="mtbl"><span class="co abs" style="right:0.4rem; top:0.3rem">2</span><table>
+                    <tr><th>시각</th><th>유형</th><th>내용</th><th>상태</th></tr>
+                    <tr><td>10:14</td><td><b>위기 신호</b></td><td>3-2 · 감정 관련 표현 감지</td><td><span class="mstat warn">상담 연계</span></td></tr>
+                    <tr><td>10:02</td><td>개인정보</td><td>전화번호 입력 시도 · 자동 차단</td><td><span class="mstat on">완료</span></td></tr>
+                    <tr><td>09:47</td><td>주제 이탈</td><td>게임 얘기 → 수업 주제로 유도</td><td><span class="mstat on">완료</span></td></tr>
+                  </table></div>
+                  <div class="mtbl"><span class="co abs" style="right:0.4rem; top:0.3rem">3</span><table>
+                    <tr><th>위기 신호 처리 절차</th></tr>
+                    <tr><td>감지 → 담임·상담교사 즉시 통지 → 대화 맥락 열람(권한자만) → 조치 기록</td></tr>
+                  </table></div>
+                </div>
+              </div>
+            </div></div>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:27%">구성 요소</th><th>기능 정의 · 동작</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>주간 요약</b></td>
+                  <td>자동 차단·개인정보·주제 이탈·위기 신호 집계.
+                      학급/기간 필터, 추세 비교(전주 대비)</td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>이벤트 이력</b></td>
+                  <td>시간순 목록. 자동 처리 건은 열람만, <em>위기 신호는 처리 상태</em>
+                      (통지→열람→조치)가 완료될 때까지 추적</td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>위기 처리 절차</b></td>
+                  <td>감지 즉시 담임·상담교사 통지(앱·문자). 대화 원문 열람은
+                      <em>지정 권한자만, 열람 자체가 기록</em>됨. 조치 결과 입력으로 종결</td></tr>
+              <tr><td class="cno">-</td><td><b>임계 조정</b></td>
+                  <td>학교급별 필터 민감도(초/중/고 프리셋). 변경은 관리자만, 이력 보존</td></tr>
+              <tr><td class="cno">-</td><td><b>보고</b></td>
+                  <td>주간 보고서 자동 생성 - 교육청 제출 양식으로 내려받기</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 15. 공통 상태 -->
+  <section class="slide" data-title="공통 상태·예외 정의">
+    <header class="s-head">
+      <h2><span class="bullet"></span>공통 상태·예외 - <em>모든 화면이 같은 답을 합니다</em></h2>
+      <div class="s-right"><span class="sec">05 · Common</span></div>
+    </header>
+    <div class="s-band"><p>상태 표기와 예외 처리는 화면마다 다르면 안 됩니다.
+      <strong>전 화면 공통 규칙</strong>으로 정의합니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:16%">상태 · 예외</th><th style="width:30%">발생 조건</th><th style="width:32%">화면 표기 (공통)</th><th>후속 동작</th></tr>
+          <tr><td class="org">한도 소진</td><td>학생 잔여 토큰 0</td><td>입력창 잠금 + "오늘 몫을 다 썼어요" + 부스트 요청 버튼</td><td>교사·관리자 승인 → 즉시 재개</td></tr>
+          <tr><td class="org">수업방 잠김</td><td>수업 시간 밖 · 일시 정지 · 마감 후</td><td>"지금은 열려 있지 않아요" + 열리는 시간 안내</td><td>예약 시간 도래 시 자동 개방</td></tr>
+          <tr><td class="org">승인 대기</td><td>작품 제출 직후</td><td>주황 "대기" 배지 · 갤러리 미노출</td><td>승인/수정 요청/반려 알림</td></tr>
+          <tr><td class="org">개인정보 감지</td><td>이름·연락처·주소 입력 시도</td><td>전송 차단 + "개인정보는 넣을 수 없어요"</td><td>자동 기록 · 라이브 보드 집계</td></tr>
+          <tr><td class="org">위기 신호</td><td>자해·폭력 등 키워드·맥락 감지</td><td>학생: 도움 안내 문구 / 교사: 상단 적색 배너</td><td>담임·상담교사 통지 · A-02 추적</td></tr>
+          <tr><td class="org">AI 응답 실패</td><td>외부 API 오류·타임아웃</td><td>"잠깐 쉬었다 다시 해요" + 재시도 버튼</td><td>게이트웨이가 예비 모델로 자동 전환</td></tr>
+          <tr><td class="org">동시 접속 초과</td><td>수업방 정원 초과 입장</td><td>"자리가 다 찼어요 - 선생님께 말해 주세요"</td><td>교사 화면에 초과 알림</td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+        <span>예외 문구는 <b>학생이 자책하지 않는 말</b>로 통일합니다 - 시스템의 사정을 아이 탓으로 돌리지 않습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 16. 맺음 -->
+  <section class="slide dark" data-title="맺음">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
+    <div class="top">
+      <span class="pillbadge">AI PLAYGROUND - SCREEN SPECIFICATION</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>화면은 정의됐습니다.<br><em>이제 만들 차례입니다.</em></h1>
+    <p class="sub">본 정의서는 구축 제안서와 한 몸입니다. 상세 설계 단계에서 와이어프레임과<br>
+      인터랙션 명세로 구체화하며, 시범학교 피드백을 반영해 개정합니다.</p>
+    <div class="corner">
+      <span class="ai">AI · EDUCATION · PLAYGROUND</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE · www.sailingstone.io</span>
+    </div>
+  </section>
+
+</body>
+</html>

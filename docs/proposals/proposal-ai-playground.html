@@ -397,6 +397,39 @@
     .gcard .gm small { font-size: 0.58rem; color: var(--s400); display: flex; gap: 0.4rem;
                        margin-top: 0.12rem; }
 
+    /* ── 목업 고도화 ── */
+    .win { box-shadow: 0 18px 44px rgba(15,23,42,0.13), 0 2px 6px rgba(15,23,42,0.06); }
+    .mnav .nuser { margin-top: auto; display: flex; align-items: center; gap: 0.35rem;
+                   background: var(--s800); border-radius: 0.45rem; padding: 0.3rem 0.4rem; }
+    .mnav .nuser .nava { width: 1.15rem; height: 1.15rem; border-radius: 50%; background: var(--t400);
+                         color: var(--s900); display: inline-flex; align-items: center; justify-content: center;
+                         font-family: var(--fx); font-size: 0.58rem; flex-shrink: 0; }
+    .mnav .nuser b { display: block; color: #fff; font-size: 0.6rem; font-family: var(--fx); line-height: 1.2; }
+    .mnav .nuser small { display: block; color: var(--s400); font-size: 0.52rem; line-height: 1.2; }
+    .mkpi { padding-left: 0.85rem; }
+    .mkpi .kbar { position: absolute; left: 0.32rem; top: 0.45rem; bottom: 0.45rem; width: 0.18rem;
+                  border-radius: 99rem; background: var(--t400); }
+    .mkpi .kbar.warn { background: #FB923C; }
+    .mtop .msch { display: flex; align-items: center; gap: 0.3rem; border: 1px solid var(--s200);
+                  background: var(--s50); border-radius: 99rem; padding: 0.18rem 0.6rem;
+                  font-size: 0.66rem; color: var(--s400); }
+    .mprev .pnav { display: flex; align-items: center; gap: 0.45rem; background: var(--t800);
+                   border-radius: 0.4rem 0.4rem 0 0; margin: -0.5rem -0.6rem 0.1rem; padding: 0.3rem 0.6rem; }
+    .mprev .pnav b { color: #fff; font-size: 0.62rem; font-family: var(--fx); }
+    .mprev .pnav span { color: var(--t100); font-size: 0.54rem; margin-left: auto; display: flex; gap: 0.4rem; }
+    /* 최신 스타일 디테일 */
+    .schip { display: flex; align-items: center; gap: 0.32rem; text-align: left; padding: 0.26rem 0.38rem; }
+    .schip .sava { width: 1.05rem; height: 1.05rem; border-radius: 50%; background: var(--s200);
+                   color: var(--s600); display: inline-flex; align-items: center; justify-content: center;
+                   font-family: var(--fx); font-size: 0.54rem; flex-shrink: 0; }
+    .schip.ok .sava { background: var(--t400); color: var(--s900); }
+    .schip.help .sava { background: #FDBA74; color: #7C2D12; }
+    .schip > span.sbody { min-width: 0; }
+    .schip b, .schip small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mcard { border-radius: 0.7rem; box-shadow: 0 3px 10px rgba(15,23,42,0.04); }
+    .mkpi { border-radius: 0.65rem; box-shadow: 0 2px 8px rgba(15,23,42,0.04); }
+    .mtop { box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
+    .gcard { box-shadow: 0 3px 10px rgba(15,23,42,0.05); }
     /* ── 다크 슬라이드 (표지·맺음) ── */
     .dark { background:
               linear-gradient(rgba(148,163,184,0.055) 1px, transparent 1px),
@@ -699,9 +732,10 @@
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+              <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
             </div>
               <div class="mmain">
-                <div class="mtop"><b>내 수업방</b><span class="msel">3학년 2반 ▾</span><span class="mbtn">+ 새 수업방</span><span class="mava">김</span></div>
+                <div class="mtop"><b>내 수업방</b><span class="msch">⌕ 검색</span><span class="msel">3학년 2반 ▾</span><span class="mbtn">+ 새 수업방</span><span class="mava">김</span></div>
                 <div class="mbody">
                   <div class="mcards">
                     <div class="mcard"><div class="mrow1"><span class="tag">국어</span><span class="mstat on">진행 중</span></div>
@@ -782,15 +816,16 @@
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
               <div class="ni on"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+              <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
             </div>
               <div class="mmain">
                 <div class="mtop"><b>AI 사용량</b><span class="msel">이번 달 ▾</span><span class="mbtn">리포트 내려받기</span><span class="mava">관</span></div>
                 <div class="mbody">
                   <div class="mkpis">
-                    <div class="mkpi"><div class="k">등록된 AI</div><div class="v">2종<em>Claude · GPT</em></div></div>
-                    <div class="mkpi"><div class="k">이번 달 사용</div><div class="v">64%</div></div>
-                    <div class="mkpi"><div class="k">활동 학생</div><div class="v">412명</div></div>
-                    <div class="mkpi"><div class="k">예산 소진 예상</div><div class="v">27일<em>여유 3일</em></div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">등록된 AI</div><div class="v">2종<em>Claude · GPT</em></div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">이번 달 사용</div><div class="v">64%</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">활동 학생</div><div class="v">412명</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">예산 소진 예상</div><div class="v">27일<em>여유 3일</em></div></div>
                   </div>
                   <div class="mg"><span>3-1반</span><span class="mgb"><i style="width:48%"></i></span><b>48%</b></div>
                   <div class="mg"><span>3-2반</span><span class="mgb"><i style="width:62%"></i></span><b>62%</b></div>
@@ -856,15 +891,16 @@
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+              <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
             </div>
               <div class="mmain">
                 <div class="mtop"><b>5교시 사회 · 종료 정산</b><span class="msel">14:20 종료</span><span class="mbtn">숙제로 전환</span><span class="mava">김</span></div>
                 <div class="mbody">
                   <div class="mkpis">
-                    <div class="mkpi"><div class="k">참여</div><div class="v">28명</div></div>
-                    <div class="mkpi"><div class="k">완성작</div><div class="v">11개</div></div>
-                    <div class="mkpi"><div class="k">질문 수</div><div class="v">214회</div></div>
-                    <div class="mkpi"><div class="k">안전 이슈</div><div class="v">0건</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">참여</div><div class="v">28명</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">완성작</div><div class="v">11개</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">질문 수</div><div class="v">214회</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">안전 이슈</div><div class="v">0건</div></div>
                   </div>
                   <div class="mg"><span>지급한 토큰</span><span class="mgb"><i style="width:100%"></i></span><b>100%</b></div>
                   <div class="mg"><span>수업에서 사용</span><span class="mgb"><i style="width:64%"></i></span><b>64%</b></div>
@@ -910,6 +946,7 @@
               <div class="mprev">
                 <div class="purl"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg>class3-2.play.school.kr/sumin</div>
                 <div class="pframe">
+                  <div class="pnav"><b>수민이네 동네지도</b><span>홈 · 맛집 · 학교</span></div>
                   <div class="ph1">우리 동네 맛집 지도</div>
                   <div class="pimg">지도 들어갈 자리</div>
                   <div class="pcards">
@@ -983,9 +1020,10 @@
               <div class="ni on"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+              <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
             </div>
               <div class="mmain">
-                <div class="mtop"><b>우리 동네 프로젝트</b><span class="msel">최신순 ▾</span><span class="mbtn">승인 대기 3</span><span class="mava">김</span></div>
+                <div class="mtop"><b>우리 동네 프로젝트</b><span class="msch">⌕ 검색</span><span class="msel">최신순 ▾</span><span class="mbtn">승인 대기 3</span><span class="mava">김</span></div>
                 <div class="mbody">
                   <div class="ggrid">
                     <div class="gcard"><div class="gth"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span class="gb gbadge ok">게시</span></div>
@@ -1102,29 +1140,30 @@
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+              <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
             </div>
               <div class="mmain">
                 <div class="mtop"><b>5교시 사회 · 진행 중</b><span class="msel">남은 시간 12:40</span><span class="mbtn">전체 일시 정지</span><span class="mava">김</span></div>
                 <div class="mbody">
                   <div class="mkpis">
-                    <div class="mkpi"><div class="k">제출 완료</div><div class="v">11명</div></div>
-                    <div class="mkpi"><div class="k">만드는 중</div><div class="v">15명</div></div>
-                    <div class="mkpi"><div class="k">도움 필요</div><div class="v" style="color:#C2410C">2명</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">제출 완료</div><div class="v">11명</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">만드는 중</div><div class="v">15명</div></div>
+                    <div class="mkpi"><span class="kbar warn"></span><div class="k">도움 필요</div><div class="v" style="color:#C2410C">2명</div></div>
                     <div class="mkpi"><div class="k">위험 신호</div><div class="v">0건</div></div>
                   </div>
                   <div class="sgrid">
-                    <div class="schip ok"><b>이수민</b><small>제출 완료</small></div>
-                    <div class="schip"><b>김하늘</b><small>카드 편집</small></div>
-                    <div class="schip help"><b>박OO</b><small>10분 정체</small></div>
-                    <div class="schip"><b>최서연</b><small>지도 추가</small></div>
-                    <div class="schip help"><b>정OO</b><small>같은 질문 5회</small></div>
-                    <div class="schip"><b>강민준</b><small>제목 수정</small></div>
-                    <div class="schip ok"><b>윤지아</b><small>제출 완료</small></div>
-                    <div class="schip"><b>서준호</b><small>색 바꾸기</small></div>
-                    <div class="schip"><b>한예린</b><small>글 다듬기</small></div>
-                    <div class="schip ok"><b>오도현</b><small>제출 완료</small></div>
-                    <div class="schip"><b>임채원</b><small>퀴즈 제작</small></div>
-                    <div class="schip"><b>+17</b><small>정상 진행</small></div>
+                    <div class="schip ok"><span class="sava">이</span><span class="sbody"><b>이수민</b><small>제출 완료</small></span></div>
+                    <div class="schipNone"><span class="sava">김</span><span class="sbody"><b>김하늘</b><small>카드 편집</small></span></div>
+                    <div class="schip help"><span class="sava">박</span><span class="sbody"><b>박OO</b><small>10분 정체</small></span></div>
+                    <div class="schipNone"><span class="sava">최</span><span class="sbody"><b>최서연</b><small>지도 추가</small></span></div>
+                    <div class="schip help"><span class="sava">정</span><span class="sbody"><b>정OO</b><small>같은 질문 5회</small></span></div>
+                    <div class="schipNone"><span class="sava">강</span><span class="sbody"><b>강민준</b><small>제목 수정</small></span></div>
+                    <div class="schip ok"><span class="sava">윤</span><span class="sbody"><b>윤지아</b><small>제출 완료</small></span></div>
+                    <div class="schipNone"><span class="sava">서</span><span class="sbody"><b>서준호</b><small>색 바꾸기</small></span></div>
+                    <div class="schipNone"><span class="sava">한</span><span class="sbody"><b>한예린</b><small>글 다듬기</small></span></div>
+                    <div class="schip ok"><span class="sava">오</span><span class="sbody"><b>오도현</b><small>제출 완료</small></span></div>
+                    <div class="schipNone"><span class="sava">임</span><span class="sbody"><b>임채원</b><small>퀴즈 제작</small></span></div>
+                    <div class="schipNone"><span class="sava">+</span><span class="sbody"><b>+17</b><small>정상 진행</small></span></div>
                   </div>
                   <div class="mtbl"><table>
                     <tr><td><b>개인정보 차단</b></td><td>2건 - 전화번호 입력 시도, 자동 처리됨</td><td><span class="mstat on">조치 완료</span></td></tr>

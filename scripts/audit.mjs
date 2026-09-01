@@ -78,7 +78,9 @@ function inspect(cfg) {
       // 3) 부모 밖으로 삐져나온 글자 (넘침을 감추지 않아 겹쳐 보이는 경우)
       // 인라인 요소(em, b, span…)는 글자 상자가 줄 상자를 살짝 넘는 게 정상이라 제외
       const hasText = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
-      if (hasText && el.parentElement && /block|flex|grid|list-item/.test(cs.display)) {
+      // 콜아웃 번호(.co)는 화면 정의서에서 일부러 경계에 걸쳐 놓는 표식이라 제외
+      const isCallout = /(^|\s)co(\s|$)/.test(el.className || "");
+      if (hasText && !isCallout && el.parentElement && /block|flex|grid|list-item/.test(cs.display)) {
         const pr = el.parentElement.getBoundingClientRect();
         const pcs = getComputedStyle(el.parentElement);
         if (pcs.overflow === "visible" && pr.width > 0) {
