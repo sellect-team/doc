@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>AI 놀이터 구축 제안서</title>
+  <meta name="doc-version" content="0.9">
+  <meta name="doc-description" content="교육청·학교용 학생 AI 놀이터 플랫폼 기획·제안 - 교사가 상용 AI를 등록·배분하고, 학생이 만들고, 함께 검토하는 안전한 AI 학습 공간">
+  <style>
+    /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
+    @font-face { font-family: "SUIT"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "SUIT ExtraBold"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+
+    :root {
+      --f:  "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      --fx: "SUIT ExtraBold", "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+    }
+    * { font-synthesis: none; -webkit-font-synthesis: none; }
+    b, strong { font-family: var(--fx); font-weight: 400; }
+    h1, h2, h3, h4, h5, h6 { font-weight: 400; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: min(1.25vw, 2.2222vh); }  /* 16:9 고정 캔버스 */
+    body {
+      font-family: var(--f);
+      background: #fff; color: #0F172A;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
+    }
+    :root {
+      --s900: #0F172A; --s800: #1E293B; --s700: #334155; --s600: #475569; --s500: #64748B;
+      --s400: #94A3B8; --s300: #CBD5E1; --s200: #E2E8F0; --s100: #F1F5F9; --s50: #F8FAFC;
+      --t800: #115E59; --t700: #0F766E; --t600: #0D9488; --t400: #2DD4BF; --t100: #CCFBF1; --t50: #F0FDFA;
+    }
+    .slide {
+      width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh);
+      overflow: hidden; position: relative; flex-shrink: 0;
+      padding: 1.6rem 2.6rem 0.9rem; display: flex; flex-direction: column;
+      background: #fff;
+    }
+
+    /* ── 공통 골격 ── */
+    .s-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.8rem; }
+    .s-head h2 { font-size: 2rem; font-family: var(--fx); letter-spacing: -0.02em; color: var(--s900); }
+    .s-head h2 em { color: var(--t600); font-style: normal; }
+    .bullet { display: inline-block; width: 0.55rem; height: 0.55rem;
+              background: var(--t400); margin-right: 0.75rem; vertical-align: middle; }
+    .s-right { display: flex; align-items: center; gap: 0.75rem; }
+    .s-right .sec { font-size: 0.95rem; color: var(--s400); letter-spacing: 0.04em; }
+
+    .s-band { margin: 0 -2.6rem; background: var(--s50);
+              border-top: 1px solid var(--s200); border-bottom: 1px solid var(--s200);
+              padding: 0.8rem 2.6rem; }
+    .s-band p { font-size: 1.12rem; line-height: 1.6; color: var(--s600); }
+    .s-band strong { color: var(--t600); font-family: var(--fx); }
+
+    .s-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+              font-size: 0.78rem; color: var(--s400); margin-top: 0.75rem; }
+    .s-foot .pg { grid-column: 2; }
+    .s-foot .mark { grid-column: 3; justify-self: end; letter-spacing: 0.14em; color: var(--s400); }
+
+    .content { flex: 1; min-height: 0; display: flex; flex-direction: column;
+               gap: 1.3rem; padding-top: 1.1rem; }
+    .fill { flex: 1; min-height: 0; }
+
+    .stripe { background: var(--s900); color: #E2E8F0; border-radius: 0.7rem;
+              padding: 0.75rem 1.4rem; font-size: 1rem;
+              display: flex; align-items: center; gap: 0.8rem; }
+    .stripe b { color: var(--t400); font-family: var(--fx); }
+    .stripe .sicon { color: var(--t400); display: flex; align-items: center; font-size: 1.15rem; }
+
+    /* ── 단색 라인 아이콘 ── */
+    .i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6;
+         stroke-linecap: round; stroke-linejoin: round; display: inline-block;
+         vertical-align: -0.12em; }
+
+    /* ── 카드 ── */
+    .cards { display: grid; gap: 1.3rem 2.6rem; grid-auto-rows: 1fr; }
+    .c2 { grid-template-columns: repeat(2, 1fr); }
+    .c3 { grid-template-columns: repeat(3, 1fr); }
+    .c4 { grid-template-columns: repeat(4, 1fr); }
+    .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
+            padding: 1.05rem 1.15rem 1rem; display: flex; flex-direction: column;
+            box-shadow: 0 6px 18px rgba(15,23,42,0.05); position: relative; overflow: hidden; }
+    .accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
+              background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
+    .card .no { font-size: 0.76rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.08em;
+                margin-bottom: 0.4rem; display: flex; justify-content: space-between; }
+    .card .no .cat { color: var(--s400); letter-spacing: 0.02em; }
+    .card .ico { font-size: 1.9rem; line-height: 1; margin-bottom: 0.7rem; color: var(--t600); }
+    .card .ico .i { stroke-width: 1.3; }
+    .card h3 { font-size: 1.3rem; font-family: var(--fx); color: var(--s900); margin-bottom: 0.5rem;
+               letter-spacing: -0.01em; }
+    .card p { font-size: 0.98rem; line-height: 1.6; color: var(--s500); }
+    .card .quote { margin-top: auto; padding-top: 0.85rem; font-size: 0.92rem; color: var(--s400);
+                   font-style: italic; border-top: 1px dashed var(--s200); line-height: 1.5; }
+    .card ul { list-style: none; margin-top: 0.6rem; display: flex; flex-direction: column; gap: 0.45rem; }
+    .card ul li { font-size: 0.95rem; color: var(--s500); padding-left: 1.2rem;
+                  position: relative; line-height: 1.5; }
+    .card ul li::before { content: "✓"; position: absolute; left: 0; color: var(--t600); font-family: var(--fx); }
+    .card ul li b { color: var(--s800); }
+    .card .fix { margin-top: auto; padding: 0.55rem 0.8rem; background: var(--t50);
+                 border: 1px solid var(--t100); border-radius: 0.6rem;
+                 font-size: 0.92rem; color: var(--t700); font-family: var(--fx); line-height: 1.5; }
+
+    /* ── 2단 ── */
+    .two { display: flex; gap: 2.6rem; align-items: stretch; }
+    .two > * { flex: 1; min-width: 0; min-height: 0; }
+    .krows { display: flex; flex-direction: column; gap: 1.1rem; height: 100%; }
+    .krow { flex: 1; display: flex; gap: 1rem; align-items: flex-start;
+            background: var(--s50); border: 1px solid var(--s200); border-radius: 0.85rem;
+            padding: 0.85rem 1.1rem; }
+    .krow .kico { width: 2.4rem; height: 2.4rem; border-radius: 0.65rem; background: var(--t50);
+                  border: 1px solid var(--t100); color: var(--t700);
+                  display: flex; align-items: center; justify-content: center; font-size: 1.15rem;
+                  flex-shrink: 0; }
+    .krow h4 { font-size: 1.1rem; font-family: var(--fx); color: var(--s900); }
+    .krow h4 small { font-size: 0.8rem; color: var(--s400); font-family: var(--fx); margin-left: 0.35rem; }
+    .krow p { font-size: 0.95rem; line-height: 1.55; color: var(--s500); margin-top: 0.2rem; }
+
+    /* ── 비교 테이블 ── */
+    .rt-wrap { border: 1px solid var(--s200); border-radius: 0.9rem; overflow: hidden;
+               display: flex; flex-direction: column; }
+    .rt { width: 100%; border-collapse: collapse; height: 100%; }
+    .rt th { background: var(--s50); border-bottom: 1px solid var(--s200);
+             font-family: var(--fx); font-weight: 400; font-size: 0.88rem; color: var(--s500);
+             text-align: left; padding: 0.6rem 1rem; }
+    .rt td { border-bottom: 1px solid var(--s100); padding: 0.6rem 1rem;
+             font-size: 0.93rem; color: var(--s600); vertical-align: top; line-height: 1.5; }
+    .rt tr:last-child td { border-bottom: none; }
+    .rt td.org { font-family: var(--fx); color: var(--s900); white-space: nowrap; }
+    .rt td.org small { display: block; font-size: 0.78rem; color: var(--s400); font-family: var(--f); }
+    .rt td b { color: var(--t700); }
+
+    /* ── 개념도: 사이클 ── */
+    .cyc { display: grid; grid-template-columns: 1fr 1.6rem 1fr 1.6rem 1fr 1.6rem 1fr; gap: 0.4rem;
+           align-items: stretch; }
+    .cnode { border: 1px solid var(--s200); background: #fff; border-radius: 0.85rem;
+             padding: 0.75rem 0.9rem; box-shadow: 0 6px 16px rgba(15,23,42,0.05);
+             position: relative; overflow: hidden; }
+    .cnode .accent { height: 0.16rem; border-radius: 0.85rem 0.85rem 0 0; }
+    .cnode b { display: flex; align-items: center; gap: 0.5rem; font-size: 1.05rem; color: var(--s900); }
+    .cnode b .i { color: var(--t600); flex-shrink: 0; }
+    .cnode p { font-size: 0.86rem; line-height: 1.5; color: var(--s500); margin-top: 0.35rem; }
+    .carr { display: flex; align-items: center; justify-content: center; color: var(--s300); font-size: 1rem; }
+
+    /* ── 아키텍처 ── */
+    .arch { height: 100%; display: flex; flex-direction: column; gap: 0.5rem; }
+    .arow { display: grid; gap: 1.2rem; }
+    .arow.u3 { grid-template-columns: 1fr 1fr 1fr; }
+    .anode { border: 1px solid var(--s200); background: var(--s50); border-radius: 0.7rem;
+             padding: 0.5rem 0.8rem; text-align: center; font-size: 0.98rem; font-family: var(--fx);
+             color: var(--s900); }
+    .anode small { display: block; font-family: var(--fx); color: var(--s500); font-size: 0.8rem; margin-top: 0.15rem; }
+    .adown { text-align: center; color: var(--s400); font-size: 0.85rem; line-height: 1; }
+    .plat { border: 1px solid var(--s200); border-radius: 0.9rem; padding: 0.7rem 0.9rem;
+            background: #fff; box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+            display: flex; flex-direction: column; gap: 0.55rem; position: relative; overflow: hidden; }
+    .plat .accent { height: 0.18rem; }
+    .plat .ph { display: flex; align-items: center; gap: 0.5rem; justify-content: center;
+                font-family: var(--fx); color: var(--s900); font-size: 1.05rem; }
+    .plat .ph small { color: var(--s400); font-size: 0.8rem; font-family: var(--fx); }
+    .pgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+    .pcell { border-radius: 0.6rem; padding: 0.5rem 0.65rem; font-size: 0.84rem; line-height: 1.4; }
+    .pcell b { display: flex; gap: 0.35rem; align-items: center; font-size: 0.9rem; }
+    .pcell small { display: block; margin-top: 0.2rem; font-size: 0.76rem; line-height: 1.4; }
+    .pcell.ws { background: var(--t50); border: 1px solid var(--t100); }
+    .pcell.ws b { color: var(--t800); } .pcell.ws small { color: var(--s600); }
+    .pcell.ops { background: var(--s900); }
+    .pcell.ops b { color: var(--t400); } .pcell.ops small { color: var(--s400); }
+    .a-src { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+    .srcc { border: 1px solid var(--s200); background: #fff; border-radius: 0.7rem;
+            padding: 0.45rem 0.7rem; display: flex; align-items: center; gap: 0.55rem; }
+    .srcc .i { color: var(--s500); flex-shrink: 0; }
+    .srcc b { font-size: 0.88rem; color: var(--s700); display: block; }
+    .srcc small { font-size: 0.72rem; color: var(--s500); display: block; }
+
+    /* ── 시나리오 타임라인 ── */
+    .tl { display: flex; flex-direction: column; gap: 0; height: 100%; }
+    .tli { flex: 1; display: flex; gap: 1rem; position: relative; padding-left: 0.2rem; }
+    .tli .tm { flex: 0 0 4.2rem; font-family: var(--fx); font-size: 0.95rem; color: var(--t700);
+               text-align: right; padding-top: 0.15rem; }
+    .tli .tdot { flex: 0 0 auto; width: 0.72rem; height: 0.72rem; border-radius: 50%;
+                 background: #fff; border: 2px solid var(--t400); margin-top: 0.3rem; z-index: 1; }
+    .tli .tline { position: absolute; left: 5.75rem; top: 1rem; bottom: -0.3rem; width: 2px;
+                  background: var(--s200); }
+    .tli:last-child .tline { display: none; }
+    .tli .tbody { flex: 1; padding-bottom: 0.6rem; }
+    .tli .tbody b { font-size: 1.05rem; color: var(--s900); font-family: var(--fx); }
+    .tli .tbody p { font-size: 0.93rem; color: var(--s500); line-height: 1.5; margin-top: 0.15rem; }
+    .tli .tbody p em { color: var(--t700); font-style: normal; font-family: var(--fx); }
+
+    /* ── 로드맵 ── */
+    .phases { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.6rem; height: 100%; }
+    .phase { border: 1px solid var(--s200); border-radius: 0.9rem; background: var(--s50);
+             display: flex; flex-direction: column; overflow: hidden; }
+    .phase .phh { padding: 0.7rem 1.1rem; font-family: var(--fx); color: #fff;
+                  background: var(--s900); font-size: 1.05rem;
+                  display: flex; justify-content: space-between; align-items: baseline; }
+    .phase .phh small { font-size: 0.8rem; color: var(--t400); font-family: var(--fx); }
+    .phase.hl .phh { background: var(--t700); }
+    .phase ul { list-style: none; padding: 0.85rem 1.1rem; display: flex; flex-direction: column;
+                gap: 0.5rem; flex: 1; }
+    .phase ul li { font-size: 0.94rem; color: var(--s600); padding-left: 1.2rem; position: relative;
+                   line-height: 1.5; }
+    .phase ul li::before { content: "✓"; position: absolute; left: 0; color: var(--t600); font-family: var(--fx); }
+    .phase .pfoot { padding: 0.55rem 1.1rem 0.8rem; font-size: 0.85rem; color: var(--s400);
+                    border-top: 1px dashed var(--s200); }
+
+    /* ── 목업 윈도 ── */
+    .win { background: #fff; border: 1px solid var(--s200); border-radius: 0.9rem;
+           box-shadow: 0 14px 34px rgba(15,23,42,0.10); overflow: hidden;
+           display: flex; flex-direction: column; }
+    .win .bar { display: flex; align-items: center; gap: 0.45rem; background: var(--s100);
+                border-bottom: 1px solid var(--s200); padding: 0.5rem 0.9rem; }
+    .win .dot { width: 0.52rem; height: 0.52rem; border-radius: 50%; background: var(--s300); }
+    .win .bar .t { margin-left: 0.4rem; font-size: 0.84rem; font-family: var(--fx); color: var(--s500); }
+    .win .bar .live { margin-left: auto; font-size: 0.7rem; font-family: var(--fx); color: var(--t600);
+                      background: var(--t50); border-radius: 99rem; padding: 0.14rem 0.6rem; }
+    .win .body { flex: 1; min-height: 0; padding: 0.8rem 0.95rem; display: flex; flex-direction: column;
+                 gap: 0.55rem; }
+    .mockcol { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .mockcol .win { flex: 1; min-height: 0; }
+    .mockcol .mcap { margin-top: 0.6rem; font-size: 0.9rem; line-height: 1.5; color: var(--s500); }
+    .mockcol .mcap b { color: var(--s800); font-family: var(--fx); }
+
+    /* 수업방 카드(목업 내부) */
+    .room { border: 1px solid var(--s200); border-radius: 0.6rem; padding: 0.5rem 0.7rem;
+            display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; }
+    .room .ric { width: 1.7rem; height: 1.7rem; border-radius: 0.45rem; background: var(--t50);
+                 border: 1px solid var(--t100); color: var(--t700); flex-shrink: 0;
+                 display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+    .room b { color: var(--s800); display: block; font-size: 0.88rem; }
+    .room small { color: var(--s400); display: block; font-size: 0.72rem; }
+    .room .st { margin-left: auto; font-size: 0.7rem; font-family: var(--fx); border-radius: 99rem;
+                padding: 0.16rem 0.55rem; white-space: nowrap; }
+    .room .st.on { background: var(--t50); color: var(--t700); border: 1px solid var(--t400); }
+    .room .st.off { background: var(--s100); color: var(--s500); border: 1px solid var(--s300); }
+    .gauge { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--s400); }
+    .gauge .gbar { flex: 1; height: 0.4rem; border-radius: 99rem; background: var(--s100);
+                   overflow: hidden; position: relative; }
+    .gauge .gbar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99rem;
+                     background: var(--t400); }
+    .gauge b { font-family: var(--fx); color: var(--s700); font-size: 0.78rem; }
+
+    /* 갤러리 목업 */
+    .gal { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; }
+    .gitem { border: 1px solid var(--s200); border-radius: 0.6rem; overflow: hidden; background: #fff; }
+    .gitem .gthumb { height: 2.6rem; display: flex; align-items: center; justify-content: center;
+                     font-size: 1.2rem; color: var(--t600); background: var(--t50);
+                     border-bottom: 1px solid var(--s200); }
+    .gitem .gmeta { padding: 0.4rem 0.6rem; }
+    .gitem .gmeta b { font-size: 0.8rem; color: var(--s800); display: block; }
+    .gitem .gmeta small { font-size: 0.7rem; color: var(--s400); display: flex; gap: 0.55rem; margin-top: 0.15rem; }
+    .gbadge { font-size: 0.66rem; font-family: var(--fx); border-radius: 99rem; padding: 0.1rem 0.45rem; }
+    .gbadge.ok { background: var(--t50); color: var(--t700); border: 1px solid var(--t100); }
+    .gbadge.wait { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+
+    /* 채팅 목업 */
+    .msg { max-width: 88%; padding: 0.5rem 0.8rem; border-radius: 0.8rem;
+           font-size: 0.86rem; line-height: 1.45; }
+    .msg.q { align-self: flex-end; background: var(--s900); color: #fff; border-bottom-right-radius: 0.2rem; }
+    .msg.a { align-self: flex-start; background: var(--s50); border: 1px solid var(--s200);
+             color: var(--s600); border-bottom-left-radius: 0.2rem; }
+    .msg.a b { color: var(--t700); }
+    .sysnote { align-self: center; font-size: 0.72rem; color: var(--s400); background: var(--s50);
+               border: 1px dashed var(--s300); border-radius: 99rem; padding: 0.2rem 0.8rem; }
+
+    /* ── 다크 슬라이드 (표지·맺음) ── */
+    .dark { background:
+              linear-gradient(rgba(148,163,184,0.055) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(148,163,184,0.055) 1px, transparent 1px),
+              var(--s900);
+            background-size: 3.4rem 3.4rem, 3.4rem 3.4rem, auto;
+            color: #fff; justify-content: center; align-items: flex-start;
+            padding: 2.2rem 2.8rem; }
+    .dark .glow { position: absolute; right: -12rem; top: 50%; transform: translateY(-50%);
+                  width: 46rem; height: 46rem; border-radius: 50%;
+                  background: radial-gradient(circle, rgba(45,212,191,0.11) 0%, rgba(45,212,191,0.035) 45%, transparent 72%); }
+    .dark .logo { position: absolute; right: 5.5rem; top: 50%; transform: translateY(-50%);
+                  width: 14rem; z-index: 0; }
+    .dark .top { position: absolute; top: 1.9rem; left: 2.8rem; right: 2.8rem;
+                 display: flex; justify-content: space-between; align-items: center; }
+    .dark .top .pillbadge { border: 1px solid var(--t400); color: var(--t400);
+                            font-size: 0.82rem; letter-spacing: 0.2em; padding: 0.5rem 1.6rem;
+                            border-radius: 99rem; }
+    .dark .top .iwd { color: var(--t400); font-size: 0.95rem; letter-spacing: 0.03em; font-family: var(--fx); }
+    .dark h1 { font-size: 3.4rem; font-family: var(--fx); letter-spacing: -0.03em; line-height: 1.16; }
+    .dark h1 em { color: var(--t400); font-style: normal; }
+    .dark .sub { font-size: 1.2rem; color: var(--s400); margin-top: 1.3rem; line-height: 1.65; }
+    .dark .entag { margin-top: 1.5rem; color: var(--t400); font-size: 0.92rem;
+                   letter-spacing: 0.22em; font-family: var(--fx); }
+    .dark .pills { display: flex; gap: 0.6rem; margin-top: 1.9rem; flex-wrap: wrap; }
+    .dark .pill { border: 1px solid var(--s700); background: rgba(30,41,59,0.7); color: var(--s300);
+                  font-size: 0.9rem; padding: 0.42rem 1rem; border-radius: 99rem; }
+    .dark .pill b { color: var(--t400); margin-right: 0.35rem; }
+    .dark .corner { position: absolute; left: 2.8rem; bottom: 1.5rem; right: 2.8rem;
+                    display: flex; justify-content: flex-start; gap: 0.9rem; align-items: center;
+                    font-size: 0.82rem; letter-spacing: 0.16em; }
+    .dark .corner .ai { color: var(--t400); font-family: var(--fx); }
+    .dark .corner .div { color: var(--s600); }
+    .dark .corner .cp { color: var(--s500); }
+    .dark .notice { margin-top: 1.9rem; display: inline-flex; align-items: center; gap: 0.6rem;
+                    border: 1px solid var(--s700); border-radius: 0.6rem; background: rgba(30,41,59,0.7);
+                    padding: 0.55rem 1rem; font-size: 0.88rem; color: var(--s400); position: relative; z-index: 1; }
+    .dark .notice .i { color: var(--t400); }
+  </style>
+</head>
+<body>
+
+  <!-- 1. 표지 -->
+  <section class="slide dark" data-title="표지">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
+    <div class="top">
+      <span class="pillbadge">SAILINGSTONE - AI PLAYGROUND FOR EDUCATION</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>AI를 배우는 가장 좋은 방법은,<br><em>AI로 만들어 보는 것입니다.</em></h1>
+    <p class="sub">학생 AI 놀이터 구축 제안 - 선생님이 상용 AI를 등록해 반별로 나누어 주고,<br>
+      학생들은 안전한 울타리 안에서 만들고, 올리고, 서로의 작품을 검토하며 배웁니다.</p>
+    <div class="pills">
+      <span class="pill"><b>01</b>교사 주도 AI 배분</span>
+      <span class="pill"><b>02</b>안전한 학생 놀이터</span>
+      <span class="pill"><b>03</b>작품 갤러리 · 상호 피드백</span>
+      <span class="pill"><b>04</b>실시간 관제 · 안전망</span>
+    </div>
+    <div class="notice"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      본 문서는 기획 제안서(v0.9)로, 화면과 수치는 설계 예시입니다.</div>
+    <div class="corner">
+      <span class="ai">AI · EDUCATION · PLAYGROUND</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
+    </div>
+  </section>
+
+  <!-- 2. 왜 지금인가 -->
+  <section class="slide" data-title="왜 지금인가">
+    <header class="s-head">
+      <h2><span class="bullet"></span>교실의 AI, <em>이미 시작된 변화</em></h2>
+      <div class="s-right"><span class="sec">01 · Why Now</span></div>
+    </header>
+    <div class="s-band"><p>학생들은 이미 AI를 쓰고 있습니다. 질문은 "쓰게 할 것인가"가 아니라
+      <strong>"어떤 울타리 안에서 제대로 배우게 할 것인가"</strong>입니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">POLICY<span class="cat">정책 환경</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></div>
+          <h3>지침은 나왔고, 도구가 없다</h3>
+          <p>교육부·교육청이 수행평가 AI 활용 관리 방안을 확정하고 2026학년도 지침을 개정했습니다.
+             AI 디지털교과서와 함께 "올바른 활용"이 공식 과제가 됐지만, 정작 학교 현장에는
+             <b>통제 가능한 실습 환경</b>이 없습니다.</p>
+          <div class="fix">규칙만 있고 놀이터가 없는 상태 - 지금이 도입 적기입니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">CLASSROOM<span class="cat">교실 현실</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M22 21v-1a7 7 0 0 0-5-6.7"/></svg></div>
+          <h3>개인 계정으로 각자 접속</h3>
+          <p>학생들은 집에서 개인 계정으로 챗봇을 씁니다. 선생님은 누가 무엇을 물었는지,
+             과제를 AI가 대신 했는지 알 수 없습니다. 나이 제한·개인정보·유해 답변 문제도
+             <b>전부 개인에게 맡겨져</b> 있습니다.</p>
+          <div class="fix">보이지 않는 사용을 보이는 교실 활동으로 옮겨야 합니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">GLOBAL<span class="cat">해외 흐름</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <h3>해외는 이미 플랫폼 단계</h3>
+          <p>미국은 MagicSchool(13,000개교), SchoolAI 등 <b>교사 통제형 학생 AI 플랫폼</b>이
+             교육구 단위로 도입되는 단계입니다. 교사가 활동을 설계하고, 학생 대화를 실시간으로
+             보고, 위험 신호에 알림을 받습니다.</p>
+          <div class="fix">검증된 모델이 있습니다 - 한국 교실에 맞게 만들면 됩니다.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.68.68 1.15 1.45 1.41 2.5"/></svg></span>
+        <span>금지는 답이 아닙니다. <b>안전하게 쓰는 법을 가르치는 공간</b>이 답입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 2 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 3. 선생님의 고민 -->
+  <section class="slide" data-title="선생님의 세 가지 고민">
+    <header class="s-head">
+      <h2><span class="bullet"></span>선생님의 <em>세 가지 고민</em>에서 출발합니다</h2>
+      <div class="s-right"><span class="sec">01 · Why Now</span></div>
+    </header>
+    <div class="s-band"><p>AI 수업을 해 본 선생님들의 고민은 놀랍도록 비슷합니다.
+      이 플랫폼의 모든 기능은 <strong>아래 세 문제의 해답</strong>으로 설계됐습니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">고민 01</div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+          <h3>"계정과 비용을 어떻게 하나요?"</h3>
+          <p>학생 수만큼 유료 계정을 만들 수도, 교사 계정 하나를 돌려 쓸 수도 없습니다.
+             학생마다 쓰는 양이 달라 비용 예측도 안 됩니다.</p>
+          <div class="quote">"AI 수업을 하고 싶어도 30명 계정 문제에서 막힙니다."</div>
+          <div class="fix">→ 학교가 API 키 하나만 등록하면, 반별·학생별로 사용량을 나눠 줍니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">고민 02</div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h3>"아이들에게 안전한가요?"</h3>
+          <p>유해 답변, 개인정보 입력, 나이 제한, 그리고 AI가 과제를 대신 해 주는 문제까지 -
+             일반 챗봇을 그대로 열어 줄 수는 없습니다.</p>
+          <div class="quote">"뭘 묻고 뭘 답했는지 보이지 않는 게 제일 불안해요."</div>
+          <div class="fix">→ 모든 대화가 기록되고, 위험 신호는 즉시 선생님께 알립니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">고민 03</div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <h3>"만든 것을 어디에 모으나요?"</h3>
+          <p>학생들이 AI로 만든 글·그림·웹 작품이 개인 화면에서 사라집니다. 모아서 전시하고,
+             서로 배우고, 평가에 쓸 방법이 없습니다.</p>
+          <div class="quote">"잘 만든 작품인데 수업이 끝나면 그냥 없어져요."</div>
+          <div class="fix">→ 승인을 거쳐 갤러리에 올리고, 친구들이 보고 배우게 합니다.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+        <span>계정·비용, 안전, 산출물 - 세 고민을 하나의 플랫폼으로 풉니다. 이름하여 <b>AI 놀이터</b>입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 3 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 4. 콘셉트 -->
+  <section class="slide" data-title="AI 놀이터란">
+    <header class="s-head">
+      <h2><span class="bullet"></span>AI 놀이터 - <em>한 장으로 보는 콘셉트</em></h2>
+      <div class="s-right"><span class="sec">02 · Concept</span></div>
+    </header>
+    <div class="s-band"><p>선생님이 울타리를 치고, 학생이 그 안에서 마음껏 만들고, 만든 것이 학급의 자산으로 쌓이는
+      <strong>만들기 - 올리기 - 배우기 순환</strong> 구조입니다.</p></div>
+    <div class="content">
+      <div class="cyc">
+        <div class="cnode"><span class="accent"></span>
+          <b><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>① 수업방 열기</b>
+          <p>선생님이 주제·AI 페르소나·사용 한도를 정해 수업방을 만들고, 학생은 코드로 입장합니다.
+             학생 개인 계정이 필요 없습니다.</p></div>
+        <div class="carr">›</div>
+        <div class="cnode"><span class="accent"></span>
+          <b><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>② 만들기</b>
+          <p>안전 필터가 켜진 AI와 대화하며 글·그림·퀴즈·웹 작품을 만듭니다.
+             어려우면 힌트만 주는 학습 모드로 스스로 풀게 합니다.</p></div>
+        <div class="carr">›</div>
+        <div class="cnode"><span class="accent"></span>
+          <b><svg class="i" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>③ 올리기</b>
+          <p>완성작을 제출하면 선생님 승인을 거쳐 학급 갤러리에 게시됩니다.
+             웹 작품은 자동으로 주소가 발급돼 바로 열어 볼 수 있습니다.</p></div>
+        <div class="carr">›</div>
+        <div class="cnode"><span class="accent"></span>
+          <b><svg class="i" viewBox="0 0 24 24"><path d="M17 6.1H3"/><path d="M21 12.1H3"/><path d="M15.1 18H3"/></svg>④ 함께 배우기</b>
+          <p>친구 작품에 칭찬과 질문을 남기고, 잘된 프롬프트를 따라 해 봅니다.
+             선생님은 과정 기록으로 평가하고 다음 수업을 설계합니다.</p></div>
+      </div>
+      <div class="two fill">
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></span>
+            <span><h4>학생에게는 <small>PLAYGROUND</small></h4>
+            <p>혼내지 않는 연습장입니다. 실패해도 되는 공간에서 AI에게 말 거는 법,
+               결과를 의심하는 법, 내 생각을 얹는 법을 배웁니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+            <span><h4>선생님에게는 <small>CONTROL TOWER</small></h4>
+            <p>수업 설계 도구이자 관제탑입니다. 한 화면에서 반 전체의 활동을 보고,
+               사용량을 조절하고, 도움이 필요한 학생을 먼저 찾아냅니다.</p></span></div>
+        </div>
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></span>
+            <span><h4>학교·교육청에는 <small>GOVERNANCE</small></h4>
+            <p>어떤 AI를 얼마나 썼는지, 예산이 어디에 쓰였는지 집계됩니다.
+               지침 준수가 문서가 아니라 시스템으로 보장됩니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+            <span><h4>학부모에게는 <small>TRUST</small></h4>
+            <p>아이가 학교 관리 아래에서 AI를 배운다는 신뢰입니다.
+               대화는 기록되고, 데이터는 학습에 쓰이지 않으며, 유해물은 차단됩니다.</p></span></div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 4 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 5. 해외 사례 -->
+  <section class="slide" data-title="해외 사례에서 배운 것">
+    <header class="s-head">
+      <h2><span class="bullet"></span>해외 사례에서 <em>배운 것</em></h2>
+      <div class="s-right"><span class="sec">02 · Concept</span></div>
+    </header>
+    <div class="s-band"><p>미국 K-12 시장의 검증된 플랫폼들을 분석했습니다. 각자의 강점은 배우고,
+      <strong>어느 것도 다 갖추지 못한 조합</strong>을 우리의 자리로 잡습니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:17%">플랫폼</th><th style="width:27%">핵심 모델</th><th style="width:28%">배울 점</th><th>남겨 둔 빈자리</th></tr>
+          <tr><td class="org">MagicSchool<small>미국 · 13,000개교</small></td>
+              <td>교사용 도구 80종 + 관리형 학생 공간(MagicStudent). 지역 교육구 단위 도입</td>
+              <td><b>교사가 AI 능력을 모듈로 잘라</b> 학생에게 열어 주는 방식, 관리자 대시보드·SSO</td>
+              <td>산출물 갤러리·상호 피드백이 약함. 영어권 커리큘럼 중심</td></tr>
+          <tr><td class="org">SchoolAI<small>미국</small></td>
+              <td>교사가 Space(수업방)를 설계하고 학생 대화를 실시간 모니터링</td>
+              <td><b>수업방 단위 설계</b>, 라이브 대시보드, 위험 신호 알림, 링크·코드 입장</td>
+              <td>만들기가 대화 중심 - 웹 작품 제작·호스팅 없음</td></tr>
+          <tr><td class="org">Khanmigo<small>Khan Academy</small></td>
+              <td>답을 주지 않는 소크라테스식 AI 튜터 + 교사용 연습문제 빌더</td>
+              <td><b>학습 모드</b> - 정답 대신 되묻기로 사고력을 키우는 가드레일</td>
+              <td>범용 튜터 - 학교별 수업 설계·산출물 관리와는 별개</td></tr>
+          <tr><td class="org">Padlet · Seesaw<small>미국 · 포트폴리오</small></td>
+              <td>학생 작품 게시판·포트폴리오. 교사 승인 후 게시, 댓글 승인제</td>
+              <td><b>승인 후 게시</b>와 댓글 조절 - 상호 피드백을 안전하게 만드는 절차</td>
+              <td>AI 제작 도구가 아님 - 만들기와 게시가 분리돼 있음</td></tr>
+          <tr><td class="org">Replit · aiEDU<small>바이브 코딩</small></td>
+              <td>말로 설명하면 AI가 코드를 짜 주고, 링크로 즉시 공유하는 갤러리</td>
+              <td><b>만들면 바로 주소가 나오는 경험</b> - 초등 고학년도 웹 작품 제작 가능</td>
+              <td>교육용 통제 없음 - 사용량·안전·승인 개념 부재</td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.68.68 1.15 1.45 1.41 2.5"/></svg></span>
+        <span>우리의 자리: <b>수업방 통제(SchoolAI) + 승인형 갤러리(Seesaw) + 만들기·배포(Replit)</b>를 하나로 - 한국 교육청 요건에 맞춰서.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 5 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 6. 전체 아키텍처 -->
+  <section class="slide" data-title="전체 구성">
+    <header class="s-head">
+      <h2><span class="bullet"></span>전체 구성 - <em>세 개의 공간, 하나의 플랫폼</em></h2>
+      <div class="s-right"><span class="sec">02 · Concept</span></div>
+    </header>
+    <div class="s-band"><p>학생 놀이터·교사 콘솔·관리 센터가 <strong>같은 데이터 위에서</strong> 움직입니다.
+      상용 AI는 교체 가능한 부품으로 아래에 둡니다.</p></div>
+    <div class="content">
+      <div class="arch fill">
+        <div class="arow u3">
+          <div class="anode">학생<small>놀이터 · 갤러리 (계정 없이 코드 입장)</small></div>
+          <div class="anode">교사<small>수업방 설계 · 실시간 관제 · 승인</small></div>
+          <div class="anode">학교 · 교육청 관리자<small>키 등록 · 예산 · 정책 · 통계</small></div>
+        </div>
+        <div class="adown">▾ ▾ ▾</div>
+        <div class="plat"><span class="accent"></span>
+          <div class="ph">AI 놀이터 플랫폼 <small>· AI PLAYGROUND CORE</small></div>
+          <div class="pgrid">
+            <div class="pcell ws"><b>수업방 (Space)</b><small>주제·페르소나·기간·인원 설정, 링크·코드 입장</small></div>
+            <div class="pcell ws"><b>만들기 스튜디오</b><small>대화·글쓰기·이미지·퀴즈·웹 작품(바이브 코딩)</small></div>
+            <div class="pcell ws"><b>갤러리 · 포트폴리오</b><small>승인 후 게시, 좋아요·댓글, 배지, 학급 전시회</small></div>
+            <div class="pcell ws"><b>작품 배포</b><small>웹 작품에 주소 자동 발급 · 논리 격리 호스팅</small></div>
+            <div class="pcell ops"><b>AI 게이트웨이</b><small>키 관리(BYOK) · 모델 라우팅 · 사용량 미터링</small></div>
+            <div class="pcell ops"><b>쿼터 엔진</b><small>학교→학급→학생 예산 배분 · 기간 리셋 · 부스트</small></div>
+            <div class="pcell ops"><b>세이프티</b><small>연령별 필터 · 개인정보 마스킹 · 위험 신호 알림</small></div>
+            <div class="pcell ops"><b>감사 로그</b><small>전 대화·산출물 기록 · 평가 근거 · 통계</small></div>
+          </div>
+        </div>
+        <div class="adown">▾ 표준 API (교체 가능)</div>
+        <div class="a-src">
+          <div class="srcc"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg><span><b>Claude</b><small>Anthropic API</small></span></div>
+          <div class="srcc"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span><b>GPT</b><small>OpenAI API</small></span></div>
+          <div class="srcc"><svg class="i" viewBox="0 0 24 24"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg><span><b>Gemini</b><small>Google API</small></span></div>
+          <div class="srcc"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg><span><b>공공 · 사내 LLM</b><small>교육청 지정 모델</small></span></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+        <span>특정 AI 회사에 묶이지 않습니다. <b>키만 바꾸면 모델이 바뀌는 구조</b>라 교육청 정책 변화에 그대로 따라갑니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 6 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 7. 기능 1: 교사 콘솔 -->
+  <section class="slide" data-title="기능 ① 수업방 만들기">
+    <header class="s-head">
+      <h2><span class="bullet"></span>기능 ① 수업방 - <em>5분이면 AI 수업이 열립니다</em></h2>
+      <div class="s-right"><span class="sec">03 · Features</span></div>
+    </header>
+    <div class="s-band"><p>선생님이 <strong>주제와 규칙을 정하면 그것이 곧 울타리</strong>가 됩니다.
+      학생 계정을 만들 필요 없이 입장 코드 하나로 반 전체가 들어옵니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="mockcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">교사 콘솔 · 내 수업방</span><span class="live">3학년 2반</span></div>
+            <div class="body">
+              <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+                <span><b>독서 토론 도우미</b><small>국어 · 페르소나: 질문만 하는 사서 선생님</small></span>
+                <span class="st on">진행 중 · 28명</span></div>
+              <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg></span>
+                <span><b>우리 동네 소개 웹 만들기</b><small>사회 · 바이브 코딩 · 작품 제출 마감 금요일</small></span>
+                <span class="st on">진행 중 · 26명</span></div>
+              <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+                <span><b>수학 문장제 연습</b><small>수학 · 학습 모드(정답 금지) · 힌트 3단계</small></span>
+                <span class="st off">일시 정지</span></div>
+              <div class="gauge"><span>이번 주 우리 반 사용량</span><span class="gbar"><i style="width:62%"></i></span><b>62%</b></div>
+            </div></div>
+          <p class="mcap"><b>수업방 목록.</b> 과목마다 다른 AI 규칙 - 국어는 질문만, 수학은 정답 금지.
+             일시 정지 버튼 하나로 반 전체 사용을 멈출 수 있습니다.</p>
+        </div>
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
+            <span><h4>말로 만드는 수업방</h4>
+            <p>"5학년 눈높이로, 답 대신 힌트만 주는 과학 실험 도우미" - 이렇게 적으면
+               AI 페르소나·금지 규칙·말투가 설정됩니다. 템플릿 라이브러리에서 골라 시작해도 됩니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <span><h4>기간 · 인원 · 범위 통제</h4>
+            <p>수업 시간에만 열리게 예약하고, 우리 반만 입장하게 제한합니다.
+               이미지 생성 켜기/끄기, 외부 검색 허용 여부도 수업방마다 정합니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <span><h4>계정 없는 입장</h4>
+            <p>학생은 6자리 코드나 QR로 들어옵니다. 저학년도 로그인 없이 시작하고,
+               학교 계정(SSO) 연동은 고학년·상급 학교에서 선택합니다.</p></span></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <span>수업 준비 부담이 곧 도입 장벽입니다. <b>템플릿에서 수업방까지 5분</b> - 이것이 설계 기준입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 7 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 8. 기능 2: 키·쿼터 -->
+  <section class="slide" data-title="기능 ② AI 등록과 사용량 배분">
+    <header class="s-head">
+      <h2><span class="bullet"></span>기능 ② AI 등록·배분 - <em>키 하나로 반 전체가 씁니다</em></h2>
+      <div class="s-right"><span class="sec">03 · Features</span></div>
+    </header>
+    <div class="s-band"><p>학교(또는 교육청)가 상용 AI의 API 키를 등록하면, 플랫폼이
+      <strong>학급→학생 단위로 사용량을 쪼개서</strong> 나눠 주고 실시간으로 집계합니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2 11.39 11.61"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg></span>
+            <span><h4>키 등록 <small>BYOK</small></h4>
+            <p>Claude·GPT·Gemini 등 교육청이 계약한 AI의 키를 등록합니다. 키는 암호화 보관되고
+               학생에게 절대 노출되지 않습니다. 모델별로 용도를 지정합니다 - 기본 대화는 경량 모델,
+               심화 활동만 상위 모델로.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+            <span><h4>예산 배분 <small>QUOTA</small></h4>
+            <p>학교 예산을 학급 단위로, 학급 예산을 학생 단위로 나눕니다. 주 단위 자동 리셋,
+               소진 시 대기 또는 교사 승인으로 추가 지급("부스트"). 수행평가 기간에는
+               해당 수업방만 한도를 올릴 수 있습니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
+            <span><h4>실시간 집계 <small>METERING</small></h4>
+            <p>누가 얼마나 썼는지 학생·학급·학교 단위로 실시간 집계됩니다. 해외 대학들이 겪는
+               "토큰 비용 예측 불가" 문제를, 배분과 한도로 처음부터 예산 안에 가둡니다.</p></span></div>
+        </div>
+        <div class="mockcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">관리 센터 · AI 사용량</span><span class="live">실시간</span></div>
+            <div class="body">
+              <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/></svg></span>
+                <span><b>Claude Sonnet</b><small>기본 대화 · 글쓰기</small></span>
+                <span class="st on">등록됨</span></div>
+              <div class="gauge"><span>3학년 1반</span><span class="gbar"><i style="width:48%"></i></span><b>48%</b></div>
+              <div class="gauge"><span>3학년 2반</span><span class="gbar"><i style="width:62%"></i></span><b>62%</b></div>
+              <div class="gauge"><span>3학년 3반</span><span class="gbar"><i style="width:35%"></i></span><b>35%</b></div>
+              <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                <span><b>김OO 부스트 요청</b><small>웹 작품 마무리 - 잔여량 소진</small></span>
+                <span class="st off">승인 대기</span></div>
+              <div class="sysnote">이번 달 예산 소진 예상일: 27일 (여유 3일)</div>
+            </div></div>
+          <p class="mcap"><b>사용량 대시보드.</b> 반별 소진율과 예산 소진 예상일이 한눈에 보이고,
+             학생의 추가 요청은 교사 승인으로 처리됩니다.</p>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span>
+        <span>학생 30명 계정 문제가 <b>키 1개 + 배분표 1장</b>으로 끝납니다. 예산은 시작 전에 정해지고, 초과는 구조적으로 불가능합니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 9. 기능 3: 학생 놀이터 -->
+  <section class="slide" data-title="기능 ③ 학생 놀이터">
+    <header class="s-head">
+      <h2><span class="bullet"></span>기능 ③ 놀이터 - <em>대화에서 작품까지</em></h2>
+      <div class="s-right"><span class="sec">03 · Features</span></div>
+    </header>
+    <div class="s-band"><p>챗봇 흉내가 아니라 <strong>만들기 도구</strong>입니다. 말로 시작해서
+      글·그림·퀴즈·웹 작품으로 끝나고, 웹 작품은 즉시 실행되는 내 주소를 받습니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="mockcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">놀이터 · 우리 동네 소개 웹 만들기</span><span class="live">이수민</span></div>
+            <div class="body">
+              <div class="msg q">우리 동네 맛집 지도를 소개하는 홈페이지 만들어 줘! 제목은 크게, 사진 넣을 자리도.</div>
+              <div class="msg a"><b>좋아요!</b> 제목·지도 자리·맛집 카드 3개로 뼈대를 만들었어요.
+                오른쪽 미리보기를 확인해 보세요. 카드 색을 바꿔 볼까요?</div>
+              <div class="msg q">카드를 하늘색으로! 그리고 우리 학교 자랑 칸도 추가해 줘.</div>
+              <div class="sysnote">개인정보 보호: 전화번호·집 주소는 작품에 넣을 수 없어요</div>
+              <div class="msg a">하늘색으로 바꾸고 <b>'우리 학교 자랑'</b> 칸을 추가했어요.
+                완성되면 [제출하기]를 눌러 선생님께 보내요!</div>
+            </div></div>
+          <p class="mcap"><b>바이브 코딩.</b> 코드를 몰라도 말로 웹 작품을 만듭니다.
+             해외에서는 초등 고학년부터 이 방식으로 앱을 만드는 수업이 확산 중입니다.</p>
+        </div>
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3"/><path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"/><line x1="12" y1="7" x2="12" y2="17"/></svg></span>
+            <span><h4>4가지 만들기 모드</h4>
+            <p><b>이야기·글쓰기</b>(AI와 번갈아 쓰기), <b>그림·포스터</b>(이미지 생성, 수업방별 허용),
+               <b>퀴즈·카드</b>(내가 만든 문제를 친구가 풀기), <b>웹 작품</b>(말로 만드는 홈페이지·미니 게임).</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.68.68 1.15 1.45 1.41 2.5"/></svg></span>
+            <span><h4>학습 모드 <small>정답을 주지 않는 AI</small></h4>
+            <p>Khanmigo가 증명한 방식입니다. 과제 수업방에서는 AI가 정답 대신 되묻고,
+               힌트를 단계로 나눠 줍니다. "AI가 해 줬어요"가 아니라 "AI랑 풀었어요"가 되게.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+            <span><h4>만들면 바로 열리는 작품</h4>
+            <p>웹 작품은 저장하는 순간 격리된 공간에 배포되고 우리 반 전용 주소가 발급됩니다.
+               친구 태블릿에서 바로 열어 보는 경험이 "내가 만든 진짜 작품"이라는 감각을 만듭니다.</p></span></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
+        <span>목표는 AI 구경이 아니라 <b>AI로 무언가를 끝까지 만들어 본 경험</b>입니다. 그 경험이 AI 리터러시가 됩니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 10. 기능 4: 갤러리 -->
+  <section class="slide" data-title="기능 ④ 갤러리와 상호 피드백">
+    <header class="s-head">
+      <h2><span class="bullet"></span>기능 ④ 갤러리 - <em>올리고, 보고, 서로 배웁니다</em></h2>
+      <div class="s-right"><span class="sec">03 · Features</span></div>
+    </header>
+    <div class="s-band"><p>제출 → <strong>선생님 승인</strong> → 게시 → 감상·피드백의 절차가 기본입니다.
+      Padlet·Seesaw가 검증한 승인형 게시 모델을 학급 문화에 맞게 다듬었습니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+            <span><h4>승인 후 게시</h4>
+            <p>학생이 제출하면 선생님 검토함에 들어갑니다. 승인·반려(사유와 함께)·수정 요청
+               세 가지로 처리하고, 승인된 작품만 반 친구들에게 보입니다. 저학년은 자동 사전 필터가
+               한 번 더 거릅니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg></span>
+            <span><h4>배려가 기본인 피드백</h4>
+            <p>댓글은 <b>칭찬 스티커 + 안내형 문장틀</b>("이 부분이 좋았어 · 이건 어떻게 했어? ·
+               이렇게 해 보면 어때?")로 시작합니다. 자유 댓글은 교사 설정으로 열고,
+               승인제·신고 기능이 항상 붙어 있습니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"/></svg></span>
+            <span><h4>포트폴리오와 전시회</h4>
+            <p>작품·과정·받은 피드백이 학생별 포트폴리오로 쌓입니다. 학기말에는 반·학교 단위
+               <b>온라인 전시회</b>를 열고, 학부모 열람 링크(읽기 전용)로 공유합니다.
+               성장 배지가 참여 동기를 만듭니다.</p></span></div>
+        </div>
+        <div class="mockcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">3학년 2반 갤러리 · 우리 동네 프로젝트</span><span class="live">작품 21개</span></div>
+            <div class="body">
+              <div class="gal">
+                <div class="gitem"><div class="gthumb"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>
+                  <div class="gmeta"><b>맛집 지도 홈페이지</b><small><span>이수민</span><span class="gbadge ok">게시됨</span><span>♥ 12 · 💬 5</span></small></div></div>
+                <div class="gitem"><div class="gthumb"><svg class="i" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3"/><path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"/></svg></div>
+                  <div class="gmeta"><b>동네 전설 이야기책</b><small><span>박지호</span><span class="gbadge ok">게시됨</span><span>♥ 9 · 💬 3</span></small></div></div>
+                <div class="gitem"><div class="gthumb"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                  <div class="gmeta"><b>동네 상식 퀴즈 10문제</b><small><span>김하늘</span><span class="gbadge ok">게시됨</span><span>풀어보기 17회</span></small></div></div>
+                <div class="gitem"><div class="gthumb"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg></div>
+                  <div class="gmeta"><b>공원 안내 게임</b><small><span>정우진</span><span class="gbadge wait">승인 대기</span><span>-</span></small></div></div>
+              </div>
+              <div class="sysnote">댓글 문장틀: "이 부분이 좋았어" · "이건 어떻게 했어?" · "이렇게 해 보면 어때?"</div>
+            </div></div>
+          <p class="mcap"><b>학급 갤러리.</b> 잘된 작품이 다음 학생의 교재가 됩니다 -
+             프롬프트 과정도 함께 공개되어 "어떻게 만들었는지"를 배웁니다.</p>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M17 6.1H3"/><path d="M21 12.1H3"/><path d="M15.1 18H3"/></svg></span>
+        <span>AI 수업의 완성은 산출물이 아니라 <b>산출물을 두고 나누는 대화</b>입니다. 갤러리가 그 대화의 장소입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 11. 기능 5: 안전 -->
+  <section class="slide" data-title="기능 ⑤ 안전과 관제">
+    <header class="s-head">
+      <h2><span class="bullet"></span>기능 ⑤ 안전 - <em>보이게, 막히게, 알리게</em></h2>
+      <div class="s-right"><span class="sec">03 · Features</span></div>
+    </header>
+    <div class="s-band"><p>안전은 기능이 아니라 전제입니다. <strong>모든 대화가 보이고, 위험은 사전에 막히고,
+      이상 신호는 즉시 알려지는</strong> 3중 구조입니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">LAYER 1<span class="cat">사전 차단</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h3>울타리 먼저</h3>
+          <ul>
+            <li><b>연령별 콘텐츠 필터</b> - 학교급에 맞는 답변 수위, 유해 주제 차단</li>
+            <li><b>개인정보 마스킹</b> - 이름·연락처·주소를 입력 단계에서 감지·차단</li>
+            <li><b>수업방 밖 금지</b> - 주제 이탈 질문은 수업 주제로 되돌림</li>
+            <li><b>학습 데이터 미사용</b> - 학생 대화는 AI 학습에 쓰이지 않음(계약 명시)</li>
+          </ul></div>
+        <div class="card"><span class="accent"></span><div class="no">LAYER 2<span class="cat">실시간 관제</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <h3>선생님의 눈</h3>
+          <ul>
+            <li><b>라이브 보드</b> - 반 전체의 대화 흐름을 한 화면에서 (SchoolAI 검증 모델)</li>
+            <li><b>도움 신호</b> - 같은 질문 반복, 진도 정체 학생을 자동 표시</li>
+            <li><b>일시 정지</b> - 학생 개인·수업방 전체를 즉시 멈춤</li>
+            <li><b>위기 알림</b> - 자해·폭력 등 위기 신호는 교사·상담교사에게 즉시 통지</li>
+          </ul></div>
+        <div class="card"><span class="accent"></span><div class="no">LAYER 3<span class="cat">기록과 준수</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+          <h3>남는 기록</h3>
+          <ul>
+            <li><b>전 과정 기록</b> - 프롬프트부터 결과까지, 수행평가 "AI 활용 확인" 근거</li>
+            <li><b>법정대리인 동의</b> - 만 14세 미만 동의 절차 내장 (개인정보보호법)</li>
+            <li><b>국내 데이터 보관</b> - 개인정보 국내 처리, 열람·삭제 요청 지원</li>
+            <li><b>해외 기준 참조</b> - 미국 COPPA/FERPA 요건을 설계에 반영</li>
+          </ul></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+        <span>교육부 수행평가 지침이 요구하는 "AI 활용 관리"가 <b>서류가 아니라 시스템 기록</b>으로 남습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 12. 시나리오 -->
+  <section class="slide" data-title="하루 시나리오">
+    <header class="s-head">
+      <h2><span class="bullet"></span>수업 한 시간의 <em>실제 흐름</em></h2>
+      <div class="s-right"><span class="sec">03 · Features</span></div>
+    </header>
+    <div class="s-band"><p>3학년 사회 "우리 동네 소개하기" 프로젝트, 40분 수업 한 장면입니다.
+      <strong>선생님과 학생의 화면이 어떻게 맞물리는지</strong> 보십시오.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="tl">
+          <div class="tli"><span class="tm">수업 전</span><span class="tdot"></span><span class="tline"></span>
+            <span class="tbody"><b>선생님, 템플릿으로 수업방 개설</b>
+            <p>"동네 소개 웹 만들기" 템플릿 선택 → 우리 반 명단 연결 → 학생당 사용량 설정 →
+               입장 코드가 칠판에. <em>준비 5분.</em></p></span></div>
+          <div class="tli"><span class="tm">00-10분</span><span class="tdot"></span><span class="tline"></span>
+            <span class="tbody"><b>학생 입장, 아이디어 대화</b>
+            <p>태블릿에서 코드 입력으로 입장. AI와 "우리 동네 자랑거리" 브레인스토밍 -
+               AI는 답 대신 <em>"넌 어디를 소개하고 싶어?"</em>라고 되묻습니다.</p></span></div>
+          <div class="tli"><span class="tm">10-30분</span><span class="tdot"></span><span class="tline"></span>
+            <span class="tbody"><b>만들기, 선생님은 순회 관제</b>
+            <p>학생들이 말로 웹 작품을 만드는 동안 라이브 보드에는 반 전체 진행 상황이.
+               10분째 멈춰 있는 두 명이 표시되고, 선생님이 <em>그 자리로 먼저</em> 갑니다.</p></span></div>
+          <div class="tli"><span class="tm">30-40분</span><span class="tdot"></span><span class="tline"></span>
+            <span class="tbody"><b>제출과 감상</b>
+            <p>완성작 제출 → 선생님이 승인 → 갤러리에 하나둘 게시. 남은 시간에 친구 작품을
+               열어 보고 문장틀 댓글로 <em>칭찬 한 줄, 질문 한 줄.</em></p></span></div>
+          <div class="tli"><span class="tm">방과 후</span><span class="tdot"></span>
+            <span class="tbody"><b>기록으로 남는 수업</b>
+            <p>작품·대화 과정·피드백이 포트폴리오로 저장. 선생님은 과정 기록을 보며
+               다음 차시를 조정하고, 잘된 프롬프트를 다음 수업 예시로 저장합니다.</p></span></div>
+        </div>
+        <div class="mockcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">라이브 보드 · 진행 중</span><span class="live">28명 접속</span></div>
+            <div class="body">
+              <div class="gauge"><span>완성 제출</span><span class="gbar"><i style="width:39%"></i></span><b>11명</b></div>
+              <div class="gauge"><span>만드는 중</span><span class="gbar"><i style="width:54%"></i></span><b>15명</b></div>
+              <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                <span><b>박OO · 정OO</b><small>10분째 같은 화면 - 도움이 필요해 보여요</small></span>
+                <span class="st off">확인 필요</span></div>
+              <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+                <span><b>승인 대기 3건</b><small>맛집 지도 · 공원 게임 · 학교 자랑 신문</small></span>
+                <span class="st on">검토하기</span></div>
+              <div class="sysnote">위험 신호 없음 · 개인정보 차단 2건 (자동 처리됨)</div>
+            </div></div>
+          <p class="mcap"><b>선생님의 화면.</b> 훈육이 아니라 조력을 위한 관제입니다 -
+             누구를 먼저 도울지가 화면에 떠 있습니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 13. 로드맵 -->
+  <section class="slide" data-title="단계별 구축 로드맵">
+    <header class="s-head">
+      <h2><span class="bullet"></span>단계별 구축 - <em>작게 시작해 크게 확산</em></h2>
+      <div class="s-right"><span class="sec">04 · Plan</span></div>
+    </header>
+    <div class="s-band"><p>시범학교 한 학기로 검증하고 교육청 단위로 넓힙니다.
+      <strong>1단계 범위가 곧 본 제안의 계약 범위</strong>입니다.</p></div>
+    <div class="content">
+      <div class="phases fill">
+        <div class="phase hl">
+          <div class="phh">1단계 · 시범 구축<small>계약 후 4개월</small></div>
+          <ul>
+            <li><b>수업방</b> - 개설·템플릿·코드 입장·기간 통제</li>
+            <li><b>놀이터</b> - 안전 대화 + 글쓰기·퀴즈·웹 작품 만들기</li>
+            <li><b>갤러리</b> - 승인형 게시·문장틀 댓글·포트폴리오</li>
+            <li><b>키·쿼터</b> - BYOK 등록, 학급·학생 배분, 실시간 집계</li>
+            <li><b>안전</b> - 연령 필터·개인정보 마스킹·라이브 보드·알림</li>
+            <li>시범학교 2~3개교, 교사 연수 2회 포함</li>
+          </ul>
+          <div class="pfoot">목표: 한 학기 실사용으로 교실 적합성 검증</div>
+        </div>
+        <div class="phase">
+          <div class="phh">2단계 · 확산<small>+4개월</small></div>
+          <ul>
+            <li><b>학교 계정 연동</b> - SSO, 학급 명단 자동 연결</li>
+            <li><b>학부모 열람</b> - 읽기 전용 포트폴리오 링크·동의 관리</li>
+            <li><b>학교 간 전시회</b> - 교육청 단위 갤러리·공모전 운영</li>
+            <li><b>교사 커뮤니티</b> - 수업방 템플릿 공유 장터</li>
+            <li><b>평가 연계</b> - 과정 기록 리포트, 수행평가 확인 양식 출력</li>
+          </ul>
+          <div class="pfoot">목표: 교육청 단위 확산과 운영 체계 정착</div>
+        </div>
+        <div class="phase">
+          <div class="phh">3단계 · 고도화<small>운영하며 선별</small></div>
+          <ul>
+            <li><b>AI 리터러시 커리큘럼</b> - 학년별 활동 패키지</li>
+            <li><b>공공·자체 LLM</b> - 교육청 지정 모델 추가 연동</li>
+            <li><b>음성·멀티모달</b> - 저학년 음성 대화, 사진 기반 활동</li>
+            <li><b>지역 확장</b> - 타 교육청 재사용 가능한 멀티 테넌트</li>
+          </ul>
+          <div class="pfoot">목표: 사용 데이터로 우선순위를 정해 진화</div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <span>2026년 안에 시범 수업이 돌아가는 것 - 그것이 1단계의 약속입니다. <b>크고 늦은 완성보다 작고 빠른 검증.</b></span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 14. 왜 세일링스톤 -->
+  <section class="slide" data-title="왜 세일링스톤인가">
+    <header class="s-head">
+      <h2><span class="bullet"></span>왜 세일링스톤인가 - <em>이미 만들어 본 것들로 짓습니다</em></h2>
+      <div class="s-right"><span class="sec">04 · Plan</span></div>
+    </header>
+    <div class="s-band"><p>AI 놀이터의 핵심 엔진은 새로 발명하지 않습니다.
+      <strong>기업 현장에서 검증한 자체 기술</strong>을 교육에 맞게 옮깁니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">FROM aisight<span class="cat">AI 운영 기술</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg></div>
+          <h3>모델 라우팅 · 관제 · 기록</h3>
+          <p>질문 성격에 따라 알맞은 모델로 보내는 하이브리드 LLM 라우팅, 세션 단위 전 과정 기록,
+             사용량 모니터링 - <b>aisight Ops에서 이미 상용 운영 중</b>인 기술이
+             AI 게이트웨이·쿼터 엔진·감사 로그가 됩니다.</p>
+          <div class="fix">금융·제조 고객사가 검증한 통제 수준을 교실에.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">FROM Genploy<span class="cat">배포 기술</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></div>
+          <h3>작품 호스팅 · 주소 발급</h3>
+          <p>개인이 만든 웹 산출물을 논리적으로 격리된 공간에 올리고 주소를 자동 발급하는
+             <b>자체 배포 플랫폼 Genploy</b>가 그대로 학생 작품 배포 엔진이 됩니다.
+             "만들면 바로 내 주소"는 이미 우리가 매일 쓰는 기능입니다.</p>
+          <div class="fix">학생 작품 격리 호스팅 = Genploy의 교육판.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">DELIVERY<span class="cat">실행력</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <h3>구축까지 해 본 팀</h3>
+          <p>BI·AI 전문 인력 80명, 대기업 AI 플랫폼 구축 3건 진행 중. 기획 문서가 아니라
+             <b>운영 중인 시스템의 코드베이스</b>에서 출발하므로 4개월 시범 구축이
+             현실적인 약속이 됩니다.</p>
+          <div class="fix">데모가 아닌 운영 시스템에서 출발합니다.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+        <span>엔진 재사용률이 높다는 것은 <b>일정·비용·안정성의 리스크가 낮다</b>는 뜻입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 15. 기대 효과 -->
+  <section class="slide" data-title="기대 효과">
+    <header class="s-head">
+      <h2><span class="bullet"></span>도입하면 <em>무엇이 달라지는가</em></h2>
+      <div class="s-right"><span class="sec">04 · Plan</span></div>
+    </header>
+    <div class="s-band"><p>구호가 아니라 <strong>측정 가능한 변화</strong>로 약속합니다.
+      시범 운영 종료 시 아래 지표를 실측 보고합니다.</p></div>
+    <div class="content">
+      <div class="cards c4 fill">
+        <div class="card"><span class="accent"></span><div class="no">학생</div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></div>
+          <h3>경험의 평등</h3>
+          <p>집에 유료 AI가 있는 아이와 없는 아이의 격차가 사라집니다. 전원이 같은 조건에서
+             만들어 보고, 작품과 포트폴리오가 남습니다.</p>
+          <div class="fix">지표: 1인당 완성 작품 수 · 포트폴리오 보유율</div></div>
+        <div class="card"><span class="accent"></span><div class="no">교사</div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <h3>준비는 짧게, 지도는 깊게</h3>
+          <p>계정·통제 걱정이 사라지고 수업 설계에 집중합니다. 라이브 보드가
+             도움이 필요한 학생을 먼저 알려 줍니다.</p>
+          <div class="fix">지표: 수업방 개설 소요 시간 · 교사 재사용률</div></div>
+        <div class="card"><span class="accent"></span><div class="no">학교 · 교육청</div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
+          <h3>예산과 지침의 이행</h3>
+          <p>AI 예산이 학생 단위까지 투명하게 집계되고, 수행평가 AI 활용 지침 준수가
+             시스템 기록으로 증빙됩니다.</p>
+          <div class="fix">지표: 예산 집행 리포트 · 지침 위반 0건</div></div>
+        <div class="card"><span class="accent"></span><div class="no">학부모</div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h3>불안에서 신뢰로</h3>
+          <p>아이의 AI 사용이 학교 울타리 안으로 들어옵니다. 동의 절차와 열람 링크로
+             "무엇을 하는지"가 투명해집니다.</p>
+          <div class="fix">지표: 학부모 동의율 · 만족도 조사</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
+        <span>시범 한 학기의 실측 데이터가 <b>확산 단계의 예산 근거</b>가 됩니다. 그 데이터까지가 1단계 납품물입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 16. 맺음 -->
+  <section class="slide dark" data-title="맺음">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
+    <div class="top">
+      <span class="pillbadge">SAILINGSTONE - AI PLAYGROUND FOR EDUCATION</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>아이들은 이미 AI 시대에 삽니다.<br><em>놀이터를 지어 줄 차례입니다.</em></h1>
+    <p class="sub">시범학교 2~3개교, 한 학기면 충분합니다.<br>
+      데모 시연과 상세 견적, 시범 운영 계획을 준비해 찾아뵙겠습니다.</p>
+    <div class="entag">MAKE DATA SMARTER, MAKE DECISIONS FASTER.</div>
+    <div class="corner">
+      <span class="ai">AI · EDUCATION · PLAYGROUND</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE · www.sailingstone.io</span>
+    </div>
+  </section>
+
+</body>
+</html>
