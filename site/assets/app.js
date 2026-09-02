@@ -1,7 +1,7 @@
 // 메인 목록 페이지: 검색 · 카테고리 필터 · 정렬 · 순서 편집
 (async function () {
   const [data, me] = await Promise.all([
-    fetch("data/docs.json").then((r) => r.json()),
+    fetch("data/docs.json", { cache: "no-store" }).then((r) => r.json()),
     fetch("/.auth/me").then((r) => (r.ok ? r.json() : null)).catch(() => null),
   ]);
 

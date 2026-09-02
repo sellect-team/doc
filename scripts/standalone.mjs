@@ -96,7 +96,8 @@ export function buildStandalone(docs, SITE) {
     const store = new Map();
     html = html.replace(/<img([^>]*?)\ssrc="([^"]+)"([^>]*?)>/gi, (m, a, ref, b) => {
       if (/^(https?:|data:)/i.test(ref)) return m;
-      const file = path.join(baseDir, decodeURIComponent(ref));
+      // ?v=버전 같은 캐시 우회 쿼리는 파일 경로에서 뗀다
+      const file = path.join(baseDir, decodeURIComponent(ref.split(/[?#]/)[0]));
       const mime = MIME[path.extname(file).toLowerCase()];
       if (!mime || !fs.existsSync(file)) return m;
       if (!store.has(file)) {

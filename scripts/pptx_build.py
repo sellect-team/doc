@@ -102,7 +102,7 @@ EAGER_SLIDES = 2
 
 SECTION_TEMPLATE = (
     '  <section class="slide" data-title="{title}">\n'
-    '    <img src="{rel}/{file}" alt="{alt}" decoding="async"{loading}>\n'
+    '    <img src="{rel}/{file}?v={version}" alt="{alt}" decoding="async"{loading}>\n'
     "  </section>"
 )
 
@@ -145,7 +145,7 @@ def cmd_build(a):
         esc = htmlmod.escape(title, quote=True)
         sections.append(
             SECTION_TEMPLATE.format(
-                title=esc, rel=a.rel, file=out.name, alt=esc,
+                title=esc, rel=a.rel, file=out.name, alt=esc, version=a.version,
                 loading="" if i < EAGER_SLIDES else ' loading="lazy"',
             )
         )

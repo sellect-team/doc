@@ -1,7 +1,7 @@
 // 작업 리포트 목록 (메인 문서 목록과 분리된 탭)
 (async function () {
   const [data, me] = await Promise.all([
-    fetch("data/docs.json").then((r) => r.json()),
+    fetch("data/docs.json", { cache: "no-store" }).then((r) => r.json()),
     fetch("/.auth/me").then((r) => (r.ok ? r.json() : null)).catch(() => null),
   ]);
 

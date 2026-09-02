@@ -2,7 +2,7 @@
 (async function () {
   const params = new URLSearchParams(location.search);
   const docId = params.get("doc");
-  const data = await fetch("data/docs.json").then((r) => r.json());
+  const data = await fetch("data/docs.json", { cache: "no-store" }).then((r) => r.json());
   const doc = data.docs.find((d) => d.id === docId);
   if (!doc) {
     document.getElementById("docTitle").textContent = "문서를 찾을 수 없습니다";
@@ -69,7 +69,9 @@
 
   async function loadInto(fileRel, oldInfo) {
     viewingOld = oldInfo || null;
-    const html = await fetch(fileRel).then((r) => r.text());
+    // 문서 버전을 쿼리로 붙여 브라우저가 옛 캐시를 재사용하지 않게 한다
+    const bust = fileRel.includes("?") ? "" : `?v=${encodeURIComponent(doc.version)}`;
+    const html = await fetch(fileRel + bust).then((r) => r.text());
     // 상대 경로(assets 이미지 등)가 원본 위치 기준으로 동작하도록 <base> 주입
     const baseHref = new URL(doc.file.replace(/[^/]+$/, ""), location.href).href;
     const baseTag = `<base href="${baseHref}">`;

@@ -14,7 +14,7 @@ export function validateDoc(html, filename, docDir, tenant = {}) {
   // 0. 참조한 로컬 이미지가 실제로 있는지 (변환 문서의 깨진 이미지 방지)
   if (docDir) {
     for (const m of html.matchAll(/<img[^>]*\ssrc=["']([^"']+)["']/gi)) {
-      const src = m[1];
+      const src = m[1].split(/[?#]/)[0];   // ?v=버전 같은 캐시 우회 쿼리는 파일 경로가 아니다
       if (/^(https?:|data:)/i.test(src)) continue;
       if (!fs.existsSync(path.join(docDir, decodeURIComponent(src)))) {
         errors.push(`이미지 파일이 없음: ${src}`);
