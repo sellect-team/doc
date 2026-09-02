@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>SRL 도형 변환용 페이지</title>
+  <style>
+    @font-face { font-family: "SUIT"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "SUIT ExtraBold"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+    :root {
+      --f:  "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      --fx: "SUIT ExtraBold", "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      --s900: #0F172A; --s700: #334155; --s600: #475569; --s500: #64748B;
+      --s400: #94A3B8; --s300: #CBD5E1; --t400: #2DD4BF; --t700: #0F766E;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-synthesis: none; }
+    b, strong { font-family: var(--fx); font-weight: 400; }
+    h1 { font-weight: 400; }
+    html { font-size: min(1.25vw, 2.2222vh); }
+    body { font-family: var(--f); display: flex; flex-direction: column; align-items: center;
+           justify-content: center; min-height: 100vh; background: #fff; }
+    .slide { width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh);
+             overflow: hidden; position: relative; flex-shrink: 0;
+             display: flex; flex-direction: column;
+             background: var(--s900); color: #fff; justify-content: center; align-items: flex-start;
+             padding: 2.2rem 2.8rem; }
+    .glow { position: absolute; right: -12rem; top: 50%; transform: translateY(-50%);
+            width: 46rem; height: 46rem; border-radius: 50%;
+            background: radial-gradient(circle, rgba(45,212,191,0.11) 0%, rgba(45,212,191,0.035) 45%, transparent 72%); }
+    .logo { position: absolute; right: 5.5rem; top: 50%; transform: translateY(-50%);
+            width: 14rem; z-index: 0; }
+    .top { position: absolute; top: 1.9rem; left: 2.8rem; right: 2.8rem;
+           display: flex; justify-content: space-between; align-items: center; }
+    .top .pillbadge { border: 1px solid var(--t400); color: var(--t400);
+                      font-size: 0.82rem; letter-spacing: 0.2em; padding: 0.5rem 1.6rem;
+                      border-radius: 99rem; }
+    .top .iwd { color: var(--t400); font-size: 0.95rem; letter-spacing: 0.03em; font-family: var(--fx); }
+    h1 { font-size: 3.4rem; font-family: var(--fx); letter-spacing: -0.03em; line-height: 1.16; }
+    h1 em { color: var(--t400); font-style: normal; }
+    .sub { font-size: 1.2rem; color: var(--s400); margin-top: 1.3rem; line-height: 1.65; }
+    .entag { margin-top: 1.5rem; color: var(--t400); font-size: 0.92rem;
+             letter-spacing: 0.22em; font-family: var(--fx); }
+    .pills { display: flex; gap: 0.6rem; margin-top: 1.9rem; flex-wrap: wrap; }
+    .pill { border: 1px solid var(--s700); background: rgba(30,41,59,0.7); color: var(--s300);
+            font-size: 0.9rem; padding: 0.42rem 1rem; border-radius: 99rem; }
+    .pill b { color: var(--t400); margin-right: 0.35rem; }
+    .cols { display: flex; gap: 2.2rem; margin-top: 1.7rem; }
+    .col { border-left: 2px solid var(--t700); padding-left: 1rem; }
+    .col small { display: block; font-size: 0.78rem; letter-spacing: 0.14em; color: var(--s500);
+                 font-family: var(--fx); margin-bottom: 0.3rem; }
+    .col b { font-size: 1.05rem; color: #fff; font-family: var(--fx); }
+    .col b em { font-style: normal; color: var(--s400); font-family: var(--f); font-size: 0.92rem; }
+    .corner { position: absolute; left: 2.8rem; bottom: 1.5rem; right: 2.8rem;
+              display: flex; justify-content: flex-start; gap: 0.9rem; align-items: center;
+              font-size: 0.82rem; letter-spacing: 0.16em; }
+    .corner .ai { color: var(--t400); font-family: var(--fx); }
+    .corner .div { color: var(--s600); }
+    .corner .cp { color: var(--s500); }
+  </style>
+</head>
+<body>
+
+  <section class="slide" data-title="맺음 · PoC 신청">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="assets/aisight-marketing/logo.png" alt="aisight 로고">
+    <div class="top">
+      <span class="pillbadge">AISIGHT · BI SOLUTION 2026</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>말이나 문서가 아니라,<br><em>직접 증명하겠습니다.</em></h1>
+    <p class="sub">고객사 데이터로 먼저 확인해 보시고 결정하셔도 좋습니다.<br>
+      검증(PoC) 범위와 일정은 업무 상황에 맞춰 함께 설계해 드립니다.</p>
+    <div class="cols">
+      <div class="col"><small>HOMEPAGE</small><b>www.sailingstone.io</b></div>
+      <div class="col"><small>NEXT STEP</small><b>PoC 신청 <em>· 검증 범위 협의부터 시작합니다</em></b></div>
+      <div class="col"><small>OFFICE</small><b>서울특별시 강서구 마곡중앙5로 22, 9층</b></div>
+    </div>
+    <div class="entag">MAKE DATA SMARTER, MAKE DECISIONS FASTER.</div>
+    <div class="corner">
+      <span class="ai">AI · BI · ANALYTICS</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
+    </div>
+  </section>
+
+</body>
+</html>

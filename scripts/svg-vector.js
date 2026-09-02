@@ -303,6 +303,15 @@
     };
   }
 
+  // 그룹 opacity 근사: 색을 흰 배경과 op 비율로 섞는다
+  function fade(color, op) {
+    const m = String(color).match(/rgba?\(([^)]+)\)/);
+    if (!m) return color;
+    const [r, g, b] = m[1].split(",").map((v) => parseFloat(v));
+    const mix = (c) => Math.round(c * op + 255 * (1 - op));
+    return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+  }
+
   window.__svg2vec = function (svg) {
     const vb = (svg.getAttribute("viewBox") || "").trim().split(/[\s,]+/).map(Number);
     if (vb.length !== 4 || vb.some(isNaN)) return { ok: false, reason: "viewBox 없음" };
@@ -310,26 +319,42 @@
     if (vw <= 0 || vh <= 0) return { ok: false, reason: "viewBox 크기 0" };
     const scale = Math.max(vw, vh);
 
-    const kids = [...svg.children];
-    if (!kids.length) return { ok: false, reason: "내용 없음" };
+    // <g>는 transform이 없으면 단순 컨테이너이므로 펼쳐서 순회한다.
+    // g의 opacity는 자식에게 곱해지는 값이라 누적해 두었다가 색을 연하게 섞는다.
+    const queue = [...svg.children].map((el) => ({ el, op: 1 }));
+    if (!queue.length) return { ok: false, reason: "내용 없음" };
 
     const shapes = [];
-    for (const el of kids) {
+    while (queue.length) {
+      const { el, op } = queue.shift();
       const t = el.tagName.toLowerCase();
+      if (t === "g") {
+        if (el.getAttribute("transform")) return { ok: false, reason: "g에 transform" };
+        const gop = parseFloat(getComputedStyle(el).opacity);
+        const next = op * (isNaN(gop) ? 1 : gop);
+        // 문서 순서 유지: 큐 앞에 삽입
+        queue.unshift(...[...el.children].map((c) => ({ el: c, op: next })));
+        continue;
+      }
       if (t === "image" || t === "foreignObject" || t === "defs" ||
-          t === "clipPath" || t === "mask" || t === "g" || t === "use") {
+          t === "clipPath" || t === "mask" || t === "use") {
         return { ok: false, reason: t + " 요소는 도형으로 옮길 수 없음" };
       }
       // SVG 안의 글자는 도형이 아니라 PPT 텍스트 상자로 옮긴다 (편집 가능)
       if (t === "text") {
         const s = textOf(el, svg);
         if (s.skip) return { ok: false, reason: s.skip };
+        if (op < 0.99) s.color = fade(s.color, op);
         shapes.push(s);
         continue;
       }
       if (t === "tspan") return { ok: false, reason: "tspan은 옮길 수 없음" };
       const s = shapeOf(el, scale);
       if (s.skip) return { ok: false, reason: s.skip };
+      if (op < 0.99 && s.style) {
+        if (s.style.stroke) s.style.stroke = fade(s.style.stroke, op);
+        if (s.style.fill) s.style.fill = fade(s.style.fill, op);
+      }
       shapes.push(s);
     }
     return { ok: true, vb: [vx, vy, vw, vh], shapes };

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회사소개서 도형 변환용 페이지</title>
+  <style>
+    @font-face { font-family: "SUIT"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "SUIT ExtraBold"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+    :root {
+      --f:  "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      --fx: "SUIT ExtraBold", "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      --s900: #0F172A; --s800: #1E293B; --s700: #334155; --s600: #475569; --s500: #64748B;
+      --s400: #94A3B8; --s300: #CBD5E1; --s200: #E2E8F0; --s100: #F1F5F9; --s50: #F8FAFC;
+      --t800: #115E59; --t700: #0F766E; --t600: #0D9488; --t400: #2DD4BF; --t100: #CCFBF1; --t50: #F0FDFA;
+      --pp: #7C6FDB; --bb: #2563EB;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-synthesis: none; }
+    b, strong { font-family: var(--fx); font-weight: 400; }
+    h1, h2, h3, h4 { font-weight: 400; }
+    html { font-size: min(1.25vw, 2.2222vh); }
+    body { font-family: var(--f); background: #fff; color: var(--s900);
+           display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+    .slide { width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh);
+             overflow: hidden; position: relative; flex-shrink: 0; background: #fff;
+             padding: 1.6rem 2.6rem 0.9rem; display: flex; flex-direction: column; }
+    .s-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.8rem; }
+    .s-head h2 { font-size: 1.9rem; font-family: var(--fx); letter-spacing: -0.02em; color: var(--s900); }
+    .s-head h2 em { color: var(--t600); font-style: normal; }
+    .bullet { display: inline-block; width: 0.55rem; height: 0.55rem;
+              background: var(--t400); margin-right: 0.75rem; vertical-align: middle; }
+    .s-right { font-size: 0.98rem; color: var(--s400); letter-spacing: 0.04em; }
+    .s-band { margin: 0 -2.6rem; background: var(--s50);
+              border-top: 1px solid var(--s200); border-bottom: 1px solid var(--s200);
+              padding: 0.8rem 2.6rem; }
+    .s-band p { font-size: 1.1rem; line-height: 1.6; color: var(--s600); }
+    .s-band strong { color: var(--t600); font-family: var(--fx); }
+    .s-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+              font-size: 0.78rem; color: var(--s400); margin-top: 0.75rem; }
+    .s-foot .pg { grid-column: 2; }
+    .s-foot .mark { grid-column: 3; justify-self: end; letter-spacing: 0.14em; }
+    .content { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 1.2rem; padding-top: 1.1rem; }
+    .fill { flex: 1; min-height: 0; }
+    .i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6;
+         stroke-linecap: round; stroke-linejoin: round; display: inline-block; vertical-align: -0.12em; }
+    .stripe { background: var(--s900); color: #E2E8F0; border-radius: 0.7rem;
+              padding: 0.75rem 1.4rem; font-size: 1rem; display: flex; align-items: center; gap: 0.8rem; }
+    .stripe b { color: var(--t400); }
+    .stripe .sicon { color: var(--t400); display: flex; align-items: center; font-size: 1.15rem; }
+
+    /* ── 지식 그래프 ── */
+    .two { display: flex; gap: 2.6rem; align-items: stretch; }
+    .two > .gview { flex: 1.5; min-width: 0; }
+    .two > .gsteps { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .gview { border: 1px solid var(--s200); border-radius: 1rem; background: var(--s50);
+             padding: 1rem 1.2rem 0.8rem; display: flex; flex-direction: column; }
+    .gview .gt { font-size: 0.85rem; letter-spacing: 0.14em; color: var(--s500); font-family: var(--fx); }
+    .gview .gn { font-size: 0.78rem; color: var(--s400); margin-top: 0.2rem; }
+    .gview svg.graph { flex: 1; min-height: 0; width: 100%; margin-top: 0.4rem; }
+    .glegend { display: flex; gap: 1.6rem; padding-top: 0.55rem; font-size: 0.85rem; color: var(--s600); }
+    .glegend span { display: flex; align-items: center; gap: 0.4rem; }
+    .glegend i { width: 0.75rem; height: 0.75rem; border-radius: 50%; display: inline-block; }
+    .gsteps { gap: 1.1rem; }
+    .gstep { flex: 1; display: flex; gap: 1rem; align-items: flex-start;
+             background: var(--s50); border: 1px solid var(--s200); border-radius: 0.85rem;
+             padding: 0.9rem 1.1rem; }
+    .gstep .n { width: 2.1rem; height: 2.1rem; border-radius: 50%; color: #fff; flex-shrink: 0;
+                display: flex; align-items: center; justify-content: center;
+                font-family: var(--fx); font-size: 1.05rem; }
+    .gstep:nth-child(1) .n { background: var(--t600); }
+    .gstep:nth-child(2) .n { background: var(--pp); }
+    .gstep:nth-child(3) .n { background: var(--bb); }
+    .gstep h4 { font-size: 1.12rem; font-family: var(--fx); color: var(--s900); }
+    .gstep h4 small { font-size: 0.82rem; color: var(--s400); font-family: var(--fx); margin-left: 0.35rem; }
+    .gstep p { font-size: 0.95rem; line-height: 1.55; color: var(--s500); margin-top: 0.25rem; }
+
+    /* ── Document Parser ── */
+    .pipe { display: grid; grid-template-columns: 1fr 1.4rem 1fr 1.4rem 1fr 1.4rem 1fr; gap: 0.4rem; align-items: stretch; }
+    .pstep { border: 1px solid var(--s200); background: #fff; border-radius: 0.85rem;
+             padding: 0.8rem 0.95rem; box-shadow: 0 6px 16px rgba(15,23,42,0.05); }
+    .pstep.hl { border-color: var(--t400); }
+    .pstep b { display: flex; align-items: center; gap: 0.5rem; font-size: 1.02rem; color: var(--s900); }
+    .pstep b .i { color: var(--t600); flex-shrink: 0; }
+    .pstep p { font-size: 0.86rem; line-height: 1.5; color: var(--s500); margin-top: 0.4rem; }
+    .parr { display: flex; align-items: center; justify-content: center; color: var(--s300); font-size: 1rem; }
+    .core { flex: 1; min-height: 0; border: 1px dashed var(--t400); border-radius: 1rem;
+            padding: 1.5rem 1.3rem 1.1rem; position: relative; display: flex; gap: 2.6rem; }
+    .core .tag { position: absolute; top: -0.95rem; left: 1.2rem; background: var(--t600); color: #fff;
+                 font-family: var(--fx); font-size: 0.92rem; border-radius: 99rem; padding: 0.34rem 1.1rem; }
+    .core .cl { flex: 1.15; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; min-width: 0; }
+    .ccard { background: var(--s50); border: 1px solid var(--s200); border-left: 3px solid var(--t400);
+             border-radius: 0.7rem; padding: 0.75rem 0.95rem; }
+    .ccard b { font-size: 0.99rem; color: var(--s900); display: block; }
+    .ccard p { font-size: 0.85rem; line-height: 1.5; color: var(--s500); margin-top: 0.3rem; }
+    .core .cr { flex: 1; min-width: 0; border: 1px solid var(--t100); background: var(--t50);
+                border-radius: 0.85rem; padding: 1.1rem 1.3rem;
+                display: flex; flex-direction: column; justify-content: center; gap: 0.6rem; }
+    .core .cr .bh { display: flex; align-items: center; gap: 0.7rem; }
+    .core .cr .bh .i { font-size: 1.9rem; color: var(--t600); }
+    .core .cr .bh b { font-size: 1.28rem; color: var(--t800); line-height: 1.4; font-family: var(--fx); }
+    .core .cr p { font-size: 0.98rem; line-height: 1.65; color: var(--s600); }
+    .core .cr p b { color: var(--t700); }
+
+    /* ── Genploy ── */
+    .two > .gflow { flex: 1.45; min-width: 0; }
+    .two > .gfeat { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1.1rem; }
+    .gflow { border: 1px solid var(--s200); border-radius: 1rem; background: var(--s50);
+             padding: 1rem 1.2rem 0.9rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .gflow .gt2 { font-size: 0.85rem; letter-spacing: 0.14em; color: var(--s500); font-family: var(--fx); }
+    .gflow .rowlab { font-size: 0.78rem; font-family: var(--fx); color: var(--s400);
+                     letter-spacing: 0.1em; margin: 0.55rem 0 0.4rem; }
+    .apps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+    .app2 { background: #fff; border: 1px solid var(--s200); border-radius: 0.7rem;
+            padding: 0.55rem 0.8rem; display: flex; align-items: center; gap: 0.55rem; }
+    .app2 .i { color: var(--s500); flex-shrink: 0; }
+    .app2 b { font-size: 0.9rem; color: var(--s800); display: block; line-height: 1.3; }
+    .app2 small { font-size: 0.72rem; color: var(--s400); display: block; }
+    .varrs { display: flex; justify-content: space-around; padding: 0.28rem 0; color: var(--s400); font-size: 0.9rem; }
+    .engine { background: var(--s900); border-radius: 0.8rem; padding: 0.6rem 1rem;
+              display: flex; align-items: center; gap: 0.8rem; }
+    .engine .elogo { display: flex; align-items: center; gap: 0.5rem; font-family: var(--fx);
+                     color: #fff; font-size: 1.08rem; }
+    .engine .elogo .i { color: var(--t400); font-size: 1.25rem; }
+    .engine .etags { margin-left: auto; display: flex; gap: 0.45rem; flex-wrap: wrap; justify-content: flex-end; }
+    .engine .etag { font-size: 0.74rem; color: var(--t400); border: 1px solid var(--s700);
+                    background: var(--s800); border-radius: 99rem; padding: 0.2rem 0.65rem; }
+    .slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+    .slot { background: #fff; border: 1px solid var(--t100); border-top: 2px solid var(--t400);
+            border-radius: 0.7rem; padding: 0.55rem 0.75rem;
+            display: flex; flex-direction: column; gap: 0.34rem; }
+    .slot .url { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem;
+                 font-family: var(--fx); color: var(--t700);
+                 background: var(--t50); border: 1px solid var(--t100); border-radius: 99rem;
+                 padding: 0.18rem 0.6rem; }
+    .slot .url .i { flex-shrink: 0; }
+    .slot .st2 { display: flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; color: var(--s500); }
+    .slot .st2 .on { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--t400); }
+    .slot .res { display: flex; align-items: center; gap: 0.45rem; font-size: 0.68rem; color: var(--s400); }
+    .slot .bar2 { flex: 1; height: 0.32rem; border-radius: 99rem; background: var(--s100); overflow: hidden; }
+    .slot .bar2 i { display: block; height: 100%; border-radius: 99rem; background: #14B8A6; }
+    .gnote { margin-top: 0.6rem; font-size: 0.8rem; color: var(--s400); text-align: center; }
+    .gnote b { color: var(--s600); font-family: var(--fx); }
+    .gfeat .krow { flex: 1; display: flex; gap: 1rem; align-items: flex-start;
+                   background: var(--s50); border: 1px solid var(--s200); border-radius: 0.85rem;
+                   padding: 0.9rem 1.1rem; }
+    .krow .kico { width: 2.5rem; height: 2.5rem; border-radius: 0.7rem; background: var(--t50);
+                  border: 1px solid var(--t100); color: var(--t700); flex-shrink: 0;
+                  display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .krow h4 { font-size: 1.12rem; font-family: var(--fx); color: var(--s900); }
+    .krow p { font-size: 0.95rem; line-height: 1.55; color: var(--s500); margin-top: 0.25rem; }
+
+/* ── 고객 메타 스트립 ── */
+    .meta { display: grid; grid-template-columns: 1.25fr 0.8fr 1.1fr 1.35fr; gap: 0;
+            background: var(--s50); border: 1px solid var(--s200); border-radius: 0.8rem; }
+    .meta > div { padding: 0.6rem 1.1rem; border-left: 1px solid var(--s200); }
+    .meta > div:first-child { border-left: none; }
+    .meta small { display: block; font-size: 0.78rem; color: var(--s400); margin-bottom: 0.18rem; }
+    .meta b { font-size: 1.02rem; color: var(--s800); font-family: var(--fx); letter-spacing: -0.01em; }
+    .meta b em { color: var(--t700); font-style: normal; }
+
+    /* ── 진행 경과 플로우 ── */
+    .flow { display: flex; align-items: center; gap: 0.8rem;
+            background: var(--s50); border: 1px solid var(--s200); border-radius: 0.8rem;
+            padding: 0.55rem 1.1rem; }
+    .flow .fl { font-size: 0.9rem; color: var(--s500); font-family: var(--fx); flex-shrink: 0; margin-right: 0.3rem; }
+    .flow .fbox { flex: 1; text-align: center; border: 1px solid var(--t400); color: var(--t700);
+                  border-radius: 0.55rem; padding: 0.4rem 0.8rem; font-size: 0.95rem; font-family: var(--fx);
+                  background: #fff; }
+    .flow .fbox.now { background: var(--t50); }
+    .flow .farr { color: var(--s400); font-size: 0.95rem; }
+    .flow .ftail { font-size: 0.86rem; color: var(--s400); flex-shrink: 0; margin-left: 0.3rem; }
+
+    /* ── 사례 기능 카드 ── */
+    .cards { display: grid; gap: 1.3rem 2.6rem; grid-auto-rows: 1fr; }  /* 가로 간격 = 문서 좌우 여백 */
+    .c2 { grid-template-columns: repeat(2, 1fr); gap: 1.3rem 2.6rem; }
+    .c3 { grid-template-columns: repeat(3, 1fr); gap: 1.3rem 2.6rem; }
+    .c4 { grid-template-columns: repeat(4, 1fr); }
+    .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
+            padding: 1.05rem 1.15rem 1rem; display: flex; flex-direction: column;
+            box-shadow: 0 6px 18px rgba(15,23,42,0.05); position: relative; overflow: hidden; }
+    /* ── 둥근 카드의 색상 포인트 ──
+       border-top으로 주면 모서리에서 라운드가 끊긴다.
+       카드 안에 상단만 둥근 도형을 겹쳐 넣어야 라운드가 매끄럽고,
+       PPT로 옮길 때도 도형 2개로 그대로 재현된다. */
+    .accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
+              background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
+    .card .no { display: flex; justify-content: space-between; align-items: baseline;
+                font-size: 0.76rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.08em;
+                margin-bottom: 0.4rem; }
+    .card .no .cat { color: var(--s400); letter-spacing: 0.02em; }
+    .card h3 { font-size: 1.22rem; font-family: var(--fx); color: var(--s900);
+               letter-spacing: -0.01em; padding-bottom: 0.55rem; margin-bottom: 0.6rem;
+               border-bottom: 1px solid var(--s200); }
+    .seg { margin-bottom: 0.55rem; }
+    .seg:last-child { margin-bottom: 0; }
+    .seg em { display: block; font-style: normal; font-size: 0.78rem; font-family: var(--fx);
+              color: var(--t700); margin-bottom: 0.14rem; }
+    .seg p { font-size: 0.9rem; line-height: 1.5; color: var(--s600); }
+    .seg.fx { margin-top: auto; padding: 0.5rem 0.7rem; background: var(--t50);
+              border: 1px solid var(--t100); border-radius: 0.55rem; }
+    .seg.fx em { color: var(--t700); margin-bottom: 0.1rem; }
+    .seg.fx p { color: var(--t800); font-size: 0.88rem; }
+
+    
+    .cards { display: grid; gap: 1.3rem 2.6rem; grid-auto-rows: 1fr; }
+    .c4 { grid-template-columns: repeat(4, 1fr); }
+    .card { background: #fff; border: 1px solid var(--s200); border-radius: 0.9rem;
+            padding: 1.05rem 1.15rem 1rem; display: flex; flex-direction: column;
+            box-shadow: 0 6px 18px rgba(15,23,42,0.05); position: relative; overflow: hidden; }
+    .accent { display: none; }
+    .card .no { display: flex; justify-content: space-between; align-items: baseline;
+                font-size: 0.76rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.08em;
+                margin-bottom: 0.4rem; }
+    .card .no .cat { color: var(--s400); letter-spacing: 0.02em; }
+    .card h3 { font-size: 1.22rem; font-family: var(--fx); color: var(--s900);
+               letter-spacing: -0.01em; padding-bottom: 0.55rem; margin-bottom: 0.6rem;
+               border-bottom: 1px solid var(--s200); }
+    .seg { margin-bottom: 0.55rem; }
+    .seg:last-child { margin-bottom: 0; }
+    .seg em { display: block; font-style: normal; font-size: 0.78rem; font-family: var(--fx);
+              color: var(--t700); margin-bottom: 0.14rem; }
+    .seg p { font-size: 0.9rem; line-height: 1.5; color: var(--s600); }
+    .seg.fx { margin-top: auto; padding: 0.5rem 0.7rem; background: var(--t50);
+              border: 1px solid var(--t100); border-radius: 0.55rem; }
+    .seg.fx em { color: var(--t700); margin-bottom: 0.1rem; }
+    .seg.fx p { color: var(--t800); font-size: 0.88rem; }
+
+    /* ── 다크 맺음 ── */
+    .dark { background: var(--s900); color: #fff; justify-content: center; align-items: flex-start;
+            padding: 2.2rem 2.8rem; }
+    .dark .glow { position: absolute; right: -12rem; top: 50%; transform: translateY(-50%);
+                  width: 46rem; height: 46rem; border-radius: 50%;
+                  background: radial-gradient(circle, rgba(45,212,191,0.11) 0%, rgba(45,212,191,0.035) 45%, transparent 72%); }
+    .dark .logo { position: absolute; right: 5.5rem; top: 50%; transform: translateY(-50%);
+                  width: 14rem; z-index: 0; }
+    .dark .top { position: absolute; top: 1.9rem; left: 2.8rem; right: 2.8rem;
+                 display: flex; justify-content: space-between; align-items: center; }
+    .dark .top .pillbadge { border: 1px solid var(--t400); color: var(--t400);
+                            font-size: 0.82rem; letter-spacing: 0.2em; padding: 0.5rem 1.6rem;
+                            border-radius: 99rem; }
+    .dark .top .iwd { color: var(--t400); font-size: 0.95rem; letter-spacing: 0.03em; font-family: var(--fx); }
+    .dark h1 { font-size: 3.4rem; font-family: var(--fx); letter-spacing: -0.03em; line-height: 1.16; }
+    .dark h1 em { color: var(--t400); font-style: normal; }
+    .dark .sub { font-size: 1.2rem; color: var(--s400); margin-top: 1.3rem; line-height: 1.65; }
+    .dark .entag { margin-top: 1.5rem; color: var(--t400); font-size: 0.92rem;
+                   letter-spacing: 0.22em; font-family: var(--fx); }
+    .dark .cols { display: flex; gap: 2.2rem; margin-top: 1.7rem; }
+    .dark .col { border-left: 2px solid var(--t700); padding-left: 1rem; }
+    .dark .col small { display: block; font-size: 0.78rem; letter-spacing: 0.14em; color: var(--s500);
+                       font-family: var(--fx); margin-bottom: 0.3rem; }
+    .dark .col b { font-size: 1.05rem; color: #fff; font-family: var(--fx); }
+    .dark .col b em { font-style: normal; color: var(--s400); font-family: var(--f); font-size: 0.92rem; }
+    .dark .corner { position: absolute; left: 2.8rem; bottom: 1.5rem; right: 2.8rem;
+                    display: flex; justify-content: flex-start; gap: 0.9rem; align-items: center;
+                    font-size: 0.82rem; letter-spacing: 0.16em; }
+    .dark .corner .ai { color: var(--t400); font-family: var(--fx); }
+    .dark .corner .div { color: var(--s600); }
+    .dark .corner .cp { color: var(--s500); }
+  </style>
+</head>
+<body>
+
+  <!-- 17p 지식 그래프 -->
+  <section class="slide" data-title="지식 그래프 (Graph DB)">
+    <header class="s-head">
+      <h2><span class="bullet"></span>지식 그래프(Graph DB) 기반 <em>시맨틱 질의 검증</em></h2>
+      <span class="s-right">02 · Product &amp; Service</span>
+    </header>
+    <div class="s-band"><p>기준정보 · 지표 · 조건(라벨)과 표준 의미(노드), 연결 관계(엣지)를 정교하게 설계해 둡니다.
+      유효성 검증까지 AI에 맡기지 않고, <strong>검증된 지식 그래프로 먼저 확인</strong>한 뒤 AI는 잘하는 분석에 집중시킵니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="gview">
+          <div class="gt">KNOWLEDGE GRAPH VIEW</div>
+          <div class="gn">개념도 - 라벨 · 속성 · 관계의 상세 정의는 온톨로지 스키마로 일원화해 관리됩니다.</div>
+          <svg class="graph" viewBox="0 0 860 430" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#CBD5E1" stroke-width="1" opacity="0.55">
+              <line x1="120" y1="70" x2="60" y2="30"/><line x1="120" y1="70" x2="55" y2="90"/><line x1="120" y1="70" x2="100" y2="15"/>
+              <circle cx="120" cy="70" r="9" fill="#E2E8F0" stroke="none"/><circle cx="60" cy="30" r="5" fill="#E2E8F0" stroke="none"/>
+              <circle cx="55" cy="90" r="5" fill="#E2E8F0" stroke="none"/><circle cx="100" cy="15" r="5" fill="#E2E8F0" stroke="none"/>
+              <line x1="760" y1="60" x2="820" y2="25"/><line x1="760" y1="60" x2="815" y2="95"/><line x1="760" y1="60" x2="700" y2="25"/>
+              <circle cx="760" cy="60" r="9" fill="#E2E8F0" stroke="none"/><circle cx="820" cy="25" r="5" fill="#E2E8F0" stroke="none"/>
+              <circle cx="815" cy="95" r="5" fill="#E2E8F0" stroke="none"/><circle cx="700" cy="25" r="5" fill="#E2E8F0" stroke="none"/>
+              <line x1="790" y1="360" x2="835" y2="320"/><line x1="790" y1="360" x2="840" y2="395"/><line x1="790" y1="360" x2="730" y2="400"/>
+              <circle cx="790" cy="360" r="9" fill="#E2E8F0" stroke="none"/><circle cx="835" cy="320" r="5" fill="#E2E8F0" stroke="none"/>
+              <circle cx="840" cy="395" r="5" fill="#E2E8F0" stroke="none"/><circle cx="730" cy="400" r="5" fill="#E2E8F0" stroke="none"/>
+              <text x="95" y="115" font-size="13" fill="#94A3B8" stroke="none">차원군</text>
+              <text x="735" y="110" font-size="13" fill="#94A3B8" stroke="none">지표군</text>
+              <text x="765" y="335" font-size="13" fill="#94A3B8" stroke="none">제약군</text>
+            </g>
+            <g stroke-linecap="round">
+              <line x1="180" y1="215" x2="300" y2="130" stroke="#0D9488" stroke-width="2"/>
+              <line x1="180" y1="240" x2="300" y2="320" stroke="#7C6FDB" stroke-width="2"/>
+              <line x1="345" y1="118" x2="470" y2="80" stroke="#0D9488" stroke-width="1.6"/>
+              <line x1="345" y1="140" x2="470" y2="185" stroke="#0D9488" stroke-width="1.6"/>
+              <line x1="345" y1="330" x2="470" y2="300" stroke="#7C6FDB" stroke-width="1.6"/>
+              <line x1="510" y1="80" x2="640" y2="150" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="5 4"/>
+              <line x1="523" y1="303" x2="642" y2="332" stroke="#F59E0B" stroke-width="1.4" stroke-dasharray="5 4"/>
+            </g>
+            <rect x="372" y="86" width="76" height="22" rx="11" fill="#fff" stroke="#0D9488" stroke-width="1"/>
+            <text x="410" y="101" font-size="11" fill="#0F766E" text-anchor="middle" font-family="monospace">:HAS_DIM</text>
+            <rect x="360" y="292" width="96" height="22" rx="11" fill="#fff" stroke="#7C6FDB" stroke-width="1"/>
+            <text x="408" y="307" font-size="11" fill="#7C6FDB" text-anchor="middle" font-family="monospace">:HAS_METRIC</text>
+            <rect x="536" y="102" width="96" height="22" rx="11" fill="#fff" stroke="#2563EB" stroke-width="1"/>
+            <text x="584" y="117" font-size="11.5" fill="#2563EB" text-anchor="middle" font-family="monospace">:SATISFIES</text>
+            <rect x="527" y="303" width="108" height="22" rx="11" fill="#fff" stroke="#F59E0B" stroke-width="1"/>
+            <text x="581" y="318" font-size="10.5" fill="#B45309" text-anchor="middle" font-family="monospace">:ANALYZED_WITH</text>
+            <rect x="18" y="180" width="170" height="90" rx="12" fill="#0F172A"/>
+            <text x="103" y="212" font-size="12.5" fill="#94A3B8" text-anchor="middle">사용자 질문</text>
+            <text x="103" y="233" font-size="13.5" fill="#fff" text-anchor="middle">"2025년 브라질 냉장고</text>
+            <text x="103" y="252" font-size="13.5" fill="#fff" text-anchor="middle">매출, 경쟁사와 비교해줘"</text>
+            <g>
+              <circle cx="322" cy="128" r="34" fill="#0D9488"/>
+              <text x="322" y="124" font-size="13.5" fill="#fff" text-anchor="middle">Dimension</text>
+              <text x="322" y="141" font-size="11" fill="#CCFBF1" text-anchor="middle">차원</text>
+              <circle cx="322" cy="330" r="34" fill="#7C6FDB"/>
+              <text x="322" y="326" font-size="13.5" fill="#fff" text-anchor="middle">Metric</text>
+              <text x="322" y="343" font-size="11" fill="#EDE9FE" text-anchor="middle">지표</text>
+            </g>
+            <g>
+              <circle cx="492" cy="72" r="28" fill="#fff" stroke="#0D9488" stroke-width="2"/>
+              <text x="492" y="69" font-size="12.5" fill="#0F172A" text-anchor="middle">브라질</text>
+              <text x="492" y="84" font-size="10.5" fill="#64748B" text-anchor="middle">법인</text>
+              <circle cx="492" cy="192" r="28" fill="#fff" stroke="#0D9488" stroke-width="2"/>
+              <text x="492" y="189" font-size="12.5" fill="#0F172A" text-anchor="middle">냉장고</text>
+              <text x="492" y="204" font-size="10.5" fill="#64748B" text-anchor="middle">REF</text>
+              <circle cx="492" cy="300" r="31" fill="#fff" stroke="#7C6FDB" stroke-width="2"/>
+              <text x="492" y="297" font-size="12" fill="#0F172A" text-anchor="middle">GMV 매출</text>
+              <text x="492" y="312" font-size="10.5" fill="#64748B" text-anchor="middle">DetailMetric</text>
+              <circle cx="668" cy="158" r="28" fill="#2563EB"/>
+              <text x="668" y="155" font-size="12.5" fill="#fff" text-anchor="middle">2025</text>
+              <text x="668" y="170" font-size="10.5" fill="#DBEAFE" text-anchor="middle">기간</text>
+              <circle cx="672" cy="338" r="32" fill="#fff" stroke="#F59E0B" stroke-width="2"/>
+              <text x="672" y="335" font-size="11.5" fill="#0F172A" text-anchor="middle">경쟁사 매출</text>
+              <text x="672" y="350" font-size="10.5" fill="#64748B" text-anchor="middle">DetailMetric</text>
+              <g fill="#0D9488"><circle cx="514" cy="52" r="9"/><circle cx="514" cy="172" r="9"/></g>
+              <g fill="#7C6FDB"><circle cx="514" cy="280" r="9"/></g>
+              <g fill="#2563EB"><circle cx="690" cy="138" r="9"/></g>
+              <g stroke="#fff" stroke-width="1.6" fill="none">
+                <polyline points="510.5,52 513.5,55 518.5,49"/><polyline points="510.5,172 513.5,175 518.5,169"/>
+                <polyline points="510.5,280 513.5,283 518.5,277"/><polyline points="686.5,138 689.5,141 694.5,135"/>
+              </g>
+            </g>
+          </svg>
+          <div class="glegend">
+            <span><i style="background:#0D9488"></i>분석 기준 (법인 · 제품군)</span>
+            <span><i style="background:#7C6FDB"></i>측정 지표 (매출 · 손익)</span>
+            <span><i style="background:#2563EB"></i>확정된 값 · 조건</span>
+          </div>
+        </div>
+        <div class="gsteps">
+          <div class="gstep"><span class="n">1</span><span>
+            <h4>무엇을 묻는지 분류<small>라벨</small></h4>
+            <p>질문 속 단어가 분석 기준인지 · 측정 지표인지 · 조건인지 종류를 먼저 가립니다.</p></span></div>
+          <div class="gstep"><span class="n">2</span><span>
+            <h4>정확한 의미로 특정<small>노드</small></h4>
+            <p>"냉장고=REF"처럼 표준 용어로 바꿔, 부서 · 사람마다 다른 표현을 같은 대상으로 집어냅니다.</p></span></div>
+          <div class="gstep"><span class="n">3</span><span>
+            <h4>연결을 따라 검증<small>관계</small></h4>
+            <p>그 조합이 실제로 분석 가능한지 데이터 간 연결을 따라 확인하고, 모호하면 사용자에게 되물어 명확히 유도합니다.</p></span></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><line x1="6.8" y1="7.4" x2="10.5" y2="16.2"/><line x1="17.2" y1="7.4" x2="13.5" y2="16.2"/><line x1="7.2" y1="6" x2="16.8" y2="6"/></svg></span>
+        <span>대충 물어봐도 기준정보 · 지표를 표준으로 또렷하게 인식합니다. <b>검증은 지식 그래프가, 분석은 AI가</b> - 각자 잘하는 일에 집중합니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 17 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 18p Document Parser -->
+  <section class="slide" data-title="문서 파서 (Document Parser)">
+    <header class="s-head">
+      <h2><span class="bullet"></span>비정형 문서까지 데이터로, <em>Document Parser</em></h2>
+      <span class="s-right">02 · Product &amp; Service</span>
+    </header>
+    <div class="s-band"><p>기업 내 방치된 정형 · 비정형 문서(PDF, 엑셀 등)를 AI가 스스로 읽고 해석해 <strong>지식 DB로 자동 마이그레이션</strong>합니다.
+      단순 텍스트 추출을 넘어 다단 레이아웃, 복잡한 표(Table) 구조의 맥락까지 파싱합니다.</p></div>
+    <div class="content">
+      <div class="pipe">
+        <div class="pstep"><b><svg class="i" viewBox="0 0 24 24"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"/></svg>멀티 포맷 데이터 인입</b>
+          <p>텍스트 · 도형 · 표가 혼재된 비정형 문서와 정량 엑셀 데이터를 포맷 제약 없이 일괄 수집합니다.</p></div>
+        <div class="parr">›</div>
+        <div class="pstep hl"><b><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="21"/></svg>지능형 구조 분석 (Parsing)</b>
+          <p>다중 레이아웃 등 구조를 완벽히 식별해 원본 데이터의 문서 흐름과 맥락을 정확히 추출합니다.</p></div>
+        <div class="parr">›</div>
+        <div class="pstep"><b><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>마크다운(MD) 최적화 변환</b>
+          <p>LLM이 가장 잘 이해하는 마크다운 규격으로 자동 변환하고, 최적의 시맨틱 단위로 분할(Chunking)합니다.</p></div>
+        <div class="parr">›</div>
+        <div class="pstep"><b><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>지식 DB 자동 마이그레이션</b>
+          <p>가공 완료된 정성 · 정량 데이터를 사내 지식 위키와 Vector DB로 이관해 즉시 검색 가능한 자산으로 편입합니다.</p></div>
+      </div>
+      <div class="core">
+        <span class="tag">aisight Document Parser Core Engine</span>
+        <div class="cl">
+          <div class="ccard"><b>정성 · 정량 데이터 통합 마이그레이션</b>
+            <p>내부 · 외부 문서 업로드 즉시 파싱 파이프라인으로 이관해 지식 관계를 구조화합니다.</p></div>
+          <div class="ccard"><b>표 · 이미지 맥락 이해 (Vision)</b>
+            <p>표의 헤더-본문 관계, 이미지 내 객체의 의미까지 파악해 데이터 손실을 방지합니다.</p></div>
+          <div class="ccard"><b>메타데이터 자동 추출 · 태깅</b>
+            <p>문서 내 핵심 엔티티(부서명, 날짜, 제품명 등)를 자동 식별해 검색 효율을 높이는 태그를 부여합니다.</p></div>
+          <div class="ccard"><b>무인(Human-less) 파이프라인</b>
+            <p>업로드 즉시 파싱-청킹-임베딩-적재까지 사람 개입 없이 완전 자동화된 백엔드로 동작합니다.</p></div>
+        </div>
+        <div class="cr">
+          <div class="bh"><svg class="i" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.68.68 1.15 1.45 1.41 2.5"/></svg>
+            <b>'문서'를 '살아있는 AI 데이터 베이스'로 실시간 마이그레이션</b></div>
+          <p>단순 문서 저장을 넘어 사내 각종 문서를 통합 적재하고, <b>문서 위키화 - 지식 관계망 형성 - 태그 기반 연관 탐색</b>으로
+            이어지는 답변 제공 플로우를 구현합니다. 지식 그래프 · 지능형 위키와 같은 데이터를 바라보며 동작합니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 18 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 19p Genploy -->
+  <section class="slide" data-title="Apps (AI 산출물 배포)">
+    <header class="s-head">
+      <h2><span class="bullet"></span>AI 산출물 배포 플랫폼, <em>Apps</em></h2>
+      <span class="s-right">02 · Product &amp; Service</span>
+    </header>
+    <div class="s-band"><p>요즘은 현업 개인이 AI로 직접 포털 · 업무 프로그램을 만듭니다. Apps는 이 산출물들을
+      <strong>원클릭으로 각자의 공간에 배포하고 한곳에서 관리</strong>하는 세일링스톤 자체 배포 플랫폼입니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="gflow">
+          <div class="gt2">DEPLOY FLOW</div>
+          <div class="rowlab">개인이 AI로 만든 산출물</div>
+          <div class="apps">
+            <div class="app2"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+              <span><b>영업 현황 포털</b><small>영업팀 김 매니저</small></span></div>
+            <div class="app2"><svg class="i" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              <span><b>재고 조회 미니 앱</b><small>SCM팀 박 파트장</small></span></div>
+            <div class="app2"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+              <span><b>주간 보고 생성기</b><small>기획팀 이 책임</small></span></div>
+          </div>
+          <div class="varrs"><span>▾</span><span>▾</span><span>▾</span></div>
+          <div class="engine">
+            <span class="elogo"><svg class="i" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>Apps</span>
+            <span class="etags"><span class="etag">논리적 격리 공간</span><span class="etag">주소 자동 발급</span><span class="etag">리소스 할당 · 관리</span></span>
+          </div>
+          <div class="varrs"><span>▾</span><span>▾</span><span>▾</span></div>
+          <div class="rowlab">바로 접속 가능한 사내 서비스</div>
+          <div class="slots">
+            <div class="slot">
+              <span class="url"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>sales-hub.corp.app</span>
+              <span class="st2"><span class="on"></span>운영 중 · 영업팀 공개</span>
+              <span class="res">리소스<span class="bar2"><i style="width:36%"></i></span>36%</span>
+            </div>
+            <div class="slot">
+              <span class="url"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>stock-mate.corp.app</span>
+              <span class="st2"><span class="on"></span>운영 중 · SCM팀 공개</span>
+              <span class="res">리소스<span class="bar2"><i style="width:22%"></i></span>22%</span>
+            </div>
+            <div class="slot">
+              <span class="url"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>report-gen.corp.app</span>
+              <span class="st2"><span class="on"></span>운영 중 · 지정 인원</span>
+              <span class="res">리소스<span class="bar2"><i style="width:51%"></i></span>51%</span>
+            </div>
+          </div>
+          <div class="gnote">서버를 새로 만드는 것이 아니라, <b>논리적으로 격리된 전용 공간</b>에 올라가 주소와 리소스가 자동으로 관리됩니다.</div>
+        </div>
+        <div class="gfeat">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></span>
+            <span><h4>원클릭 개별 배포</h4>
+            <p>산출물을 올리면 논리적으로 격리된 전용 공간에 즉시 배포됩니다. 접속 주소가 자동 발급되어 IT 요청 없이 바로 서비스가 됩니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+            <span><h4>통합 관리 콘솔</h4>
+            <p>누가 어떤 앱을 올렸는지, 상태와 리소스 사용량은 어떤지 한 화면에서 관리합니다. 중지 · 재배포 · 회수도 콘솔에서 즉시 처리합니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <span><h4>접근 권한 · 공유 통제</h4>
+            <p>사내 계정과 연동해 앱별 공개 범위를 지정합니다. 팀 공개부터 지정 인원까지, 개인 산출물도 통제된 범위 안에서 공유됩니다.</p></span></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+        <span>개인 PC에 잠들어 있던 AI 산출물이 <b>조직의 서비스</b>가 됩니다. 만드는 사람은 늘어나도, 관리는 한곳에서 이루어집니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 19 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="사례 A · 통신 유통사">
+    <header class="s-head">
+      <h2><span class="bullet"></span>사례 A - 실적 조회부터 외부 연동까지, <em>네 가지 기능</em></h2>
+      <div class="s-right"><span class="sec">03 · Use Cases</span></div>
+    </header>
+    <div class="s-band"><p>하나의 프로젝트 안에서 <strong>사내 데이터 · 사내 문서 · 산출물 공유 · 외부 시스템 연동</strong>까지 순차 적용했습니다. 8월 구축 완료, 일부 조직이 파일럿으로 사용 중입니다.</p></div>
+    <div class="content">
+      <div class="meta">
+        <div><small>고객 · 조직</small><b>국내 통신 유통사</b></div>
+        <div><small>업종</small><b>유통 · 통신</b></div>
+        <div><small>단계</small><b><em>구축 완료</em> · 파일럿 사용 중</b></div>
+        <div><small>주요 데이터</small><b>실적 · 사내 문서 · 대시보드 · 도매 거래</b></div>
+      </div>
+      <div class="cards c4 fill">
+        <div class="card"><span class="accent"></span><div class="no">01<span class="cat">사내 데이터</span></div><h3>실적 셀프 조회</h3>
+          <div class="seg"><em>과제</em><p>실적이 시스템별로 흩어져 있고, 조회 요청이 본사 담당자에게 집중되어 대기가 발생</p></div>
+          <div class="seg"><em>적용</em><p>무선 · 유선 상품군별 실적을 대화형으로 조회하고, 팀장 이상 관리자용 현황 요약 뷰 제공</p></div>
+          <div class="seg fx"><em>효과</em><p>요청 대기열 감소 · 현황 파악 시점 단축 · 조회 이력 전건 기록</p></div></div>
+        <div class="card"><span class="accent"></span><div class="no">02<span class="cat">사내 문서</span></div><h3>사내 문서 챗봇</h3>
+          <div class="seg"><em>과제</em><p>사내 문서 2,000여 건이 쌓여 탐색에 시간이 들고, 열람 권한이 달라 통합 검색이 어려움</p></div>
+          <div class="seg"><em>적용</em><p>사내 문서 시스템을 API로 연동하고, 권한 범위 내 문서만 답변에 활용</p></div>
+          <div class="seg fx"><em>효과</em><p>문서 탐색 시간 단축 · 권한 밖 노출 없음 · 답변 근거를 원문으로 확인</p></div></div>
+        <div class="card"><span class="accent"></span><div class="no">03<span class="cat">산출물 공유</span></div><h3>대시보드 공유 · SDK</h3>
+          <div class="seg"><em>과제</em><p>개인이 만든 분석 결과물이 파일로 흩어지고, 공유 시 열람 범위를 통제할 수단이 없음</p></div>
+          <div class="seg"><em>적용</em><p>HTML 산출물을 플랫폼에 등록하고, 권한 관리 기반으로 링크 공유</p></div>
+          <div class="seg fx"><em>효과</em><p>분석 결과물이 조직 자산으로 축적 · 중복 제작 감소</p></div></div>
+        <div class="card"><span class="accent"></span><div class="no">04<span class="cat">외부 시스템</span></div><h3>도매 에이전트 연동</h3>
+          <div class="seg"><em>과제</em><p>도매 업무가 별도 시스템이라 분석 도구와 분리되고, 확인한 내용이 액션으로 이어지지 않음</p></div>
+          <div class="seg"><em>적용</em><p>aisight AI 기능을 API로 제공해 고객사 도매 에이전트 시스템에 탑재</p></div>
+          <div class="seg fx"><em>효과</em><p>업무 화면에서 바로 인사이트 확보 · 분석 이후 액션까지 연결</p></div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+        <span>8월 구축을 완료하고 일부 조직이 <b>파일럿으로 사용 중</b>입니다. 문서 접근은 사내 문서 시스템의 기존 권한 체계를 그대로 따릅니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 24 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+  <section class="slide" data-title="사례 B · 글로벌 D2C">
+    <header class="s-head">
+      <h2><span class="bullet"></span>사례 B - 글로벌 D2C 채널의 <em>BI Agent 구축</em></h2>
+      <div class="s-right"><span class="sec">03 · Use Cases</span></div>
+    </header>
+    <div class="s-band"><p>PoC로 가능성을 검증한 뒤 <strong>본 구축으로 이어진 건</strong>입니다. 9월 중 해외 판매 법인 전체를 대상으로 오픈할 예정입니다.</p></div>
+    <div class="content">
+      <div class="meta">
+        <div><small>고객 · 조직</small><b>글로벌 제조사 · D2C 해외영업 조직</b></div>
+        <div><small>업종</small><b>제조 · 이커머스</b></div>
+        <div><small>단계</small><b><em>9월 중</em> 해외 법인 전체 오픈 예정</b></div>
+        <div><small>데이터 영역</small><b>매출 GMV · 손익 · 트래픽 · 상품</b></div>
+      </div>
+      <div class="flow">
+        <span class="fl">진행 경과</span>
+        <span class="fbox">PoC 검증 · 4개월</span><span class="farr">›</span>
+        <span class="fbox now">D2C 사업 영역 구축</span><span class="farr">›</span>
+        <span class="ftail">운영 · 고도화</span>
+      </div>
+      <div class="cards c4 fill">
+        <div class="card"><span class="accent"></span><div class="no">01<span class="cat">분석 인사이트</span></div><h3>현황 분석</h3>
+          <div class="seg"><em>적용 기능</em><p>주요 지표의 현황 · 증감 · 원인을 질문 한 줄로 확인</p></div>
+          <div class="seg"><p>지역-법인, 사업부-제품군 등 단계별 드릴다운 분석</p></div>
+          <div class="seg"><p>연관 질의를 눌러 이어서 분석</p></div></div>
+        <div class="card"><span class="accent"></span><div class="no">02<span class="cat">데이터 조회</span></div><h3>데이터 탐색 · GenSQL</h3>
+          <div class="seg"><em>적용 기능</em><p>자연어 질의로 DB를 직접 조회해 표 형태로 즉시 제공</p></div>
+          <div class="seg"><p>필요한 기초 데이터를 그대로 내려받아 후속 작업에 활용</p></div>
+          <div class="seg"><p>지표 · 차원을 조합해 탐색</p></div></div>
+        <div class="card"><span class="accent"></span><div class="no">03<span class="cat">산출물 생성</span></div><h3>차트 · 문서 자동 생성</h3>
+          <div class="seg"><em>적용 기능</em><p>탐색 결과를 보고서에 쓸 수 있는 차트로 자동 변환 (GenChart)</p></div>
+          <div class="seg"><p>프롬프트만으로 분석 내용을 PPT 문서로 자동 생성</p></div>
+          <div class="seg"><p>생성한 문서를 메일로 발송해 필요한 사람에게 바로 공유</p></div></div>
+        <div class="card"><span class="accent"></span><div class="no">04<span class="cat">문서 RAG</span></div><h3>궁금해요 · 문서 기반 응답</h3>
+          <div class="seg"><em>적용 기능</em><p>온보딩 문서를 Document Parser로 지식화해 답변에 활용</p></div>
+          <div class="seg"><p>정해진 문답 매칭이 아니라 질문 의도를 해석해 응답</p></div>
+          <div class="seg"><p>한글 · 영문 질의에 각각 대응해 해외 법인 확산까지 고려</p></div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg></span>
+        <span>사용 현황과 오류 질의를 <b>AI Ops로 수집해 재학습</b>하는 운영 체계를 함께 구축했습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 25 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+  <section class="slide" data-title="사례 C · R&D 플랫폼">
+    <header class="s-head">
+      <h2><span class="bullet"></span>사례 C - 실적 대시보드와 <em>AI 의사결정 지원 플랫폼</em></h2>
+      <div class="s-right"><span class="sec">03 · Use Cases</span></div>
+    </header>
+    <div class="s-band"><p>경영 · 품질 · 개발 실적을 하나의 포털에서 보고, <strong>정량 지표와 문서 근거를 함께 확인</strong>하는 구조입니다. 12월 오픈 예정입니다.</p></div>
+    <div class="content">
+      <div class="meta">
+        <div><small>고객 · 조직</small><b>글로벌 제조사 · 냉난방 제품 개발 연구소</b></div>
+        <div><small>업종</small><b>제조 · R&amp;D</b></div>
+        <div><small>단계</small><b><em>구축 중</em> · 12월 오픈 예정</b></div>
+        <div><small>주요 데이터</small><b>경영 · 품질 · 개발 실적 · 경쟁사 정보</b></div>
+      </div>
+      <div class="flow">
+        <span class="fl">과업 단계</span>
+        <span class="fbox now">1차 경영실적 · 품질실적 · 콘텐츠 영역</span><span class="farr">›</span>
+        <span class="fbox">2차 개발실적 영역 확대</span>
+        <span class="ftail">1차에 이어 2차 과업으로 적용 영역 확대</span>
+      </div>
+      <div class="cards c4 fill">
+        <div class="card"><span class="accent"></span><div class="no">01<span class="cat">데이터 기반</span></div><h3>AI 전용 데이터 마트</h3>
+          <div class="seg"><p>경영 · 품질 · 개발 실적 영역별 특성을 반영한 전용 마트 설계</p></div>
+          <div class="seg"><p>웹 대시보드와 AI 분석이 같은 데이터를 바라보는 구조</p></div>
+          <div class="seg"><p>영역이 늘어나도 같은 방식으로 마트를 추가해 확장</p></div></div>
+        <div class="card"><span class="accent"></span><div class="no">02<span class="cat">정량 분석</span></div><h3>AI 인사이트 분석</h3>
+          <div class="seg"><p>현황 · 비교 · 증감 · 원인분석 · 트렌드 · 순위 · 누적 7개 질의유형</p></div>
+          <div class="seg"><p>자연어 질의로 데이터를 탐색하고 세부 내역 조회 · 다운로드</p></div>
+          <div class="seg"><p>웹 대시보드와 인사이트를 연계해 화면에서 바로 분석</p></div></div>
+        <div class="card"><span class="accent"></span><div class="no">03<span class="cat">정성 데이터</span></div><h3>사내 문서 AI 분석</h3>
+          <div class="seg"><p>문서 내 텍스트 · 표 · 이미지를 함께 처리하는 멀티모달 방식</p></div>
+          <div class="seg"><p>답변에 근거 문서와 출처를 함께 제시</p></div>
+          <div class="seg"><p>대시보드와 연계해 정량 지표와 정성 근거를 한 흐름에서 확인</p></div></div>
+        <div class="card"><span class="accent"></span><div class="no">04<span class="cat">운영 · 통제</span></div><h3>AI Ops · 문서 자동화</h3>
+          <div class="seg"><p>사용량 · 로그 · 통계 모니터링</p></div>
+          <div class="seg"><p>질문에서 답변까지 도출 과정을 단계별로 추적</p></div>
+          <div class="seg"><p>인사이트 기반 문서 자동 생성과 정기 구독 발송</p></div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+        <span>포털 사용자 · 메뉴 권한 관리를 포함해 <b>고객사 환경에 맞춰</b> 구성했습니다. 12월 오픈 예정입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 26 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 33p 맺음 -->
+  <section class="slide dark" data-title="맺음 · 문의">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="aisight 로고">
+    <div class="top">
+      <span class="pillbadge">SAILINGSTONE · CORPORATE INTRODUCTION</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>비즈니스 바다로의 항해,<br><em>함께 하겠습니다.</em></h1>
+    <p class="sub">데이터 기반 구축부터 AI 에이전트 운영까지, 전 과정을 직접 수행하는 팀이 함께합니다.<br>
+      필요하신 자료나 사전 검토가 있으시면 편하게 요청해 주세요.</p>
+    <div class="cols">
+      <div class="col"><small>HOMEPAGE</small><b>www.sailingstone.io</b></div>
+      <div class="col"><small>OFFICE</small><b>서울특별시 강서구 마곡중앙5로 22, 9층</b></div>
+      <div class="col"><small>SOLUTION</small><b>aisight · Apps <em>· Insight Mate · Tableau</em></b></div>
+    </div>
+    <div class="entag">MAKE DATA SMARTER, MAKE DECISIONS FASTER.</div>
+    <div class="corner">
+      <span class="ai">AI · BI · ANALYTICS</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
+    </div>
+  </section>
+
+</body>
+</html>
