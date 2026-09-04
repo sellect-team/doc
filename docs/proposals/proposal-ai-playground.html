@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AI 놀이터 구축 제안서</title>
-  <meta name="doc-version" content="1.2">
+  <meta name="doc-version" content="1.3">
   <meta name="doc-description" content="교육청·학교용 학생 AI 놀이터 플랫폼 기획·제안 - 교사가 상용 AI를 등록·배분하고, 학생이 만들고, 함께 검토하는 안전한 AI 학습 공간">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -102,6 +102,14 @@
     .card .fix { margin-top: auto; padding: 0.55rem 0.8rem; background: var(--t50);
                  border: 1px solid var(--t100); border-radius: 0.6rem;
                  font-size: 0.92rem; color: var(--t700); font-family: var(--fx); line-height: 1.5; }
+    .card .seg { margin-top: 0.6rem; }
+    .card .seg.fx { margin-top: auto; padding: 0.55rem 0.8rem; background: var(--t50);
+                    border: 1px solid var(--t100); border-radius: 0.6rem; }
+    .card .seg.fx em { display: block; font-style: normal; font-family: var(--fx);
+                       font-size: 0.76rem; color: var(--t600); letter-spacing: 0.06em;
+                       margin-bottom: 0.15rem; }
+    .card .seg.fx p { font-size: 0.92rem; color: var(--t700); line-height: 1.5; }
+    .card .seg.fx + .fix { margin-top: 0.6rem; }
 
     /* ── 2단 ── */
     .two { display: flex; gap: 2.6rem; align-items: stretch; }
@@ -490,7 +498,7 @@
       <span class="pill"><b>04</b>실시간 관제 · 안전망</span>
     </div>
     <div class="notice"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      본 문서는 교육청 제출용 제안서(v1.0)로, 화면과 수치는 설계 예시이며 세부 조건은 협의로 확정합니다.</div>
+      본 문서는 교육청 제출용 제안서로, 화면과 수치는 설계 예시이며 세부 조건은 협의로 확정합니다.</div>
     <div class="corner">
       <span class="ai">AI · EDUCATION · PLAYGROUND</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
     </div>
@@ -811,7 +819,7 @@
                해당 수업방만 한도를 올릴 수 있습니다.</p></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
             <span><h4>실시간 집계 <small>METERING</small></h4>
-            <p>누가 얼마나 썼는지 학생·학급·학교 단위로 실시간 집계됩니다. 해외 대학들이 겪는
+            <p>누가 얼마나 썼는지 학생·학급·학교 단위로 실시간 집계됩니다. 해외 학교들이 겪는
                "토큰 비용 예측 불가" 문제를, 배분과 한도로 처음부터 예산 안에 가둡니다.</p></span></div>
         </div>
         <div class="mockcol">
@@ -1106,13 +1114,13 @@
       지금 하는 수업에 AI 활동을 얹는 방식입니다.</p></div>
     <div class="content">
       <div class="cards c3">
-        <div class="card"><div class="no">초등 고학년 <span class="cat">시범 권장</span></div><h3>만들며 익히는 첫 AI</h3>
+        <div class="card"><span class="accent"></span><div class="no">초등 고학년 <span class="cat">시범 권장</span></div><h3>만들며 익히는 첫 AI</h3>
           <div class="seg"><p>국어(이야기 쓰기) · 사회(우리 고장 조사) · 창체 활동에 <b>놀이터 만들기</b>를 결합합니다.</p></div>
           <div class="seg fx"><em>활동 예</em><p>우리 동네 소개 웹 · 독서 뒷이야기 쓰기 · 안전 골든벨 퀴즈</p></div></div>
-        <div class="card"><div class="no">중학교 <span class="cat">확산 단계</span></div><h3>질문을 다듬는 훈련</h3>
+        <div class="card"><span class="accent"></span><div class="no">중학교 <span class="cat">확산 단계</span></div><h3>질문을 다듬는 훈련</h3>
           <div class="seg"><p>정보 교과 · 자유학기 주제선택과 연계해 <b>프롬프트 작성과 답 검증</b>을 배웁니다.</p></div>
           <div class="seg fx"><em>활동 예</em><p>자료 조사 비교 검증 · 토론 반대 논거 만들기 · 진로 인터뷰 시뮬레이션</p></div></div>
-        <div class="card"><div class="no">고등학교 <span class="cat">확산 단계</span></div><h3>프로젝트와 포트폴리오</h3>
+        <div class="card"><span class="accent"></span><div class="no">고등학교 <span class="cat">확산 단계</span></div><h3>프로젝트와 포트폴리오</h3>
           <div class="seg"><p>정보 · 탐구 과목의 <b>프로젝트 수행 도구</b>로 쓰고, 과정 기록을 세특 참고 자료로 남깁니다.</p></div>
           <div class="seg fx"><em>활동 예</em><p>탐구 보고서 자료 정리 · 데이터 기반 발표 자료 · 창업 아이디어 검증</p></div></div>
       </div>
@@ -1278,16 +1286,16 @@
             <div class="body">
               <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
                 <span><b>NKS (쿠버네티스)</b><small>플랫폼 서비스 + 학생 작품 격리 호스팅 · 오토스케일</small></span>
-                <span class="st on">1단계</span></div>
+                <span class="st on">기본 구축</span></div>
               <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>
                 <span><b>Object Storage + RDS</b><small>작품 · 포트폴리오 · 대화 기록 (암호화 저장)</small></span>
-                <span class="st on">1단계</span></div>
+                <span class="st on">기본 구축</span></div>
               <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
                 <span><b>Security (WAF · Anti-DDoS)</b><small>학생 서비스 앞단 보호 · 접근 통제</small></span>
-                <span class="st on">1단계</span></div>
+                <span class="st on">기본 구축</span></div>
               <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg></span>
                 <span><b>Notification (문자 · 푸시)</b><small>법정대리인 동의 · 위기 알림 발송</small></span>
-                <span class="st off">2단계</span></div>
+                <span class="st off">확산 시</span></div>
               <div class="sysnote">외부 AI API 호출은 게이트웨이를 통해서만 나가고, 개인정보는 마스킹 후 전송됩니다</div>
             </div></div>
           <p class="mcap"><b>서비스 매핑.</b> 이미 컨테이너로 운영 중인 플랫폼과 배포 엔진을
@@ -1309,15 +1317,15 @@
       <strong>기획부터 연수·운영 지원까지 세일링스톤이 일괄 수행</strong>하고, 학교는 수업에서 써 보기만 하면 됩니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><div class="no">STEP 1 <span class="cat">약 1개월</span></div><h3>준비</h3>
+        <div class="card"><span class="accent"></span><div class="no">STEP 1 <span class="cat">약 1개월</span></div><h3>준비</h3>
           <div class="seg"><p>시범학교 2~3곳과 참여 학급을 정하고, 학부모 동의를 받습니다(동의 관리 기능 제공).</p></div>
           <div class="seg"><p>선생님들과 첫 연수에서 <b>수업방 만들기를 직접 실습</b>합니다 - 5분이면 열립니다.</p></div>
           <div class="seg fx"><em>학교가 할 일</em><p>참여 학급 정하기, 연수 참석 (반나절)</p></div></div>
-        <div class="card"><div class="no">STEP 2 <span class="cat">구축 4개월 + 한 학기</span></div><h3>수업에서 쓰기</h3>
+        <div class="card"><span class="accent"></span><div class="no">STEP 2 <span class="cat">구축 4개월 + 한 학기</span></div><h3>수업에서 쓰기</h3>
           <div class="seg"><p>학급마다 <b>월 2회 이상 AI 활동 수업</b>을 함께 운영합니다. 글쓰기 · 퀴즈 · 웹 만들기 중 수업에 맞는 것부터.</p></div>
           <div class="seg"><p>불편한 점은 격주로 고쳐 배포하고, 중간에 심화 연수와 <b>수업 템플릿 공유회</b>를 엽니다.</p></div>
           <div class="seg fx"><em>학교가 할 일</em><p>평소 수업에 활동 얹기 - 준비물 없음</p></div></div>
-        <div class="card"><div class="no">STEP 3 <span class="cat">학기 말</span></div><h3>결과 보고</h3>
+        <div class="card"><span class="accent"></span><div class="no">STEP 3 <span class="cat">학기 말</span></div><h3>결과 보고</h3>
           <div class="seg"><p>몇 명이 무엇을 만들었고, 예산이 어디에 쓰였고, 안전 이슈는 없었는지 - <b>실제 기록으로 리포트</b>를 드립니다.</p></div>
           <div class="seg"><p>이 리포트가 다른 학교로 넓힐지 판단하는 <b>확산 근거 자료</b>가 됩니다.</p></div>
           <div class="seg fx"><em>학교가 할 일</em><p>결과 보고회 참석, 확산 여부 판단</p></div></div>
@@ -1343,20 +1351,23 @@
           <p>질문 성격에 따라 알맞은 모델로 보내는 하이브리드 LLM 라우팅, 세션 단위 전 과정 기록,
              사용량 모니터링 - <b>aisight Ops에서 이미 상용 운영 중</b>인 기술이
              AI 연결·사용량 배분·기록 관리 기능이 됩니다.</p>
+          <div class="seg fx"><em>이 플랫폼에서는</em><p>AI 등록·사용량 배분 (기능 ②) · 안전 관제·전 과정 기록 (기능 ⑥)</p></div>
           <div class="fix">금융·제조 고객사가 검증한 통제 수준을 교실에.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">FROM Genploy<span class="cat">배포 기술</span></div>
+        <div class="card"><span class="accent"></span><div class="no">FROM Apps<span class="cat">배포 기술</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></div>
           <h3>작품 호스팅 · 주소 발급</h3>
           <p>개인이 만든 웹 산출물을 논리적으로 격리된 공간에 올리고 주소를 자동 발급하는
-             <b>자체 배포 플랫폼 Genploy</b>가 그대로 학생 작품 배포 엔진이 됩니다.
+             <b>자체 배포 플랫폼 Apps</b>가 그대로 학생 작품 배포 엔진이 됩니다.
              "만들면 바로 내 주소"는 이미 우리가 매일 쓰는 기능입니다.</p>
-          <div class="fix">학생 작품 격리 호스팅 = Genploy의 교육판.</div></div>
+          <div class="seg fx"><em>이 플랫폼에서는</em><p>웹 작품 주소 자동 발급 (기능 ④) · 갤러리·전시회 호스팅 (기능 ⑤)</p></div>
+          <div class="fix">학생 작품 격리 호스팅 = Apps의 교육판.</div></div>
         <div class="card"><span class="accent"></span><div class="no">DELIVERY<span class="cat">실행력</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
           <h3>구축까지 해 본 팀</h3>
-          <p>BI·AI 전문 인력 80명, 대기업 AI 플랫폼 구축 3건 진행 중. 기획 문서가 아니라
+          <p>BI·AI 전문 인력 82명, 대기업 AI 플랫폼 구축 3건 진행 중. 기획 문서가 아니라
              <b>운영 중인 시스템의 코드베이스</b>에서 출발하므로 4개월 시범 구축이
              현실적인 약속이 됩니다.</p>
+          <div class="seg fx"><em>진행 방식</em><p>전담 PM · 격주 개선 배포 · 교사 연수 직접 수행 · 학기 말 리포트</p></div>
           <div class="fix">데모가 아닌 운영 시스템에서 출발합니다.</div></div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
@@ -1378,28 +1389,32 @@
           <h3>경험의 평등</h3>
           <p>집에 유료 AI가 있는 아이와 없는 아이의 격차가 사라집니다. 전원이 같은 조건에서
              만들어 보고, 작품과 포트폴리오가 남습니다.</p>
+          <div class="seg fx"><em>달라지는 장면</em><p>방과 후 각자가 아니라, 수업 시간에 반 전체가 함께 만듭니다.</p></div>
           <div class="fix">지표: 1인당 완성 작품 수 · 포트폴리오 보유율</div></div>
         <div class="card"><span class="accent"></span><div class="no">교사</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
           <h3>준비는 짧게, 지도는 깊게</h3>
           <p>계정·통제 걱정이 사라지고 수업 설계에 집중합니다. 라이브 보드가
              도움이 필요한 학생을 먼저 알려 줍니다.</p>
+          <div class="seg fx"><em>달라지는 장면</em><p>"누가 뭘 하는지 모른다"는 불안이 한 화면으로 정리됩니다.</p></div>
           <div class="fix">지표: 수업방 개설 소요 시간 · 교사 재사용률</div></div>
         <div class="card"><span class="accent"></span><div class="no">학교 · 교육청</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
           <h3>예산과 지침의 이행</h3>
           <p>AI 예산이 학생 단위까지 투명하게 집계되고, 수행평가 AI 활용 지침 준수가
              시스템 기록으로 증빙됩니다.</p>
+          <div class="seg fx"><em>달라지는 장면</em><p>"AI 예산을 어디에 썼나"에 리포트 한 장으로 답합니다.</p></div>
           <div class="fix">지표: 예산 집행 리포트 · 지침 위반 0건</div></div>
         <div class="card"><span class="accent"></span><div class="no">학부모</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <h3>불안에서 신뢰로</h3>
           <p>아이의 AI 사용이 학교 울타리 안으로 들어옵니다. 동의 절차와 열람 링크로
              "무엇을 하는지"가 투명해집니다.</p>
+          <div class="seg fx"><em>달라지는 장면</em><p>가정통신문 대신, 아이 작품을 여는 열람 링크가 갑니다.</p></div>
           <div class="fix">지표: 학부모 동의율 · 만족도 조사</div></div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
-        <span>시범 한 학기의 실측 데이터가 <b>확산 단계의 예산 근거</b>가 됩니다. 그 데이터까지가 1단계 납품물입니다.</span></div>
+        <span>시범 한 학기의 실측 데이터가 <b>확산 단계의 예산 근거</b>가 됩니다. 그 데이터까지가 본 사업의 납품물입니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 20 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
