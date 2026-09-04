@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AI 놀이터 구축 제안서</title>
-  <meta name="doc-version" content="1.3">
+  <meta name="doc-version" content="1.4">
   <meta name="doc-description" content="교육청·학교용 학생 AI 놀이터 플랫폼 기획·제안 - 교사가 상용 AI를 등록·배분하고, 학생이 만들고, 함께 검토하는 안전한 AI 학습 공간">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -244,12 +244,27 @@
                 padding: 0.16rem 0.55rem; white-space: nowrap; }
     .room .st.on { background: var(--t50); color: var(--t700); border: 1px solid var(--t400); }
     .room .st.off { background: var(--s100); color: var(--s500); border: 1px solid var(--s300); }
+    .room .st.warn { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
     .gauge { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--s400); }
     .gauge .gbar { flex: 1; height: 0.4rem; border-radius: 99rem; background: var(--s100);
                    overflow: hidden; position: relative; }
     .gauge .gbar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99rem;
                      background: var(--t400); }
     .gauge b { font-family: var(--fx); color: var(--s700); font-size: 0.78rem; }
+
+    /* 카드 안 미니 화면 조각 (기능 ⑥ 안전) */
+    .card .ui { margin-top: auto; background: #fff; border: 1px solid var(--s200);
+                border-radius: 0.6rem; padding: 0.5rem 0.65rem; display: flex;
+                flex-direction: column; gap: 0.3rem; }
+    .card .ui .uttl { font-size: 0.7rem; font-family: var(--fx); color: var(--s400);
+                      letter-spacing: 0.05em; }
+    .card .ui .urow { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem;
+                      color: var(--s500); line-height: 1.4; }
+    .card .ui .urow.ok { color: var(--t700); }
+    .card .ui .uchip { margin-left: auto; flex-shrink: 0; font-size: 0.64rem; font-family: var(--fx);
+                       border-radius: 99rem; padding: 0.1rem 0.45rem; white-space: nowrap;
+                       background: var(--t50); color: var(--t700); border: 1px solid var(--t100); }
+    .card .ui .uchip.warn { background: #FFF7ED; color: #C2410C; border-color: #FED7AA; }
 
     /* 갤러리 목업 */
     .gal { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; }
@@ -276,13 +291,13 @@
 
     /* ── 실제 화면 목업: 앱 프레임 (사이드바 + 상단바 + 콘텐츠) ── */
     .app { flex: 1; min-height: 0; display: flex; background: #F6F8FB; font-size: 0.8rem; }
-    .mnav { width: 5.4rem; background: var(--s900); display: flex; flex-direction: column;
-            padding: 0.45rem 0.4rem; gap: 0.12rem; flex-shrink: 0; overflow: hidden; }
+    .mnav { width: 6.9rem; background: var(--s900); display: flex; flex-direction: column;
+            padding: 0.45rem 0.45rem; gap: 0.12rem; flex-shrink: 0; overflow: hidden; }
     .mnav .mlogo { display: flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.4rem 0.45rem;
-                   color: #fff; font-family: var(--fx); font-size: 0.78rem; }
+                   color: #fff; font-family: var(--fx); font-size: 0.78rem; white-space: nowrap; }
     .mnav .mlogo .i { color: var(--t400); }
     .mnav .ni { display: flex; align-items: center; gap: 0.4rem; color: var(--s400);
-                padding: 0.28rem 0.45rem; border-radius: 0.4rem; font-size: 0.68rem; }
+                padding: 0.28rem 0.45rem; border-radius: 0.4rem; font-size: 0.68rem; white-space: nowrap; }
     .mnav .ni .i { flex-shrink: 0; font-size: 0.8rem; }
     .mnav .ni.on { background: var(--t700); color: #fff; font-family: var(--fx); }
     .mnav .nsec { font-size: 0.58rem; color: var(--s600); letter-spacing: 0.12em;
@@ -392,6 +407,11 @@
     .mprev .pc { background: #EFF9FF; border: 1px solid #BAE6FD; border-radius: 0.35rem;
                  padding: 0.25rem 0.3rem; font-size: 0.56rem; color: var(--s600); text-align: center; }
     .mprev .pc b { display: block; font-size: 0.6rem; color: var(--s800); }
+    .mprev .pfoot { margin-top: 0.45rem; display: flex; gap: 0.35rem; }
+    .mprev .pbtn { flex: 1; text-align: center; font-size: 0.62rem; font-family: var(--fx);
+                   border-radius: 0.4rem; padding: 0.26rem 0; background: #fff;
+                   border: 1px solid var(--s300); color: var(--s600); }
+    .mprev .pbtn.pr { background: var(--t600); border-color: var(--t600); color: #fff; }
 
     /* 갤러리 그리드 */
     .ggrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
@@ -758,7 +778,7 @@
                 <div class="mbody">
                   <div class="mcards">
                     <div class="mcard"><div class="mrow1"><span class="tag">국어</span><span class="mstat on">진행 중</span></div>
-                      <b>독서 토론 도우미</b><small>페르소나: 질문만 하는 사서 선생님 · 정답 금지</small>
+                      <b>독서 토론 도우미</b><small>AI 역할: 질문만 하는 사서 · 정답 금지</small>
                       <div class="mfoot"><span>참여 28명</span><span class="sp">입장 코드 <b style="color:var(--t700)">QK73PT</b></span></div></div>
                     <div class="mcard"><div class="mrow1"><span class="tag">사회</span><span class="mstat on">진행 중</span></div>
                       <b>우리 동네 소개 웹 만들기</b><small>웹 작품 모드 · 제출 마감 금요일 21:00</small>
@@ -771,6 +791,9 @@
                       <div class="mfoot"><span>사용 1,204회</span><span class="sp"><svg class="i" viewBox="0 0 24 24" style="width:0.85em;height:0.85em"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg> 4.8</span></div></div>
                   </div>
                   <div class="mg"><span>이번 주 우리 반 사용량</span><span class="mgb"><i style="width:62%"></i></span><b>62%</b></div>
+                  <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
+                    <span><b>방금 · 이수민이 '맛집 지도 홈페이지'를 제출했습니다</b><small>우리 동네 소개 웹 만들기 · 갤러리 게시 전 검토 필요</small></span>
+                    <span class="st warn">승인 대기</span></div>
                 </div>
               </div>
             </div></div>
@@ -828,29 +851,31 @@
               <div class="mnav">
               <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
-              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
-              <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
-              <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2 11.39 11.61"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg>AI 키</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>예산 배분</div>
               <div class="ni on"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
-              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
-              <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>정책 · 안전</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>감사 로그</div>
+              <div class="nuser"><span class="nava">박</span><span><b>박지원</b><small>학교 관리자</small></span></div>
             </div>
               <div class="mmain">
                 <div class="mtop"><b>AI 사용량</b><span class="msel">이번 달 ▾</span><span class="mbtn">리포트 내려받기</span><span class="mava">관</span></div>
                 <div class="mbody">
                   <div class="mkpis">
-                    <div class="mkpi"><span class="kbar"></span><div class="k">등록된 AI</div><div class="v">2종<em>Claude · GPT</em></div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">등록된 AI</div><div class="v">2종<em>Claude·GPT</em></div></div>
                     <div class="mkpi"><span class="kbar"></span><div class="k">이번 달 사용</div><div class="v">64%</div></div>
                     <div class="mkpi"><span class="kbar"></span><div class="k">활동 학생</div><div class="v">412명</div></div>
-                    <div class="mkpi"><span class="kbar"></span><div class="k">예산 소진 예상</div><div class="v">27일<em>여유 3일</em></div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">예산 소진 예상일</div><div class="v">10/27<em>여유 3일</em></div></div>
                   </div>
                   <div class="mg"><span>3-1반</span><span class="mgb"><i style="width:48%"></i></span><b>48%</b></div>
                   <div class="mg"><span>3-2반</span><span class="mgb"><i style="width:62%"></i></span><b>62%</b></div>
                   <div class="mg"><span>3-3반</span><span class="mgb"><i style="width:35%"></i></span><b>35%</b></div>
+                  <div class="mg"><span>4-1반</span><span class="mgb"><i style="width:41%"></i></span><b>41%</b></div>
                   <div class="mtbl"><table>
                     <tr><th>요청</th><th>수업방</th><th>내용</th><th>처리</th></tr>
                     <tr><td><b>부스트</b></td><td>동네 소개 웹</td><td>김OO · 잔여량 소진</td><td><span class="mstat warn">승인 대기</span></td></tr>
                     <tr><td><b>한도 상향</b></td><td>수행평가 · 글쓰기</td><td>평가 기간 2주</td><td><span class="mstat on">승인됨</span></td></tr>
+                    <tr><td><b>숙제 지급</b></td><td>독서 토론 도우미</td><td>주말 숙제 · 1인 수업분의 1/2</td><td><span class="mstat on">승인됨</span></td></tr>
                   </table></div>
                 </div>
               </div>
@@ -954,6 +979,9 @@
                 <div class="mmsg a"><b>좋아요!</b> 제목·지도 자리·맛집 카드 3개로 뼈대를 만들었어요. 오른쪽 미리보기를 봐요. 카드 색을 바꿔 볼까요?</div>
                 <div class="mmsg q">카드를 하늘색으로! 우리 학교 자랑 칸도 추가해 줘.</div>
                 <div class="mmsg a">하늘색으로 바꾸고 <b>'우리 학교 자랑'</b> 칸을 추가했어요. 완성되면 [제출]을 눌러요!</div>
+                <div class="sysnote">개인정보 보호 - 학교 실명은 별칭으로 자동 변경했어요</div>
+                <div class="mmsg q">지도 자리에 우리 동네 그림도 그려 줘!</div>
+                <div class="mmsg a">우리 동네 느낌의 그림을 만들어 넣었어요. <b>그림 만들기는 선생님이 허용한 수업방에서만</b> 할 수 있어요.</div>
                 <div class="minput">만들고 싶은 것을 말해 보세요<span class="send">▶</span></div>
               </div>
               <div class="mprev">
@@ -961,7 +989,7 @@
                 <div class="pframe">
                   <div class="pnav"><b>수민이네 동네지도</b><span>홈 · 맛집 · 학교</span></div>
                   <div class="ph1">우리 동네 맛집 지도</div>
-                  <div class="pimg">지도 들어갈 자리</div>
+                  <div class="pimg">우리 동네 그림 (AI 생성)</div>
                   <div class="pcards">
                     <div class="pc"><b>분식왕</b>떡볶이 맛집</div>
                     <div class="pc"><b>진순대</b>순대국 최고</div>
@@ -969,6 +997,7 @@
                   </div>
                   <div class="ph1" style="font-size:0.66rem">우리 학교 자랑</div>
                 </div>
+                <div class="pfoot"><span class="pbtn">임시 저장</span><span class="pbtn pr">선생님께 제출</span></div>
               </div>
             </div></div>
           <p class="mcap"><b>바이브 코딩.</b> 코드를 몰라도 말로 웹 작품을 만듭니다.
@@ -1049,6 +1078,12 @@
                       <div class="gm"><b>동네 신문 1호</b><small><span>최서연</span><span><svg class="i" viewBox="0 0 24 24" style="width:0.85em;height:0.85em"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg> 7 · <svg class="i" viewBox="0 0 24 24" style="width:0.85em;height:0.85em"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-7.6-4.7L3 21l5.7-1.9A8.38 8.38 0 0 1 21 11.5a8.5 8.5 0 0 0-17 0"/></svg> 2</span></small></div></div>
                     <div class="gcard"><div class="gth"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"/></svg><span class="gb gbadge ok">배지</span></div>
                       <div class="gm"><b>이달의 프롬프트</b><small><span>학급 선정</span><span>과정 공개</span></small></div></div>
+                    <div class="gcard"><div class="gth"><svg class="i" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M12 22a10 10 0 1 1 10-10c0 2-1.5 3-3 3h-3a3 3 0 0 0-2 5.24z"/></svg><span class="gb gbadge ok">게시</span></div>
+                      <div class="gm"><b>분리수거 안내 포스터</b><small><span>이도윤</span><span>그림 · 담벼락 게시</span></small></div></div>
+                    <div class="gcard"><div class="gth"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="gb gbadge ok">게시</span></div>
+                      <div class="gm"><b>우리 반 4컷 만화</b><small><span>박서준</span><span><svg class="i" viewBox="0 0 24 24" style="width:0.85em;height:0.85em"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg> 15</span></small></div></div>
+                    <div class="gcard"><div class="gth"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg><span class="gb gbadge wait">수정 요청</span></div>
+                      <div class="gm"><b>동네 소리 지도</b><small><span>한지민</span><span>사유: 출처 표기</span></small></div></div>
                   </div>
                   <div class="mg"><span>댓글 문장틀</span><span style="flex:1;font-size:0.6rem;color:var(--s500)">"이 부분이 좋았어" · "이건 어떻게 했어?" · "이렇게 해 보면 어때?"</span></div>
                 </div>
@@ -1080,7 +1115,10 @@
             <li><b>개인정보 마스킹</b> - 이름·연락처·주소를 입력 단계에서 감지·차단</li>
             <li><b>수업방 밖 금지</b> - 주제 이탈 질문은 수업 주제로 되돌림</li>
             <li><b>학습 데이터 미사용</b> - 학생 대화는 AI 학습에 쓰이지 않음(계약 명시)</li>
-          </ul></div>
+          </ul>
+          <div class="ui"><div class="uttl">실제 동작 예</div>
+            <div class="urow"><span>"내 이름은 김민준이고 전화번호는..."</span></div>
+            <div class="urow ok"><span>"내 이름은 김**이고 [비공개]..."</span><span class="uchip">자동 마스킹</span></div></div></div>
         <div class="card"><span class="accent"></span><div class="no">LAYER 2<span class="cat">실시간 관제</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
           <h3>선생님의 눈</h3>
@@ -1089,7 +1127,10 @@
             <li><b>도움 신호</b> - 같은 질문 반복, 진도 정체 학생을 자동 표시</li>
             <li><b>일시 정지</b> - 학생 개인·수업방 전체를 즉시 멈춤</li>
             <li><b>위기 알림</b> - 자해·폭력 등 위기 신호는 교사·상담교사에게 즉시 통지</li>
-          </ul></div>
+          </ul>
+          <div class="ui"><div class="uttl">실제 동작 예</div>
+            <div class="urow"><span>14:22 · 3학년 2반 이OO 우려 표현 감지</span><span class="uchip warn">즉시 알림</span></div>
+            <div class="urow ok"><span>담임 · 상담교사에게 통지 완료</span></div></div></div>
         <div class="card"><span class="accent"></span><div class="no">LAYER 3<span class="cat">기록과 준수</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
           <h3>남는 기록</h3>
@@ -1098,7 +1139,10 @@
             <li><b>법정대리인 동의</b> - 만 14세 미만 동의 절차 내장 (개인정보보호법)</li>
             <li><b>국내 데이터 보관</b> - 개인정보 국내 처리, 열람·삭제 요청 지원</li>
             <li><b>해외 기준 참조</b> - 미국 COPPA/FERPA 요건을 설계에 반영</li>
-          </ul></div>
+          </ul>
+          <div class="ui"><div class="uttl">실제 동작 예</div>
+            <div class="urow"><span>14:21 · 이수민 프롬프트 12건 · 산출물 1건 기록</span></div>
+            <div class="urow ok"><span>수행평가 활용 확인 리포트 생성</span><span class="uchip">PDF</span></div></div></div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
         <span>교육부 수행평가 지침이 요구하는 "AI 활용 관리"가 <b>서류가 아니라 시스템 기록</b>으로 남습니다.</span></div>
