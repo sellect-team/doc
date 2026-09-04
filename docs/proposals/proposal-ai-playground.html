@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AI 놀이터 구축 제안서</title>
-  <meta name="doc-version" content="1.0">
+  <meta name="doc-version" content="1.1">
   <meta name="doc-description" content="교육청·학교용 학생 AI 놀이터 플랫폼 기획·제안 - 교사가 상용 AI를 등록·배분하고, 학생이 만들고, 함께 검토하는 안전한 AI 학습 공간">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -697,6 +697,31 @@
   </section>
 
   <!-- 6. 전체 아키텍처 -->
+  <!-- 국내 대안과의 차이 -->
+  <section class="slide" data-title="무엇과 다른가">
+    <header class="s-head">
+      <h2><span class="bullet"></span>무엇과 다른가 - <em>대체가 아니라 빈칸을 채웁니다</em></h2>
+      <div class="s-right"><span class="sec">01 · Why Now</span></div>
+    </header>
+    <div class="s-band"><p>학교에는 이미 학습 플랫폼이 있고, 학생에게는 이미 챗봇이 있습니다.
+      비어 있는 것은 그 사이 - <strong>교사 통제 아래 AI로 만들어 보는 실습 환경</strong>입니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:17%">비교 항목</th><th style="width:26%">개인 계정 챗봇 그대로</th><th style="width:26%">기존 에듀테크 · LMS</th><th>AI 놀이터</th></tr>
+          <tr><td class="org">AI 활용</td><td>제한 없음 - 유해·연령 문제 노출</td><td>콘텐츠 전달·문항 풀이 중심, 생성 AI 활용은 제한적</td><td><b>수업 목적에 맞게 설계된 AI 대화·창작</b> (페르소나·정답 금지 등 교사 설정)</td></tr>
+          <tr><td class="org">교사 통제</td><td>없음 - 무엇을 묻는지 알 수 없음</td><td>학습 진도·결과 관리 중심</td><td><b>대화 실시간 열람 · 위험 신호 알림 · 수업 단위 잠금</b></td></tr>
+          <tr><td class="org">창작 결과물</td><td>대화로 끝남 - 남지 않음</td><td>정답·점수 기록</td><td><b>글 · 퀴즈 · 웹 작품이 갤러리와 포트폴리오로 축적</b></td></tr>
+          <tr><td class="org">사용량 · 예산</td><td>가정 부담 - 격차 발생</td><td>좌석제 라이선스</td><td><b>학교 예산을 학급→학생 단위로 배분·회수 · 실사용 집계</b></td></tr>
+          <tr><td class="org">지침 증빙</td><td>불가능</td><td>해당 없음</td><td><b>수행평가 AI 활용 과정이 기록으로 남아 증빙 가능</b></td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <span>기존 LMS를 <b>대체하지 않습니다.</b> 그 위에 없던 층 - AI 실습·창작 층을 더하는 사업입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 7 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
   <section class="slide" data-title="전체 구성">
     <header class="s-head">
       <h2><span class="bullet"></span>전체 구성 - <em>세 개의 공간, 하나의 플랫폼</em></h2>
@@ -736,7 +761,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
         <span>특정 AI 회사에 묶이지 않습니다. <b>키만 바꾸면 모델이 바뀌는 구조</b>라 교육청 정책 변화에 그대로 따라갑니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 7 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 7. 기능 1: 교사 콘솔 -->
@@ -804,7 +829,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
         <span>수업 준비 부담이 곧 도입 장벽입니다. <b>템플릿에서 수업방까지 5분</b> - 이것이 설계 기준입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 8. 기능 2: 키·쿼터 -->
@@ -873,7 +898,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span>
         <span>학생 30명 계정 문제가 <b>키 1개 + 배분표 1장</b>으로 끝납니다. 예산은 시작 전에 정해지고, 초과는 구조적으로 불가능합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 9. 기능 3: 학생 놀이터 -->
@@ -949,7 +974,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 4 3 12 11 12"/></svg></span>
         <span>토큰은 수업 단위로 돌고 돕니다 - <b>쓰다 남으면 돌아오고, 숙제면 집까지 따라가고, 마감이면 잠깁니다.</b></span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="기능 ④ 학생 놀이터">
@@ -1007,7 +1032,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
         <span>목표는 AI 구경이 아니라 <b>AI로 무언가를 끝까지 만들어 본 경험</b>입니다. 그 경험이 AI 리터러시가 됩니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 10. 기능 4: 갤러리 -->
@@ -1078,7 +1103,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M17 6.1H3"/><path d="M21 12.1H3"/><path d="M15.1 18H3"/></svg></span>
         <span>AI 수업의 완성은 산출물이 아니라 <b>산출물을 두고 나누는 대화</b>입니다. 갤러리가 그 대화의 장소입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 11. 기능 5: 안전 -->
@@ -1122,10 +1147,46 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
         <span>교육부 수행평가 지침이 요구하는 "AI 활용 관리"가 <b>서류가 아니라 시스템 기록</b>으로 남습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 12. 시나리오 -->
+  <!-- 교육과정 연계 -->
+  <section class="slide" data-title="교육과정 연계">
+    <header class="s-head">
+      <h2><span class="bullet"></span>교육과정 연계 - <em>수업 어디에 붙는 사업인가</em></h2>
+      <div class="s-right"><span class="sec">03 · Features</span></div>
+    </header>
+    <div class="s-band"><p>별도 과목을 만들지 않습니다. <strong>2022 개정 교육과정의 디지털 소양 함양과 과정중심평가</strong> 흐름 안에서,
+      지금 하는 수업에 AI 활동을 얹는 방식입니다.</p></div>
+    <div class="content">
+      <div class="cards c3">
+        <div class="card"><div class="no">초등 고학년 <span class="cat">시범 권장</span></div><h3>만들며 익히는 첫 AI</h3>
+          <div class="seg"><p>국어(이야기 쓰기) · 사회(우리 고장 조사) · 창체 활동에 <b>놀이터 만들기</b>를 결합합니다.</p></div>
+          <div class="seg fx"><em>활동 예</em><p>우리 동네 소개 웹 · 독서 뒷이야기 쓰기 · 안전 골든벨 퀴즈</p></div></div>
+        <div class="card"><div class="no">중학교 <span class="cat">확산 단계</span></div><h3>질문을 다듬는 훈련</h3>
+          <div class="seg"><p>정보 교과 · 자유학기 주제선택과 연계해 <b>프롬프트 작성과 답 검증</b>을 배웁니다.</p></div>
+          <div class="seg fx"><em>활동 예</em><p>자료 조사 비교 검증 · 토론 반대 논거 만들기 · 진로 인터뷰 시뮬레이션</p></div></div>
+        <div class="card"><div class="no">고등학교 <span class="cat">확산 단계</span></div><h3>프로젝트와 포트폴리오</h3>
+          <div class="seg"><p>정보 · 탐구 과목의 <b>프로젝트 수행 도구</b>로 쓰고, 과정 기록을 세특 참고 자료로 남깁니다.</p></div>
+          <div class="seg fx"><em>활동 예</em><p>탐구 보고서 자료 정리 · 데이터 기반 발표 자료 · 창업 아이디어 검증</p></div></div>
+      </div>
+      <div class="krows fill">
+        <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+          <span><h4>교사가 고르는 건 템플릿 하나</h4>
+          <p>교과·활동별 수업방 템플릿을 기본 제공하고, 시범 운영에서 참여 교사와 함께 다듬어
+             <b>교육청 공유 템플릿 자료집</b>으로 납품합니다. 교육과정 재구성 부담이 없습니다.</p></span></div>
+        <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></span>
+          <span><h4>과정중심평가에 그대로 연결</h4>
+          <p>질문 → 수정 → 완성까지의 과정 기록이 학생별로 남아, 결과물만이 아니라
+             <b>시도와 개선의 과정</b>을 평가 근거로 쓸 수 있습니다. 수행평가 AI 활용 지침의 취지와 같습니다.</p></span></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M22 10v6"/><path d="M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
+        <span>새 과목이 아니라 <b>지금 수업에 얹는 활동</b>입니다 - 그래서 현장 안착이 빠릅니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
   <section class="slide" data-title="하루 시나리오">
     <header class="s-head">
       <h2><span class="bullet"></span>수업 한 시간의 <em>실제 흐름</em></h2>
@@ -1204,7 +1265,7 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 13. 로드맵 -->
@@ -1255,10 +1316,56 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
         <span>2026년 안에 시범 수업이 돌아가는 것 - 그것이 1단계의 약속입니다. <b>크고 늦은 완성보다 작고 빠른 검증.</b></span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 17 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 인프라: NHN 클라우드 -->
+  <!-- 시범 운영·평가 계획 -->
+  <section class="slide" data-title="시범 운영 · 평가 계획">
+    <header class="s-head">
+      <h2><span class="bullet"></span>시범 운영 - <em>한 학기를 어떻게 검증하는가</em></h2>
+      <div class="s-right"><span class="sec">04 · Plan</span></div>
+    </header>
+    <div class="s-band"><p>"써 보니 좋았다"로 끝내지 않습니다. <strong>측정 계획을 먼저 확정</strong>하고 시작해,
+      학기 말에 확산 여부를 숫자로 판단할 수 있게 합니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+            <span><h4>1~2주차 · 준비</h4>
+            <p>참여 학급 확정, 학부모 동의 수합(플랫폼 동의 관리 사용), 1차 교사 연수,
+               기준선 설문(교사 부담 · 학생 AI 경험).</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
+            <span><h4>3~14주차 · 수업 적용</h4>
+            <p>학급당 <b>월 2회 이상 AI 활동 수업</b>을 목표로 운영합니다. 4주 간격으로 현장 점검과
+               개선 배포(격주 단위 반영), 중간에 2차 연수(심화 · 템플릿 공유회).</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+            <span><h4>15주차 · 측정</h4>
+            <p>지표 실측 집계, 교사 심층 인터뷰(FGI), 학생 · 학부모 만족도 설문.
+               수집은 모두 플랫폼 기록 기반이라 별도 조사 부담이 작습니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></span>
+            <span><h4>16주차 · 보고와 환류</h4>
+            <p><b>시범 운영 실측 리포트</b>를 납품하고 확산 협의를 엽니다.
+               개선 요구는 2단계(확산) 범위에 반영합니다.</p></span></div>
+        </div>
+        <div class="rt-wrap">
+          <table class="rt">
+            <tr><th style="width:34%">측정 지표</th><th style="width:38%">수집 방법</th><th>목표 수준</th></tr>
+            <tr><td class="org">수업방 개설 시간</td><td>플랫폼 로그</td><td>5분 이내</td></tr>
+            <tr><td class="org">교사 재사용률</td><td>월 2회 이상 개설 교사 비율</td><td>70% 이상</td></tr>
+            <tr><td class="org">1인당 완성 작품</td><td>갤러리 게시 기록</td><td>학기 3개 이상</td></tr>
+            <tr><td class="org">안전 지표</td><td>필터 · 알림 로그</td><td>미조치 이슈 0건</td></tr>
+            <tr><td class="org">예산 집행</td><td>사용량 정산 리포트</td><td>학급 단위 100% 추적</td></tr>
+            <tr><td class="org">만족도</td><td>교사 · 학생 · 학부모 설문</td><td>기준선 대비 개선</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 4 3 12 11 12"/></svg></span>
+        <span>이 리포트가 <b>확산 단계 예산 편성의 근거 자료</b>가 되도록 설계했습니다 - 시범의 목적은 검증이지 행사가 아닙니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 18 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
   <section class="slide" data-title="인프라 · NHN 클라우드">
     <header class="s-head">
       <h2><span class="bullet"></span>인프라 - <em>NHN 클라우드 공공존 위에 짓습니다</em></h2>
@@ -1309,7 +1416,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/></svg></span>
         <span>결론: <b>조달 가능(디지털서비스몰) + 심사 대응(CSAP 공공존) + 운영 효율(탄력 확장)</b> - 세 조건을 한 번에 충족합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 19 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="개인정보 · 법령 준수">
@@ -1346,7 +1453,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
         <span>개인정보 처리방침 · 위탁 계약서 초안을 <b>착수 단계 산출물</b>로 제출하고, 교육청 개인정보 부서 검토를 함께 진행합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 17 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 20 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="추진 체계와 역할 분담">
@@ -1392,7 +1499,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></span>
         <span><b>월 1회 운영 협의체</b>(교육청 · 시범학교 · 세일링스톤)에서 진행 상황과 개선 사항을 함께 확정합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 18 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 21 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="교사 연수와 운영 지원">
@@ -1430,11 +1537,37 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.68.68 1.15 1.45 1.41 2.5"/></svg></span>
         <span>연수 · 매뉴얼 · 헬프데스크 · 월간 리포트까지 <b>시범 구축 범위에 포함</b>입니다. 별도 비용이 아닙니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 19 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 22 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
 
   <!-- 14. 왜 세일링스톤 -->
+  <!-- 예산 항목 구조 -->
+  <section class="slide" data-title="예산 항목 구조">
+    <header class="s-head">
+      <h2><span class="bullet"></span>예산 구조 - <em>무엇에 얼마가 드는 사업인가</em></h2>
+      <div class="s-right"><span class="sec">04 · Plan</span></div>
+    </header>
+    <div class="s-band"><p>금액은 협의 항목(시범학교 수 · 계약 AI 모델) 확정 후 견적으로 제출합니다.
+      다만 <strong>비목 구조와 산정 기준은 지금 확정</strong>해 드립니다 - 숨은 비용이 없는 구조입니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:17%">비목</th><th style="width:40%">내용</th><th style="width:24%">산정 기준</th><th>비고</th></tr>
+          <tr><td class="org">플랫폼 구축</td><td>수업방 · 놀이터 · 갤러리 · 키/쿼터 · 안전 3중 구조 (1단계 전체 범위)</td><td>범위 기준 일괄(턴키)</td><td>본 견적의 중심</td></tr>
+          <tr><td class="org">클라우드 인프라</td><td>NHN 클라우드 공공존 (서버 · 스토리지 · 보안)</td><td>사용량 기준 실비</td><td>교육청 명의 계약 가능</td></tr>
+          <tr><td class="org">AI 사용료</td><td>Claude · GPT 등 계약 모델의 토큰 사용료</td><td><b>실사용량 - 플랫폼과 분리 청구</b></td><td>BYOK · 학급 단위 집계 제공</td></tr>
+          <tr><td class="org">교사 연수</td><td>착수 1회 + 중간 심화 1회 (자료 포함)</td><td>구축비에 포함</td><td>추가 회차는 협의</td></tr>
+          <tr><td class="org">시범 운영 지원</td><td>한 학기 현장 점검 · 개선 배포 · 실측 리포트</td><td>구축비에 포함</td><td>1단계 납품물</td></tr>
+          <tr><td class="org">유지관리</td><td>확산 단계 정기 점검 · 기능 개선</td><td>연 단위 요율</td><td>2단계 협의 사항</td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 6v2"/><path d="M12 16v2"/></svg></span>
+        <span>AI 사용료를 구축비에 섞지 않습니다. <b>쓴 만큼만, 학급 단위로 투명하게</b> - 예산 담당자가 방어할 수 있는 구조입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 23 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
   <section class="slide" data-title="왜 세일링스톤인가">
     <header class="s-head">
       <h2><span class="bullet"></span>왜 세일링스톤인가 - <em>이미 만들어 본 것들로 짓습니다</em></h2>
@@ -1469,7 +1602,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
         <span>엔진 재사용률이 높다는 것은 <b>일정·비용·안정성의 리스크가 낮다</b>는 뜻입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 20 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 24 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 15. 기대 효과 -->
@@ -1510,7 +1643,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
         <span>시범 한 학기의 실측 데이터가 <b>확산 단계의 예산 근거</b>가 됩니다. 그 데이터까지가 1단계 납품물입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 21 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 25 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="협의 · 확인 요청 사항">
@@ -1534,7 +1667,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
         <span>요청 주시면 <b>실물 데모 시연</b>(30분)과 함께 위 항목을 한 번에 정리하는 협의를 준비하겠습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 22 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 26 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
 
