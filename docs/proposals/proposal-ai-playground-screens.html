@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AI 놀이터 화면 정의서</title>
-  <meta name="doc-version" content="1.0">
+  <meta name="doc-version" content="1.1">
   <meta name="doc-description" content="AI 놀이터 솔루션 화면 정의서 - 화면 목록·권한·공통 레이아웃·사용자 플로우와 화면별 기능 명세">
   <style>
     @font-face { font-family: "SUIT"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");
@@ -111,6 +111,8 @@
              font-size: 0.88rem; color: var(--s600); vertical-align: middle; line-height: 1.45; }
     .rt tr:last-child td { border-bottom: none; }
     .rt td.org { font-family: var(--fx); color: var(--s900); white-space: nowrap; }
+    .rt-wrap.dense .rt td { padding: 0.32rem 0.9rem; font-size: 0.84rem; line-height: 1.38; }
+    .rt-wrap.dense .rt th { padding: 0.4rem 0.9rem; }
     .rt td b { color: var(--t700); font-family: var(--fx); }
     .pill { display: inline-block; font-size: 0.72rem; font-family: var(--fx); border-radius: 99rem;
             padding: 0.12rem 0.55rem; margin-right: 0.25rem; }
@@ -133,9 +135,10 @@
     .lcol .mcap b { color: var(--s800); font-family: var(--fx); }
 
     .app { flex: 1; min-height: 0; display: flex; background: #F6F8FB; font-size: 0.8rem; }
-    .mnav { width: 5.4rem; background: var(--s900); display: flex; flex-direction: column;
+    .mnav { width: 6rem; background: var(--s900); display: flex; flex-direction: column;
             padding: 0.45rem 0.4rem; gap: 0.12rem; flex-shrink: 0; overflow: hidden; }
     .mnav .mlogo { display: flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.4rem 0.45rem;
+                   white-space: nowrap;
                    color: #fff; font-family: var(--fx); font-size: 0.78rem; }
     .mnav .mlogo .i { color: var(--t400); }
     .mnav .ni { display: flex; align-items: center; gap: 0.4rem; color: var(--s400);
@@ -273,7 +276,8 @@
                          color: var(--s900); display: inline-flex; align-items: center; justify-content: center;
                          font-family: var(--fx); font-size: 0.58rem; flex-shrink: 0; }
     .mnav .nuser b { display: block; color: #fff; font-size: 0.6rem; font-family: var(--fx); line-height: 1.2; }
-    .mnav .nuser small { display: block; color: var(--s400); font-size: 0.52rem; line-height: 1.2; }
+    .mnav .nuser small { display: block; color: var(--s400); font-size: 0.52rem; line-height: 1.2;
+                         white-space: nowrap; }
     .mkpi { padding-left: 0.85rem; }
     .mkpi .kbar { position: absolute; left: 0.32rem; top: 0.45rem; bottom: 0.45rem; width: 0.18rem;
                   border-radius: 99rem; background: var(--t400); }
@@ -369,7 +373,7 @@
       <div class="s-right"><span class="sec">01 · Overview</span></div>
     </header>
     <div class="s-band"><p>화면 ID는 <strong>T(교사) · S(학생) · A(관리자)</strong> 접두로 부여합니다.
-      본 문서는 1단계(시범 구축) 범위의 10개 핵심 화면을 정의합니다.</p></div>
+      본 문서는 1단계(시범 구축) 범위의 11개 핵심 화면을 정의합니다.</p></div>
     <div class="content">
       <div class="rt-wrap fill">
         <table class="rt">
@@ -379,11 +383,12 @@
           <tr><td class="org">T-03</td><td>라이브 보드</td><td>학생 상태 그리드 · 도움 신호 · 일시 정지</td><td><span class="pill t">교사</span></td><td><b>7p</b></td></tr>
           <tr><td class="org">T-04</td><td>수업 종료 정산 · 숙제 전환</td><td>사용량 정산 · 미사용 회수 · 숙제 설정</td><td><span class="pill t">교사</span></td><td><b>8p</b></td></tr>
           <tr><td class="org">T-05</td><td>갤러리 승인함</td><td>제출물 검토 · 승인/반려/수정 요청</td><td><span class="pill t">교사</span></td><td><b>9p</b></td></tr>
-          <tr><td class="org">S-01</td><td>학생 입장</td><td>코드/QR 입장 · 별명 선택 · 동의 확인</td><td><span class="pill s">학생</span></td><td><b>10p</b></td></tr>
-          <tr><td class="org">S-02</td><td>놀이터 (만들기 스튜디오)</td><td>AI 대화 · 4가지 만들기 모드 · 실시간 미리보기 · 제출</td><td><span class="pill s">학생</span></td><td><b>11p</b></td></tr>
-          <tr><td class="org">S-03</td><td>학급 갤러리 · 작품 상세</td><td>작품 감상 · 문장틀 댓글 · 프롬프트 과정 보기</td><td><span class="pill s">학생</span><span class="pill t">교사</span></td><td><b>12p</b></td></tr>
-          <tr><td class="org">A-01</td><td>관리 센터 · AI 키와 예산</td><td>BYOK 등록 · 학급 배분 · 사용량 · 승인 요청</td><td><span class="pill a">관리자</span></td><td><b>13p</b></td></tr>
-          <tr><td class="org">A-02</td><td>안전 알림 센터</td><td>위험 신호 이력 · 처리 상태 · 통계</td><td><span class="pill a">관리자</span><span class="pill t">교사</span></td><td><b>14p</b></td></tr>
+          <tr><td class="org">T-06</td><td>수업 자료 관리</td><td>자료 업로드 · 강의별 자료 DB · 근거 답변 설정 · 보완 추천 처리</td><td><span class="pill t">교사</span></td><td><b>10p</b></td></tr>
+          <tr><td class="org">S-01</td><td>학생 입장</td><td>코드/QR 입장 · 별명 선택 · 동의 확인</td><td><span class="pill s">학생</span></td><td><b>11p</b></td></tr>
+          <tr><td class="org">S-02</td><td>놀이터 (만들기 스튜디오)</td><td>AI 대화 · 4가지 만들기 모드 · 실시간 미리보기 · 제출</td><td><span class="pill s">학생</span></td><td><b>12p</b></td></tr>
+          <tr><td class="org">S-03</td><td>학급 갤러리 · 작품 상세</td><td>작품 감상 · 문장틀 댓글 · 프롬프트 과정 보기</td><td><span class="pill s">학생</span><span class="pill t">교사</span></td><td><b>13p</b></td></tr>
+          <tr><td class="org">A-01</td><td>관리 센터 · AI 키와 예산</td><td>BYOK 등록 · 학급 배분 · 사용량 · 승인 요청</td><td><span class="pill a">관리자</span></td><td><b>14p</b></td></tr>
+          <tr><td class="org">A-02</td><td>안전 알림 센터</td><td>위험 신호 이력 · 처리 상태 · 통계</td><td><span class="pill a">관리자</span><span class="pill t">교사</span></td><td><b>15p</b></td></tr>
         </table>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
@@ -412,6 +417,7 @@
                 <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
                 <div class="ni on"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
@@ -480,6 +486,8 @@
           <span class="farr">›</span>
           <div class="fstep"><b>T-02 만들기</b><small>3단계 · 5분</small></div>
           <span class="farr">›</span>
+          <div class="fstep"><b>T-06 수업 자료</b><small>자료 올리기</small></div>
+          <span class="farr">›</span>
           <div class="fstep hl"><b>T-03 라이브</b><small>수업 중 관제</small></div>
           <span class="farr">›</span>
           <div class="fstep"><b>T-05 승인함</b><small>제출물 검토</small></div>
@@ -534,6 +542,7 @@
                 <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
                 <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
@@ -609,6 +618,7 @@
                 <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
                 <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
@@ -688,6 +698,7 @@
                 <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
                 <div class="ni on"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
@@ -768,6 +779,7 @@
                 <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
                 <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
@@ -841,6 +853,7 @@
                 <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
                 <div class="ni on"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
@@ -905,6 +918,82 @@
   </section>
 
   <!-- 10. S-01 -->
+  <!-- T-06 -->
+  <section class="slide" data-title="T-06 수업 자료 관리">
+    <header class="s-head">
+      <h2><span class="bullet"></span><span class="sid">T-06</span>수업 자료 관리 · <em>강의별 자료 DB</em></h2>
+      <div class="s-right"><span class="sec">02 · Teacher</span></div>
+    </header>
+    <div class="s-band"><p>교사가 올린 자료를 문서 파서가 강의별 DB로 만들고, AI는 <strong>그 자료를 근거로 답</strong>합니다.
+      질문 데이터가 쌓이면 <strong>자료 보완까지 추천</strong>하는 선순환 화면입니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="lcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">T-06 · 수업 자료</span><span class="live">3학년 2반 과학</span></div>
+            <div class="app">
+              <div class="mnav">
+                <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>안전 알림</div>
+                <div class="nuser"><span class="nava">김</span><span><b>김윤아</b><small>3학년 2반 담임</small></span></div>
+              </div>
+              <div class="mmain">
+                <div class="mtop"><b>수업 자료</b><span class="msel">물의 상태 변화 ▾</span><span class="mbtn">+ 자료 올리기</span><span class="mava">김</span></div>
+                <div class="mbody">
+                  <div class="room" style="position:relative"><span class="co abs" style="left:-0.55rem; top:-0.55rem">1</span>
+                    <span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+                    <span><b>3단원 물의 상태 변화.pdf</b> <small>· 표 6개 · 그림 설명 12개 인덱싱 · 답변 근거로 사용 중</small></span>
+                    <span class="st on">분석 완료</span></div>
+                  <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+                    <span><b>차시별 학습지 모음.pptx</b> <small>· 27쪽 중 18쪽 읽는 중</small></span>
+                    <span class="st warn">분석 68%</span></div>
+                  <div class="fchips" style="position:relative; padding-left:1.4rem"><span class="co abs" style="left:0; top:0.05rem">2</span>
+                    <span class="fchip on">자료 우선 (기본)</span><span class="fchip">자료 한정</span><span class="fchip">자유 대화</span><span class="fchip" style="border-style:dashed">출처 표시: 항상</span></div>
+                  <div class="mtbl" style="position:relative; overflow:visible"><span class="co abs" style="left:-0.55rem; top:-0.55rem">3</span><table>
+                    <tr><th>학생 질문</th><th>신호</th><th>추천 조치</th><th>처리</th></tr>
+                    <tr><td><b>"증발이랑 끓음이 뭐가 달라요?"</b></td><td>애매 답변 14회</td><td>12쪽에 비교 표 보충 · 초안 생성됨</td><td><span class="mstat warn">초안 검토</span></td></tr>
+                    <tr><td><b>"얼음은 왜 물에 뜨나요?"</b></td><td>자료 없음 9회</td><td>보충 자료 추가 권장</td><td><span class="mstat warn">자료 추가</span></td></tr>
+                    <tr><td><b>"알코올램프는 왜 못 써요?"</b></td><td>답변 완료</td><td>실험 안전 수칙 3쪽 근거로 답변</td><td><span class="mstat on">완료</span></td></tr>
+                  </table></div>
+                  <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
+                    <span><b>주간 요약 · 질문 132건, 자료 근거 답변 87%</b> <small>· 보완 추천 2건 반영 완료 · 다음 단원 자료 준비 안내</small></span>
+                    <span class="st on">반영됨</span></div>
+                </div>
+              </div>
+            </div></div>
+        </div>
+        <div class="rcol">
+          <div class="spec">
+            <table>
+              <tr><th class="cno">No</th><th style="width:27%">구성 요소</th><th>기능 정의 · 동작</th></tr>
+              <tr><td class="cno"><span class="co">1</span></td><td><b>자료함</b></td>
+                  <td>PDF·PPT·한글 업로드 → 문서 파서가 표·그림 설명까지 인덱싱해 <em>이 수업방 전용 자료 DB</em>로.
+                      상태: 분석 중 / 완료 / 실패(형식 안내). 원본 파일은 학생에게 비공개</td></tr>
+              <tr><td class="cno"><span class="co">2</span></td><td><b>답변 근거 모드</b></td>
+                  <td><em>자료 우선(기본)</em> → 자료 근거 + 출처(자료·쪽) 표시.
+                      <em>자료 한정</em> → 자료 밖 질문은 답변 보류 후 "선생님께 질문"으로 전달.
+                      <em>자유 대화</em> → 자료 미사용. 수업방 단위 설정</td></tr>
+              <tr><td class="cno"><span class="co">3</span></td><td><b>보완 추천</b></td>
+                  <td>애매한 답변(근거 신뢰도 낮음)·자료에 없던 질문을 자동 수집하고 <em>보충 설명 초안 생성</em>.
+                      교사가 검토·반영하면 자료 DB 즉시 갱신, 처리 이력 기록</td></tr>
+              <tr><td class="cno">-</td><td><b>알림</b></td>
+                  <td>보완 추천 신규 건은 대시보드 배지와 주간 요약으로 통지. 반영 결과는 다음 수업부터 적용</td></tr>
+              <tr><td class="cno">-</td><td><b>정책</b></td>
+                  <td>저작권 자료는 교육 목적 내부 이용 범위에서만 인덱싱하고 외부 반출·재배포 불가.
+                      자료·질문 로그는 학기 종료 시 보존 정책에 따라 처리</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
   <section class="slide" data-title="S-01 학생 입장">
     <header class="s-head">
       <h2><span class="bullet"></span><span class="sid">S-01</span>학생 입장 · <em>코드 하나로 시작</em></h2>
@@ -958,7 +1047,7 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 11. S-02 -->
@@ -1020,7 +1109,7 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 12. S-03 -->
@@ -1080,7 +1169,7 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 13. A-01 -->
@@ -1100,6 +1189,7 @@
                 <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
                 <div class="ni on"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
@@ -1149,7 +1239,7 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 14. A-02 -->
@@ -1169,6 +1259,7 @@
                 <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
+                <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>라이브</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>갤러리</div>
                 <div class="ni"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>사용량</div>
@@ -1220,7 +1311,7 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 15. 공통 상태 -->
@@ -1247,7 +1338,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
         <span>예외 문구는 <b>학생이 자책하지 않는 말</b>로 통일합니다 - 시스템의 사정을 아이 탓으로 돌리지 않습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 16. 용어 정의 -->
@@ -1259,7 +1350,7 @@
     <div class="s-band"><p>구축·검수 단계에서 해석이 갈리지 않도록 핵심 용어를 고정합니다.
       <strong>계약 문서에서도 이 정의를 따릅니다.</strong></p></div>
     <div class="content">
-      <div class="rt-wrap fill">
+      <div class="rt-wrap fill dense">
         <table class="rt">
           <tr><th style="width:16%">용어</th><th style="width:44%">정의</th><th>관련 화면</th></tr>
           <tr><td class="org">수업방 (Space)</td><td>교사가 만든 AI 활동 단위. 페르소나·안전 규칙·한도·기간을 갖는 울타리 - 모든 학생 활동의 경계</td><td><b>T-01 · T-02</b></td></tr>
@@ -1269,13 +1360,14 @@
           <tr><td class="org">숙제 모드</td><td>종료된 수업방을 마감일까지 재개방한 상태. 전용 토큰·시간대 제한, 교실과 같은 필터·기록</td><td><b>T-04 · S-01</b></td></tr>
           <tr><td class="org">문장틀 댓글</td><td>갤러리 기본 피드백 방식. 3종 문장틀("좋았어 · 어떻게 했어? · 해 보면 어때?")에서 시작해 이어 쓴다</td><td><b>S-03</b></td></tr>
           <tr><td class="org">사전 필터</td><td>제출물 게시 전 자동 검사(개인정보·유해어). 통과해도 저학년은 교사 승인이 반드시 뒤따른다</td><td><b>T-05</b></td></tr>
+          <tr><td class="org">근거 답변</td><td>학생 질문에 교사가 올린 수업 자료를 우선 근거로 답하고 출처(자료·쪽)를 표시하는 응답 정책. 자료 밖 질문 처리는 수업방 설정을 따른다</td><td><b>T-06 · S-02</b></td></tr>
           <tr><td class="org">위기 신호</td><td>즉시 개입이 필요한 감지 이벤트. 사람(담임·상담교사) 통지와 조치 기록이 필수</td><td><b>T-03 · A-02</b></td></tr>
         </table>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
         <span>용어가 곧 요구사항입니다 - 검수 회의는 <b>이 표를 기준</b>으로 진행합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 17 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <!-- 17. 맺음 -->
