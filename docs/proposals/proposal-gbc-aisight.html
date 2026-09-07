@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>GBC 대시보드 웹 전환 제안서 (aisight)</title>
-  <meta name="doc-version" content="1.5">
+  <meta name="doc-version" content="1.6">
   <meta name="doc-description" content="삼성전자 GBC 태블로 대시보드의 웹 전환 - 단순 재개발이 아닌 aisight 데이터 플랫폼 도입의 추가 가치 6가지와 2주 무상 PoC 제안">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -610,7 +610,7 @@
       <div class="cards c3 fill">
         <div class="card"><span class="accent"></span><div class="no">가치 01</div><h3>요청 대기의 소멸</h3>
           <p>담당자가 직접 만들 수도, 관리자가 받아 처리할 수도 - 어느 쪽이든 개발이 아니라 조립이라 당일 처리됩니다.</p>
-          <div class="fix">개발 발주 대기 0건.</div></div>
+          <div class="fix">요청 큐가 길어지지 않습니다.</div></div>
         <div class="card"><span class="accent"></span><div class="no">가치 02</div><h3>묻는 대시보드</h3>
           <p>자연어로 질문하면 차트와 요약으로 답합니다. 보는 도구가 답을 얻는 도구가 됩니다. 쓰던 개인 Claude로 이어가는 MCP 연동까지.</p>
           <div class="fix">태블로에도 없는 층.</div></div>
@@ -638,13 +638,13 @@
       <h2><span class="bullet"></span>두 갈래 비교 - <em>화면 재구매인가, 능력 확보인가</em></h2>
       <div class="s-right"><span class="sec">01 · Why</span></div>
     </header>
-    <div class="s-band"><p>태블로를 내려놓는 전환은 글로벌에서도 진행 중인 흐름이며, 전환 기업들은
-      <strong>BI 비용 40~70% 절감</strong>을 보고합니다. 갈림길은 요청이 쌓일수록 벌어집니다.</p></div>
+    <div class="s-band"><p>어느 길이든 <strong>지금 상주 중인 저희 팀이 만듭니다.</strong> 차이는 비용 항목이 아니라
+      <strong>같은 인력으로 얼마나 처리하는가</strong> - 공수의 구조입니다.</p></div>
     <div class="content">
       <div class="two fill">
         <div style="display:flex; flex-direction:column; min-height:0">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem">
-            <b style="font-family:var(--fx); font-size:1.05rem; color:var(--s900)">요청이 늘수록 벌어지는 누적 비용 (개념)</b>
+            <b style="font-family:var(--fx); font-size:1.05rem; color:var(--s900)">요청이 늘수록 벌어지는 누적 투입 공수 (개념)</b>
             <span class="vleg"><span><i style="background:var(--s300)"></i>단순 웹 재개발</span>
               <span><i style="background:var(--t400)"></i>aisight 플랫폼</span></span>
           </div>
@@ -657,21 +657,22 @@
           </div>
           <div class="vlabs" style="gap:0"><span style="flex:none; padding-left:0.4rem">도입 시점</span><span style="flex:1; color:var(--s400)">대시보드 · 수정 요청이 늘어날수록 ›››</span><span style="flex:none; padding-right:0.4rem">요청 많음</span></div>
           <p style="font-size:0.86rem; color:var(--s500); line-height:1.5; margin-top:0.3rem">
-            도입 시점에는 플랫폼 비용으로 aisight가 높지만, <b>요청이 쌓일수록 격차가 벌어집니다.</b>
-            단순 웹은 요청마다 개발비가 다시 발생하고, aisight는 요청이 늘어도 비용이 거의 늘지 않기 때문입니다.</p>
+            같은 팀이 만들어도 <b>코드 개발과 Studio 조립은 건당 공수가 다릅니다.</b> 요청이 쌓일수록
+            처리량 격차가 벌어지고, 절약된 공수는 데이터 품질·신규 과제로 갑니다.</p>
         </div>
         <div class="rt-wrap">
           <table class="rt">
             <tr><th style="width:26%">항목</th><th style="width:37%">단순 웹 재개발</th><th>aisight 플랫폼</th></tr>
-            <tr><td class="org">새 대시보드</td><td>건마다 개발 발주 · 비용 발생</td><td><b>직접 제작 · 관리자 조립 - 개발비 0</b></td></tr>
-            <tr><td class="org">화면 수정</td><td>요청 → 개발 큐, 주 단위</td><td><b>화면에서 직접, 당일</b></td></tr>
+            <tr><td class="org">만드는 방식</td><td>상주 팀이 코드로 개발 - 건당 공수 큼, 몰리면 대기</td><td><b>조립으로 건당 공수 급감 - 담당자 직접도 가능</b></td></tr>
+            <tr><td class="org">만드는 사람</td><td>상주 개발팀만</td><td><b>상주 팀 + 현업 담당자까지</b> - 만들 수 있는 손이 늘어남</td></tr>
+            <tr><td class="org">화면 수정</td><td>코드 수정 → 검수 → 배포 주기</td><td><b>화면에서 직접, 당일</b></td></tr>
             <tr><td class="org">AI 분석</td><td>별도 프로젝트로 재개발</td><td>기본 탑재 - 질의 · 브리핑 · 알림</td></tr>
             <tr><td class="org">라이선스</td><td>태블로 제거 - BI 기능은 별도 개발</td><td>aisight 라이선스로 대체 - 기능 포함</td></tr>
           </table>
         </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
-        <span>대시보드가 더 늘지 않을 조직이라면 단순 웹 개발이 쌉니다. <b>계속 늘어날 조직이라면 이야기가 다릅니다.</b></span></div>
+        <span>같은 팀이 일해도 큐가 길어지는 구조와 <b>처리량이 몇 배가 되는 구조</b> - 요청이 늘수록 이 차이가 벌어집니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 4 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
@@ -794,51 +795,34 @@
 
   <section class="slide" data-title="개인 AI로 이어가기">
     <header class="s-head">
-      <h2><span class="bullet"></span>가치 ② 심화 - <em>쓰던 개인 AI에서 그대로 이어집니다</em></h2>
+      <h2><span class="bullet"></span>가치 ② 심화 - <em>화면에서 분석하고, 개인 AI로 이어갑니다</em></h2>
       <div class="s-right"><span class="sec">02 · Value</span></div>
     </header>
-    <div class="s-band"><p>분석은 대시보드에서 끝나지 않습니다. aisight는 <strong>MCP(모델 연결 표준)로 열려 있어</strong>,
-      담당자가 쓰던 개인 Claude·사내 AI에서 지금 보던 화면을 이어받아 분석합니다.</p></div>
+    <div class="s-band"><p>분석의 기본은 <strong>대시보드 안 AI 어시스턴트</strong>입니다. 더 이어가고 싶을 때는
+      aisight가 <strong>MCP(모델 연결 표준)로 열려 있어</strong> 쓰던 개인 Claude·사내 AI가 바로 연결됩니다.</p></div>
     <div class="content">
-      <div class="two fill">
+      <div class="two fill" style="grid-template-columns:1fr 1.5fr; display:grid; align-items:start">
         <div class="krows">
-          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
-            <span><h4>"Claude로 분석" 버튼 <small>ONE CLICK</small></h4>
-            <p>대시보드 상단 버튼 하나로, 지금 보던 화면의 <b>필터·기간·지표가 질문에 미리 담긴 채</b>
-               개인 Claude가 열립니다. 복사·붙여넣기 없이 보던 분석을 그대로 이어갑니다.
-               화면 안에서 바로 여는 채팅 패널도 함께 제공합니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+            <span><h4>기본은 화면 안에서 <small>BUILT-IN</small></h4>
+            <p>브리핑·질의·추천 질문까지, 분석의 기본 동선은 <b>대시보드를 떠나지 않습니다.</b>
+               앞 장의 AI 어시스턴트가 그 화면입니다.</p></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><line x1="6.8" y1="7.2" x2="10.5" y2="16.2"/><line x1="17.2" y1="7.2" x2="13.5" y2="16.2"/><line x1="7.2" y1="6" x2="16.8" y2="6"/></svg></span>
-            <span><h4>MCP 표준 연동 <small>OPEN</small></h4>
-            <p>aisight가 <b>MCP 서버를 기본 제공</b>합니다. MCP는 공개 1년 만에 OpenAI · Microsoft · Google이
-               채택하고 Linux Foundation이 관리하는 <b>업계 표준</b> - 특정 AI에 묶이지 않습니다.</p></span></div>
-          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-            <span><h4>통제는 그대로 <small>GOVERNED</small></h4>
-            <p>개인 AI로 이어가도 조회는 <b>본인 권한 범위 안</b>이고, 질의는 감사 로그에 남습니다.
-               밖으로 열리되, 통제는 플랫폼 안에 있습니다.</p></span></div>
+            <span><h4>aisight가 곧 MCP 연결점 <small>OPEN</small></h4>
+            <p>Claude Desktop 등 MCP를 지원하는 AI라면 <b>aisight의 지표·데이터에 바로 연결</b>해
+               대화합니다. MCP는 공개 1년 만에 OpenAI·Microsoft·Google이 채택하고 Linux Foundation이
+               관리하는 <b>업계 표준</b> - 특정 AI에 묶이지 않습니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+            <span><h4>이어갈 때는 버튼 하나 <small>HANDOFF</small></h4>
+            <p>"Claude로 분석"을 누르면 보던 화면의 <b>필터·기간·지표가 질문에 미리 담긴 채</b>
+               개인 Claude가 열립니다. 조회는 본인 권한 범위, 질의는 감사 로그에 - 통제는 그대로입니다.</p></span></div>
         </div>
         <div class="mockcol">
-          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">캠페인 성과 → Claude Desktop</span><span class="live">MCP 연결됨</span></div>
-            <div class="mduo" style="grid-template-columns: 0.9fr 1.1fr">
-              <div class="mprev" style="border-right:1px solid var(--s200)">
-                <div style="display:flex; align-items:center; gap:0.4rem; font-size:0.66rem; color:var(--s500)">
-                  <b style="color:var(--s900); font-family:var(--fx)">캠페인 성과 · W36</b>
-                  <span class="mstat on" style="margin-left:auto">Claude로 분석</span></div>
-                <div class="sysnote" style="margin-top:0.1rem">Region Europe · Channel SOCIAL · W36 (08.31~09.06)</div>
-                <div class="mg"><span>eStore 전환율</span><span class="mgb"><i style="width:61%"></i></span><b>1.9%</b></div>
-                <div class="mg"><span>Spend (WoW)</span><span class="mgb"><i style="width:72%"></i></span><b>+7.2%</b></div>
-                <div class="sysnote">버튼을 누르면 이 필터·지표가 그대로 질문에 담깁니다</div>
-              </div>
-              <div class="mchat">
-                <div class="mmsg q">[Europe · SOCIAL · W36] eStore 전환율이 -0.3%p 빠졌어. 전주 대비 변동 요인을 캠페인 단위로 짚어줘.</div>
-                <div class="mmsg a"><b>리타기팅 소재 피로도</b>가 원인입니다 - CPC 1.8배, CTR -22%.
-                  기여 캠페인은 플래그십 리타기팅 - 상세 표를 가져올까요?</div>
-                <div class="mmsg q">응, 캠페인별로 보여 줘.</div>
-                <div class="mmsg a">aisight에서 권한 범위 데이터를 조회했습니다. <b>상위 2개 캠페인이 87%</b>를 차지합니다.</div>
-                <div class="minput">이어서 물어보세요<span class="send">▶</span></div>
-              </div>
-            </div></div>
-          <p class="mcap"><b>이어가는 분석.</b> 질문이 미리 입력된 채 열리고, 개인 Claude가 MCP로
-             aisight 데이터를 직접 조회합니다 - 조회 범위는 본인 권한 그대로.</p>
+          <div class="win" style="flex:none"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">"Claude로 분석" - 이어가기 (예시 화면)</span><span class="live">MCP 연결</span></div>
+            <img src="assets/gbc-shots/claude-handoff.webp" alt="Claude로 분석 - 대시보드에서 Claude Desktop으로 이어가기" style="width:100%; display:block">
+          </div>
+          <p class="mcap"><b>예시 화면.</b> 버튼을 누르면 질문이 미리 입력된 Claude Desktop이 별도 창으로 열리고,
+             MCP로 aisight 데이터를 본인 권한 범위에서 조회합니다.</p>
         </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg></span>
@@ -896,9 +880,9 @@
         <div style="flex:1; display:flex; flex-direction:column; justify-content:space-between">
           <div style="font-family:var(--fx); font-size:1rem; color:var(--s700)">견적 A · 단순 웹 재개발</div>
           <div class="costrow"><span style="flex:1"><b>구축비 (1회)</b><small>지금 쓰는 화면을 웹으로 재개발</small></span></div>
-          <div class="costrow"><span style="flex:1"><b>이후 신규 · 수정</b><small>요청 건마다 개발비가 별도로 발생</small></span></div>
+          <div class="costrow"><span style="flex:1"><b>이후 신규 · 수정</b><small>상주 팀이 건마다 코드로 개발 - 공수가 크고, 몰리면 대기</small></span></div>
           <div class="costrow"><span style="flex:1"><b>태블로 라이선스 제거</b><small>다만 셀프서비스·AI 분석 기능은 담기지 않음 - 필요 시 각각 신규 개발</small></span></div>
-          <div class="costrow" style="background:var(--s50)"><span style="flex:1"><b>요청이 늘면</b><small>개발비도 비례해서 늘어나는 구조</small></span></div>
+          <div class="costrow" style="background:var(--s50)"><span style="flex:1"><b>요청이 늘면</b><small>투입 공수가 비례해 늘고, 대기 또는 증원으로 이어지는 구조</small></span></div>
         </div>
         <div style="flex:none; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:0.3rem">
           <span style="font-family:var(--fx); font-size:0.78rem; color:var(--s400)">VS</span>
@@ -908,7 +892,7 @@
           <div class="costrow"><span style="flex:1"><b>구축비 (1회) + 라이선스</b><small>태블로 좌석 라이선스를 aisight 라이선스가 대체</small></span></div>
           <div class="costrow"><span style="flex:1"><b>이후 신규 · 수정</b><small>Studio 조립으로 라이선스 안에서 흡수 - 건별 개발비 없음</small></span></div>
           <div class="costrow"><span style="flex:1"><b>AI 질의 · 브리핑 · 알림 포함</b><small>별도 개발 없이 플랫폼 업그레이드로 추가</small></span></div>
-          <div class="costrow gain"><span style="flex:1"><b>요청이 늘면</b><small>비용은 거의 그대로 - 쓰는 만큼 가치가 커지는 구조</small></span></div>
+          <div class="costrow gain"><span style="flex:1"><b>요청이 늘면</b><small>같은 인력으로 처리량 몇 배 - 절약된 공수는 신규 과제로</small></span></div>
         </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
@@ -993,7 +977,7 @@
     <div class="content">
       <div class="fill" style="display:flex; flex-direction:column; min-height:0">
       <div class="gflow" style="gap:0.5rem; flex:1; min-height:0">
-        <div class="gstep hl" style="flex:1.15; text-align:left; padding:0.9rem 1rem; justify-content:flex-start">
+        <div class="gstep hl" style="flex:1.15; text-align:left; padding:1rem 1rem; justify-content:space-evenly">
           <span style="font-family:var(--fx); font-size:0.74rem; color:var(--t700); letter-spacing:0.06em">NOW · 이번 제안</span>
           <b style="font-size:1.15rem; margin-top:0.3rem">대시보드 전환</b>
           <small style="font-size:0.82rem; margin-top:0.35rem">태블로를 걷어내고 여기까지가 이번 검토 범위입니다.</small>
@@ -1003,7 +987,7 @@
           <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 개인 Claude 연동 (MCP)</small>
           <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 지표 거버넌스 · 감사</small></div>
         <span class="garr">›</span>
-        <div class="gstep" style="text-align:left; padding:0.9rem 1rem; justify-content:flex-start">
+        <div class="gstep" style="text-align:left; padding:1rem 1rem; justify-content:space-evenly">
           <span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 1</span>
           <b style="font-size:1.05rem; margin-top:0.3rem">리포트 자동화</b>
           <small style="font-size:0.8rem; margin-top:0.35rem">담당자는 쓰는 사람에서 검토하는 사람으로.</small>
@@ -1012,7 +996,7 @@
           <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 예약 · 구독 정기 발송</small>
           <small style="font-size:0.76rem; margin-top:0.55rem; color:var(--t700)">월요일 아침, 주간 보고 초안이 먼저 와 있습니다</small></div>
         <span class="garr">›</span>
-        <div class="gstep" style="text-align:left; padding:0.9rem 1rem; justify-content:flex-start">
+        <div class="gstep" style="text-align:left; padding:1rem 1rem; justify-content:space-evenly">
           <span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 2</span>
           <b style="font-size:1.05rem; margin-top:0.3rem">문서 지능</b>
           <small style="font-size:0.8rem; margin-top:0.35rem">숫자의 "왜"가 문서에서 나옵니다.</small>
@@ -1021,7 +1005,7 @@
           <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 숫자 + 문서 통합 질의</small>
           <small style="font-size:0.76rem; margin-top:0.55rem; color:var(--t700)">"이 거래선 계약 조건이?" - 대시보드 옆에서 조항이 열립니다</small></div>
         <span class="garr">›</span>
-        <div class="gstep" style="text-align:left; padding:0.9rem 1rem; justify-content:flex-start">
+        <div class="gstep" style="text-align:left; padding:1rem 1rem; justify-content:space-evenly">
           <span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 3</span>
           <b style="font-size:1.05rem; margin-top:0.3rem">지식그래프</b>
           <small style="font-size:0.8rem; margin-top:0.35rem">흩어진 데이터가 연결된 지식이 됩니다.</small>
@@ -1152,7 +1136,7 @@
           <tr><td class="org">네트워크</td><td>서버-DB 간 사내망 연결, 사용자-서버 HTTPS - <b>외부 반출 구간 없음</b></td></tr>
           <tr><td class="org">LLM</td><td>사내 정책에 따라 외부 API(키 발급) 또는 사내 LLM 연동 - 협의</td></tr>
           <tr><td class="org">보안 절차</td><td>보안성 검토 자료 · 계정 신청서 등 필요 서류는 <b>세일링스톤이 작성 지원</b></td></tr>
-          <tr><td class="org">담당</td><td>GBC: 계정·데이터 확인 1명(간헐 지원) · 세일링스톤: <b>전담 2명</b> 상주 또는 원격</td></tr>
+          <tr><td class="org">담당</td><td>GBC: 계정·데이터 확인 담당 지정(간헐 지원) · 세일링스톤: <b>전담 인력 원격 지원</b> (필요 시 방문 협의)</td></tr>
         </table>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
