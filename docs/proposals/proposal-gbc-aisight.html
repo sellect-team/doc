@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>GBC 대시보드 웹 전환 제안서 (aisight)</title>
-  <meta name="doc-version" content="1.7">
+  <meta name="doc-version" content="1.8">
   <meta name="doc-description" content="삼성전자 GBC 태블로 대시보드의 웹 전환 - 단순 재개발이 아닌 aisight 데이터 플랫폼 도입의 추가 가치 6가지와 2주 무상 PoC 제안">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -612,7 +612,7 @@
           <p>담당자가 직접 만들 수도, 관리자가 받아 처리할 수도 - 누가 만들어도 개발이 아니라 조립이라 당일 처리됩니다.</p>
           <div class="fix">요청 큐가 길어지지 않습니다.</div></div>
         <div class="card"><span class="accent"></span><div class="no">가치 02<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg></span></div><h3>묻는 대시보드</h3>
-          <p>자연어로 질문하면 차트와 요약으로 답합니다. 보는 도구가 답을 얻는 도구가 됩니다. 쓰던 개인 Claude로 이어가는 MCP 연동까지.</p>
+          <p>자연어로 질문하면 차트와 요약으로 답합니다. 보는 도구가 답을 얻는 도구가 됩니다. 쓰던 개인 Claude로 이어가는 MCP 연동도 함께입니다.</p>
           <div class="fix">태블로에도 없는 층.</div></div>
         <div class="card"><span class="accent"></span><div class="no">가치 03<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span></div><h3>지표 거버넌스</h3>
           <p>셀프서비스가 만들 지표 난립을 표준 지표 사전·권한·이력으로 통제합니다. 자유와 통제를 동시에.</p>
@@ -621,14 +621,14 @@
           <p>다시 짓는 것은 같지만 그다음이 다릅니다 - 이후 요청이 조립으로 흡수되어 공수가 늘지 않는 구조.</p>
           <div class="fix">요청이 늘어도 공수는 그대로.</div></div>
         <div class="card"><span class="accent"></span><div class="no">가치 05<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span></div><h3>포탈은 그대로</h3>
-          <p>기존 커스텀 포탈에 임베드되어 사용자 동선이 바뀌지 않습니다. 전환 프로젝트 최대 리스크의 제거.</p>
+          <p>기존 커스텀 포탈에 임베드되어 사용자 동선이 바뀌지 않습니다. 전환에서 가장 큰 리스크가 사라집니다.</p>
           <div class="fix">재교육 · 이탈 리스크 0.</div></div>
         <div class="card"><span class="accent"></span><div class="no">가치 06<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span></div><h3>확장 로드맵</h3>
           <p>리포트 자동화·문서 지능·지식그래프로 이어지는 다음 단계가 같은 플랫폼 위에 준비되어 있습니다.</p>
           <div class="fix">별도 시스템이 아닌 모듈 추가.</div></div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
-        <span>이 여섯 가지가 <b>단순 웹 개발 견적에는 없는 항목</b>입니다 - 다음 장부터 하나씩 증명합니다.</span></div>
+        <span>이 여섯 가지가 <b>단순 웹 재개발에는 없는 것들</b>입니다 - 다음 장부터 하나씩 증명합니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 3 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
@@ -667,7 +667,7 @@
             <tr><td class="org">만드는 사람</td><td>상주 개발팀만</td><td><b>상주 팀 + 현업 담당자까지</b> - 만들 수 있는 손이 늘어남</td></tr>
             <tr><td class="org">화면 수정</td><td>코드 수정 → 검수 → 배포 주기</td><td><b>화면에서 직접, 당일</b></td></tr>
             <tr><td class="org">AI 분석</td><td>별도 프로젝트로 재개발</td><td>기본 탑재 - 질의 · 브리핑 · 알림</td></tr>
-            <tr><td class="org">라이선스</td><td>태블로 제거 - BI 기능은 별도 개발</td><td>aisight 라이선스로 대체 - 기능 포함</td></tr>
+            <tr><td class="org">라이선스</td><td>태블로 제거 - 대체 기능은 없음</td><td>aisight 라이선스로 대체 - 기능 포함</td></tr>
           </table>
         </div>
       </div>
