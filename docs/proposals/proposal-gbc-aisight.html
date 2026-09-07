@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>GBC 대시보드 웹 전환 제안서 (aisight)</title>
-  <meta name="doc-version" content="1.8">
+  <meta name="doc-version" content="1.9">
   <meta name="doc-description" content="삼성전자 GBC 태블로 대시보드의 웹 전환 - 단순 재개발이 아닌 aisight 데이터 플랫폼 도입의 추가 가치 6가지와 2주 무상 PoC 제안">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -255,12 +255,16 @@
     .win { background: #fff; border: 1px solid var(--s200); border-radius: 0.9rem;
            box-shadow: 0 14px 34px rgba(15,23,42,0.10); overflow: hidden;
            display: flex; flex-direction: column; }
-    .win .bar { display: flex; align-items: center; gap: 0.45rem; background: var(--s100);
-                border-bottom: 1px solid var(--s200); padding: 0.5rem 0.9rem; }
-    .win .dot { width: 0.52rem; height: 0.52rem; border-radius: 50%; background: var(--s300); }
-    .win .bar .t { margin-left: 0.4rem; font-size: 0.84rem; font-family: var(--fx); color: var(--s500); }
-    .win .bar .live { margin-left: auto; font-size: 0.7rem; font-family: var(--fx); color: var(--t600);
-                      background: var(--t50); border-radius: 99rem; padding: 0.14rem 0.6rem; }
+    .win .bar { display: flex; align-items: center; gap: 0.45rem; background: #F1F3F5;
+                border-bottom: 1px solid var(--s200); padding: 0.5rem 0.7rem; }
+    .win .dot { width: 0.56rem; height: 0.56rem; border-radius: 50%; }
+    .win .dot:nth-child(1) { background: #FF5F57; }
+    .win .dot:nth-child(2) { background: #FEBC2E; }
+    .win .dot:nth-child(3) { background: #28C840; }
+    .win .addr { flex: 1; display: flex; align-items: center; gap: 0.45rem; background: #fff;
+                 border: 1px solid var(--s200); border-radius: 99rem; padding: 0.26rem 0.8rem;
+                 font-size: 0.74rem; color: var(--s500); margin-left: 0.35rem; }
+    .win .addr .i { width: 0.72rem; height: 0.72rem; stroke-width: 2; color: var(--s400); }
     .win .body { flex: 1; min-height: 0; padding: 0.8rem 0.95rem; display: flex; flex-direction: column;
                  gap: 0.55rem; }
     .mockcol { display: flex; flex-direction: column; height: 100%; min-height: 0; }
@@ -715,7 +719,7 @@
                그때도 코드 개발이 아니라 Studio 조립이라 <b>처리 속도가 몇 배로 빨라집니다</b> - 요청 큐가 쌓이지 않습니다.</p></span></div>
         </div>
         <div class="mockcol">
-          <div class="win" style="flex:none"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">aisight Studio · 홈 (구성 화면)</span><span class="live">담당자 화면</span></div>
+          <div class="win" style="flex:none"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="addr"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>aisight.gbc.internal/studio</span></div>
             <img src="assets/gbc-shots/studio-home.webp" alt="aisight Studio 홈" style="width:100%; display:block">
           </div>
           <p class="mcap"><b>aisight Studio.</b> "유형만 고르면 데이터 연결부터 초안까지" - 대시보드는 물론
@@ -766,7 +770,7 @@
     <div class="content">
       <div class="two fill" style="grid-template-columns:1fr 1.5fr; display:grid; align-items:start">
         <div class="mockcol">
-          <div class="win" style="flex:none"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">aisight · GBC Performance Summary (구성 화면)</span><span class="live">AI 어시스턴트</span></div>
+          <div class="win" style="flex:none"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="addr"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>aisight.gbc.internal/dashboard/performance-summary</span></div>
             <img src="assets/gbc-shots/gbc-dashboard.webp" alt="aisight 대시보드 - AI 어시스턴트 브리핑" style="width:100%; display:block">
           </div>
           <p class="mcap"><b>구성 화면.</b> 열자마자 왼쪽 AI 어시스턴트가 변곡·원인 후보·추천 질문을 제시합니다.
@@ -818,9 +822,7 @@
                개인 Claude가 열립니다. 조회는 본인 권한 범위, 질의는 감사 로그에 - 통제는 그대로입니다.</p></span></div>
         </div>
         <div class="mockcol">
-          <div class="win" style="flex:none"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">"Claude로 분석" - 이어가기 (예시 화면)</span><span class="live">MCP 연결</span></div>
-            <img src="assets/gbc-shots/claude-handoff.webp" alt="Claude로 분석 - 대시보드에서 Claude Desktop으로 이어가기" style="width:100%; display:block">
-          </div>
+          <img src="assets/gbc-shots/claude-handoff.webp" alt="Claude로 분석 - 대시보드에서 Claude Desktop으로 이어가기" style="width:100%; display:block; border-radius:0.9rem; box-shadow:0 14px 36px rgba(15,23,42,0.14); border:1px solid var(--s200)">
           <p class="mcap"><b>예시 화면.</b> 버튼을 누르면 질문이 미리 입력된 Claude Desktop이 별도 창으로 열리고,
              MCP로 aisight 데이터를 본인 권한 범위에서 조회합니다.</p>
         </div>
@@ -909,7 +911,7 @@
     <div class="s-band"><p>사용자는 <strong>지금 쓰는 포탈 주소 그대로</strong> 들어옵니다.
       바뀌는 것은 화면 안의 엔진뿐입니다.</p></div>
     <div class="content">
-      <div class="two fill">
+      <div class="two fill" style="grid-template-columns:1fr 1.5fr; display:grid; align-items:start">
         <div class="krows">
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
             <span><h4>포탈 임베드 통합</h4>
@@ -925,40 +927,11 @@
                <b>통합 리스크가 가장 작은 조합</b>입니다.</p></span></div>
         </div>
         <div class="mockcol">
-          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">GBC Portal · Performance Summary</span><span class="live">SSO 로그인 유지</span></div>
-            <div class="body" style="padding:0; display:flex; flex-direction:column">
-              <div style="display:flex; gap:1rem; align-items:center; padding:0.42rem 0.8rem; border-bottom:1px solid var(--s200); font-size:0.66rem; color:var(--s500)">
-                <b style="color:var(--s900); font-family:var(--fx); font-size:0.72rem">GBC Portal</b>
-                <span>홈</span><span>공지</span>
-                <span style="color:var(--t700); font-family:var(--fx); border-bottom:2px solid var(--t400); padding-bottom:0.08rem">대시보드</span>
-                <span>보고서</span><span>업무 지원</span>
-                <span class="mava" style="margin-left:auto">김</span>
-              </div>
-              <div style="display:flex; gap:0.3rem; padding:0.4rem 0.8rem; border-bottom:1px solid var(--s100); font-size:0.6rem; color:var(--s500); flex-wrap:wrap">
-                <span style="border:1px solid var(--s200); border-radius:0.35rem; padding:0.08rem 0.4rem">Region 전체 ▾</span>
-                <span style="border:1px solid var(--s200); border-radius:0.35rem; padding:0.08rem 0.4rem">Subsidiary 전체 ▾</span>
-                <span style="border:1px solid var(--s200); border-radius:0.35rem; padding:0.08rem 0.4rem">Division 전체 ▾</span>
-                <span style="border:1px solid var(--s200); border-radius:0.35rem; padding:0.08rem 0.4rem">Product 전체 ▾</span>
-                <span style="border:1px solid var(--s200); border-radius:0.35rem; padding:0.08rem 0.4rem">W36 · 08.31~09.06</span>
-                <span style="border:1px solid var(--t400); color:var(--t700); border-radius:0.35rem; padding:0.08rem 0.4rem">USD</span>
-              </div>
-              <div style="padding:0.5rem 0.8rem; display:flex; flex-direction:column; gap:0.4rem">
-                <div class="mtbl"><table>
-                  <tr><th>구분</th><th>Spend</th><th>Impressions</th><th>Clicks</th><th>eStore Rev</th></tr>
-                  <tr><td><b>WTD</b></td><td>$3.4M <b style="color:var(--t700)">+7.2%</b></td><td>1.4B +3.1%</td><td>12.6M +5.4%</td><td>$512K <b style="color:var(--t700)">+9.8%</b></td></tr>
-                  <tr><td><b>MTD</b></td><td>$68.4M -2.4%</td><td>31.2B +1.8%</td><td>298.7M +4.2%</td><td>$92.1M +3.5%</td></tr>
-                  <tr><td><b>YTD</b></td><td>$702.3M</td><td>261.4B</td><td>2.4B</td><td>$861.2M</td></tr>
-                </table></div>
-                <div class="mg"><span>Awareness · Spend</span><span class="mgb"><i style="width:66%"></i></span><b>$1.3M</b></div>
-                <div class="mg"><span>Consideration · Spend</span><span class="mgb"><i style="width:28%"></i></span><b>$498K</b></div>
-                <div class="mg"><span>Conversion · Spend</span><span class="mgb"><i style="width:74%"></i></span><b>$1.5M</b></div>
-                <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
-                  <span><b>AI 브리핑 · WTD Spend +7.2%는 폴더블 런칭 캠페인</b><small>전환 기여 상위는 D2C - 히트맵에서 월별 배분 확인 가능</small></span>
-                  <span class="st on">방금</span></div>
-              </div>
-            </div></div>
-          <p class="mcap"><b>포탈 임베드.</b> 지금 보시는 Performance Summary가 같은 주소·같은 로그인 그대로 -
-             엔진만 태블로에서 aisight로 바뀝니다. (수치는 예시)</p>
+          <div class="win" style="flex:none"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="addr"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>gbc-portal.internal/dashboard/performance-summary</span></div>
+            <img src="assets/gbc-shots/portal-embed.webp" alt="GBC 포탈 안에 임베드된 aisight 대시보드" style="width:100%; display:block">
+          </div>
+          <p class="mcap"><b>구성 화면.</b> 같은 포탈, 같은 메뉴, 같은 로그인 - 화면 안 엔진만 aisight로 바뀌고
+             AI 브리핑이 더해집니다. (수치는 예시)</p>
         </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
@@ -978,7 +951,7 @@
       <div class="fill" style="display:flex; flex-direction:column; min-height:0">
       <div class="gflow" style="gap:0.5rem; flex:1; min-height:0">
         <div class="gstep hl" style="flex:1.15; text-align:left; padding:1rem 1rem; justify-content:space-evenly">
-          <span style="font-family:var(--fx); font-size:0.74rem; color:var(--t700); letter-spacing:0.06em">NOW · 이번 제안</span>
+          <svg class="i" viewBox="0 0 24 24" style="width:1.5rem;height:1.5rem;color:var(--t600);margin-bottom:0.4rem"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span style="font-family:var(--fx); font-size:0.74rem; color:var(--t700); letter-spacing:0.06em">NOW · 이번 제안</span>
           <b style="font-size:1.15rem; margin-top:0.3rem">대시보드 전환</b>
           <small style="font-size:0.82rem; margin-top:0.35rem">태블로를 걷어낸 자리를 채우는 다섯 가지 - 이번 검토 범위입니다.</small>
           <small style="font-size:0.8rem; margin-top:0.6rem; color:var(--s700)">✓ Studio 셀프서비스</small>
@@ -988,7 +961,7 @@
           <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 지표 거버넌스 · 감사</small></div>
         <span class="garr">›</span>
         <div class="gstep" style="text-align:left; padding:1rem 1rem; justify-content:space-evenly">
-          <span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 1</span>
+          <svg class="i" viewBox="0 0 24 24" style="width:1.5rem;height:1.5rem;color:var(--t600);margin-bottom:0.4rem"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg><span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 1</span>
           <b style="font-size:1.05rem; margin-top:0.3rem">리포트 자동화</b>
           <small style="font-size:0.8rem; margin-top:0.35rem">담당자는 쓰는 사람에서 검토하는 사람으로.</small>
           <small style="font-size:0.8rem; margin-top:0.6rem; color:var(--s700)">✓ 슬라이드 · PPT 내보내기</small>
@@ -997,7 +970,7 @@
           <small style="font-size:0.76rem; margin-top:0.55rem; color:var(--t700)">월요일 아침, 주간 보고 초안이 먼저 와 있습니다</small></div>
         <span class="garr">›</span>
         <div class="gstep" style="text-align:left; padding:1rem 1rem; justify-content:space-evenly">
-          <span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 2</span>
+          <svg class="i" viewBox="0 0 24 24" style="width:1.5rem;height:1.5rem;color:var(--t600);margin-bottom:0.4rem"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 2</span>
           <b style="font-size:1.05rem; margin-top:0.3rem">문서 지능</b>
           <small style="font-size:0.8rem; margin-top:0.35rem">숫자의 "왜"가 문서에서 나옵니다.</small>
           <small style="font-size:0.8rem; margin-top:0.6rem; color:var(--s700)">✓ 계약 · 회의록 인덱싱</small>
@@ -1006,7 +979,7 @@
           <small style="font-size:0.76rem; margin-top:0.55rem; color:var(--t700)">"이 거래선 계약 조건이?" - 대시보드 옆에서 조항이 열립니다</small></div>
         <span class="garr">›</span>
         <div class="gstep" style="text-align:left; padding:1rem 1rem; justify-content:space-evenly">
-          <span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 3</span>
+          <svg class="i" viewBox="0 0 24 24" style="width:1.5rem;height:1.5rem;color:var(--t600);margin-bottom:0.4rem"><circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><line x1="6.8" y1="7.2" x2="10.5" y2="16.2"/><line x1="17.2" y1="7.2" x2="13.5" y2="16.2"/><line x1="7.2" y1="6" x2="16.8" y2="6"/></svg><span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 3</span>
           <b style="font-size:1.05rem; margin-top:0.3rem">지식그래프</b>
           <small style="font-size:0.8rem; margin-top:0.35rem">흩어진 데이터가 연결된 지식이 됩니다.</small>
           <small style="font-size:0.8rem; margin-top:0.6rem; color:var(--s700)">✓ 제품 · 거래선 · 조직 관계망</small>
