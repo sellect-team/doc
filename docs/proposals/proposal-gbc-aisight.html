@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>GBC 대시보드 웹 전환 제안서 (aisight)</title>
-  <meta name="doc-version" content="1.6">
+  <meta name="doc-version" content="1.7">
   <meta name="doc-description" content="삼성전자 GBC 태블로 대시보드의 웹 전환 - 단순 재개발이 아닌 aisight 데이터 플랫폼 도입의 추가 가치 6가지와 2주 무상 PoC 제안">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -608,22 +608,22 @@
       aisight 전환은 <strong>앞으로의 요구를 흡수하는 구조</strong>를 만드는 일입니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">가치 01</div><h3>요청 대기의 소멸</h3>
+        <div class="card"><span class="accent"></span><div class="no">가치 01<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span></div><h3>요청 대기의 소멸</h3>
           <p>담당자가 직접 만들 수도, 관리자가 받아 처리할 수도 - 어느 쪽이든 개발이 아니라 조립이라 당일 처리됩니다.</p>
           <div class="fix">요청 큐가 길어지지 않습니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">가치 02</div><h3>묻는 대시보드</h3>
+        <div class="card"><span class="accent"></span><div class="no">가치 02<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg></span></div><h3>묻는 대시보드</h3>
           <p>자연어로 질문하면 차트와 요약으로 답합니다. 보는 도구가 답을 얻는 도구가 됩니다. 쓰던 개인 Claude로 이어가는 MCP 연동까지.</p>
           <div class="fix">태블로에도 없는 층.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">가치 03</div><h3>지표 거버넌스</h3>
+        <div class="card"><span class="accent"></span><div class="no">가치 03<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span></div><h3>지표 거버넌스</h3>
           <p>셀프서비스가 만들 지표 난립을 표준 지표 사전·권한·이력으로 통제합니다. 자유와 통제를 동시에.</p>
           <div class="fix">같은 이름 = 같은 숫자.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">가치 04</div><h3>비용 구조의 전환</h3>
-          <p>태블로 좌석 라이선스는 aisight로 대체되고, 건당 개발비는 조립으로 흡수됩니다. 요청이 늘어도 비용이 늘지 않는 구조.</p>
+        <div class="card"><span class="accent"></span><div class="no">가치 04<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span></div><h3>비용 구조의 전환</h3>
+          <p>다시 짓는 것은 같지만 그다음이 다릅니다 - 이후 요청이 조립으로 흡수되어 공수가 늘지 않는 구조.</p>
           <div class="fix">한계비용 최소의 구조.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">가치 05</div><h3>포탈은 그대로</h3>
+        <div class="card"><span class="accent"></span><div class="no">가치 05<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span></div><h3>포탈은 그대로</h3>
           <p>기존 커스텀 포탈에 임베드되어 사용자 동선이 바뀌지 않습니다. 전환 프로젝트 최대 리스크의 제거.</p>
           <div class="fix">재교육 · 이탈 리스크 0.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">가치 06</div><h3>확장 로드맵</h3>
+        <div class="card"><span class="accent"></span><div class="no">가치 06<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span></div><h3>확장 로드맵</h3>
           <p>리포트 자동화·문서 지능·지식그래프로 이어지는 다음 단계가 같은 플랫폼 위에 준비되어 있습니다.</p>
           <div class="fix">별도 시스템이 아닌 모듈 추가.</div></div>
       </div>
@@ -657,8 +657,8 @@
           </div>
           <div class="vlabs" style="gap:0"><span style="flex:none; padding-left:0.4rem">도입 시점</span><span style="flex:1; color:var(--s400)">대시보드 · 수정 요청이 늘어날수록 ›››</span><span style="flex:none; padding-right:0.4rem">요청 많음</span></div>
           <p style="font-size:0.86rem; color:var(--s500); line-height:1.5; margin-top:0.3rem">
-            같은 팀이 만들어도 <b>코드 개발과 Studio 조립은 건당 공수가 다릅니다.</b> 요청이 쌓일수록
-            처리량 격차가 벌어지고, 절약된 공수는 데이터 품질·신규 과제로 갑니다.</p>
+            도입 시점 공수는 플랫폼 구축이 더해지는 aisight 쪽이 큽니다. 그러나 <b>코드 개발과 Studio 조립은
+            건당 공수가 달라</b>, 요청이 쌓일수록 처리량 격차가 벌어집니다.</p>
         </div>
         <div class="rt-wrap">
           <table class="rt">
@@ -873,13 +873,13 @@
       <h2><span class="bullet"></span>가치 ④ 비용 - <em>두 견적서를 읽는 법</em></h2>
       <div class="s-right"><span class="sec">02 · Value</span></div>
     </header>
-    <div class="s-band"><p>어느 쪽이든 <strong>구축은 세일링스톤이 합니다.</strong> 두 견적의 차이는 금액이 아니라
-      <strong>요청이 늘 때 비용이 따라 느는가</strong>입니다.</p></div>
+    <div class="s-band"><p>어느 쪽이든 <strong>기존 화면을 다시 짓는 것에서 출발합니다.</strong>
+      갈림길은 그다음입니다 - <strong>요청이 늘 때 공수가 따라 느는가.</strong></p></div>
     <div class="content">
       <div style="display:flex; align-items:stretch; gap:1rem" class="fill">
         <div style="flex:1; display:flex; flex-direction:column; justify-content:space-between">
-          <div style="font-family:var(--fx); font-size:1rem; color:var(--s700)">견적 A · 단순 웹 재개발</div>
-          <div class="costrow"><span style="flex:1"><b>구축비 (1회)</b><small>지금 쓰는 화면을 웹으로 재개발</small></span></div>
+          <div style="font-family:var(--fx); font-size:1rem; color:var(--s700)">시나리오 A · 단순 웹 재개발</div>
+          <div class="costrow"><span style="flex:1"><b>기존 화면 재개발 (1회)</b><small>지금 쓰는 대시보드를 웹으로 다시 개발</small></span></div>
           <div class="costrow"><span style="flex:1"><b>이후 신규 · 수정</b><small>상주 팀이 건마다 코드로 개발 - 공수가 크고, 몰리면 대기</small></span></div>
           <div class="costrow"><span style="flex:1"><b>태블로 라이선스 제거</b><small>다만 셀프서비스·AI 분석 기능은 담기지 않음 - 필요 시 각각 신규 개발</small></span></div>
           <div class="costrow" style="background:var(--s50)"><span style="flex:1"><b>요청이 늘면</b><small>투입 공수가 비례해 늘고, 대기 또는 증원으로 이어지는 구조</small></span></div>
@@ -888,9 +888,9 @@
           <span style="font-family:var(--fx); font-size:0.78rem; color:var(--s400)">VS</span>
         </div>
         <div style="flex:1; display:flex; flex-direction:column; justify-content:space-between">
-          <div style="font-family:var(--fx); font-size:1rem; color:var(--t700)">견적 B · aisight 플랫폼 (제안)</div>
-          <div class="costrow"><span style="flex:1"><b>구축비 (1회) + 라이선스</b><small>태블로 좌석 라이선스를 aisight 라이선스가 대체</small></span></div>
-          <div class="costrow"><span style="flex:1"><b>이후 신규 · 수정</b><small>Studio 조립으로 라이선스 안에서 흡수 - 건별 개발비 없음</small></span></div>
+          <div style="font-family:var(--fx); font-size:1rem; color:var(--t700)">시나리오 B · aisight 플랫폼 (제안)</div>
+          <div class="costrow"><span style="flex:1"><b>기존 화면 재구축 (1회) + 플랫폼 · 라이선스</b><small>기존 대시보드를 aisight 위에 다시 짓고, 태블로 라이선스는 aisight가 대체</small></span></div>
+          <div class="costrow"><span style="flex:1"><b>이후 신규 · 수정</b><small>Studio 조립으로 건당 공수 급감 - 담당자 직접 제작도 가능</small></span></div>
           <div class="costrow"><span style="flex:1"><b>AI 질의 · 브리핑 · 알림 포함</b><small>별도 개발 없이 플랫폼 업그레이드로 추가</small></span></div>
           <div class="costrow gain"><span style="flex:1"><b>요청이 늘면</b><small>같은 인력으로 처리량 몇 배 - 절약된 공수는 신규 과제로</small></span></div>
         </div>
