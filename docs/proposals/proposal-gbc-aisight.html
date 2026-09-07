@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>GBC 대시보드 웹 전환 제안서 (aisight)</title>
-  <meta name="doc-version" content="1.2">
+  <meta name="doc-version" content="1.3">
   <meta name="doc-description" content="삼성전자 GBC 태블로 대시보드의 웹 전환 - 단순 재개발이 아닌 aisight 데이터 플랫폼 도입의 추가 가치 6가지와 2주 무상 PoC 제안">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -603,7 +603,8 @@
       <h2><span class="bullet"></span>두 갈래 비교 - <em>화면 재구매인가, 능력 확보인가</em></h2>
       <div class="s-right"><span class="sec">01 · Why</span></div>
     </header>
-    <div class="s-band"><p>같은 예산 검토라도 <strong>5년을 놓고 보면</strong> 두 길의 성격이 다릅니다.</p></div>
+    <div class="s-band"><p>같은 예산 검토라도 <strong>5년을 놓고 보면</strong> 두 길의 성격이 다릅니다. 태블로를 내려놓는 전환은
+      글로벌에서도 진행 중인 흐름이며, 전환 기업들은 <strong>BI 비용 40~70% 절감</strong>을 보고합니다.</p></div>
     <div class="content">
       <div class="rt-wrap fill">
         <table class="rt">
@@ -759,8 +760,8 @@
                aisight가 금융·제조 현장에서 상용 운영 중인 기술입니다.</p></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg></span>
             <span><h4>자동 요약 브리핑 <small>BRIEF</small></h4>
-            <p>대시보드를 열면 "지난주와 달라진 것"부터 요약해 줍니다.
-               회의 전에 차트를 훑으며 보내던 10분이 사라집니다.</p></span></div>
+            <p>열면 <b>"하락 전환" 같은 변곡부터</b> 짚고, 원인 후보를 수치와 함께 제시합니다.
+               이어서 물을 추천 질문까지 붙습니다 - 회의 전 10분이 사라집니다.</p></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
             <span><h4>이상 신호 알림 <small>WATCH</small></h4>
             <p>임계치·추세 이탈을 플랫폼이 감시해 담당자에게 먼저 알립니다.
@@ -790,8 +791,8 @@
                화면 안에서 바로 여는 채팅 패널도 함께 제공합니다.</p></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><line x1="6.8" y1="7.2" x2="10.5" y2="16.2"/><line x1="17.2" y1="7.2" x2="13.5" y2="16.2"/><line x1="7.2" y1="6" x2="16.8" y2="6"/></svg></span>
             <span><h4>MCP 표준 연동 <small>OPEN</small></h4>
-            <p>aisight가 <b>MCP 서버를 기본 제공</b>합니다. Claude Desktop 등 MCP를 지원하는 AI라면
-               무엇이든 aisight의 지표·데이터를 직접 조회하며 대화합니다 - 특정 AI에 묶이지 않습니다.</p></span></div>
+            <p>aisight가 <b>MCP 서버를 기본 제공</b>합니다. MCP는 공개 1년 만에 OpenAI · Microsoft · Google이
+               채택하고 Linux Foundation이 관리하는 <b>업계 표준</b> - 특정 AI에 묶이지 않습니다.</p></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
             <span><h4>통제는 그대로 <small>GOVERNED</small></h4>
             <p>개인 AI로 이어가도 조회는 <b>본인 권한 범위 안</b>이고, 질의는 감사 로그에 남습니다.
@@ -839,9 +840,9 @@
         <div class="card"><span class="accent"></span><div class="no">통제 01<span class="cat">DICTIONARY</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
           <h3>표준 지표 사전</h3>
-          <p>지표의 정의·산식·데이터 출처를 플랫폼에 한 번 등록하면, 누가 만든 대시보드든
-             같은 정의를 씁니다. "eStore 전환율"이 법인마다 다르게 계산되는 일이
-             구조적으로 사라집니다.</p>
+          <p>Studio의 <b>"데이터 지식" 메뉴</b>가 지표의 정의·산식·출처를 한곳에 모으고,
+             <b>조직 인증</b>을 받은 데이터와 지표만 표준으로 표시됩니다. "eStore 전환율"이
+             법인마다 다르게 계산되는 일이 구조적으로 사라집니다.</p>
           <div class="seg fx"><em>예시</em><p>"eStore 전환율 = eStore Revenue 주문 / Clicks" - 산식이 위젯에 자동 표기</p></div>
           <div class="fix">지표 정의의 단일 출처(Single Source).</div></div>
         <div class="card"><span class="accent"></span><div class="no">통제 02<span class="cat">ACCESS</span></div>
@@ -992,6 +993,36 @@
     <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
+  <section class="slide" data-title="진행 사례">
+    <header class="s-head">
+      <h2><span class="bullet"></span>진행 사례 - <em>이미 비슷한 조직에서 하고 있습니다</em></h2>
+      <div class="s-right"><span class="sec">02 · Value</span></div>
+    </header>
+    <div class="s-band"><p>제안이 아니라 <strong>진행 중인 프로젝트</strong>입니다 -
+      특히 첫 사례는 GBC와 같은 <strong>글로벌 법인 대상 D2C 분석</strong>입니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:22%">고객 · 조직</th><th style="width:44%">적용 내용</th><th>단계</th></tr>
+          <tr><td class="org">글로벌 제조사<br>D2C 해외영업</td>
+              <td><b>BI Agent</b> - 자연어 데이터 조회(GenSQL) · 분석 인사이트 · 보고용 차트 자동 생성(GenChart) · 문서 RAG.
+                  매출 GMV · 손익 · 트래픽 · 상품 데이터</td>
+              <td><b>PoC 4개월 검증 → 해외 판매 법인 전체 오픈</b> 진행</td></tr>
+          <tr><td class="org">국내 통신 유통사</td>
+              <td>실적 셀프 조회 · 사내 문서 챗봇 · 대시보드 공유 · 외부 시스템 연동 -
+                  본사 담당자에게 몰리던 조회 요청을 대화형 셀프서비스로 분산</td>
+              <td>구축 완료 · 파일럿 사용 중</td></tr>
+          <tr><td class="org">글로벌 제조사<br>제품 개발 연구소</td>
+              <td>실적 대시보드 + AI 의사결정 지원 - <b>웹 대시보드와 AI 분석이 같은 데이터 위에서</b>
+                  경영 · 품질 · 개발 실적을 답하고 근거 문서까지 제시</td>
+              <td>1차 오픈 예정 · 2차 확대 계약</td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>세 건 모두 <b>PoC 또는 파일럿으로 검증한 뒤 확산</b>하는 경로입니다 - GBC에 제안하는 경로와 같습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
   <section class="slide" data-title="전환은 이렇게">
     <header class="s-head">
       <h2><span class="bullet"></span>전환은 이렇게 - <em>업무 공백 없이 넘어갑니다</em></h2>
@@ -1017,7 +1048,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
         <span>기간·범위는 인벤토리 결과로 확정합니다 - 병행 기간의 목표는 단 하나, <b>"숫자가 같다"의 증명</b>입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="PoC 제안">
@@ -1033,7 +1064,7 @@
           <tr><th style="width:18%">구분</th><th>내용</th></tr>
           <tr><td class="org">기간</td><td><b>2주</b> (킥오프 포함 · 일정은 협의 조정)</td></tr>
           <tr><td class="org">범위</td><td>대표 태블로 대시보드 <b>1~2종 aisight 재현</b> + 담당자 셀프서비스 제작 시연 + AI 질의·개인 Claude 연결(MCP) 시연</td></tr>
-          <tr><td class="org">환경</td><td>세일링스톤 시연 환경 기본 - GBC 데이터 검증이 필요하면 <b>별첨(15p) 최소 사양</b>으로 사내 진행</td></tr>
+          <tr><td class="org">환경</td><td>세일링스톤 시연 환경 기본 - GBC 데이터 검증이 필요하면 <b>별첨(16p) 최소 사양</b>으로 사내 진행</td></tr>
           <tr><td class="org">데이터</td><td>샘플 추출본 또는 read-only 계정 - <b>조회 전용, 외부 반출 없음</b></td></tr>
           <tr><td class="org">판단 기준</td><td>재현 충실도 · 담당자 제작 소요 시간 · 질의 응답 정확도 - <b>킥오프에서 함께 확정</b></td></tr>
         </table>
@@ -1041,7 +1072,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
         <span>PoC 산출물(재현 대시보드 · 측정 결과)은 본 구축 여부와 무관하게 <b>검토 자료로 제공</b>합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="별첨 · PoC 요건">
@@ -1066,7 +1097,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
         <span>준비물은 사실상 <b>계정 하나와 테이블 목록</b>입니다 - 나머지는 저희가 준비합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="왜 세일링스톤인가">
@@ -1102,7 +1133,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
         <span>기존 포탈 유지보수 위에 플랫폼을 얹는 구조라 <b>책임 소재가 하나</b>로 유지됩니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 17 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide dark" data-title="맺음">
