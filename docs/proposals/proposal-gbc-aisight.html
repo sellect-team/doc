@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>GBC 대시보드 웹 전환 제안서 (aisight)</title>
+  <meta name="doc-version" content="1.0">
+  <meta name="doc-description" content="삼성전자 GBC 태블로 대시보드의 웹 전환 - 단순 재개발이 아닌 aisight 데이터 플랫폼 도입의 추가 가치 6가지와 2주 무상 PoC 제안">
+  <style>
+    /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
+    @font-face { font-family: "SUIT"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "SUIT ExtraBold"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+
+    :root {
+      --f:  "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      --fx: "SUIT ExtraBold", "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+    }
+    * { font-synthesis: none; -webkit-font-synthesis: none; }
+    b, strong { font-family: var(--fx); font-weight: 400; }
+    h1, h2, h3, h4, h5, h6 { font-weight: 400; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: min(1.25vw, 2.2222vh); }  /* 16:9 고정 캔버스 */
+    body {
+      font-family: var(--f);
+      background: #fff; color: #0F172A;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
+    }
+    :root {
+      --s900: #0F172A; --s800: #1E293B; --s700: #334155; --s600: #475569; --s500: #64748B;
+      --s400: #94A3B8; --s300: #CBD5E1; --s200: #E2E8F0; --s100: #F1F5F9; --s50: #F8FAFC;
+      --t800: #115E59; --t700: #0F766E; --t600: #0D9488; --t400: #2DD4BF; --t100: #CCFBF1; --t50: #F0FDFA;
+    }
+    .slide {
+      width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh);
+      overflow: hidden; position: relative; flex-shrink: 0;
+      padding: 1.6rem 2.6rem 0.9rem; display: flex; flex-direction: column;
+      background: #fff;
+    }
+
+    /* ── 공통 골격 ── */
+    .s-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.8rem; }
+    .s-head h2 { font-size: 2rem; font-family: var(--fx); letter-spacing: -0.02em; color: var(--s900); }
+    .s-head h2 em { color: var(--t600); font-style: normal; }
+    .bullet { display: inline-block; width: 0.55rem; height: 0.55rem;
+              background: var(--t400); margin-right: 0.75rem; vertical-align: middle; }
+    .s-right { display: flex; align-items: center; gap: 0.75rem; }
+    .s-right .sec { font-size: 0.95rem; color: var(--s400); letter-spacing: 0.04em; }
+
+    .s-band { margin: 0 -2.6rem; background: var(--s50);
+              border-top: 1px solid var(--s200); border-bottom: 1px solid var(--s200);
+              padding: 0.8rem 2.6rem; }
+    .s-band p { font-size: 1.12rem; line-height: 1.6; color: var(--s600); }
+    .s-band strong { color: var(--t600); font-family: var(--fx); }
+
+    .s-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+              font-size: 0.78rem; color: var(--s400); margin-top: 0.75rem; }
+    .s-foot .pg { grid-column: 2; }
+    .s-foot .mark { grid-column: 3; justify-self: end; letter-spacing: 0.14em; color: var(--s400); }
+
+    .content { flex: 1; min-height: 0; display: flex; flex-direction: column;
+               gap: 1.3rem; padding-top: 1.1rem; }
+    .fill { flex: 1; min-height: 0; }
+
+    .stripe { background: var(--s900); color: #E2E8F0; border-radius: 0.7rem;
+              padding: 0.75rem 1.4rem; font-size: 1rem;
+              display: flex; align-items: center; gap: 0.8rem; }
+    .stripe b { color: var(--t400); font-family: var(--fx); }
+    .stripe .sicon { color: var(--t400); display: flex; align-items: center; font-size: 1.15rem; }
+
+    /* ── 단색 라인 아이콘 ── */
+    .i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6;
+         stroke-linecap: round; stroke-linejoin: round; display: inline-block;
+         vertical-align: -0.12em; }
+
+    /* ── 카드 ── */
+    .cards { display: grid; gap: 1.3rem 2.6rem; grid-auto-rows: 1fr; }
+    .c2 { grid-template-columns: repeat(2, 1fr); }
+    .c3 { grid-template-columns: repeat(3, 1fr); }
+    .c4 { grid-template-columns: repeat(4, 1fr); }
+    .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
+            padding: 1.05rem 1.15rem 1rem; display: flex; flex-direction: column;
+            box-shadow: 0 6px 18px rgba(15,23,42,0.05); position: relative; overflow: hidden; }
+    .accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
+              background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
+    .card .no { font-size: 0.76rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.08em;
+                margin-bottom: 0.4rem; display: flex; justify-content: space-between; }
+    .card .no .cat { color: var(--s400); letter-spacing: 0.02em; }
+    .card .ico { font-size: 1.9rem; line-height: 1; margin-bottom: 0.7rem; color: var(--t600); }
+    .card .ico .i { stroke-width: 1.3; }
+    .card h3 { font-size: 1.3rem; font-family: var(--fx); color: var(--s900); margin-bottom: 0.5rem;
+               letter-spacing: -0.01em; }
+    .card p { font-size: 0.98rem; line-height: 1.6; color: var(--s500); }
+    .card .quote { margin-top: auto; padding-top: 0.85rem; font-size: 0.92rem; color: var(--s400);
+                   font-style: italic; border-top: 1px dashed var(--s200); line-height: 1.5; }
+    .card ul { list-style: none; margin-top: 0.6rem; display: flex; flex-direction: column; gap: 0.45rem; }
+    .card ul li { font-size: 0.95rem; color: var(--s500); padding-left: 1.2rem;
+                  position: relative; line-height: 1.5; }
+    .card ul li::before { content: "✓"; position: absolute; left: 0; color: var(--t600); font-family: var(--fx); }
+    .card ul li b { color: var(--s800); }
+    .card .fix { margin-top: auto; padding: 0.55rem 0.8rem; background: var(--t50);
+                 border: 1px solid var(--t100); border-radius: 0.6rem;
+                 font-size: 0.92rem; color: var(--t700); font-family: var(--fx); line-height: 1.5; }
+    .card .seg { margin-top: 0.6rem; }
+    .card .seg.fx { margin-top: auto; padding: 0.55rem 0.8rem; background: var(--t50);
+                    border: 1px solid var(--t100); border-radius: 0.6rem; }
+    .card .seg.fx em { display: block; font-style: normal; font-family: var(--fx);
+                       font-size: 0.76rem; color: var(--t600); letter-spacing: 0.06em;
+                       margin-bottom: 0.15rem; }
+    .card .seg.fx p { font-size: 0.92rem; color: var(--t700); line-height: 1.5; }
+    .card .seg.fx + .fix { margin-top: 0.6rem; }
+
+    /* ── 2단 ── */
+    .two { display: flex; gap: 2.6rem; align-items: stretch; }
+    .two > * { flex: 1; min-width: 0; min-height: 0; }
+    .krows { display: flex; flex-direction: column; gap: 1.1rem; height: 100%; }
+    .krow { flex: 1; display: flex; gap: 1rem; align-items: flex-start;
+            background: var(--s50); border: 1px solid var(--s200); border-radius: 0.85rem;
+            padding: 0.85rem 1.1rem; }
+    .krow .kico { width: 2.4rem; height: 2.4rem; border-radius: 0.65rem; background: var(--t50);
+                  border: 1px solid var(--t100); color: var(--t700);
+                  display: flex; align-items: center; justify-content: center; font-size: 1.15rem;
+                  flex-shrink: 0; }
+    .krow h4 { font-size: 1.1rem; font-family: var(--fx); color: var(--s900); }
+    .krow h4 small { font-size: 0.8rem; color: var(--s400); font-family: var(--fx); margin-left: 0.35rem; }
+    .krow p { font-size: 0.95rem; line-height: 1.55; color: var(--s500); margin-top: 0.2rem; }
+
+    /* ── 비교 테이블 ── */
+    .rt-wrap { border: 1px solid var(--s200); border-radius: 0.9rem; overflow: hidden;
+               display: flex; flex-direction: column; }
+    .rt { width: 100%; border-collapse: collapse; height: 100%; }
+    .rt th { background: var(--s50); border-bottom: 1px solid var(--s200);
+             font-family: var(--fx); font-weight: 400; font-size: 0.88rem; color: var(--s500);
+             text-align: left; padding: 0.6rem 1rem; }
+    .rt td { border-bottom: 1px solid var(--s100); padding: 0.6rem 1rem;
+             font-size: 0.93rem; color: var(--s600); vertical-align: top; line-height: 1.5; }
+    .rt tr:last-child td { border-bottom: none; }
+    .rt td.org { font-family: var(--fx); color: var(--s900); white-space: nowrap; }
+    .rt td.org small { display: block; font-size: 0.78rem; color: var(--s400); font-family: var(--f); }
+    .rt td b { color: var(--t700); }
+
+    /* ── 개념도: 사이클 ── */
+    .cyc { display: grid; grid-template-columns: 1fr 1.6rem 1fr 1.6rem 1fr 1.6rem 1fr; gap: 0.4rem;
+           align-items: stretch; }
+    .cnode { border: 1px solid var(--s200); background: #fff; border-radius: 0.85rem;
+             padding: 0.75rem 0.9rem; box-shadow: 0 6px 16px rgba(15,23,42,0.05);
+             position: relative; overflow: hidden; }
+    .cnode .accent { height: 0.16rem; border-radius: 0.85rem 0.85rem 0 0; }
+    .cnode b { display: flex; align-items: center; gap: 0.5rem; font-size: 1.05rem; color: var(--s900); }
+    .cnode b .i { color: var(--t600); flex-shrink: 0; }
+    .cnode p { font-size: 0.86rem; line-height: 1.5; color: var(--s500); margin-top: 0.35rem; }
+    .carr { display: flex; align-items: center; justify-content: center; color: var(--s300); font-size: 1rem; }
+
+    /* ── 아키텍처 ── */
+    .arch { height: 100%; display: flex; flex-direction: column; gap: 0.5rem;
+            justify-content: space-evenly; }
+    .arow { display: grid; gap: 1.2rem; }
+    .arow.u3 { grid-template-columns: 1fr 1fr 1fr; }
+    .anode { border: 1px solid var(--s200); background: var(--s50); border-radius: 0.7rem;
+             padding: 0.5rem 0.8rem; text-align: center; font-size: 0.98rem; font-family: var(--fx);
+             color: var(--s900); }
+    .anode small { display: block; font-family: var(--fx); color: var(--s500); font-size: 0.8rem; margin-top: 0.15rem; }
+    .adown { text-align: center; color: var(--s400); font-size: 0.85rem; line-height: 1; }
+    .plat { border: 1px solid var(--s200); border-radius: 0.9rem; padding: 0.7rem 0.9rem;
+            background: #fff; box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+            display: flex; flex-direction: column; gap: 0.55rem; position: relative; overflow: hidden; }
+    .plat .accent { height: 0.18rem; }
+    .plat .ph { display: flex; align-items: center; gap: 0.5rem; justify-content: center;
+                font-family: var(--fx); color: var(--s900); font-size: 1.05rem; }
+    .plat .ph small { color: var(--s400); font-size: 0.8rem; font-family: var(--fx); }
+    .pgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+    .pcell { border-radius: 0.6rem; padding: 0.5rem 0.65rem; font-size: 0.84rem; line-height: 1.4; }
+    .pcell b { display: flex; gap: 0.35rem; align-items: center; font-size: 0.9rem; }
+    .pcell small { display: block; margin-top: 0.2rem; font-size: 0.76rem; line-height: 1.4; }
+    .pcell.ws { background: var(--t50); border: 1px solid var(--t100); }
+    .pcell.ws b { color: var(--t800); } .pcell.ws small { color: var(--s600); }
+    .pcell.ops { background: var(--s900); }
+    .pcell.ops b { color: var(--t400); } .pcell.ops small { color: var(--s400); }
+    .a-src { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+    .srcc { border: 1px solid var(--s200); background: #fff; border-radius: 0.7rem;
+            padding: 0.45rem 0.7rem; display: flex; align-items: center; gap: 0.55rem; }
+    .srcc .i { color: var(--s500); flex-shrink: 0; }
+    .srcc b { font-size: 0.88rem; color: var(--s700); display: block; }
+    .srcc small { font-size: 0.72rem; color: var(--s500); display: block; }
+
+    /* ── 시나리오 타임라인 ── */
+    .tl { display: flex; flex-direction: column; gap: 0; height: 100%; }
+    .tli { flex: 1; display: flex; gap: 1rem; position: relative; padding-left: 0.2rem; }
+    .tli .tm { flex: 0 0 4.2rem; font-family: var(--fx); font-size: 0.95rem; color: var(--t700);
+               text-align: right; padding-top: 0.15rem; }
+    .tli .tdot { flex: 0 0 auto; width: 0.72rem; height: 0.72rem; border-radius: 50%;
+                 background: #fff; border: 2px solid var(--t400); margin-top: 0.3rem; z-index: 1; }
+    .tli .tline { position: absolute; left: 5.75rem; top: 1rem; bottom: -0.3rem; width: 2px;
+                  background: var(--s200); }
+    .tli:last-child .tline { display: none; }
+    .tli .tbody { flex: 1; padding-bottom: 0.6rem; }
+    .tli .tbody b { font-size: 1.05rem; color: var(--s900); font-family: var(--fx); }
+    .tli .tbody p { font-size: 0.93rem; color: var(--s500); line-height: 1.5; margin-top: 0.15rem; }
+    .tli .tbody p em { color: var(--t700); font-style: normal; font-family: var(--fx); }
+
+    /* ── 로드맵 ── */
+    .phases { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.6rem; height: 100%; }
+    .phase { border: 1px solid var(--s200); border-radius: 0.9rem; background: var(--s50);
+             display: flex; flex-direction: column; overflow: hidden; }
+    .phase .phh { padding: 0.7rem 1.1rem; font-family: var(--fx); color: #fff;
+                  background: var(--s900); font-size: 1.05rem;
+                  display: flex; justify-content: space-between; align-items: baseline; }
+    .phase .phh small { font-size: 0.8rem; color: var(--t400); font-family: var(--fx); }
+    .phase.hl .phh { background: var(--t700); }
+    .phase ul { list-style: none; padding: 0.85rem 1.1rem; display: flex; flex-direction: column;
+                gap: 0.5rem; flex: 1; }
+    .phase ul li { font-size: 0.94rem; color: var(--s600); padding-left: 1.2rem; position: relative;
+                   line-height: 1.5; }
+    .phase ul li::before { content: "✓"; position: absolute; left: 0; color: var(--t600); font-family: var(--fx); }
+    .phase .pfoot { padding: 0.55rem 1.1rem 0.8rem; font-size: 0.85rem; color: var(--s400);
+                    border-top: 1px dashed var(--s200); }
+
+    /* ── 목업 윈도 ── */
+    .win { background: #fff; border: 1px solid var(--s200); border-radius: 0.9rem;
+           box-shadow: 0 14px 34px rgba(15,23,42,0.10); overflow: hidden;
+           display: flex; flex-direction: column; }
+    .win .bar { display: flex; align-items: center; gap: 0.45rem; background: var(--s100);
+                border-bottom: 1px solid var(--s200); padding: 0.5rem 0.9rem; }
+    .win .dot { width: 0.52rem; height: 0.52rem; border-radius: 50%; background: var(--s300); }
+    .win .bar .t { margin-left: 0.4rem; font-size: 0.84rem; font-family: var(--fx); color: var(--s500); }
+    .win .bar .live { margin-left: auto; font-size: 0.7rem; font-family: var(--fx); color: var(--t600);
+                      background: var(--t50); border-radius: 99rem; padding: 0.14rem 0.6rem; }
+    .win .body { flex: 1; min-height: 0; padding: 0.8rem 0.95rem; display: flex; flex-direction: column;
+                 gap: 0.55rem; }
+    .mockcol { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .mockcol .win { flex: 1; min-height: 0; }
+    .mockcol .mcap { margin-top: 0.6rem; font-size: 0.9rem; line-height: 1.5; color: var(--s500); }
+    .mockcol .mcap b { color: var(--s800); font-family: var(--fx); }
+
+    /* 수업방 카드(목업 내부) */
+    .room { border: 1px solid var(--s200); border-radius: 0.6rem; padding: 0.5rem 0.7rem;
+            display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; }
+    .room .ric { width: 1.7rem; height: 1.7rem; border-radius: 0.45rem; background: var(--t50);
+                 border: 1px solid var(--t100); color: var(--t700); flex-shrink: 0;
+                 display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+    .room b { color: var(--s800); display: block; font-size: 0.88rem; }
+    .room small { color: var(--s400); display: block; font-size: 0.72rem; }
+    .room .st { margin-left: auto; font-size: 0.7rem; font-family: var(--fx); border-radius: 99rem;
+                padding: 0.16rem 0.55rem; white-space: nowrap; }
+    .room .st.on { background: var(--t50); color: var(--t700); border: 1px solid var(--t400); }
+    .room .st.off { background: var(--s100); color: var(--s500); border: 1px solid var(--s300); }
+    .room .st.warn { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+    .gauge { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--s400); }
+    .gauge .gbar { flex: 1; height: 0.4rem; border-radius: 99rem; background: var(--s100);
+                   overflow: hidden; position: relative; }
+    .gauge .gbar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99rem;
+                     background: var(--t400); }
+    .gauge b { font-family: var(--fx); color: var(--s700); font-size: 0.78rem; }
+
+    /* 카드 안 미니 화면 조각 (기능 ⑥ 안전) */
+    .card .ui { margin-top: auto; background: #fff; border: 1px solid var(--s200);
+                border-radius: 0.6rem; padding: 0.5rem 0.65rem; display: flex;
+                flex-direction: column; gap: 0.3rem; }
+    .card .ui .uttl { font-size: 0.7rem; font-family: var(--fx); color: var(--s400);
+                      letter-spacing: 0.05em; }
+    .card .ui .urow { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem;
+                      color: var(--s500); line-height: 1.4; }
+    .card .ui .urow.ok { color: var(--t700); }
+    .card .ui .uchip { margin-left: auto; flex-shrink: 0; font-size: 0.64rem; font-family: var(--fx);
+                       border-radius: 99rem; padding: 0.1rem 0.45rem; white-space: nowrap;
+                       background: var(--t50); color: var(--t700); border: 1px solid var(--t100); }
+    .card .ui .uchip.warn { background: #FFF7ED; color: #C2410C; border-color: #FED7AA; }
+
+    /* 갤러리 목업 */
+    .gal { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; }
+    .gitem { border: 1px solid var(--s200); border-radius: 0.6rem; overflow: hidden; background: #fff; }
+    .gitem .gthumb { height: 2.6rem; display: flex; align-items: center; justify-content: center;
+                     font-size: 1.2rem; color: var(--t600); background: var(--t50);
+                     border-bottom: 1px solid var(--s200); }
+    .gitem .gmeta { padding: 0.4rem 0.6rem; }
+    .gitem .gmeta b { font-size: 0.8rem; color: var(--s800); display: block; }
+    .gitem .gmeta small { font-size: 0.7rem; color: var(--s400); display: flex; gap: 0.55rem; margin-top: 0.15rem; }
+    .gbadge { font-size: 0.66rem; font-family: var(--fx); border-radius: 99rem; padding: 0.1rem 0.45rem; }
+    .gbadge.ok { background: var(--t50); color: var(--t700); border: 1px solid var(--t100); }
+    .gbadge.wait { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+
+    /* 채팅 목업 */
+    .msg { max-width: 88%; padding: 0.5rem 0.8rem; border-radius: 0.8rem;
+           font-size: 0.86rem; line-height: 1.45; }
+    .msg.q { align-self: flex-end; background: var(--s900); color: #fff; border-bottom-right-radius: 0.2rem; }
+    .msg.a { align-self: flex-start; background: var(--s50); border: 1px solid var(--s200);
+             color: var(--s600); border-bottom-left-radius: 0.2rem; }
+    .msg.a b { color: var(--t700); }
+    .sysnote { align-self: center; font-size: 0.72rem; color: var(--s400); background: var(--s50);
+               border: 1px dashed var(--s300); border-radius: 99rem; padding: 0.2rem 0.8rem; }
+
+    /* ── 실제 화면 목업: 앱 프레임 (사이드바 + 상단바 + 콘텐츠) ── */
+    .app { flex: 1; min-height: 0; display: flex; background: #F6F8FB; font-size: 0.8rem; }
+    .mnav { width: 6.9rem; background: var(--s900); display: flex; flex-direction: column;
+            padding: 0.45rem 0.45rem; gap: 0.12rem; flex-shrink: 0; overflow: hidden; }
+    .mnav .mlogo { display: flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.4rem 0.45rem;
+                   color: #fff; font-family: var(--fx); font-size: 0.78rem; white-space: nowrap; }
+    .mnav .mlogo .i { color: var(--t400); }
+    .mnav .ni { display: flex; align-items: center; gap: 0.4rem; color: var(--s400);
+                padding: 0.28rem 0.45rem; border-radius: 0.4rem; font-size: 0.68rem; white-space: nowrap; }
+    .mnav .ni .i { flex-shrink: 0; font-size: 0.8rem; }
+    .mnav .ni.on { background: var(--t700); color: #fff; font-family: var(--fx); }
+    .mnav .nsec { font-size: 0.58rem; color: var(--s600); letter-spacing: 0.12em;
+                  padding: 0.5rem 0.5rem 0.15rem; font-family: var(--fx); }
+    .mmain { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .mtop { display: flex; align-items: center; gap: 0.6rem; background: #fff;
+            border-bottom: 1px solid var(--s200); padding: 0.45rem 0.8rem; }
+    .mtop b { font-size: 0.92rem; color: var(--s900); font-family: var(--fx); }
+    .mtop .msel { font-size: 0.72rem; color: var(--s600); border: 1px solid var(--s300);
+                  border-radius: 0.4rem; padding: 0.2rem 0.55rem; background: #fff; }
+    .mtop .mbtn { margin-left: auto; background: var(--t600); color: #fff; font-family: var(--fx);
+                  font-size: 0.72rem; border-radius: 0.45rem; padding: 0.28rem 0.7rem; }
+    .mtop .mava { width: 1.35rem; height: 1.35rem; border-radius: 50%; background: var(--t100);
+                  color: var(--t800); display: flex; align-items: center; justify-content: center;
+                  font-size: 0.62rem; font-family: var(--fx); }
+    .mbody { flex: 1; min-height: 0; padding: 0.65rem 0.8rem; display: flex; flex-direction: column;
+             gap: 0.55rem; overflow: hidden; }
+
+    /* KPI 타일 */
+    .mkpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+    .mkpi { background: #fff; border: 1px solid var(--s200); border-radius: 0.55rem;
+            padding: 0.42rem 0.6rem; }
+    .mkpi .k { font-size: 0.64rem; color: var(--s500); }
+    .mkpi .v { font-size: 1.05rem; font-family: var(--fx); color: var(--s900); letter-spacing: -0.02em; }
+    .mkpi .v em { font-style: normal; font-size: 0.62rem; color: var(--t600); font-family: var(--fx);
+                  white-space: nowrap;
+                  margin-left: 0.25rem; }
+
+    /* 수업방·목록 카드 */
+    .mcards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .mcard { background: #fff; border: 1px solid var(--s200); border-radius: 0.6rem;
+             padding: 0.5rem 0.65rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .mcard .mrow1 { display: flex; align-items: center; gap: 0.4rem; }
+    .mcard .tag { font-size: 0.6rem; font-family: var(--fx); border-radius: 0.3rem;
+                  padding: 0.08rem 0.4rem; background: var(--t50); color: var(--t700);
+                  border: 1px solid var(--t100); }
+    .mcard .tag.gray { background: var(--s100); color: var(--s500); border-color: var(--s200); }
+    .mcard b { font-size: 0.82rem; color: var(--s900); font-family: var(--fx); }
+    .mcard small { font-size: 0.68rem; color: var(--s500); line-height: 1.4; }
+    .mcard .mfoot { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.1rem;
+                    font-size: 0.64rem; color: var(--s400); }
+    .mcard .mfoot .sp { margin-left: auto; }
+    .mstat { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.62rem;
+             font-family: var(--fx); border-radius: 99rem; padding: 0.1rem 0.45rem;
+             white-space: nowrap; }
+    .mstat.on { background: var(--t50); color: var(--t700); border: 1px solid var(--t400); }
+    .mstat.on::before { content: ""; width: 0.34rem; height: 0.34rem; border-radius: 50%;
+                        background: var(--t400); }
+    .mstat.off { background: var(--s100); color: var(--s500); border: 1px solid var(--s300); }
+    .mstat.warn { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+
+    /* 미니 게이지 */
+    .mg { display: flex; align-items: center; gap: 0.4rem; font-size: 0.64rem; color: var(--s400); }
+    .mg .mgb { flex: 1; height: 0.34rem; border-radius: 99rem; background: var(--s100);
+               overflow: hidden; position: relative; }
+    .mg .mgb i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99rem;
+                 background: var(--t500, #14B8A6); background: #14B8A6; }
+    .mg b { font-family: var(--fx); color: var(--s700); font-size: 0.66rem; }
+
+    /* 테이블 */
+    .mtbl { background: #fff; border: 1px solid var(--s200); border-radius: 0.6rem; overflow: hidden; }
+    .mtbl table { width: 100%; border-collapse: collapse; font-size: 0.68rem; }
+    .mtbl th { background: var(--s50); color: var(--s500); font-family: var(--fx); font-weight: 400;
+               text-align: left; padding: 0.3rem 0.6rem; border-bottom: 1px solid var(--s200);
+               font-size: 0.62rem; }
+    .mtbl td { padding: 0.32rem 0.6rem; border-bottom: 1px solid var(--s100); color: var(--s600); }
+    .mtbl tr:last-child td { border-bottom: none; }
+    .mtbl td b { color: var(--s800); font-family: var(--fx); }
+
+    /* 학생 상태 그리드 (라이브 보드) */
+    .sgrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.35rem; }
+    .schip { background: #fff; border: 1px solid var(--s200); border-radius: 0.45rem;
+             padding: 0.28rem 0.2rem; text-align: center; }
+    .schip b { display: block; font-size: 0.62rem; color: var(--s700); font-family: var(--fx); }
+    .schip small { font-size: 0.54rem; color: var(--s400); }
+    .schip.ok { border-color: var(--t400); background: var(--t50); }
+    .schip.ok small { color: var(--t700); }
+    .schip.help { border-color: #FED7AA; background: #FFF7ED; }
+    .schip.help small { color: #C2410C; }
+
+    /* 채팅 + 미리보기 2패널 (놀이터) */
+    .mduo { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.05fr 1fr; }
+    .mchat { display: flex; flex-direction: column; gap: 0.32rem; padding: 0.5rem 0.65rem;
+             background: #fff; border-right: 1px solid var(--s200); overflow: hidden; }
+    .mchat .mmsg { max-width: 90%; padding: 0.34rem 0.6rem; border-radius: 0.6rem;
+                   font-size: 0.68rem; line-height: 1.38; }
+    .mchat .mmsg.q { align-self: flex-end; background: var(--s900); color: #fff;
+                     border-bottom-right-radius: 0.15rem; }
+    .mchat .mmsg.a { align-self: flex-start; background: var(--s50); border: 1px solid var(--s200);
+                     color: var(--s600); border-bottom-left-radius: 0.15rem; }
+    .mchat .mmsg.a b { color: var(--t700); }
+    .mchat .minput { margin-top: auto; display: flex; align-items: center; gap: 0.4rem;
+                     border: 1px solid var(--s300); border-radius: 99rem; padding: 0.3rem 0.65rem;
+                     font-size: 0.64rem; color: var(--s400); }
+    .mchat .minput .send { margin-left: auto; width: 1.1rem; height: 1.1rem; border-radius: 50%;
+                           background: var(--t600); color: #fff; display: flex; align-items: center;
+                           justify-content: center; font-size: 0.55rem; }
+    .mprev { background: var(--s100); padding: 0.55rem; display: flex; flex-direction: column; }
+    .mprev .purl { display: flex; align-items: center; gap: 0.35rem; background: #fff;
+                   border: 1px solid var(--s200); border-radius: 99rem; padding: 0.2rem 0.55rem;
+                   font-size: 0.6rem; color: var(--t700); font-family: var(--fx); margin-bottom: 0.45rem; }
+    .mprev .pframe { flex: 1; background: #fff; border: 1px solid var(--s200); border-radius: 0.5rem;
+                     padding: 0.5rem 0.6rem; display: flex; flex-direction: column; gap: 0.35rem; }
+    .mprev .ph1 { font-size: 0.85rem; font-family: var(--fx); color: var(--t800); text-align: center; }
+    .mprev .pimg { height: 1.7rem; border-radius: 0.35rem; background: var(--t50);
+                   border: 1px dashed var(--t100); display: flex; align-items: center;
+                   justify-content: center; color: var(--t400); font-size: 0.7rem; }
+    .mprev .pcards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.3rem; }
+    .mprev .pc { background: #EFF9FF; border: 1px solid #BAE6FD; border-radius: 0.35rem;
+                 padding: 0.25rem 0.3rem; font-size: 0.56rem; color: var(--s600); text-align: center; }
+    .mprev .pc b { display: block; font-size: 0.6rem; color: var(--s800); }
+    .mprev .pfoot { margin-top: 0.45rem; display: flex; gap: 0.35rem; }
+    .mprev .pbtn { flex: 1; text-align: center; font-size: 0.62rem; font-family: var(--fx);
+                   border-radius: 0.4rem; padding: 0.26rem 0; background: #fff;
+                   border: 1px solid var(--s300); color: var(--s600); }
+    .mprev .pbtn.pr { background: var(--t600); border-color: var(--t600); color: #fff; }
+
+    /* 갤러리 그리드 */
+    .ggrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+    .gcard { background: #fff; border: 1px solid var(--s200); border-radius: 0.55rem; overflow: hidden; }
+    .gcard .gth { height: 1.9rem; display: flex; align-items: center; justify-content: center;
+                  font-size: 1.15rem; color: var(--t600); background: var(--t50);
+                  border-bottom: 1px solid var(--s200); position: relative; }
+    .gcard .gth .gb { position: absolute; top: 0.25rem; right: 0.25rem; }
+    .gcard .gm { padding: 0.25rem 0.45rem; }
+    .gcard .gm b { font-size: 0.68rem; color: var(--s800); display: block; font-family: var(--fx); }
+    .gcard .gm small { font-size: 0.58rem; color: var(--s400); display: flex; gap: 0.4rem;
+                       margin-top: 0.12rem; }
+
+    /* ── 목업 고도화 ── */
+    .win { box-shadow: 0 18px 44px rgba(15,23,42,0.13), 0 2px 6px rgba(15,23,42,0.06); }
+    .mnav .nuser { margin-top: auto; display: flex; align-items: center; gap: 0.35rem;
+                   background: var(--s800); border-radius: 0.45rem; padding: 0.3rem 0.4rem; }
+    .mnav .nuser .nava { width: 1.15rem; height: 1.15rem; border-radius: 50%; background: var(--t400);
+                         color: var(--s900); display: inline-flex; align-items: center; justify-content: center;
+                         font-family: var(--fx); font-size: 0.58rem; flex-shrink: 0; }
+    .mnav .nuser b { display: block; color: #fff; font-size: 0.6rem; font-family: var(--fx); line-height: 1.2; }
+    .mnav .nuser small { display: block; color: var(--s400); font-size: 0.52rem; line-height: 1.2; }
+    .mkpi { position: relative; padding-left: 0.85rem; }
+    .mkpi .kbar { position: absolute; left: 0.32rem; top: 0.45rem; bottom: 0.45rem; width: 0.18rem;
+                  border-radius: 99rem; background: var(--t400); }
+    .mkpi .kbar.warn { background: #FB923C; }
+    .mtop .msch { display: flex; align-items: center; gap: 0.3rem; border: 1px solid var(--s200);
+                  background: var(--s50); border-radius: 99rem; padding: 0.18rem 0.6rem;
+                  font-size: 0.66rem; color: var(--s400); }
+    .mprev .pnav { display: flex; align-items: center; gap: 0.45rem; background: var(--t800);
+                   border-radius: 0.4rem 0.4rem 0 0; margin: -0.5rem -0.6rem 0.1rem; padding: 0.3rem 0.6rem; }
+    .mprev .pnav b { color: #fff; font-size: 0.62rem; font-family: var(--fx); }
+    .mprev .pnav span { color: var(--t100); font-size: 0.54rem; margin-left: auto; display: flex; gap: 0.4rem; }
+    /* 최신 스타일 디테일 */
+    .schip { display: flex; align-items: center; gap: 0.32rem; text-align: left; padding: 0.26rem 0.38rem; }
+    .schip .sava { width: 1.05rem; height: 1.05rem; border-radius: 50%; background: var(--s200);
+                   color: var(--s600); display: inline-flex; align-items: center; justify-content: center;
+                   font-family: var(--fx); font-size: 0.54rem; flex-shrink: 0; }
+    .schip.ok .sava { background: var(--t400); color: var(--s900); }
+    .schip.help .sava { background: #FDBA74; color: #7C2D12; }
+    .schip > span.sbody { min-width: 0; }
+    .schip b, .schip small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mcard { border-radius: 0.7rem; box-shadow: 0 3px 10px rgba(15,23,42,0.04); }
+    .mkpi { border-radius: 0.65rem; box-shadow: 0 2px 8px rgba(15,23,42,0.04); }
+    .mtop { box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
+    .gcard { box-shadow: 0 3px 10px rgba(15,23,42,0.05); }
+    /* ── 다크 슬라이드 (표지·맺음) ── */
+    .dark { background:
+              linear-gradient(rgba(148,163,184,0.055) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(148,163,184,0.055) 1px, transparent 1px),
+              var(--s900);
+            background-size: 3.4rem 3.4rem, 3.4rem 3.4rem, auto;
+            color: #fff; justify-content: center; align-items: flex-start;
+            padding: 2.2rem 2.8rem; }
+    .dark .glow { position: absolute; right: -12rem; top: 50%; transform: translateY(-50%);
+                  width: 46rem; height: 46rem; border-radius: 50%;
+                  background: radial-gradient(circle, rgba(45,212,191,0.11) 0%, rgba(45,212,191,0.035) 45%, transparent 72%); }
+    .dark .logo { position: absolute; right: 5.5rem; top: 50%; transform: translateY(-50%);
+                  width: 14rem; z-index: 0; }
+    .dark .top { position: absolute; top: 1.9rem; left: 2.8rem; right: 2.8rem;
+                 display: flex; justify-content: space-between; align-items: center; }
+    .dark .top .pillbadge { border: 1px solid var(--t400); color: var(--t400);
+                            font-size: 0.82rem; letter-spacing: 0.2em; padding: 0.5rem 1.6rem;
+                            border-radius: 99rem; }
+    .dark .top .iwd { color: var(--t400); font-size: 0.95rem; letter-spacing: 0.03em; font-family: var(--fx); }
+    .dark h1 { font-size: 3.4rem; font-family: var(--fx); letter-spacing: -0.03em; line-height: 1.16; }
+    .dark h1 em { color: var(--t400); font-style: normal; }
+    .dark .sub { font-size: 1.2rem; color: var(--s400); margin-top: 1.3rem; line-height: 1.65; }
+    .dark .entag { margin-top: 1.5rem; color: var(--t400); font-size: 0.92rem;
+                   letter-spacing: 0.22em; font-family: var(--fx); }
+    .dark .pills { display: flex; gap: 0.6rem; margin-top: 1.9rem; flex-wrap: wrap; }
+    .dark .pill { border: 1px solid var(--s700); background: rgba(30,41,59,0.7); color: var(--s300);
+                  font-size: 0.9rem; padding: 0.42rem 1rem; border-radius: 99rem; }
+    .dark .pill b { color: var(--t400); margin-right: 0.35rem; }
+    .dark .corner { position: absolute; left: 2.8rem; bottom: 1.5rem; right: 2.8rem;
+                    display: flex; justify-content: flex-start; gap: 0.9rem; align-items: center;
+                    font-size: 0.82rem; letter-spacing: 0.16em; }
+    .dark .corner .ai { color: var(--t400); font-family: var(--fx); }
+    .dark .corner .div { color: var(--s600); }
+    .dark .corner .cp { color: var(--s500); }
+    .dark .notice { margin-top: 1.9rem; display: inline-flex; align-items: center; gap: 0.6rem;
+                    border: 1px solid var(--s700); border-radius: 0.6rem; background: rgba(30,41,59,0.7);
+                    padding: 0.55rem 1rem; font-size: 0.88rem; color: var(--s400); position: relative; z-index: 1; }
+    .dark .notice .i { color: var(--t400); }
+  </style>
+</head>
+<body>
+
+  <section class="slide dark" data-title="표지">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
+    <div class="top">
+      <span class="pillbadge">SAILINGSTONE - AISIGHT FOR GBC</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>대시보드를 다시 만들 것인가,<br><em>데이터 플랫폼으로 갈 것인가.</em></h1>
+    <p class="sub">GBC 대시보드 웹 전환 제안 - 태블로를 걷어내는 자리에 화면 묶음이 아니라,<br>
+      담당자가 직접 만들고, 묻고, 확장하는 aisight 데이터 플랫폼을 제안합니다.</p>
+    <p class="sub" style="margin-top:0.6rem"><b style="color:#fff">삼성전자 GBC 귀중</b> · 세일링스톤 제출 · 2026. 09</p>
+    <div class="pills">
+      <span class="pill"><b>01</b>셀프서비스 대시보드</span>
+      <span class="pill"><b>02</b>AI 질의 · 인사이트</span>
+      <span class="pill"><b>03</b>지표 거버넌스</span>
+      <span class="pill"><b>04</b>기존 포탈 통합</span>
+    </div>
+    <div class="notice"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      본 문서는 검토용 제안서로, 화면은 구성 예시이며 수치·조건은 협의로 확정합니다.</div>
+    <div class="corner">
+      <span class="ai">AISIGHT · DATA · PLATFORM</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
+    </div>
+  </section>
+
+  <section class="slide" data-title="배경과 오늘의 질문">
+    <header class="s-head">
+      <h2><span class="bullet"></span>배경과 <em>오늘의 질문</em></h2>
+      <div class="s-right"><span class="sec">01 · Why</span></div>
+    </header>
+    <div class="s-band"><p>지난 미팅에서 확인된 질문에서 출발합니다 -
+      <strong>"개발 부담 감소와 셀프서비스 외에, aisight의 가치는 무엇인가."</strong></p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">배경 01<span class="cat">REQUEST</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <h3>"태블로를 웹으로"</h3>
+          <p>GBC 내부에서 태블로 대시보드를 웹 대시보드로 전환하자는 요청이 나왔습니다.
+             라이선스 부담, 화면 자유도, 포탈과의 이질감이 배경입니다.</p>
+          <div class="seg fx"><em>배경 신호</em><p>라이선스 갱신 부담 · 화면 개선 요구 누적 · 포탈과 이원화된 사용 경험</p></div>
+          <div class="fix">전환 자체는 이미 결정의 방향입니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">배경 02<span class="cat">OPTIONS</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
+          <h3>두 갈래 견적</h3>
+          <p>단순 웹 재개발과 aisight 플랫폼 - 두 견적이 이미 전달되어 있습니다.
+             이 문서는 그 갈림길에서 무엇이 다른지를 보이는 판단 자료입니다.</p>
+          <div class="seg fx"><em>기전달</em><p>단순 웹 개발 견적 · aisight 플랫폼 견적 (별도 문서)</p></div>
+          <div class="fix">가격표가 아니라 구조의 차이를 봅니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">배경 03<span class="cat">QUESTION</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg></div>
+          <h3>오늘의 질문</h3>
+          <p>소개 미팅에서 두 가지 가치는 이미 확인해 주셨습니다 - 개발 부담 감소,
+             지역별 담당자의 셀프 대시보드. 요청은 <b>"그 외의 가치"</b>였습니다.</p>
+          <div class="seg fx"><em>확인된 가치 2가지</em><p>세일링스톤 개발 부담 감소 · 지역별 담당자 셀프 대시보드</p></div>
+          <div class="fix">이 문서 전체가 그 질문에 대한 답입니다.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+        <span>이미 인정하신 2가지는 반복하지 않습니다 - <b>그 위에 있는 6가지</b>를 보여 드립니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 2 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="결론 한 장">
+    <header class="s-head">
+      <h2><span class="bullet"></span>결론 - <em>웹 전환은 목적지가 아니라 출발점입니다</em></h2>
+      <div class="s-right"><span class="sec">01 · Why</span></div>
+    </header>
+    <div class="s-band"><p>단순 웹 전환은 <strong>지금의 화면</strong>을 다시 만드는 일이고,
+      aisight 전환은 <strong>앞으로의 요구를 흡수하는 구조</strong>를 만드는 일입니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">가치 01</div><h3>요청 대기의 소멸</h3>
+          <p>새 대시보드와 수정이 개발 발주 없이 담당자 손에서 당일 처리됩니다. 본사 개발 큐에 줄이 생기지 않습니다.</p>
+          <div class="fix">개발 발주 대기 0건.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">가치 02</div><h3>묻는 대시보드</h3>
+          <p>자연어로 질문하면 차트와 요약으로 답합니다. 보는 도구가 분석가 없이 답을 얻는 도구가 됩니다.</p>
+          <div class="fix">태블로에도 없는 층.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">가치 03</div><h3>지표 거버넌스</h3>
+          <p>셀프서비스가 만들 지표 난립을 표준 지표 사전·권한·이력으로 통제합니다. 자유와 통제를 동시에.</p>
+          <div class="fix">같은 이름 = 같은 숫자.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">가치 04</div><h3>비용 구조의 전환</h3>
+          <p>좌석 라이선스·건당 개발비의 "쓸수록 늘어나는 구조"가 플랫폼 단일 구조로 바뀝니다.</p>
+          <div class="fix">한계비용 최소의 구조.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">가치 05</div><h3>포탈은 그대로</h3>
+          <p>기존 커스텀 포탈에 임베드되어 사용자 동선이 바뀌지 않습니다. 전환 프로젝트 최대 리스크의 제거.</p>
+          <div class="fix">재교육 · 이탈 리스크 0.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">가치 06</div><h3>확장 로드맵</h3>
+          <p>리포트 자동화·문서 지능·지식그래프로 이어지는 다음 단계가 같은 플랫폼 위에 준비되어 있습니다.</p>
+          <div class="fix">별도 시스템이 아닌 모듈 추가.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>이 여섯 가지가 <b>단순 웹 개발 견적에는 없는 항목</b>입니다 - 다음 장부터 하나씩 증명합니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 3 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="두 갈래 비교">
+    <header class="s-head">
+      <h2><span class="bullet"></span>두 갈래 비교 - <em>화면 재구매인가, 능력 확보인가</em></h2>
+      <div class="s-right"><span class="sec">01 · Why</span></div>
+    </header>
+    <div class="s-band"><p>같은 예산 검토라도 <strong>5년을 놓고 보면</strong> 두 길의 성격이 다릅니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:16%">비교 항목</th><th style="width:40%">단순 웹 재개발</th><th>aisight 플랫폼</th></tr>
+          <tr><td class="org">초기 구축</td><td>기존 화면 전면 재개발 - 개발비 전액</td><td>플랫폼 설치 + 기존 대시보드 이관</td></tr>
+          <tr><td class="org">새 대시보드</td><td>건마다 요건 정의 → 개발 발주 → 비용 발생</td><td><b>담당자가 직접 제작 - 추가 개발비 0</b></td></tr>
+          <tr><td class="org">화면 수정</td><td>요청 → 개발 큐 → 배포, 주 단위</td><td><b>화면에서 직접, 당일</b></td></tr>
+          <tr><td class="org">AI 분석</td><td>별도 프로젝트로 다시 개발</td><td>기본 탑재 - 자연어 질의 · 요약 · 이상 알림</td></tr>
+          <tr><td class="org">라이선스</td><td>태블로 제거 (기능도 함께 사라짐)</td><td>태블로 제거 + 기능은 플랫폼이 대체</td></tr>
+          <tr><td class="org">5년 비용</td><td>대시보드 수에 비례해 계속 증가</td><td>초기 구축 후 완만 - 한계비용 최소</td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
+        <span>대시보드가 더 늘지 않을 조직이라면 단순 웹 개발이 쌉니다. <b>계속 늘어날 조직이라면 이야기가 다릅니다.</b></span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 4 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="가치 ① 요청 대기의 소멸">
+    <header class="s-head">
+      <h2><span class="bullet"></span>가치 ① 셀프서비스 - <em>요청 대기가 사라집니다</em></h2>
+      <div class="s-right"><span class="sec">02 · Value</span></div>
+    </header>
+    <div class="s-band"><p>"지역별 담당자가 원하는 대시보드"라는 니즈의 본질은 화면이 아니라
+      <strong>기다리지 않는 것</strong>입니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+            <span><h4>지금의 경로 <small>AS-IS</small></h4>
+            <p>현업 요청 → 본사 취합 → 개발 큐 → 개발·검수 → 배포. 잘 돌아가도 주 단위,
+               요청이 몰리면 월 단위입니다. 그 사이 업무는 엑셀로 돌아갑니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
+            <span><h4>도입 후 경로 <small>TO-BE</small></h4>
+            <p>담당자가 위젯을 골라 조합하고 저장하면 끝. <b>필요한 날 아침에 만들어
+               그날 회의에 씁니다.</b> 본사 개발 큐에는 애초에 줄이 생기지 않습니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <span><h4>개발 인력의 재배치 <small>SHIFT</small></h4>
+            <p>반복 화면 개발에서 풀려난 리소스는 데이터 품질·신규 과제로 이동합니다.
+               "개발 부담 감소"의 실제 의미는 <b>인력의 상향 재배치</b>입니다.</p></span></div>
+        </div>
+        <div class="mockcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">aisight · 대시보드 빌더</span><span class="live">유럽법인 담당</span></div>
+            <div class="app">
+              <div class="mnav">
+              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>aisight</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+              <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>빌더</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg>AI 질의</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>지표 사전</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>권한</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>알림</div>
+              <div class="nuser"><span class="nava">이</span><span><b>이도현</b><small>유럽법인 SCM</small></span></div>
+            </div>
+              <div class="mmain">
+                <div class="mtop"><b>새 대시보드</b><span class="msel">유럽 물류 현황 ▾</span><span class="mbtn">저장 · 공유</span><span class="mava">이</span></div>
+                <div class="mbody">
+                  <div class="mkpis three">
+                    <div class="mkpi"><span class="kbar"></span><div class="k">위젯 팔레트</div><div class="v">12종</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">표준 지표</div><div class="v">48개<em>정의 자동 표기</em></div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">제작 소요</div><div class="v">14분<em>발주 0건</em></div></div>
+                  </div>
+                  <div class="mg"><span>월별 출하량 (차트 위젯)</span><span class="mgb"><i style="width:72%"></i></span><b>+18%</b></div>
+                  <div class="mg"><span>정시 출하율 (지표 위젯)</span><span class="mgb"><i style="width:94%"></i></span><b>94%</b></div>
+                  <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+                    <span><b>지표 사전에서 "정시 출하율" 선택됨</b><small>정의 · 산식 · 데이터 출처가 위젯에 자동으로 붙습니다</small></span>
+                    <span class="st on">표준 지표</span></div>
+                  <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                    <span><b>저장 즉시 팀 공유</b><small>유럽법인 SCM 12명 열람 - 권한은 조직 기준 자동 적용</small></span>
+                    <span class="st on">공유됨</span></div>
+                </div>
+              </div>
+            </div></div>
+          <p class="mcap"><b>대시보드 빌더.</b> 위젯 조합부터 저장·공유까지 담당자 혼자서.
+             표준 지표를 고르면 정의와 출처가 자동으로 따라붙습니다.</p>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>요청서가 아니라 <b>화면에서 끝나는 일</b>이 되는 것 - 이것이 셀프서비스의 실체입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 5 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="가치 ② 묻는 대시보드">
+    <header class="s-head">
+      <h2><span class="bullet"></span>가치 ② AI 질의 - <em>"왜?"라고 물을 수 있는 대시보드</em></h2>
+      <div class="s-right"><span class="sec">02 · Value</span></div>
+    </header>
+    <div class="s-band"><p>대시보드는 "무슨 일이 있었는가"까지만 보여 줍니다.
+      aisight는 <strong>이유를 묻고 답을 받는</strong> 층을 그 위에 얹습니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="mockcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">aisight · AI 질의</span><span class="live">권한 범위 내 데이터</span></div>
+            <div class="mduo">
+              <div class="mchat">
+                <div class="mmsg q">이번 분기 유럽 출하가 전분기보다 왜 늘었어?</div>
+                <div class="mmsg a"><b>+18%는 3~4월 A제품 물량</b>이 이끌었습니다.
+                  신규 거래선 2곳 기여가 61%입니다. 오른쪽에 근거 차트를 표시했어요.</div>
+                <div class="mmsg q">그 거래선 둘만 월별로 보여 줘.</div>
+                <div class="mmsg a">월별 추이로 바꿨습니다. <b>이대로 위젯 저장</b>도 가능합니다.</div>
+                <div class="mmsg q">저장하고 팀에도 공유해 줘.</div>
+                <div class="mmsg a">"유럽 물류 현황" 대시보드에 추가하고 <b>팀 12명에게 공유</b>했습니다.
+                  열람 권한은 조직 기준으로 자동 적용됩니다.</div>
+                <div class="minput">데이터에 대해 물어보세요<span class="send">▶</span></div>
+              </div>
+              <div class="mprev">
+                <div class="mg"><span>2월</span><span class="mgb"><i style="width:46%"></i></span><b>46</b></div>
+                <div class="mg"><span>3월</span><span class="mgb"><i style="width:71%"></i></span><b>71</b></div>
+                <div class="mg"><span>4월</span><span class="mgb"><i style="width:88%"></i></span><b>88</b></div>
+                <div class="sysnote">출처: DW.SALES_EU · 표준 지표 "출하량" 산식 적용 · 질의 이력 기록됨</div>
+                <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
+                  <span><b>이상 신호 감지</b><small>4월 반품률이 평시의 2.1배 - 담당자 알림 발송됨</small></span>
+                  <span class="st warn">확인 필요</span></div>
+              </div>
+            </div></div>
+          <p class="mcap"><b>자연어 질의.</b> 질문이 SQL로 바뀌어 사내 DB에서 직접 집계되고,
+             답과 근거 차트, 데이터 출처가 함께 옵니다.</p>
+        </div>
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg></span>
+            <span><h4>자연어 질의 <small>ASK</small></h4>
+            <p>질의 성격에 따라 알맞은 모델로 보내는 <b>하이브리드 LLM 라우팅</b> -
+               aisight가 금융·제조 현장에서 상용 운영 중인 기술입니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg></span>
+            <span><h4>자동 요약 브리핑 <small>BRIEF</small></h4>
+            <p>대시보드를 열면 "지난주와 달라진 것"부터 요약해 줍니다.
+               회의 전에 차트를 훑으며 보내던 10분이 사라집니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
+            <span><h4>이상 신호 알림 <small>WATCH</small></h4>
+            <p>임계치·추세 이탈을 플랫폼이 감시해 담당자에게 먼저 알립니다.
+               대시보드를 열지 않은 날에도 데이터가 말을 겁니다.</p></span></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
+        <span>태블로에도, 단순 웹 대시보드에도 없는 층입니다 - <b>분석가를 거치지 않고 답을 얻는 경로.</b></span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 6 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="가치 ③ 지표 거버넌스">
+    <header class="s-head">
+      <h2><span class="bullet"></span>가치 ③ 거버넌스 - <em>자유와 통제를 동시에</em></h2>
+      <div class="s-right"><span class="sec">02 · Value</span></div>
+    </header>
+    <div class="s-band"><p>셀프서비스의 그늘은 지표 난립입니다. <strong>"같은 이름, 다른 숫자"</strong>를
+      겪어 본 조직일수록 통제 설계가 먼저입니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">통제 01<span class="cat">DICTIONARY</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <h3>표준 지표 사전</h3>
+          <p>지표의 정의·산식·데이터 출처를 플랫폼에 한 번 등록하면, 누가 만든 대시보드든
+             같은 정의를 씁니다. "정시 출하율"이 지역마다 다르게 계산되는 일이
+             구조적으로 사라집니다.</p>
+          <div class="seg fx"><em>예시</em><p>"정시 출하율 = 정시 출하 건수 / 전체 출하 건수" - 산식이 위젯에 자동 표기</p></div>
+          <div class="fix">지표 정의의 단일 출처(Single Source).</div></div>
+        <div class="card"><span class="accent"></span><div class="no">통제 02<span class="cat">ACCESS</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <h3>권한과 행 수준 보안</h3>
+          <p>역할·조직 기준으로 화면 접근을 통제하고, 데이터는 행 단위로 필터링합니다.
+             유럽 담당자는 유럽 데이터만, 경영진은 전체를 - 같은 대시보드에서.</p>
+          <div class="seg fx"><em>예시</em><p>같은 대시보드를 열어도 유럽 담당자에게는 유럽 행만 보입니다</p></div>
+          <div class="fix">AI 질의도 같은 권한 범위 안에서만 답합니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">통제 03<span class="cat">AUDIT</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <h3>이력과 감사</h3>
+          <p>누가 어떤 대시보드를 만들고 고쳤는지, 어떤 질의를 했는지 전부 기록됩니다.
+             감사 대응과 데이터 품질 관리의 근거가 자동으로 쌓입니다.</p>
+          <div class="seg fx"><em>예시</em><p>"이 숫자 누가 바꿨죠?"에 변경 이력 화면으로 바로 답합니다</p></div>
+          <div class="fix">셀프서비스를 열어도 책임 추적은 유지됩니다.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+        <span>셀프서비스와 통제는 반대말이 아닙니다 - <b>플랫폼이면 동시에</b> 가질 수 있습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 7 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="가치 ④ 비용 구조">
+    <header class="s-head">
+      <h2><span class="bullet"></span>가치 ④ 비용 - <em>써도 늘지 않는 구조로</em></h2>
+      <div class="s-right"><span class="sec">02 · Value</span></div>
+    </header>
+    <div class="s-band"><p>절감 이전에 <strong>비용 성격의 전환</strong>입니다 -
+      쓸수록 늘어나는 구조에서, 써도 늘지 않는 구조로.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:18%">구분</th><th>내용</th></tr>
+          <tr><td class="org">사라지는 비용</td><td>태블로 좌석 라이선스 - 공시 가격 기준 <b>1인당 월 $15~75</b>(Viewer~Creator · 연 단위 청구).
+              보기만 하는 인원에게도 과금되는 반복 지출이 전환 완료 시점부터 <b>0</b></td></tr>
+          <tr><td class="org">줄어드는 비용</td><td>대시보드 신규·수정 개발비 - 건당 발주가 <b>셀프서비스로 흡수</b>되어 발생 자체가 감소</td></tr>
+          <tr><td class="org">남는 비용</td><td>플랫폼 사용료 + 유지보수 - 기존 포탈 유지보수와 <b>단일 계약으로 일원화</b> (규모 확정 후 견적)</td></tr>
+          <tr><td class="org">새로 생기는 가치</td><td>AI 질의·자동 브리핑·이상 알림 등 <b>별도 개발 없이 추가되는 기능</b> - 단순 웹 개발이라면 각각이 신규 프로젝트</td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+        <span>정확한 금액 비교는 <b>좌석 수·대시보드 수 확인 후 견적서</b>로 - 이 장이 말하는 것은 구조의 차이입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="가치 ⑤ 포탈은 그대로">
+    <header class="s-head">
+      <h2><span class="bullet"></span>가치 ⑤ 통합 - <em>사용자 동선이 바뀌지 않습니다</em></h2>
+      <div class="s-right"><span class="sec">02 · Value</span></div>
+    </header>
+    <div class="s-band"><p>사용자는 <strong>지금 쓰는 포탈 주소 그대로</strong> 들어옵니다.
+      바뀌는 것은 화면 안의 엔진뿐입니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+            <span><h4>포탈 임베드 통합</h4>
+            <p>aisight 대시보드가 기존 커스텀 포탈 안에 컴포넌트로 들어갑니다.
+               메뉴 위치·URL·즐겨찾기가 그대로라 <b>재교육 비용이 없습니다.</b></p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <span><h4>SSO · 권한 연동</h4>
+            <p>포탈의 로그인·권한 체계에 그대로 연동됩니다. 이중 로그인도,
+               별도 계정 관리도 생기지 않습니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg></span>
+            <span><h4>만든 회사가 잇습니다</h4>
+            <p>그 포탈을 설계·구축·운영해 온 것이 세일링스톤입니다. 연동 지점을 아는 팀이라
+               <b>통합 리스크가 가장 작은 조합</b>입니다.</p></span></div>
+        </div>
+        <div class="mockcol">
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">GBC Portal · 대시보드</span><span class="live">SSO 로그인 유지</span></div>
+            <div class="body" style="padding:0.6rem 0.7rem; display:flex; flex-direction:column; gap:0.45rem">
+              <div class="mkpis three">
+                <div class="mkpi"><span class="kbar"></span><div class="k">오늘 출하</div><div class="v">1,284<em>전일 +6%</em></div></div>
+                <div class="mkpi"><span class="kbar"></span><div class="k">정시 출하율</div><div class="v">94.2%</div></div>
+                <div class="mkpi"><span class="kbar warn"></span><div class="k">이상 신호</div><div class="v">1건<em>반품률 상승</em></div></div>
+              </div>
+              <div class="mg"><span>유럽</span><span class="mgb"><i style="width:72%"></i></span><b>72%</b></div>
+              <div class="mg"><span>미주</span><span class="mgb"><i style="width:58%"></i></span><b>58%</b></div>
+              <div class="mg"><span>아시아</span><span class="mgb"><i style="width:81%"></i></span><b>81%</b></div>
+              <div class="sysnote">기존 포탈 프레임 안에서 렌더링 - 사용자에게는 "포탈이 좋아진 것"으로 보입니다</div>
+            </div></div>
+          <p class="mcap"><b>포탈 임베드.</b> 같은 주소, 같은 로그인, 같은 메뉴 -
+             엔진만 태블로에서 aisight로 바뀝니다.</p>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <span>전환 프로젝트의 최대 리스크는 사용자 이탈입니다 - <b>동선이 안 바뀌면 이탈도 없습니다.</b></span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="가치 ⑥ 확장 로드맵">
+    <header class="s-head">
+      <h2><span class="bullet"></span>가치 ⑥ 확장 - <em>대시보드는 첫 장입니다</em></h2>
+      <div class="s-right"><span class="sec">02 · Value</span></div>
+    </header>
+    <div class="s-band"><p>같은 플랫폼 위에 <strong>다음 단계의 모듈</strong>이 준비되어 있습니다 -
+      별도 시스템을 또 짓는 일이 아닙니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">NEXT 1<span class="cat">REPORT</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg></div>
+          <h3>리포트 자동화</h3>
+          <p>주간·월간 보고 초안을 대시보드 데이터에서 자동 생성합니다.
+             담당자는 쓰는 사람에서 <b>검토하는 사람</b>으로 바뀝니다.</p>
+          <div class="seg fx"><em>장면</em><p>월요일 아침, 주간 실적 보고 초안이 먼저 와 있습니다</p></div>
+          <div class="fix">보고 준비 시간의 구조적 절감.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">NEXT 2<span class="cat">DOCUMENT</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>
+          <h3>문서 지능</h3>
+          <p>문서 파서(Document Parser)가 실적 문서·계약·회의록을 표·그림까지 읽어,
+             대시보드 숫자와 문서 내용을 <b>한 질문으로 함께</b> 검색합니다.</p>
+          <div class="seg fx"><em>장면</em><p>"이 거래선 계약 조건이?" - 대시보드 옆에서 계약 조항이 열립니다</p></div>
+          <div class="fix">숫자의 "왜"가 문서에서 나옵니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">NEXT 3<span class="cat">GRAPH</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><line x1="6.8" y1="7.2" x2="10.5" y2="16.2"/><line x1="17.2" y1="7.2" x2="13.5" y2="16.2"/><line x1="7.2" y1="6" x2="16.8" y2="6"/></svg></div>
+          <h3>지식그래프</h3>
+          <p>제품·거래선·조직의 관계를 그래프로 연결해 "이 거래선과 얽힌 모든 것"
+             같은 <b>관계 질문</b>에 답합니다.</p>
+          <div class="seg fx"><em>장면</em><p>A거래선 이슈가 어느 제품·조직에 번지는지 관계망 한눈에</p></div>
+          <div class="fix">흩어진 데이터가 연결된 지식이 됩니다.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+        <span>Gartner는 2027년까지 비즈니스 의사결정의 <b>50%가 AI로 증강·자동화</b>될 것으로 전망합니다 - 그 길을 단순 웹 개발로는 갈 수 없습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="전환은 이렇게">
+    <header class="s-head">
+      <h2><span class="bullet"></span>전환은 이렇게 - <em>업무 공백 없이 넘어갑니다</em></h2>
+      <div class="s-right"><span class="sec">03 · Plan</span></div>
+    </header>
+    <div class="s-band"><p>태블로를 끄는 날까지 <strong>병행 운영</strong>이 원칙입니다 -
+      두 화면의 숫자가 같다는 것을 증명한 뒤에만 전환합니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">STEP 1 <span class="cat">인벤토리</span></div><h3>조사와 우선순위</h3>
+          <div class="seg"><p>태블로 대시보드를 전수 조사해 사용 빈도·중요도 기준으로 <b>이관 순서</b>를 확정합니다.</p></div>
+          <div class="seg"><p>안 쓰는 화면은 이관하지 않습니다 - 전환은 정리의 기회이기도 합니다.</p></div>
+          <div class="seg fx"><em>GBC가 할 일</em><p>대시보드 목록·담당자 확인</p></div></div>
+        <div class="card"><span class="accent"></span><div class="no">STEP 2 <span class="cat">이관 · 병행</span></div><h3>병행 운영</h3>
+          <div class="seg"><p>핵심 대시보드부터 aisight로 이관하고, 태블로와 <b>병행하며 수치를 검증</b>합니다.</p></div>
+          <div class="seg"><p>지역 담당자 셀프서비스 교육을 병행합니다 - 반나절이면 첫 대시보드를 만듭니다.</p></div>
+          <div class="seg fx"><em>GBC가 할 일</em><p>화면 검수, 교육 참석 (반나절)</p></div></div>
+        <div class="card"><span class="accent"></span><div class="no">STEP 3 <span class="cat">전환 완료</span></div><h3>태블로 종료</h3>
+          <div class="seg"><p>검증이 끝난 순서대로 태블로를 내리고 <b>라이선스를 정리</b>합니다.</p></div>
+          <div class="seg"><p>운영은 기존 포탈 유지보수 체계로 일원화되어 창구가 하나가 됩니다.</p></div>
+          <div class="seg fx"><em>GBC가 할 일</em><p>전환 승인</p></div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <span>기간·범위는 인벤토리 결과로 확정합니다 - 병행 기간의 목표는 단 하나, <b>"숫자가 같다"의 증명</b>입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="PoC 제안">
+    <header class="s-head">
+      <h2><span class="bullet"></span>PoC 제안 - <em>2주면 판단하실 수 있습니다</em></h2>
+      <div class="s-right"><span class="sec">03 · Plan</span></div>
+    </header>
+    <div class="s-band"><p>검증에 필요한 <strong>최소 범위로 짧게</strong> 설계했습니다.
+      아래 범위는 무상으로 진행하며, 범위 확대는 본 구축에서 다룹니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:18%">구분</th><th>내용</th></tr>
+          <tr><td class="org">기간</td><td><b>2주</b> (킥오프 포함 · 일정은 협의 조정)</td></tr>
+          <tr><td class="org">범위</td><td>대표 태블로 대시보드 <b>1~2종 aisight 재현</b> + 담당자 셀프서비스 제작 시연 1회 + AI 질의 시연</td></tr>
+          <tr><td class="org">환경</td><td>세일링스톤 시연 환경 기본 - GBC 데이터 검증이 필요하면 <b>별첨(13p) 최소 사양</b>으로 사내 진행</td></tr>
+          <tr><td class="org">데이터</td><td>샘플 추출본 또는 read-only 계정 - <b>조회 전용, 외부 반출 없음</b></td></tr>
+          <tr><td class="org">판단 기준</td><td>재현 충실도 · 담당자 제작 소요 시간 · 질의 응답 정확도 - <b>킥오프에서 함께 확정</b></td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+        <span>PoC 산출물(재현 대시보드 · 측정 결과)은 본 구축 여부와 무관하게 <b>검토 자료로 제공</b>합니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="별첨 · PoC 요건">
+    <header class="s-head">
+      <h2><span class="bullet"></span>별첨 - <em>PoC 필요 사양 · DB 요건</em></h2>
+      <div class="s-right"><span class="sec">03 · Plan</span></div>
+    </header>
+    <div class="s-band"><p>PoC를 GBC 환경에서 진행할 경우의 <strong>최소 요건</strong>입니다.
+      항목별 세부는 킥오프 전에 확정합니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:18%">항목</th><th>요건</th></tr>
+          <tr><td class="org">서버</td><td>사내 VM 1대 - <b>vCPU 8 · RAM 32GB · SSD 200GB</b> (권장 사양 · 협의 조정)</td></tr>
+          <tr><td class="org">DB 접근</td><td>대상 스키마 한정 <b>read-only 계정 1개</b> · 대상 테이블 목록 · 접속 정보(호스트 · 포트)</td></tr>
+          <tr><td class="org">네트워크</td><td>서버-DB 간 사내망 연결, 사용자-서버 HTTPS - <b>외부 반출 구간 없음</b></td></tr>
+          <tr><td class="org">LLM</td><td>사내 정책에 따라 외부 API(키 발급) 또는 사내 LLM 연동 - 협의</td></tr>
+          <tr><td class="org">보안 절차</td><td>보안성 검토 자료 · 계정 신청서 등 필요 서류는 <b>세일링스톤이 작성 지원</b></td></tr>
+          <tr><td class="org">담당</td><td>GBC: 계정·데이터 확인 1명(간헐 지원) · 세일링스톤: <b>전담 2명</b> 상주 또는 원격</td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>준비물은 사실상 <b>계정 하나와 테이블 목록</b>입니다 - 나머지는 저희가 준비합니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="왜 세일링스톤인가">
+    <header class="s-head">
+      <h2><span class="bullet"></span>왜 세일링스톤인가 - <em>그 포탈을 만든 팀입니다</em></h2>
+      <div class="s-right"><span class="sec">03 · Plan</span></div>
+    </header>
+    <div class="s-band"><p>새 업체의 영업이 아니라, <strong>지금 그 포탈을 만들고 운영하는 팀</strong>의 제안입니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">PORTAL<span class="cat">도메인 이해</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <h3>포탈을 만든 회사</h3>
+          <p>GBC 커스텀 포탈을 설계·구축·운영해 왔습니다. 데이터 구조와 업무 흐름을
+             이미 알고 있어 <b>분석·인수인계 비용이 0</b>입니다.</p>
+          <div class="seg fx"><em>이미 아는 것</em><p>데이터 구조 · 업무 용어 · 결재 흐름 · 운영 일정</p></div>
+          <div class="fix">통합 리스크가 가장 작은 선택지.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">AISIGHT<span class="cat">상용 플랫폼</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg></div>
+          <h3>운영 중인 플랫폼</h3>
+          <p>aisight는 금융·제조 고객사에서 상용 운영 중인 BI·AI 플랫폼입니다.
+             하이브리드 LLM 라우팅 · 문서 파서 · 사용량 관제 · 전 과정 기록.</p>
+          <div class="seg fx"><em>핵심 모듈</em><p>대시보드 · AI 질의 · 지표 사전 · 문서 지능 · 관제</p></div>
+          <div class="fix">데모가 아닌 운영 시스템에서 출발합니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">DELIVERY<span class="cat">실행력</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <h3>전환까지 해 본 팀</h3>
+          <p>BI·AI 전문 인력 82명, BI 구축·운영 15년의 리더십. 대기업 AI 플랫폼
+             구축 3건 진행 중 - <b>전환·구축·운영을 한 팀이 잇습니다.</b></p>
+          <div class="seg fx"><em>한 팀의 범위</em><p>포탈 유지보수 + 플랫폼 구축 + 전환 교육 + 운영</p></div>
+          <div class="fix">창구도, 책임도 하나입니다.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+        <span>기존 포탈 유지보수 위에 플랫폼을 얹는 구조라 <b>책임 소재가 하나</b>로 유지됩니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide dark" data-title="맺음">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
+    <div class="top">
+      <span class="pillbadge">SAILINGSTONE - AISIGHT FOR GBC</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>대시보드를 매번 다시 만드는 대신,<br><em>만드는 능력을 갖추십시오.</em></h1>
+    <p class="sub">2주 무상 PoC로 시작하겠습니다.<br>
+      필요 사양과 판단 기준은 별첨에 준비되어 있습니다 - 계정 하나면 다음 주에 시작합니다.</p>
+    <div class="entag">MAKE DATA SMARTER, MAKE DECISIONS FASTER.</div>
+    <div class="corner">
+      <span class="ai">AISIGHT · DATA · PLATFORM</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE · www.sailingstone.io</span>
+    </div>
+  </section>
+</body>
+</html>
