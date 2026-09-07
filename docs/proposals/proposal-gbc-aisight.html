@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>GBC 대시보드 웹 전환 제안서 (aisight)</title>
-  <meta name="doc-version" content="1.1">
+  <meta name="doc-version" content="1.2">
   <meta name="doc-description" content="삼성전자 GBC 태블로 대시보드의 웹 전환 - 단순 재개발이 아닌 aisight 데이터 플랫폼 도입의 추가 가치 6가지와 2주 무상 PoC 제안">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -638,8 +638,8 @@
                요청이 몰리면 월 단위입니다. 그 사이 업무는 엑셀로 돌아갑니다.</p></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
             <span><h4>도입 후 경로 <small>TO-BE</small></h4>
-            <p>담당자가 위젯을 골라 조합하고 저장하면 끝. <b>필요한 날 아침에 만들어
-               그날 회의에 씁니다.</b> 본사 개발 큐에는 애초에 줄이 생기지 않습니다.</p></span></div>
+            <p>데이터를 고르면 <b>AI가 지표·차트 초안을 먼저 잡아 주고</b>, 말로 시켜도 됩니다.
+               다듬어 저장하면 끝 - 필요한 날 아침에 만들어 그날 회의에 씁니다.</p></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
             <span><h4>개발 인력의 재배치 <small>SHIFT</small></h4>
             <p>반복 화면 개발에서 풀려난 리소스는 데이터 품질·신규 과제로 이동합니다.
@@ -649,20 +649,21 @@
           <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">aisight Studio · 대시보드 제작</span><span class="live">유럽법인 담당</span></div>
             <div class="app">
               <div class="mnav">
-              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>aisight</div>
-              <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
-              <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Studio</div>
-              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg>AI 질의</div>
-              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>지표 사전</div>
-              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>권한</div>
-              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>알림</div>
+              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>aisight Studio</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>홈</div>
+              <div class="ni on"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>슬라이드</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>웹 리포트</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>데이터</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>데이터 지식</div>
+              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>라이브러리</div>
               <div class="nuser"><span class="nava">이</span><span><b>이도현</b><small>유럽법인 마케팅</small></span></div>
             </div>
               <div class="mmain">
-                <div class="mtop"><b>새 대시보드</b><span class="msel">캠페인 성과 · W36 ▾</span><span class="mbtn">저장 · 공유</span><span class="mava">이</span></div>
+                <div class="mtop"><b>새 대시보드</b><span class="msel">캠페인 성과 · W36 ▾</span><span class="mbtn">공유 · 내보내기</span><span class="mava">이</span></div>
                 <div class="mbody">
                   <div class="mkpis three">
-                    <div class="mkpi"><span class="kbar"></span><div class="k">위젯 팔레트</div><div class="v">12종</div></div>
+                    <div class="mkpi"><span class="kbar"></span><div class="k">AI 차트 초안</div><div class="v">6개<em>말로 생성</em></div></div>
                     <div class="mkpi"><span class="kbar"></span><div class="k">표준 지표</div><div class="v">48개<em>정의 자동 표기</em></div></div>
                     <div class="mkpi"><span class="kbar"></span><div class="k">제작 소요</div><div class="v">14분<em>발주 0건</em></div></div>
                   </div>
@@ -699,7 +700,7 @@
         <table class="rt">
           <tr><th style="width:14%">관점</th><th style="width:42%">LLM 코드 생성으로 만들 때</th><th>aisight Studio로 만들 때</th></tr>
           <tr><td class="org">제작 시간</td><td>프롬프트 → 코드 → 실행 환경 준비 → 디버깅. 시도마다 결과 편차가 큼</td>
-              <td><b>위젯 조합으로 수 분</b> - 데이터 연결·배포·권한이 이미 끝난 상태에서 시작</td></tr>
+              <td><b>AI가 지표·차트 초안을 먼저</b> - 말로 시키거나 위젯을 조합해 수 분, 데이터 연결·권한은 이미 끝난 상태</td></tr>
           <tr><td class="org">화면 규격</td><td>만들 때마다 생김새가 다름 - 담당자마다, 세션마다 제각각</td>
               <td>모든 대시보드가 <b>같은 규격·디자인 시스템</b> - 누가 만들어도 GBC 표준 화면</td></tr>
           <tr><td class="org">세부 수정</td><td>"여백만 조금 줄여줘"를 말로 반복 - 다시 생성될 때마다 <b>엉뚱한 곳이 바뀌는</b> 리스크</td>
@@ -720,8 +721,8 @@
       <h2><span class="bullet"></span>가치 ② AI 질의 - <em>"왜?"라고 물을 수 있는 대시보드</em></h2>
       <div class="s-right"><span class="sec">02 · Value</span></div>
     </header>
-    <div class="s-band"><p>대시보드는 "무슨 일이 있었는가"까지만 보여 줍니다.
-      aisight는 <strong>이유를 묻고 답을 받는</strong> 층을 그 위에 얹습니다.</p></div>
+    <div class="s-band"><p>대시보드 옆에 <strong>AI 어시스턴트가 상주</strong>합니다 - 열면 브리핑부터, 궁금하면
+      "이 대시보드에 대해 물어보기"로 <strong>이유를 묻고 답을 받습니다</strong>.</p></div>
     <div class="content">
       <div class="two fill">
         <div class="mockcol">
@@ -966,8 +967,8 @@
         <div class="card"><span class="accent"></span><div class="no">NEXT 1<span class="cat">REPORT</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg></div>
           <h3>리포트 자동화</h3>
-          <p>주간·월간 보고 초안을 대시보드 데이터에서 자동 생성합니다.
-             담당자는 쓰는 사람에서 <b>검토하는 사람</b>으로 바뀝니다.</p>
+          <p>Studio가 대시보드를 <b>발표용 슬라이드(PPT 내보내기)·문서형 웹 리포트</b>로 엮고,
+             예약·구독으로 정기 발송합니다. 담당자는 쓰는 사람에서 <b>검토하는 사람</b>으로.</p>
           <div class="seg fx"><em>장면</em><p>월요일 아침, 주간 실적 보고 초안이 먼저 와 있습니다</p></div>
           <div class="fix">보고 준비 시간의 구조적 절감.</div></div>
         <div class="card"><span class="accent"></span><div class="no">NEXT 2<span class="cat">DOCUMENT</span></div>
