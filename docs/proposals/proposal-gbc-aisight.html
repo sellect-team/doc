@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>GBC 대시보드 웹 전환 제안서 (aisight)</title>
-  <meta name="doc-version" content="1.3">
+  <meta name="doc-version" content="1.4">
   <meta name="doc-description" content="삼성전자 GBC 태블로 대시보드의 웹 전환 - 단순 재개발이 아닌 aisight 데이터 플랫폼 도입의 추가 가치 6가지와 2주 무상 PoC 제안">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -110,6 +110,41 @@
                        margin-bottom: 0.15rem; }
     .card .seg.fx p { font-size: 0.92rem; color: var(--t700); line-height: 1.5; }
     .card .seg.fx + .fix { margin-top: 0.6rem; }
+
+    /* ── 플로우 · 레인 · 차트 (시각화 전용) ── */
+    .lane { display: flex; align-items: stretch; gap: 0.7rem; }
+    .lane + .lane { margin-top: 0.55rem; }
+    .ltag { width: 5.6rem; flex: none; display: flex; flex-direction: column; justify-content: center;
+            text-align: center; font-family: var(--fx); font-size: 0.82rem; border-radius: 0.6rem;
+            line-height: 1.25; padding: 0.3rem 0; }
+    .ltag small { font-size: 0.68rem; font-family: var(--f); opacity: 0.85; }
+    .ltag.bad { background: #FEF2F2; color: #B91C1C; border: 1px solid #FECACA; }
+    .ltag.good { background: var(--t50); color: var(--t700); border: 1px solid var(--t400); }
+    .gflow { display: flex; align-items: stretch; gap: 0.4rem; flex: 1; min-width: 0; }
+    .gstep { flex: 1; min-width: 0; background: #fff; border: 1px solid var(--s200); border-radius: 0.6rem;
+             padding: 0.38rem 0.5rem; text-align: center; display: flex; flex-direction: column;
+             justify-content: center; }
+    .gstep b { display: block; font-size: 0.9rem; color: var(--s900); font-family: var(--fx); line-height: 1.3; }
+    .gstep small { display: block; font-size: 0.72rem; color: var(--s500); margin-top: 0.12rem; line-height: 1.3; }
+    .gstep.hl { background: var(--t50); border-color: var(--t400); }
+    .gstep.dim { background: var(--s50); }
+    .garr { align-self: center; color: var(--s400); font-size: 1.05rem; font-family: var(--fx); flex: none; }
+    .vchart { flex: 1; display: flex; align-items: stretch; gap: 1.6rem; padding: 0 0.4rem; }
+    .vgrp { flex: 1; display: flex; align-items: flex-end; gap: 0.45rem; }
+    .vbar { flex: 1; border-radius: 0.35rem 0.35rem 0 0; }
+    .vbar.sa { background: var(--s300); }
+    .vbar.sb { background: var(--t400); }
+    .vlabs { display: flex; gap: 1.6rem; padding: 0 0.4rem; margin-top: 0.4rem; }
+    .vlabs span { flex: 1; text-align: center; font-size: 0.8rem; color: var(--s500); font-family: var(--fx); }
+    .vleg { display: flex; gap: 1.2rem; font-size: 0.8rem; color: var(--s500); align-items: center; }
+    .vleg i { display: inline-block; width: 0.85rem; height: 0.85rem; border-radius: 0.2rem; margin-right: 0.35rem; }
+    .costrow { display: flex; align-items: center; gap: 0.55rem; background: #fff; border: 1px solid var(--s200);
+               border-radius: 0.6rem; padding: 0.5rem 0.7rem; }
+    .costrow + .costrow { margin-top: 0.55rem; }
+    .costrow b { font-size: 0.92rem; color: var(--s900); font-family: var(--fx); }
+    .costrow small { display: block; font-size: 0.76rem; color: var(--s500); margin-top: 0.1rem; line-height: 1.35; }
+    .costrow.gain { background: var(--t50); border-color: var(--t400); }
+    .costrow.gain b { color: var(--t700); }
 
     /* ── 2단 ── */
     .two { display: flex; gap: 2.6rem; align-items: stretch; }
@@ -603,19 +638,37 @@
       <h2><span class="bullet"></span>두 갈래 비교 - <em>화면 재구매인가, 능력 확보인가</em></h2>
       <div class="s-right"><span class="sec">01 · Why</span></div>
     </header>
-    <div class="s-band"><p>같은 예산 검토라도 <strong>5년을 놓고 보면</strong> 두 길의 성격이 다릅니다. 태블로를 내려놓는 전환은
-      글로벌에서도 진행 중인 흐름이며, 전환 기업들은 <strong>BI 비용 40~70% 절감</strong>을 보고합니다.</p></div>
+    <div class="s-band"><p>태블로를 내려놓는 전환은 글로벌에서도 진행 중인 흐름이며, 전환 기업들은
+      <strong>BI 비용 40~70% 절감</strong>을 보고합니다. 갈림길은 5년 누적으로 봐야 보입니다.</p></div>
     <div class="content">
-      <div class="rt-wrap fill">
-        <table class="rt">
-          <tr><th style="width:16%">비교 항목</th><th style="width:40%">단순 웹 재개발</th><th>aisight 플랫폼</th></tr>
-          <tr><td class="org">초기 구축</td><td>기존 화면 전면 재개발 - 개발비 전액</td><td>플랫폼 설치 + 기존 대시보드 이관</td></tr>
-          <tr><td class="org">새 대시보드</td><td>건마다 요건 정의 → 개발 발주 → 비용 발생</td><td><b>담당자가 직접 제작 - 추가 개발비 0</b></td></tr>
-          <tr><td class="org">화면 수정</td><td>요청 → 개발 큐 → 배포, 주 단위</td><td><b>화면에서 직접, 당일</b></td></tr>
-          <tr><td class="org">AI 분석</td><td>별도 프로젝트로 다시 개발</td><td>기본 탑재 - 자연어 질의 · 요약 · 이상 알림</td></tr>
-          <tr><td class="org">라이선스</td><td>태블로 제거 (기능도 함께 사라짐)</td><td>태블로 제거 + 기능은 플랫폼이 대체</td></tr>
-          <tr><td class="org">5년 비용</td><td>대시보드 수에 비례해 계속 증가</td><td>초기 구축 후 완만 - 한계비용 최소</td></tr>
-        </table>
+      <div class="two fill">
+        <div style="display:flex; flex-direction:column; min-height:0">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem">
+            <b style="font-family:var(--fx); font-size:1.05rem; color:var(--s900)">5년 누적 비용 곡선 (개념)</b>
+            <span class="vleg"><span><i style="background:var(--s300)"></i>단순 웹 재개발</span>
+              <span><i style="background:var(--t400)"></i>aisight 플랫폼</span></span>
+          </div>
+          <div class="vchart">
+            <div class="vgrp"><span class="vbar sa" style="height:42%"></span><span class="vbar sb" style="height:58%"></span></div>
+            <div class="vgrp"><span class="vbar sa" style="height:60%"></span><span class="vbar sb" style="height:63%"></span></div>
+            <div class="vgrp"><span class="vbar sa" style="height:76%"></span><span class="vbar sb" style="height:68%"></span></div>
+            <div class="vgrp"><span class="vbar sa" style="height:89%"></span><span class="vbar sb" style="height:72%"></span></div>
+            <div class="vgrp"><span class="vbar sa" style="height:100%"></span><span class="vbar sb" style="height:76%"></span></div>
+          </div>
+          <div class="vlabs"><span>1년 차</span><span>2년 차</span><span>3년 차</span><span>4년 차</span><span>5년 차</span></div>
+          <p style="font-size:0.86rem; color:var(--s500); line-height:1.5; margin-top:0.3rem">
+            1년 차에는 플랫폼 도입으로 aisight가 높지만, 대시보드가 늘수록 <b>3년 차부터 격차가 벌어집니다.</b>
+            단순 웹은 화면이 늘 때마다 개발비가 다시 발생하기 때문입니다.</p>
+        </div>
+        <div class="rt-wrap">
+          <table class="rt">
+            <tr><th style="width:26%">항목</th><th style="width:37%">단순 웹 재개발</th><th>aisight 플랫폼</th></tr>
+            <tr><td class="org">새 대시보드</td><td>건마다 개발 발주 · 비용 발생</td><td><b>담당자 직접 - 추가 개발비 0</b></td></tr>
+            <tr><td class="org">화면 수정</td><td>요청 → 개발 큐, 주 단위</td><td><b>화면에서 직접, 당일</b></td></tr>
+            <tr><td class="org">AI 분석</td><td>별도 프로젝트로 재개발</td><td>기본 탑재 - 질의 · 브리핑 · 알림</td></tr>
+            <tr><td class="org">라이선스</td><td>태블로 제거 (기능도 소멸)</td><td>제거 + 기능은 플랫폼이 대체</td></tr>
+          </table>
+        </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
         <span>대시보드가 더 늘지 않을 조직이라면 단순 웹 개발이 쌉니다. <b>계속 늘어날 조직이라면 이야기가 다릅니다.</b></span></div>
@@ -629,22 +682,36 @@
       <div class="s-right"><span class="sec">02 · Value</span></div>
     </header>
     <div class="s-band"><p>"지역별 담당자가 원하는 대시보드"라는 니즈의 본질은 화면이 아니라
-      <strong>기다리지 않는 것</strong>입니다.</p></div>
+      <strong>기다리지 않는 것</strong>입니다. 경로 자체가 짧아집니다.</p></div>
     <div class="content">
-      <div class="two fill">
+      <div class="lane">
+        <span class="ltag bad">AS-IS<small>주 ~ 월 단위</small></span>
+        <div class="gflow">
+          <div class="gstep dim"><b>현업 요청</b><small>요청서 작성</small></div><span class="garr">›</span>
+          <div class="gstep dim"><b>본사 취합</b><small>우선순위 조정</small></div><span class="garr">›</span>
+          <div class="gstep dim"><b>개발 큐 대기</b><small>요청 몰리면 월 단위</small></div><span class="garr">›</span>
+          <div class="gstep dim"><b>개발 · 검수</b><small>왕복 수정</small></div><span class="garr">›</span>
+          <div class="gstep dim"><b>배포</b><small>그동안 업무는 엑셀로</small></div>
+        </div>
+      </div>
+      <div class="lane">
+        <span class="ltag good">TO-BE<small>당일</small></span>
+        <div class="gflow">
+          <div class="gstep hl"><b>담당자가 직접</b><small>AI가 지표·차트 초안 - 말로 시켜도 됩니다</small></div><span class="garr">›</span>
+          <div class="gstep hl"><b>다듬고 저장</b><small>위젯 클릭 미세 조정</small></div><span class="garr">›</span>
+          <div class="gstep hl"><b>그날 회의에 사용</b><small>개발 큐에 줄이 생기지 않음</small></div>
+        </div>
+      </div>
+      <div class="two fill" style="margin-top:0.6rem">
         <div class="krows">
-          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
-            <span><h4>지금의 경로 <small>AS-IS</small></h4>
-            <p>현업 요청 → 본사 취합 → 개발 큐 → 개발·검수 → 배포. 잘 돌아가도 주 단위,
-               요청이 몰리면 월 단위입니다. 그 사이 업무는 엑셀로 돌아갑니다.</p></span></div>
-          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
-            <span><h4>도입 후 경로 <small>TO-BE</small></h4>
-            <p>데이터를 고르면 <b>AI가 지표·차트 초안을 먼저 잡아 주고</b>, 말로 시켜도 됩니다.
-               다듬어 저장하면 끝 - 필요한 날 아침에 만들어 그날 회의에 씁니다.</p></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
             <span><h4>개발 인력의 재배치 <small>SHIFT</small></h4>
             <p>반복 화면 개발에서 풀려난 리소스는 데이터 품질·신규 과제로 이동합니다.
                "개발 부담 감소"의 실제 의미는 <b>인력의 상향 재배치</b>입니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+            <span><h4>사라지는 것들 <small>REMOVED</small></h4>
+            <p>요청서 · 취합 회의 · 대기 목록 · "언제 되나요" 문의.
+               지역 담당자와 본사 모두에게서 <b>같은 낭비가 동시에</b> 사라집니다.</p></span></div>
         </div>
         <div class="mockcol">
           <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">aisight Studio · 대시보드 제작</span><span class="live">유럽법인 담당</span></div>
@@ -655,9 +722,7 @@
               <div class="ni on"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>슬라이드</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>웹 리포트</div>
-              <div class="ni"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>데이터</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>데이터 지식</div>
-              <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>라이브러리</div>
               <div class="nuser"><span class="nava">이</span><span><b>이도현</b><small>유럽법인 마케팅</small></span></div>
             </div>
               <div class="mmain">
@@ -669,17 +734,13 @@
                     <div class="mkpi"><span class="kbar"></span><div class="k">제작 소요</div><div class="v">14분<em>발주 0건</em></div></div>
                   </div>
                   <div class="mg"><span>주간 Spend 추이 (차트 위젯)</span><span class="mgb"><i style="width:72%"></i></span><b>+7.2%</b></div>
-                  <div class="mg"><span>eStore 전환율 (지표 위젯)</span><span class="mgb"><i style="width:64%"></i></span><b>1.9%</b></div>
-                  <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+                    <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
                     <span><b>지표 사전에서 "eStore 전환율" 선택됨</b><small>정의 · 산식 · 데이터 출처가 위젯에 자동으로 붙습니다</small></span>
                     <span class="st on">표준 지표</span></div>
-                  <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-                    <span><b>저장 즉시 팀 공유</b><small>유럽법인 마케팅 12명 열람 - 권한은 조직 기준 자동 적용</small></span>
-                    <span class="st on">공유됨</span></div>
                 </div>
               </div>
             </div></div>
-          <p class="mcap"><b>aisight Studio.</b> 위젯 조합부터 저장·공유까지 담당자 혼자서.
+          <p class="mcap"><b>aisight Studio.</b> AI 초안부터 저장·팀 공유까지 담당자 혼자서 - 권한은 조직 기준 자동.
              표준 지표를 고르면 정의와 출처가 자동으로 따라붙습니다.</p>
         </div>
       </div>
@@ -872,20 +933,30 @@
       <div class="s-right"><span class="sec">02 · Value</span></div>
     </header>
     <div class="s-band"><p>절감 이전에 <strong>비용 성격의 전환</strong>입니다 -
-      쓸수록 늘어나는 구조에서, 써도 늘지 않는 구조로.</p></div>
+      쓸수록 늘어나는 세 갈래 지출이, 늘지 않는 하나의 구조가 됩니다.</p></div>
     <div class="content">
-      <div class="rt-wrap fill">
-        <table class="rt">
-          <tr><th style="width:18%">구분</th><th>내용</th></tr>
-          <tr><td class="org">사라지는 비용</td><td>태블로 좌석 라이선스 - 공시 가격 기준 <b>1인당 월 $15~75</b>(Viewer~Creator · 연 단위 청구).
-              보기만 하는 인원에게도 과금되는 반복 지출이 전환 완료 시점부터 <b>0</b></td></tr>
-          <tr><td class="org">줄어드는 비용</td><td>대시보드 신규·수정 개발비 - 건당 발주가 <b>셀프서비스로 흡수</b>되어 발생 자체가 감소</td></tr>
-          <tr><td class="org">남는 비용</td><td>플랫폼 사용료 + 유지보수 - 기존 포탈 유지보수와 <b>단일 계약으로 일원화</b> (규모 확정 후 견적)</td></tr>
-          <tr><td class="org">새로 생기는 가치</td><td>AI 질의·자동 브리핑·이상 알림 등 <b>별도 개발 없이 추가되는 기능</b> - 단순 웹 개발이라면 각각이 신규 프로젝트</td></tr>
-        </table>
+      <div style="display:flex; align-items:stretch; gap:1rem" class="fill">
+        <div style="flex:1; display:flex; flex-direction:column">
+          <div style="font-family:var(--fx); font-size:1rem; color:#B91C1C; margin-bottom:0.55rem">지금 - 쓸수록 늘어나는 지출</div>
+          <div class="costrow"><span style="flex:1"><b>태블로 좌석 라이선스</b><small>공시가 1인당 월 $15~75 · 연 단위 반복 · 인원에 비례</small></span></div>
+          <div class="costrow"><span style="flex:1"><b>대시보드 개발 외주비</b><small>신규·수정 건마다 발생 · 화면 수에 비례</small></span></div>
+          <div class="costrow"><span style="flex:1"><b>포탈 유지보수</b><small>별도 계약 · 분석 화면과 이원 관리</small></span></div>
+          <div class="costrow" style="background:#FEF2F2; border-color:#FECACA"><span style="flex:1"><b style="color:#B91C1C">= 세 갈래가 따로, 쓸수록 증가</b><small>좌석·화면·계약이 늘 때마다 지출도 늘어나는 구조</small></span></div>
+        </div>
+        <div style="flex:none; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:0.3rem">
+          <span style="font-family:var(--fx); font-size:0.78rem; color:var(--t700)">전환</span>
+          <span style="font-family:var(--fx); font-size:1.6rem; color:var(--t600)">›</span>
+        </div>
+        <div style="flex:1.15; display:flex; flex-direction:column">
+          <div style="font-family:var(--fx); font-size:1rem; color:var(--t700); margin-bottom:0.55rem">전환 후 - 늘지 않는 단일 구조</div>
+          <div class="costrow"><span style="flex:1"><b>좌석 라이선스 → 0</b><small>전환 완료 시점부터 반복 지출 소멸</small></span></div>
+          <div class="costrow"><span style="flex:1"><b>개발 외주 → 셀프서비스 흡수</b><small>담당자 제작으로 발주 자체가 감소</small></span></div>
+          <div class="costrow"><span style="flex:1"><b>플랫폼 + 유지보수 → 단일 계약</b><small>기존 포탈 유지보수와 일원화 (규모 확정 후 견적)</small></span></div>
+          <div class="costrow gain"><span style="flex:1"><b>+ 새로 생기는 기능</b><small>AI 질의 · 브리핑 · 이상 알림 - 추가 개발비 없이 플랫폼 업그레이드로</small></span></div>
+        </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
-        <span>정확한 금액 비교는 <b>좌석 수·대시보드 수 확인 후 견적서</b>로 - 이 장이 말하는 것은 구조의 차이입니다.</span></div>
+        <span>정확한 금액 비교는 <b>좌석 수 · 대시보드 수 확인 후 견적서</b>로 - 이 장이 말하는 것은 구조의 차이입니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
@@ -962,30 +1033,52 @@
       <div class="s-right"><span class="sec">02 · Value</span></div>
     </header>
     <div class="s-band"><p>같은 플랫폼 위에 <strong>다음 단계의 모듈</strong>이 준비되어 있습니다 -
-      별도 시스템을 또 짓는 일이 아닙니다.</p></div>
+      별도 시스템을 또 짓는 일이 아니라, 모듈을 켜는 일입니다.</p></div>
     <div class="content">
-      <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">NEXT 1<span class="cat">REPORT</span></div>
-          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg></div>
-          <h3>리포트 자동화</h3>
-          <p>Studio가 대시보드를 <b>발표용 슬라이드(PPT 내보내기)·문서형 웹 리포트</b>로 엮고,
-             예약·구독으로 정기 발송합니다. 담당자는 쓰는 사람에서 <b>검토하는 사람</b>으로.</p>
-          <div class="seg fx"><em>장면</em><p>월요일 아침, 주간 실적 보고 초안이 먼저 와 있습니다</p></div>
-          <div class="fix">보고 준비 시간의 구조적 절감.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">NEXT 2<span class="cat">DOCUMENT</span></div>
-          <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>
-          <h3>문서 지능</h3>
-          <p>문서 파서(Document Parser)가 실적 문서·계약·회의록을 표·그림까지 읽어,
-             대시보드 숫자와 문서 내용을 <b>한 질문으로 함께</b> 검색합니다.</p>
-          <div class="seg fx"><em>장면</em><p>"이 거래선 계약 조건이?" - 대시보드 옆에서 계약 조항이 열립니다</p></div>
-          <div class="fix">숫자의 "왜"가 문서에서 나옵니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">NEXT 3<span class="cat">GRAPH</span></div>
-          <div class="ico"><svg class="i" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><line x1="6.8" y1="7.2" x2="10.5" y2="16.2"/><line x1="17.2" y1="7.2" x2="13.5" y2="16.2"/><line x1="7.2" y1="6" x2="16.8" y2="6"/></svg></div>
-          <h3>지식그래프</h3>
-          <p>제품·거래선·조직의 관계를 그래프로 연결해 "이 거래선과 얽힌 모든 것"
-             같은 <b>관계 질문</b>에 답합니다.</p>
-          <div class="seg fx"><em>장면</em><p>A거래선 이슈가 어느 제품·조직에 번지는지 관계망 한눈에</p></div>
-          <div class="fix">흩어진 데이터가 연결된 지식이 됩니다.</div></div>
+      <div class="fill" style="display:flex; flex-direction:column; min-height:0">
+      <div class="gflow" style="gap:0.5rem; flex:1; min-height:0">
+        <div class="gstep hl" style="flex:1.15; text-align:left; padding:0.9rem 1rem; justify-content:flex-start">
+          <span style="font-family:var(--fx); font-size:0.74rem; color:var(--t700); letter-spacing:0.06em">NOW · 이번 제안</span>
+          <b style="font-size:1.15rem; margin-top:0.3rem">대시보드 전환</b>
+          <small style="font-size:0.82rem; margin-top:0.35rem">태블로를 걷어내고 여기까지가 이번 검토 범위입니다.</small>
+          <small style="font-size:0.8rem; margin-top:0.6rem; color:var(--s700)">✓ Studio 셀프서비스</small>
+          <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ AI 질의 · 브리핑 · 알림</small>
+          <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 기존 포탈 임베드 · SSO</small>
+          <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 개인 Claude 연동 (MCP)</small>
+          <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 지표 거버넌스 · 감사</small></div>
+        <span class="garr">›</span>
+        <div class="gstep" style="text-align:left; padding:0.9rem 1rem; justify-content:flex-start">
+          <span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 1</span>
+          <b style="font-size:1.05rem; margin-top:0.3rem">리포트 자동화</b>
+          <small style="font-size:0.8rem; margin-top:0.35rem">담당자는 쓰는 사람에서 검토하는 사람으로.</small>
+          <small style="font-size:0.8rem; margin-top:0.6rem; color:var(--s700)">✓ 슬라이드 · PPT 내보내기</small>
+          <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 문서형 웹 리포트</small>
+          <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 예약 · 구독 정기 발송</small>
+          <small style="font-size:0.76rem; margin-top:0.55rem; color:var(--t700)">월요일 아침, 주간 보고 초안이 먼저 와 있습니다</small></div>
+        <span class="garr">›</span>
+        <div class="gstep" style="text-align:left; padding:0.9rem 1rem; justify-content:flex-start">
+          <span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 2</span>
+          <b style="font-size:1.05rem; margin-top:0.3rem">문서 지능</b>
+          <small style="font-size:0.8rem; margin-top:0.35rem">숫자의 "왜"가 문서에서 나옵니다.</small>
+          <small style="font-size:0.8rem; margin-top:0.6rem; color:var(--s700)">✓ 계약 · 회의록 인덱싱</small>
+          <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 표 · 그림 멀티모달 판독</small>
+          <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 숫자 + 문서 통합 질의</small>
+          <small style="font-size:0.76rem; margin-top:0.55rem; color:var(--t700)">"이 거래선 계약 조건이?" - 대시보드 옆에서 조항이 열립니다</small></div>
+        <span class="garr">›</span>
+        <div class="gstep" style="text-align:left; padding:0.9rem 1rem; justify-content:flex-start">
+          <span style="font-family:var(--fx); font-size:0.74rem; color:var(--s400); letter-spacing:0.06em">NEXT 3</span>
+          <b style="font-size:1.05rem; margin-top:0.3rem">지식그래프</b>
+          <small style="font-size:0.8rem; margin-top:0.35rem">흩어진 데이터가 연결된 지식이 됩니다.</small>
+          <small style="font-size:0.8rem; margin-top:0.6rem; color:var(--s700)">✓ 제품 · 거래선 · 조직 관계망</small>
+          <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ 영향 전파 분석</small>
+          <small style="font-size:0.8rem; margin-top:0.25rem; color:var(--s700)">✓ "얽힌 모든 것" 관계 질의</small>
+          <small style="font-size:0.76rem; margin-top:0.55rem; color:var(--t700)">이슈가 어디로 번지는지 관계망 한눈에</small></div>
+      </div>
+      <div style="text-align:center; color:var(--s400); font-size:0.78rem; margin:0.5rem 0 0.4rem; font-family:var(--fx)">▲ 모듈은 켜면 됩니다 - 데이터 · 권한 · 화면을 다시 만들지 않습니다 ▲</div>
+      <div style="background:var(--s900); border-radius:0.7rem; padding:0.6rem 1.2rem; display:flex; align-items:center; gap:1rem">
+        <b style="color:var(--t400); font-family:var(--fx); font-size:0.9rem; flex:none">AISIGHT 공통 기반</b>
+        <span style="color:var(--s400); font-size:0.82rem">포탈 임베드 · SSO · 권한 · 지표 사전(데이터 지식) · 감사 로그 · MCP - 네 모듈이 같은 기반을 공유합니다</span>
+      </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
         <span>Gartner는 2027년까지 비즈니스 의사결정의 <b>50%가 AI로 증강·자동화</b>될 것으로 전망합니다 - 그 길을 단순 웹 개발로는 갈 수 없습니다.</span></div>
@@ -1031,19 +1124,31 @@
     <div class="s-band"><p>태블로를 끄는 날까지 <strong>병행 운영</strong>이 원칙입니다 -
       두 화면의 숫자가 같다는 것을 증명한 뒤에만 전환합니다.</p></div>
     <div class="content">
-      <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">STEP 1 <span class="cat">인벤토리</span></div><h3>조사와 우선순위</h3>
-          <div class="seg"><p>태블로 대시보드를 전수 조사해 사용 빈도·중요도 기준으로 <b>이관 순서</b>를 확정합니다.</p></div>
-          <div class="seg"><p>안 쓰는 화면은 이관하지 않습니다 - 전환은 정리의 기회이기도 합니다.</p></div>
-          <div class="seg fx"><em>GBC가 할 일</em><p>대시보드 목록·담당자 확인</p></div></div>
-        <div class="card"><span class="accent"></span><div class="no">STEP 2 <span class="cat">이관 · 병행</span></div><h3>병행 운영</h3>
-          <div class="seg"><p>핵심 대시보드부터 aisight로 이관하고, 태블로와 <b>병행하며 수치를 검증</b>합니다.</p></div>
-          <div class="seg"><p>지역 담당자 셀프서비스 교육을 병행합니다 - 반나절이면 첫 대시보드를 만듭니다.</p></div>
-          <div class="seg fx"><em>GBC가 할 일</em><p>화면 검수, 교육 참석 (반나절)</p></div></div>
-        <div class="card"><span class="accent"></span><div class="no">STEP 3 <span class="cat">전환 완료</span></div><h3>태블로 종료</h3>
-          <div class="seg"><p>검증이 끝난 순서대로 태블로를 내리고 <b>라이선스를 정리</b>합니다.</p></div>
-          <div class="seg"><p>운영은 기존 포탈 유지보수 체계로 일원화되어 창구가 하나가 됩니다.</p></div>
-          <div class="seg fx"><em>GBC가 할 일</em><p>전환 승인</p></div></div>
+      <div style="display:flex; flex-direction:column; gap:0.7rem" class="fill">
+        <div class="lane" style="flex:1">
+          <span class="ltag good">STEP 1<small>약 2주</small></span>
+          <div class="gstep" style="text-align:left; padding:0.7rem 1rem; justify-content:center">
+            <b style="font-size:1.05rem">조사와 우선순위</b>
+            <small style="font-size:0.84rem; margin-top:0.3rem">태블로 대시보드를 전수 조사해 사용 빈도·중요도 기준으로 <b>이관 순서를 확정</b>합니다.
+              안 쓰는 화면은 이관하지 않습니다 - 전환은 정리의 기회이기도 합니다.</small></div>
+          <div class="gstep dim" style="flex:0.45; justify-content:center"><b style="font-size:0.8rem; color:var(--t700)">GBC가 할 일</b><small>대시보드 목록 · 담당자 확인</small></div>
+        </div>
+        <div class="lane" style="flex:1">
+          <span class="ltag good">STEP 2<small>병행 운영</small></span>
+          <div class="gstep" style="text-align:left; padding:0.7rem 1rem; justify-content:center">
+            <b style="font-size:1.05rem">이관과 수치 검증</b>
+            <small style="font-size:0.84rem; margin-top:0.3rem">핵심 대시보드부터 aisight로 이관하고, 태블로와 <b>병행하며 숫자가 같은지 검증</b>합니다.
+              지역 담당자 Studio 교육을 병행합니다 - 반나절이면 첫 대시보드를 만듭니다.</small></div>
+          <div class="gstep dim" style="flex:0.45; justify-content:center"><b style="font-size:0.8rem; color:var(--t700)">GBC가 할 일</b><small>화면 검수 · 교육 참석 (반나절)</small></div>
+        </div>
+        <div class="lane" style="flex:1">
+          <span class="ltag good">STEP 3<small>전환 완료</small></span>
+          <div class="gstep" style="text-align:left; padding:0.7rem 1rem; justify-content:center">
+            <b style="font-size:1.05rem">태블로 종료</b>
+            <small style="font-size:0.84rem; margin-top:0.3rem">검증이 끝난 순서대로 태블로를 내리고 <b>라이선스를 정리</b>합니다.
+              운영은 기존 포탈 유지보수 체계로 일원화되어 창구가 하나가 됩니다.</small></div>
+          <div class="gstep dim" style="flex:0.45; justify-content:center"><b style="font-size:0.8rem; color:var(--t700)">GBC가 할 일</b><small>전환 승인</small></div>
+        </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
         <span>기간·범위는 인벤토리 결과로 확정합니다 - 병행 기간의 목표는 단 하나, <b>"숫자가 같다"의 증명</b>입니다.</span></div>
