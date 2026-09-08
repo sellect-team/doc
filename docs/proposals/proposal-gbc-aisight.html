@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Tableau 대시보드 웹 전환 방안 제안서</title>
-  <meta name="doc-version" content="2.2">
+  <meta name="doc-version" content="2.3">
   <meta name="doc-description" content="GBC Tableau 대시보드 웹 전환 방안 - 단순 재개발과 aisight 데이터 플랫폼 전환의 구조 비교, 도입 가치 6가지, 2주 무상 PoC 계획">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -1009,37 +1009,61 @@
     <div class="content">
       <div class="gflow" style="gap:0.5rem; flex:none">
         <div class="gstep dim" style="text-align:left; padding:0.8rem 1rem">
-          <span style="font-family:var(--fx); font-size:0.72rem; color:var(--s400); letter-spacing:0.06em">지금까지 · 보는 BI</span>
+          <span style="display:flex; align-items:center; gap:0.4rem; font-family:var(--fx); font-size:0.72rem; color:var(--s400); letter-spacing:0.06em"><svg class="i" style="width:0.95rem; height:0.95rem; color:var(--s500)" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>지금까지 · 보는 BI</span>
           <b style="font-size:1rem; margin-top:0.25rem">사람이 화면을 열어 확인</b>
-          <small style="font-size:0.78rem; margin-top:0.3rem">정해진 차트를 사람이 읽고 해석 - Tableau가 이끌던 시대</small></div>
+          <small style="font-size:0.78rem; margin-top:0.3rem">정해진 차트를 사람이 읽고 해석 - Tableau가 이끌던 시대</small>
+          <span style="display:block; margin-top:0.45rem; font-size:0.72rem; line-height:1.35; color:var(--s500); background:#fff; border:1px solid var(--s200); border-radius:0.4rem; padding:0.26rem 0.55rem">예) 월요일 아침, 대시보드를 열어 지난주 실적을 확인</span></div>
         <span class="garr">›</span>
         <div class="gstep hl" style="text-align:left; padding:0.8rem 1rem">
-          <span style="font-family:var(--fx); font-size:0.72rem; color:var(--t700); letter-spacing:0.06em">지금 · 묻는 BI</span>
+          <span style="display:flex; align-items:center; gap:0.4rem; font-family:var(--fx); font-size:0.72rem; color:var(--t700); letter-spacing:0.06em"><svg class="i" style="width:0.95rem; height:0.95rem; color:var(--t700)" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg>지금 · 묻는 BI</span>
           <b style="font-size:1rem; margin-top:0.25rem">사람이 AI에게 질문</b>
-          <small style="font-size:0.78rem; margin-top:0.3rem">브리핑·원인 질의·이상 알림 - 글로벌 BI 전체가 이동 중이며,
-            업계는 <b>2028년까지 기업 절반 이상이 대화형 BI를 표준</b>으로 쓸 것으로 전망</small></div>
+          <small style="font-size:0.78rem; margin-top:0.3rem">브리핑·원인 질의·이상 알림 - 업계 전망은
+            <b>2028년까지 기업 절반 이상의 대화형 BI 표준화</b></small>
+          <span style="display:block; margin-top:0.45rem; font-size:0.72rem; line-height:1.35; color:var(--t700); background:#fff; border:1px solid var(--t400); border-radius:0.4rem; padding:0.26rem 0.55rem">예) "eStore 전환율, 왜 떨어졌지?" - 화면에서 바로 질문</span></div>
         <span class="garr">›</span>
         <div class="gstep" style="text-align:left; padding:0.8rem 1rem; background:var(--s900); border-color:var(--s900)">
-          <span style="font-family:var(--fx); font-size:0.72rem; color:var(--t400); letter-spacing:0.06em">3년 안 · 일하는 BI</span>
+          <span style="display:flex; align-items:center; gap:0.4rem; font-family:var(--fx); font-size:0.72rem; color:var(--t400); letter-spacing:0.06em"><svg class="i" style="width:0.95rem; height:0.95rem; color:var(--t400)" viewBox="0 0 24 24"><rect x="5" y="9" width="14" height="10" rx="2"/><path d="M12 9V5"/><circle cx="12" cy="4" r="1"/><path d="M9.5 13.2v.6"/><path d="M14.5 13.2v.6"/><path d="M9.5 16.5h5"/></svg>3년 안 · 일하는 BI</span>
           <b style="font-size:1rem; margin-top:0.25rem; color:#fff">AI 에이전트가 먼저 움직임</b>
           <small style="font-size:0.78rem; margin-top:0.3rem; color:var(--s400)">이상 징후를 먼저 찾아 원인과 조치안까지 보고 -
-            에이전트가 데이터를 직접 읽는 시대</small></div>
+            에이전트가 데이터를 직접 읽는 시대</small>
+          <span style="display:block; margin-top:0.45rem; font-size:0.72rem; line-height:1.35; color:#CBD5E1; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); border-radius:0.4rem; padding:0.26rem 0.55rem">예) 출근 전, "전환율 급락 - 원인·조치안" 보고가 먼저 도착</span></div>
       </div>
       <div class="two fill" style="margin-top:0.8rem">
         <div class="card" style="display:flex; flex-direction:column">
           <div class="no">단순 웹 재개발을 선택하면</div>
           <h3>"보는 BI"에 고정됩니다</h3>
-          <p>화면은 <b>사람만 읽을 수 있습니다.</b> 묻는 BI·일하는 BI로 넘어가려면 그때마다
-             새 프로젝트가 필요합니다.</p>
-          <div class="seg fx" style="background:#FEF2F2; border-color:#FECACA"><em style="color:#B91C1C">그리고 멈춥니다</em><p style="color:#9A3412">납품 시점의 코드로 고정 - AI 생태계가 바뀌어도 업그레이드해 줄 제품 로드맵이 없습니다</p></div>
-          <div class="fix">3년 뒤, 같은 갈림길에 다시 서게 됩니다.</div></div>
+          <p>화면은 <b>사람만 읽을 수 있고,</b> 다음 단계는 그때마다 새 프로젝트입니다.</p>
+          <div class="seg fx" style="background:#FEF2F2; border-color:#FECACA"><em style="color:#B91C1C">그리고 멈춥니다</em><p style="color:#9A3412">납품 시점의 코드로 고정 - 업그레이드해 줄 제품 로드맵이 없습니다</p></div>
+          <svg viewBox="0 0 720 58" style="flex:none; margin-top:auto; padding-top:0.6rem; width:100%; height:auto; display:block; overflow:visible" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 52 L44 52 L44 44 L228 44" fill="none" stroke="#64748B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M221 37 L235 51" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M235 37 L221 51" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M248 8 L248 52" fill="none" stroke="#FCA5A5" stroke-width="2" stroke-dasharray="4 4"/>
+            <path d="M260 44 L296 44 L296 30 L434 30" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round"/>
+            <path d="M434 30 L478 30 L478 16 L596 16" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round"/>
+            <text x="130" y="40" text-anchor="middle" font-size="11" fill="#94A3B8">보는 BI</text>
+            <text x="365" y="26" text-anchor="middle" font-size="11" fill="#94A3B8">묻는 BI - 새 프로젝트</text>
+            <text x="537" y="12" text-anchor="middle" font-size="11" fill="#94A3B8">일하는 BI - 또 새 프로젝트</text>
+            <text x="712" y="52" text-anchor="end" font-size="12" fill="#B91C1C" style="font-family:var(--fx)">3년 뒤, 같은 갈림길</text>
+          </svg></div>
         <div class="card" style="display:flex; flex-direction:column; background:var(--t50); border-color:var(--t400)">
           <div class="no" style="color:var(--t700)">aisight를 선택하면</div>
           <h3>데이터가 AI가 읽는 자산이 됩니다</h3>
-          <p>쓰는 동안 <b>지표 사전 · 데이터 지식 · 권한 · 감사 이력</b>이 자산으로 쌓여,
-             에이전트 시대가 와도 <b>어떤 AI든(MCP 표준) 그 위에서 바로 일합니다.</b></p>
-          <div class="seg fx"><em>그리고 계속 자랍니다</em><p>세일링스톤이 AI 생태계 변화(새 모델 · MCP · 에이전트 표준)에 맞춰 플랫폼을 계속 업그레이드합니다 - 별도 프로젝트 없이 전 화면에 반영</p></div>
-          <div class="fix">세 시대를 하나의 기반으로 - 갈림길이 다시 오지 않습니다.</div></div>
+          <p>쓰는 동안 <b>지표 사전·데이터 지식·권한·감사</b>가 어떤 AI든 읽는 자산으로 쌓입니다.</p>
+          <div class="seg fx"><em>그리고 계속 자랍니다</em><p>새 모델·MCP·에이전트 표준에 맞춰 계속 업그레이드 - 별도 프로젝트가 필요 없습니다</p></div>
+          <svg viewBox="0 0 720 58" style="flex:none; margin-top:auto; padding-top:0.6rem; width:100%; height:auto; display:block; overflow:visible" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 52 L44 52 L44 44 L228 44 L228 30 L434 30 L434 16 L588 16" fill="none" stroke="#0D9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M588 9 L597 16 L588 23" fill="none" stroke="#0D9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="136" cy="44" r="4" fill="#0D9488"/>
+            <circle cx="331" cy="30" r="4" fill="#0D9488"/>
+            <circle cx="515" cy="16" r="4" fill="#0D9488"/>
+            <text x="228" y="22" text-anchor="middle" font-size="10" fill="#0F766E">업그레이드</text>
+            <text x="434" y="9" text-anchor="middle" font-size="10" fill="#0F766E">업그레이드</text>
+            <text x="136" y="57" text-anchor="middle" font-size="11" fill="#94A3B8">보는 BI</text>
+            <text x="331" y="44" text-anchor="middle" font-size="11" fill="#94A3B8">묻는 BI</text>
+            <text x="515" y="30" text-anchor="middle" font-size="11" fill="#94A3B8">일하는 BI</text>
+            <text x="712" y="52" text-anchor="end" font-size="12" fill="#0F766E" style="font-family:var(--fx)">갈림길 없이, 하나의 기반으로</text>
+          </svg></div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
         <span>오늘 결정하시는 것은 대시보드가 아니라 <b>AI 시대에 데이터를 읽는 방식</b>입니다 - 그 기반은 미리 쌓은 조직만 갖습니다.</span></div>
