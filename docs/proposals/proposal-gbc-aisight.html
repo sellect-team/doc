@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Tableau 대시보드 웹 전환 방안 제안서</title>
-  <meta name="doc-version" content="2.1">
+  <meta name="doc-version" content="2.2">
   <meta name="doc-description" content="GBC Tableau 대시보드 웹 전환 방안 - 단순 재개발과 aisight 데이터 플랫폼 전환의 구조 비교, 도입 가치 6가지, 2주 무상 PoC 계획">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -999,6 +999,55 @@
     <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
+  <section class="slide" data-title="왜 지금 aisight인가">
+    <header class="s-head">
+      <h2><span class="bullet"></span>왜 지금 aisight인가 - <em>3년 뒤를 내다본 선택</em></h2>
+      <div class="s-right"><span class="sec">02 · Value</span></div>
+    </header>
+    <div class="s-band"><p>BI 산업 자체가 이동하고 있습니다 - <strong>Tableau조차 화면 중심에서 AI 중심으로 재편</strong> 중입니다.
+      진짜 질문은 "어떤 화면을 만들까"가 아니라 <strong>"AI 시대에 GBC 데이터를 누가 읽게 할 것인가"</strong>입니다.</p></div>
+    <div class="content">
+      <div class="gflow" style="gap:0.5rem; flex:none">
+        <div class="gstep dim" style="text-align:left; padding:0.8rem 1rem">
+          <span style="font-family:var(--fx); font-size:0.72rem; color:var(--s400); letter-spacing:0.06em">지금까지 · 보는 BI</span>
+          <b style="font-size:1rem; margin-top:0.25rem">사람이 화면을 열어 확인</b>
+          <small style="font-size:0.78rem; margin-top:0.3rem">정해진 차트를 사람이 읽고 해석 - Tableau가 이끌던 시대</small></div>
+        <span class="garr">›</span>
+        <div class="gstep hl" style="text-align:left; padding:0.8rem 1rem">
+          <span style="font-family:var(--fx); font-size:0.72rem; color:var(--t700); letter-spacing:0.06em">지금 · 묻는 BI</span>
+          <b style="font-size:1rem; margin-top:0.25rem">사람이 AI에게 질문</b>
+          <small style="font-size:0.78rem; margin-top:0.3rem">브리핑·원인 질의·이상 알림 - 글로벌 BI 전체가 이동 중이며,
+            업계는 <b>2028년까지 기업 절반 이상이 대화형 BI를 표준</b>으로 쓸 것으로 전망</small></div>
+        <span class="garr">›</span>
+        <div class="gstep" style="text-align:left; padding:0.8rem 1rem; background:var(--s900); border-color:var(--s900)">
+          <span style="font-family:var(--fx); font-size:0.72rem; color:var(--t400); letter-spacing:0.06em">3년 안 · 일하는 BI</span>
+          <b style="font-size:1rem; margin-top:0.25rem; color:#fff">AI 에이전트가 먼저 움직임</b>
+          <small style="font-size:0.78rem; margin-top:0.3rem; color:var(--s400)">이상 징후를 먼저 찾아 원인과 조치안까지 보고 -
+            에이전트가 데이터를 직접 읽는 시대</small></div>
+      </div>
+      <div class="two fill" style="margin-top:0.8rem">
+        <div class="card" style="display:flex; flex-direction:column">
+          <div class="no">단순 웹 재개발을 선택하면</div>
+          <h3>"보는 BI"에 고정됩니다</h3>
+          <p>화면은 <b>사람만 읽을 수 있습니다.</b> 묻는 BI·일하는 BI로 넘어가려면 그때마다
+             새 프로젝트가 필요하고, 에이전트 시대가 오면 지표 정의·권한·데이터 연결을
+             처음부터 다시 만들어야 합니다.</p>
+          <div class="seg fx" style="background:#FEF2F2; border-color:#FECACA"><em style="color:#B91C1C">그리고 멈춥니다</em><p style="color:#9A3412">납품 시점의 코드로 고정 - AI 생태계가 바뀌어도 업그레이드해 줄 제품 로드맵이 없습니다</p></div>
+          <div class="fix">3년 뒤, 같은 갈림길에 다시 서게 됩니다.</div></div>
+        <div class="card" style="display:flex; flex-direction:column; background:var(--t50); border-color:var(--t400)">
+          <div class="no" style="color:var(--t700)">aisight를 선택하면</div>
+          <h3>데이터가 AI가 읽는 자산이 됩니다</h3>
+          <p>쓰는 동안 <b>지표 사전 · 데이터 지식 · 권한 · 감사 이력</b>이 자산으로 쌓입니다.
+             이 기반 위에서는 묻는 BI가 오늘 되고, 에이전트 시대가 와도 <b>어떤 AI든(MCP 표준)
+             그 위에서 바로 일합니다.</b></p>
+          <div class="seg fx"><em>그리고 계속 자랍니다</em><p>세일링스톤이 AI 생태계 변화(새 모델 · MCP · 에이전트 표준)에 맞춰 플랫폼을 계속 업그레이드합니다 - 별도 프로젝트 없이 전 화면에 반영</p></div>
+          <div class="fix">세 시대를 하나의 기반으로 - 갈림길이 다시 오지 않습니다.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
+        <span>오늘 결정하시는 것은 대시보드가 아니라 <b>AI 시대에 데이터를 읽는 방식</b>입니다 - 그 기반은 미리 쌓은 조직만 갖습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
   <section class="slide" data-title="적용 사례">
     <header class="s-head">
       <h2><span class="bullet"></span>적용 사례 - <em>유사 조직 진행 현황</em></h2>
@@ -1027,7 +1076,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
         <span>세 건 모두 <b>PoC 또는 파일럿으로 검증한 뒤 확산</b>하는 경로입니다 - GBC에 제안하는 경로와 같습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
   <section class="slide" data-title="전환 추진 방안">
     <header class="s-head">
@@ -1066,7 +1115,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
         <span>기간·범위는 인벤토리 결과로 확정합니다 - 병행 기간의 목표는 단 하나, <b>"숫자가 같다"의 증명</b>입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="PoC 제안">
@@ -1082,7 +1131,7 @@
           <tr><th style="width:18%">구분</th><th>내용</th></tr>
           <tr><td class="org">기간</td><td><b>2주</b> (킥오프 포함 · 일정은 협의 조정)</td></tr>
           <tr><td class="org">범위</td><td>대표 Tableau 대시보드 <b>1~2종 aisight 재현</b> + 담당자 셀프서비스 제작 시연 + AI 질의·개인 Claude 연결(MCP) 시연</td></tr>
-          <tr><td class="org">환경</td><td>세일링스톤 시연 환경 기본 - GBC 데이터 검증이 필요하면 <b>별첨(16p) 최소 사양</b>으로 사내 진행</td></tr>
+          <tr><td class="org">환경</td><td>세일링스톤 시연 환경 기본 - GBC 데이터 검증이 필요하면 <b>별첨(17p) 최소 사양</b>으로 사내 진행</td></tr>
           <tr><td class="org">데이터</td><td>샘플 추출본 또는 read-only 계정 - <b>조회 전용, 외부 반출 없음</b></td></tr>
           <tr><td class="org">판단 기준</td><td>재현 충실도 · 담당자 제작 소요 시간 · 질의 응답 정확도 - <b>킥오프에서 함께 확정</b></td></tr>
         </table>
@@ -1090,7 +1139,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
         <span>PoC 산출물(재현 대시보드 · 측정 결과)은 본 구축 여부와 무관하게 <b>검토 자료로 제공</b>합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="별첨 · PoC 요건">
@@ -1115,7 +1164,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
         <span>준비물은 사실상 <b>계정 하나와 테이블 목록</b>입니다 - 나머지는 저희가 준비합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 17 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="수행사 역량">
@@ -1151,7 +1200,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
         <span>기존 포탈 유지보수 위에 플랫폼을 얹는 구조라 <b>책임 소재가 하나</b>로 유지됩니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 17 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 18 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide dark" data-title="맺음">
