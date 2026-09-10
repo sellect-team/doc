@@ -499,6 +499,18 @@
                     border: 1px solid var(--s700); border-radius: 0.6rem; background: rgba(30,41,59,0.7);
                     padding: 0.55rem 1rem; font-size: 0.88rem; color: var(--s400); position: relative; z-index: 1; }
     .dark .notice .i { color: var(--t400); }
+    .pol { border: 1px solid var(--s200); background: var(--s50); border-radius: 0.7rem;
+           padding: 0.62rem 0.9rem; }
+    .pol .plv { font-size: 0.72rem; font-family: var(--fx); letter-spacing: 0.07em; color: var(--s400); }
+    .pol > b { display: block; font-size: 1rem; color: var(--s900); margin-top: 0.1rem; }
+    .pol small { display: block; font-size: 0.8rem; color: var(--s500); line-height: 1.45; margin-top: 0.22rem; }
+    .pol small b { color: var(--s800); }
+    .pol.lock { background: var(--t50); border-color: var(--t400); }
+    .pol.lock .plv { color: var(--t700); }
+    .pol.dk { background: var(--s900); border-color: var(--s900); }
+    .pol.dk .plv { color: var(--t400); }
+    .pol.dk > b { color: #fff; }
+    .pol.dk small { color: var(--s400); }
 
     /* ── 파트너 킷 전용 컴포넌트 ── */
     .narch { flex: 1; display: flex; flex-direction: column; gap: 0.32rem; min-height: 0; }
@@ -573,6 +585,22 @@
     .tnote b { color: var(--s900); }
     .tcol.rec .tnote b { color: var(--t700); }
 
+    .shotmain { display: flex; flex-direction: column; min-height: 0; }
+    .shotmain .sh { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.35rem; }
+    .shotmain .sh b { font-size: 1rem; font-family: var(--fx); color: var(--s900); }
+    .shotmain .sh span { font-size: 0.82rem; color: var(--s500); }
+    .shotmain .simg { flex: 1; min-height: 0; border: 1px solid var(--s200); border-radius: 0.6rem;
+                      overflow: hidden; background: #fff; }
+    .shotmain .simg img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
+    .shotcol { display: flex; flex-direction: column; gap: 0.8rem; min-height: 0; }
+    .srow { flex: 1; min-height: 0; display: flex; gap: 0.85rem; align-items: stretch; }
+    .sthumb { flex: 0 0 40%; border: 1px solid var(--s200); border-radius: 0.5rem; overflow: hidden; background: #fff; }
+    .sthumb img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+    .stx { flex: 1; min-width: 0; align-self: center; }
+    .stx b { display: block; font-size: 0.95rem; font-family: var(--fx); color: var(--s900); }
+    .stx small { display: block; font-size: 0.84rem; color: var(--s500); line-height: 1.5; margin-top: 0.22rem; }
+    .stx small b { display: inline; font-size: inherit; color: var(--s800); }
+
     .krow > span:last-child { display: flex; flex-direction: column; flex: 1; min-width: 0; align-self: stretch; }
     .krow .kfix { margin-top: auto; padding-top: 0.65rem; margin-top: auto; border-top: 1px solid var(--s200);
                   font-size: 0.85rem; line-height: 1.45; color: var(--s500); }
@@ -636,7 +664,7 @@
             <span><h4>누가 사는가 <small>WHO</small></h4>
             <p>시·도교육청이 발주하고, 관내 학교가 씁니다. 시범 2~3개교로 시작해 학기 말 실측 리포트를
                근거로 관내 확산 - <b>한 번 들어가면 학교 수만큼 커지는</b> 구조입니다.</p>
-            <span class="kfix"><b>영업 대상.</b> 학교가 아니라 <b>교육청 정보화 · 교육과정 담당 부서</b>입니다.</span></span></div>
+            <span class="kfix"><b>구매 주체.</b> 학교가 아니라 <b>교육청 정보화 · 교육과정 담당 부서</b>로 보고 있습니다.</span></span></div>
         </div>
         <div class="krows">
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg></span>
@@ -713,7 +741,7 @@
       <div class="s-right"><span class="sec">02 · Product</span></div>
     </header>
     <div class="s-band"><p>선생님이 울타리를 치고, 학생이 그 안에서 만들고, 만든 것이 학급 자산으로 쌓입니다.
-      고객을 만나실 때는 <strong>이 네 단계만 설명하시면</strong> 충분합니다.</p></div>
+      제품을 소개할 때 <strong>저희가 늘 쓰는 네 단계</strong>입니다.</p></div>
     <div class="content">
       <div class="cyc">
         <div class="cnode"><span class="accent"></span>
@@ -749,6 +777,43 @@
         <span>특정 AI 회사에 묶이지 않습니다 - <b>키만 바꾸면 모델이 바뀌는 구조</b>라 교육청 정책 변화를 그대로 따라갑니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 4 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="제품 화면">
+    <header class="s-head">
+      <h2><span class="bullet"></span>제품 화면 - <em>네 개면 설명이 끝납니다</em></h2>
+      <div class="s-right"><span class="sec">02 · Product</span></div>
+    </header>
+    <div class="s-band"><p>교육청 미팅에서 보여 드릴 화면은 이 넷입니다.
+      <strong>선생님이 열고, 학생이 만들고, 함께 보고, 선생님이 지켜봅니다.</strong></p></div>
+    <div class="content">
+      <div class="two fill" style="gap:1.6rem">
+        <div class="shotmain">
+          <div class="sh"><b>학생 화면</b><span>말로 만들고, 오른쪽에서 결과를 바로 확인합니다</span></div>
+          <div class="simg"><img src="assets/playground-shots/student-play.webp" alt="학생 놀이터 화면"></div>
+        </div>
+        <div class="shotcol">
+          <div class="srow">
+            <div class="sthumb"><img src="assets/playground-shots/teacher-console.webp" alt="교사 콘솔 화면"></div>
+            <div class="stx"><b>선생님 화면 · 수업방</b>
+              <small>과목마다 다른 AI 규칙으로 수업방을 열고, 입장 코드를 칠판에 적습니다.
+                <b>일시 정지 버튼 하나로</b> 반 전체 사용을 멈출 수 있습니다.</small></div></div>
+          <div class="srow">
+            <div class="sthumb"><img src="assets/playground-shots/live-board.webp" alt="라이브 관제 보드 화면"></div>
+            <div class="stx"><b>선생님 화면 · 라이브 관제</b>
+              <small>반 전체가 지금 무엇을 하고 있는지 한 화면에 보입니다.
+                <b>10분째 멈춰 있는 학생</b>을 시스템이 먼저 찾아 줍니다.</small></div></div>
+          <div class="srow">
+            <div class="sthumb"><img src="assets/playground-shots/gallery.webp" alt="학급 갤러리 화면"></div>
+            <div class="stx"><b>학급 갤러리</b>
+              <small>제출된 작품은 선생님 승인을 거쳐 게시됩니다.
+                <b>잘된 작품이 다음 학생의 교재</b>가 되고, 만든 과정도 함께 공개됩니다.</small></div></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+        <span>저희가 시연할 때 쓰는 순서입니다 - 수업방을 열고, 학생 화면을 보여 드리고, 갤러리로 닫으면 <b>10분쯤</b> 걸립니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 5 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="왜 이 사업인가">
@@ -794,7 +859,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
         <span>클라우드를 파는 대화가 아니라, <b>클라우드가 조건으로 딸려 오는 대화</b>를 만드는 것이 이 사업의 역할입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 5 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 6 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="서비스 구성">
@@ -860,7 +925,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
         <span>학생 데이터는 ④에 상주하고 밖으로 나가지 않습니다 - <b>보안 심사에서 가장 먼저 확인하는 지점</b>입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 6 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 7 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="제공 형태">
@@ -908,7 +973,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
         <span>권장 경로 - <b>시범은 A로 안전하게 열고, 확산 시점에 C로 전환</b>해 교육청이 늘어도 운영 인력이 늘지 않게 설계합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 7 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="클라우드 매출 구조">
@@ -948,7 +1013,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
         <span>정확한 금액은 규모 확정 후 산정합니다 - <b>이 표는 어떤 상품이 어느 축으로 늘어나는지</b>를 잡기 위한 것입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="확산 구조">
@@ -991,19 +1056,19 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
         <span>막대 세 개는 왼쪽부터 <b>컴퓨팅 · 스토리지 · 트래픽</b>입니다 - 학생이 만든 작품이 쌓이는 한 스토리지는 되돌아가지 않습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="조달 경로">
     <header class="s-head">
-      <h2><span class="bullet"></span>조달 경로 - <em>입찰 없이 계약하는 길이 있습니다</em></h2>
+      <h2><span class="bullet"></span>조달 경로 - <em>저희가 전제로 삼은 계약 방식</em></h2>
       <div class="s-right"><span class="sec">05 · Go-to-Market</span></div>
     </header>
-    <div class="s-band"><p>교육청 영업의 가장 높은 벽은 조달 절차입니다. <strong>디지털서비스 전문계약제도를 활용하면 금액 제한 없이 2주 내외로 계약</strong>할 수 있습니다.</p></div>
+    <div class="s-band"><p>조달은 NHN 클라우드가 훨씬 밝으신 영역입니다. 저희는 <strong>디지털서비스 전문계약제도를 전제로</strong> 제품과 일정을 준비했다는 점만 공유드립니다.</p></div>
     <div class="content">
       <div class="two" style="flex:none">
         <div class="card" style="display:flex; flex-direction:column">
-          <div class="no" style="color:var(--s400)">일반 경로</div>
+          <div class="no" style="color:var(--s400)">참고 · 일반 경로</div>
           <h3>협상에 의한 계약</h3>
           <div class="rlist">
             <span>공고 <b>10일~40일</b>(추정가격별) → 제안서 접수 → 평가위원회 심의 → 협상 → 계약</span>
@@ -1011,28 +1076,27 @@
           </div>
           <div class="seg fx" style="background:#FEF2F2; border-color:#FECACA"><em style="color:#B91C1C">한계</em><p style="color:#9A3412">경쟁 입찰이라 사양이 공개되고, 우리 제안이 다른 사업자의 입찰 근거가 됩니다.</p></div></div>
         <div class="card" style="display:flex; flex-direction:column; background:var(--t50); border-color:var(--t400)">
-          <div class="no" style="color:var(--t700)">권장 경로</div>
+          <div class="no" style="color:var(--t700)">저희가 준비하는 경로</div>
           <h3>디지털서비스 전문계약제도</h3>
           <div class="rlist">
             <span>지방계약법 시행령 <b>제25조제1항제8호 차목</b> - 교육청도 동일하게 적용됩니다</span>
             <span>정부 가이드라인 명시 - <b>내부규정의 금액 제한과 무관하게 수의계약 가능</b> · 체결까지 2주</span>
           </div>
-          <div class="seg fx"><em>선행 조건</em><p>과기정통부 심사위원회에서 <b>디지털서비스 선정</b>을 받아야 합니다 (월 1회 개최).</p></div></div>
+          <div class="seg fx"><em>선행 조건</em><p>과기정통부 <b>디지털서비스 선정</b>이 선행돼야 합니다 - 등록은 저희가 맡아 추진하겠습니다.</p></div></div>
       </div>
       <div class="rt-wrap" style="margin-top:0.3rem">
         <table class="rt">
-          <tr><th style="width:20%">비교</th><th style="width:26%">일반 용역 · 물품</th><th style="width:26%">학교장터(S2B)</th><th>디지털서비스</th></tr>
-          <tr><td class="org">수의계약 한도</td><td>추정가격 <b>2천만원</b> 이하</td><td>물품 · 용역 <b>1억원</b></td><td><b>한도 없음</b></td></tr>
-          <tr><td class="org">계약 소요</td><td>2개월 이상</td><td>건별 상이</td><td><b>2주 내외</b></td></tr>
-          <tr><td class="org">시작 단위</td><td>교육청 발주</td><td><b>개별 학교도 가능</b></td><td>교육청 · 학교 모두</td></tr>
-          <tr><td class="org">현재 상태</td><td colspan="2">NHN 클라우드(공공기관용) IaaS는 <b>2020년 11월 선정·등록 완료</b></td>
-              <td><b>AI 놀이터도 같은 경로로 등록 추진</b></td></tr>
+          <tr><th style="width:24%">비교</th><th style="width:38%">협상에 의한 계약</th><th>디지털서비스 전문계약</th></tr>
+          <tr><td class="org">계약 방식</td><td>경쟁 입찰 · 제안서 평가</td><td><b>수의계약</b></td></tr>
+          <tr><td class="org">수의계약 한도</td><td>일반 용역은 추정가격 2천만원 이하까지</td><td><b>계약금액 제한 없음</b></td></tr>
+          <tr><td class="org">공고</td><td>추정가격에 따라 10일~40일</td><td><b>불필요</b></td></tr>
+          <tr><td class="org">계약 체결까지</td><td>2개월 이상</td><td><b>2주 내외</b></td></tr>
         </table>
       </div>
-      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
-        <span>인프라와 플랫폼을 <b>같은 제도 안에서 한 번에</b> 계약할 수 있다는 점이 교육청 담당자에게 가장 큰 설득력을 갖습니다.</span></div>
+      <div class="stripe" style="margin-top:auto"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+        <span>저희 몫은 <b>AI 놀이터를 이 제도 위에 올려 두는 것</b>입니다 - 인프라와 플랫폼을 같은 제도 안에서 계약하실 수 있게 준비하겠습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="역할 분담">
@@ -1041,7 +1105,7 @@
       <div class="s-right"><span class="sec">05 · Go-to-Market</span></div>
     </header>
     <div class="s-band"><p>영업은 함께 하되, <strong>구축과 현장 운영은 세일링스톤이 전담</strong>합니다.
-      NHN 클라우드는 인프라와 고객 관계에 집중하시면 됩니다.</p></div>
+      NHN 클라우드가 새로 떠안으실 일은 없도록 설계했습니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
         <div class="card"><span class="accent"></span><div class="no">NHN 클라우드<span class="cat">인프라 · 관계</span></div>
@@ -1087,56 +1151,57 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
         <span>제안서 작성 · 기술 검토 · 데모 시연은 <b>세일링스톤이 준비해 동행</b>합니다 - 영업 부담을 늘리지 않습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
-  <section class="slide" data-title="교육청 미팅 시나리오">
+  <section class="slide" data-title="교육청 미팅 · 예상 흐름">
     <header class="s-head">
-      <h2><span class="bullet"></span>교육청 미팅 - <em>30분 진행 시나리오</em></h2>
+      <h2><span class="bullet"></span>교육청 미팅 - <em>저희가 예상하는 흐름</em></h2>
       <div class="s-right"><span class="sec">05 · Go-to-Market</span></div>
     </header>
-    <div class="s-band"><p>첫 미팅의 목표는 계약이 아니라 <strong>시범학교 두세 곳을 정하자는 합의</strong>입니다.
-      아래 순서대로 30분이면 충분합니다.</p></div>
+    <div class="s-band"><p>진행은 자리 성격에 맞춰 정하시면 됩니다. 저희는 <strong>어느 대목에서 무엇을 준비해 가야 하는지</strong>를 이렇게 보고 있습니다.</p></div>
     <div class="content">
       <div class="cards c4 fill">
-        <div class="card"><span class="accent"></span><div class="no">00-05분<span class="cat">문제 제기</span></div>
+        <div class="card"><span class="accent"></span><div class="no">처음 5분쯤<span class="cat">문제 제기</span></div>
           <h3>지침은 있고 도구가 없다</h3>
-          <p>"학생들은 이미 집에서 AI를 씁니다. 학교는 무엇을 물었는지 볼 수 없습니다."</p>
-          <div class="seg fx"><em>핵심 질문</em><p>"수행평가 AI 활용 지침이 내려왔는데, 현장에서 어떻게 관리하고 계신가요?"</p></div>
-          <div class="fix">대상 - 정보화 · 교육과정 담당</div></div>
-        <div class="card"><span class="accent"></span><div class="no">05-15분<span class="cat">시연</span></div>
+          <p>저희가 이 사업을 설명할 때 늘 여기서 시작합니다. 학생들은 이미 집에서 AI를 쓰는데,
+             학교는 무엇을 물었는지 볼 수 없습니다.</p>
+          <div class="seg fx"><em>저희 예상</em><p>담당자가 먼저 확인하려는 것은 "그럼 우리 관내는 지금 어떻게 관리되고 있나"입니다.</p></div>
+          <div class="fix">저희가 준비 - 정책 배경 · 근거 자료</div></div>
+        <div class="card"><span class="accent"></span><div class="no">그다음 10분쯤<span class="cat">시연</span></div>
           <h3>수업방을 그 자리에서</h3>
           <p>수업방 개설부터 학생 화면, 교사 관제 보드, 갤러리까지 실제 화면으로 보여 드립니다.</p>
-          <div class="seg fx"><em>핵심 질문</em><p>"이 화면을 선생님들이 5분 만에 만들 수 있다면, 첫 수업은 어느 과목이 좋을까요?"</p></div>
-          <div class="fix">세일링스톤이 시연을 맡습니다</div></div>
-        <div class="card"><span class="accent"></span><div class="no">15-22분<span class="cat">요건 · 조달</span></div>
-          <h3>심사와 계약을 먼저</h3>
-          <p>국내 리전 상주, 법정대리인 동의 절차, 전 과정 기록 - 심사에서 묻는 항목을 먼저 짚습니다.</p>
-          <div class="seg fx"><em>핵심 질문</em><p>"입찰 없이 2주 안에 계약하는 경로가 있다면, 올해 예산으로 가능하실까요?"</p></div>
-          <div class="fix">이 대목은 NHN 클라우드가 설명</div></div>
-        <div class="card"><span class="accent"></span><div class="no">22-30분<span class="cat">클로징</span></div>
-          <h3>시범학교 두세 곳</h3>
-          <p>전면 도입이 아니라 한 학기 시범입니다. 결과 리포트를 보고 확산을 판단하시면 됩니다.</p>
-          <div class="seg fx"><em>핵심 질문</em><p>"AI 수업에 관심 있는 선생님이 계신 학교 두세 곳만 떠올려 주시겠습니까?"</p></div>
-          <div class="fix">남길 자료 - 교육청용 제안서 · 요건 별첨</div></div>
+          <div class="seg fx"><em>저희 예상</em><p>화면을 보고 나면 질문이 "우리 선생님들이 실제로 쓸 수 있겠나"로 옮겨 갑니다.</p></div>
+          <div class="fix">저희가 준비 - 시연과 진행</div></div>
+        <div class="card"><span class="accent"></span><div class="no">이어서<span class="cat">요건 · 조달</span></div>
+          <h3>심사와 계약</h3>
+          <p>국내 리전 상주, 법정대리인 동의 절차, 전 과정 기록 - 보안 심사에서 확인하는 항목을
+             저희가 대응표로 정리해 드립니다.</p>
+          <div class="seg fx"><em>저희 예상</em><p>"절차가 얼마나 걸리나"가 반드시 나옵니다. 조달 쪽은 NHN 클라우드가 훨씬 밝으신 영역입니다.</p></div>
+          <div class="fix">저희가 준비 - 요건 대응표 · 심사 자료</div></div>
+        <div class="card"><span class="accent"></span><div class="no">마무리<span class="cat">다음 단계</span></div>
+          <h3>시범 단위 두세 곳</h3>
+          <p>전면 도입이 아니라 한 학기 시범입니다. 결과 리포트를 보고 확산 여부를 판단하시면 됩니다.</p>
+          <div class="seg fx"><em>저희 예상</em><p>"그럼 어디부터 해 볼까"가 나오면 첫 자리는 잘 풀린 것으로 봅니다.</p></div>
+          <div class="fix">저희가 준비 - 교육청용 제안서 · 요건 별첨</div></div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
-        <span>이 자리에서 얻을 것은 <b>시범학교 후보 이름 두세 개</b>입니다 - 그것만 나오면 첫 미팅은 성공입니다.</span></div>
+        <span>저희가 보기에 첫 자리의 성과는 계약이 아니라 <b>시범 단위 후보 두세 곳</b>입니다 - 거기까지 나오면 다음 단계로 넘어갑니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="예상 질문 대응">
     <header class="s-head">
-      <h2><span class="bullet"></span>예상 질문 대응 - <em>이 표만 있으면 됩니다</em></h2>
+      <h2><span class="bullet"></span>예상 질문 - <em>저희가 준비한 답변</em></h2>
       <div class="s-right"><span class="sec">05 · Go-to-Market</span></div>
     </header>
-    <div class="s-band"><p>교육청 담당자가 실제로 묻는 질문과 <strong>그 자리에서 답할 근거</strong>를 정리했습니다.
-      더 깊이 들어오면 세일링스톤으로 넘기시면 됩니다.</p></div>
+    <div class="s-band"><p>교육청에서 나올 법한 질문에 <strong>저희가 준비한 답변</strong>입니다.
+      더 깊이 들어오는 질문은 저희가 받겠습니다.</p></div>
     <div class="content">
       <div class="rt-wrap fill">
         <table class="rt">
-          <tr><th style="width:26%">교육청의 질문</th><th style="width:40%">이렇게 답하시면 됩니다</th><th>근거</th></tr>
+          <tr><th style="width:26%">교육청의 질문</th><th style="width:40%">저희 답변</th><th>근거</th></tr>
           <tr><td class="org">"초등학생도 AI를 쓸 수 있나요?"</td>
               <td><b>개인 계정으로는 쓸 수 없습니다. 그래서 이 구조입니다.</b> 학생 계정 없이 교사 계정 아래 수업 세션으로 들어오고, 만 14세 미만은 법정대리인 동의 절차를 시스템이 관리합니다.</td>
               <td>개인정보보호법 제22조의2 · 주요 AI 서비스 가입 연령은 만 14세 이상(일부는 만 18세)</td></tr>
@@ -1158,9 +1223,9 @@
         </table>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
-        <span>답이 막히면 <b>"확인해서 정리해 드리겠습니다"</b>가 정답입니다 - 기술 질문은 세일링스톤이 24시간 안에 회신합니다.</span></div>
+        <span>제품 · 기술 질문은 <b>저희에게 넘겨 주시면</b> 24시간 안에 정리해 회신드리겠습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="수행사 역량">
@@ -1197,7 +1262,44 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
         <span>엔진 재사용률이 높다는 것은 <b>일정 · 비용 · 안정성 리스크가 낮다</b>는 뜻입니다 - 파트너가 안고 갈 위험이 적습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="솔루션 화면 · 운영">
+    <header class="s-head">
+      <h2><span class="bullet"></span>솔루션 화면 - <em>관리자가 보는 쪽</em></h2>
+      <div class="s-right"><span class="sec">06 · Partner</span></div>
+    </header>
+    <div class="s-band"><p>앞의 화면이 교실이라면 이쪽은 관리자 화면입니다.
+      <strong>교육청 지침부터 예산 집행까지</strong> 하나의 제품 안에 들어 있습니다.</p></div>
+    <div class="content">
+      <div class="two fill" style="gap:1.6rem">
+        <div class="shotmain" style="flex:1.55">
+          <div class="sh"><b>교육청 정책 콘솔</b><span>지침과 공통 자료를 등록하면 관내 전 수업방에 즉시 걸립니다</span></div>
+          <div class="simg"><img src="assets/playground-shots/policy-console.webp" alt="교육청 정책 콘솔 화면"></div>
+        </div>
+        <div class="shotcol">
+          <div class="srow">
+            <div class="sthumb"><img src="assets/playground-shots/admin-center.webp" alt="학교 관리 센터 화면"></div>
+            <div class="stx"><b>학교 관리 센터</b>
+              <small>AI 키 등록부터 반별 소진율, <b>예산 소진 예상일</b>까지 한 화면에.
+                학생의 추가 요청은 교사 승인으로 처리됩니다.</small></div></div>
+          <div class="srow">
+            <div class="sthumb"><img src="assets/playground-shots/settle.webp" alt="수업 종료 정산 화면"></div>
+            <div class="stx"><b>수업 종료 정산</b>
+              <small>종이 치면 사용량이 자동 정산됩니다. <b>쓰지 않은 몫은 학급 예산으로 돌아와</b>
+                다음 수업에서 다시 쓰입니다.</small></div></div>
+          <div class="srow">
+            <div class="sthumb"><img src="assets/playground-shots/materials.webp" alt="수업 자료 도우미 화면"></div>
+            <div class="stx"><b>수업 자료 도우미</b>
+              <small>선생님이 올린 자료를 근거로 답하고, <b>답이 부족했던 질문</b>을 모아
+                보완 초안까지 만들어 둡니다.</small></div></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></span>
+        <span>위 화면들은 <b>설계 기준으로 만든 것</b>이고 세부는 요건에 맞춰 확정합니다 - 시연에서는 이 구성 그대로 보여 드립니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="다음 단계">
@@ -1233,7 +1335,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
         <span>가장 빠른 방법은 <b>30분 데모</b>입니다 - 일정만 잡아 주시면 찾아뵙겠습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 17 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide dark" data-title="맺음">
