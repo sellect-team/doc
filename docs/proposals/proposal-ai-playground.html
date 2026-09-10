@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AI 놀이터 구축 제안서</title>
-  <meta name="doc-version" content="1.9">
+  <meta name="doc-version" content="2.0">
   <meta name="doc-description" content="교육청·학교용 학생 AI 놀이터 플랫폼 기획·제안 - 교사가 상용 AI를 등록·배분하고, 학생이 만들고, 함께 검토하는 안전한 AI 학습 공간">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -499,6 +499,18 @@
                     border: 1px solid var(--s700); border-radius: 0.6rem; background: rgba(30,41,59,0.7);
                     padding: 0.55rem 1rem; font-size: 0.88rem; color: var(--s400); position: relative; z-index: 1; }
     .dark .notice .i { color: var(--t400); }
+    .pol { border: 1px solid var(--s200); background: var(--s50); border-radius: 0.7rem;
+           padding: 0.62rem 0.9rem; }
+    .pol .plv { font-size: 0.72rem; font-family: var(--fx); letter-spacing: 0.07em; color: var(--s400); }
+    .pol > b { display: block; font-size: 1rem; color: var(--s900); margin-top: 0.1rem; }
+    .pol small { display: block; font-size: 0.8rem; color: var(--s500); line-height: 1.45; margin-top: 0.22rem; }
+    .pol small b { color: var(--s800); }
+    .pol.lock { background: var(--t50); border-color: var(--t400); }
+    .pol.lock .plv { color: var(--t700); }
+    .pol.dk { background: var(--s900); border-color: var(--s900); }
+    .pol.dk .plv { color: var(--t400); }
+    .pol.dk > b { color: #fff; }
+    .pol.dk small { color: var(--s400); }
   </style>
 </head>
 <body>
@@ -569,8 +581,8 @@
         <div class="krows">
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></span>
             <span><h4>학교·교육청에는 <small>GOVERNANCE</small></h4>
-            <p>어떤 AI를 얼마나 썼는지, 예산이 어디에 쓰였는지 집계됩니다.
-               지침 준수가 문서가 아니라 시스템으로 보장됩니다.</p></span></div>
+            <p>교육청이 정한 지침이 관내 모든 교실에 그대로 걸리고, 어떤 AI를 얼마나 썼는지
+               예산까지 집계됩니다. 지침 준수가 문서가 아니라 시스템으로 보장됩니다.</p></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
             <span><h4>학부모에게는 <small>TRUST</small></h4>
             <p>아이가 학교 관리 아래에서 AI를 배운다는 신뢰입니다.
@@ -738,7 +750,7 @@
             <div class="pcell ops"><b>AI 게이트웨이</b><small>학교 계약 AI 키 관리(BYOK) · 사용량 집계</small></div>
             <div class="pcell ops"><b>사용량 엔진</b><small>학교→학급→학생 배분 · 수업 종료 정산·회수 · 숙제 지급</small></div>
             <div class="pcell ops"><b>수업 자료 DB</b><small>교사 자료 업로드 · 문서 파서 인덱싱 · 근거 답변·보완 추천</small></div>
-            <div class="pcell ops"><b>세이프티 · 감사</b><small>연령별 필터 · 개인정보 마스킹 · 위험 알림 · 전 과정 기록</small></div>
+            <div class="pcell ops"><b>정책 · 세이프티 · 감사</b><small>교육청 지침 상속 · 연령별 필터 · 개인정보 마스킹 · 전 과정 기록</small></div>
           </div>
         </div>
         <div class="adown">▾ 표준 API (교체 가능)</div>
@@ -1222,6 +1234,56 @@
     </div>
     <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
+
+  <section class="slide" data-title="기능 ⑧ 중앙 정책">
+    <header class="s-head">
+      <h2><span class="bullet"></span>기능 ⑧ 중앙 정책 - <em>교육청 지침이 모든 교실에 그대로 걸립니다</em></h2>
+      <div class="s-right"><span class="sec">03 · Features</span></div>
+    </header>
+    <div class="s-band"><p>공문으로 내린 지침은 지켜지는지 확인할 방법이 없습니다.
+      <strong>같은 지침을 시스템에 넣으면 지켜지지 않을 수가 없습니다.</strong></p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="arch">
+          <div class="pol lock"><span class="plv">① 교육청 정책 · 해제 불가</span>
+            <b>관내 모든 학교에 강제 적용</b>
+            <small>금지 주제 · 개인정보 입력 차단 · 출처 표기 의무 · 학교급별 어휘 수준에
+              <b>공통 컨텍스트</b>(교육청 표준 용어 · 지역 교육과정 자료)까지 함께 등록합니다.</small></div>
+          <div class="adown">▾ 그대로 상속 · 해제 불가</div>
+          <div class="pol"><span class="plv">② 학교 정책</span>
+            <b>교육청 정책 위에 얹습니다</b>
+            <small>학교 자체 규칙 · 이용 시간대 · 학년별 조정</small></div>
+          <div class="adown">▾ 그대로 상속</div>
+          <div class="pol"><span class="plv">③ 수업방 설정 · 선생님</span>
+            <b>수업 목적에 맞게 더 좁힙니다</b>
+            <small>AI 역할(페르소나) · 정답 제공 여부 · 이미지 생성 허용 · 제출 마감</small></div>
+          <div class="adown">▾ 셋을 합쳐 주입</div>
+          <div class="pol dk"><span class="plv">④ 학생 세션</span>
+            <b>합쳐진 지침 안에서만 답합니다</b>
+            <small>학생이 무엇을 묻든 ①②③이 모두 적용된 상태로 AI가 응답합니다.</small></div>
+        </div>
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <span><h4>지침과 컨텍스트를 함께 <small>무엇을 강제하는가</small></h4>
+            <p>지켜야 할 <b>규칙</b>(금지 주제 · 말투 · 출처 표기 · 정답 제공 여부)과 알고 있어야 할
+               <b>배경 자료</b>(교육청 표준 용어 · 지역 교육과정)를 등록하면, 관내 모든 대화에 자동으로
+               얹혀 들어갑니다. 학생이 프롬프트로 지침을 벗어나려 해도 차단되고 기록으로 남습니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span>
+            <span><h4>좁히는 방향으로만 <small>아래가 위를 넘지 못합니다</small></h4>
+            <p>하위 단계는 상위 정책을 <b>더 엄격하게만</b> 바꿀 수 있습니다. 교육청이 이미지 생성을
+               껐다면 학교도 선생님도 켤 수 없고, 반대로 선생님이 우리 반만 더 조이는 것은 언제든
+               가능합니다. 권한 다툼이 구조적으로 생기지 않습니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>
+            <span><h4>바꾸면 즉시, 그리고 기록으로</h4>
+            <p>지침을 고치면 관내 전 수업방에 바로 반영됩니다. 새 지침이 내려올 때마다 공문을 다시
+               돌리지 않아도 되고, <b>누가 언제 무엇을 바꿨는지</b> 이력이 남아 감사 자료로 그대로 씁니다.</p></span></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></span>
+        <span>교육청이 관리하실 것은 학교 수만큼의 설정이 아니라 <b>지침 한 벌</b>입니다 - 그 한 벌이 모든 교실에서 똑같이 작동합니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
   <section class="slide" data-title="교육과정 연계">
     <header class="s-head">
       <h2><span class="bullet"></span>교육과정 연계 - <em>수업 어디에 붙는 사업인가</em></h2>
@@ -1254,7 +1316,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M22 10v6"/><path d="M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
         <span>새 과목이 아니라 <b>지금 수업에 얹는 활동</b>입니다 - 그래서 현장 안착이 빠릅니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
   <section class="slide" data-title="하루 시나리오">
     <header class="s-head">
@@ -1335,7 +1397,7 @@
         </div>
       </div>
     </div>
-    <footer class="s-foot"><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 17 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
   <section class="slide" data-title="개인정보 · 법령 준수">
     <header class="s-head">
@@ -1375,7 +1437,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
         <span>개인정보 처리방침 · 위탁 계약서 초안을 <b>착수 단계 산출물</b>로 제출하고, 교육청 개인정보 부서 검토를 함께 진행합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 17 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 18 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
   <section class="slide" data-title="인프라 · NHN 클라우드">
     <header class="s-head">
@@ -1427,7 +1489,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/></svg></span>
         <span>결론: <b>조달 단축(디지털서비스 수의계약) + 심사 대응(CSAP 공공존) + 운영 효율(탄력 확장)</b> - 세 조건을 한 번에 충족합니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 18 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 19 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
   <!-- 도입은 이렇게 -->
   <section class="slide" data-title="도입은 이렇게">
@@ -1455,7 +1517,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
         <span>교사 연수 2회 · 현장 지원 · 매뉴얼 · 학기 말 리포트까지 <b>전부 포함</b>입니다 - 학교에 새 업무를 만들지 않습니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 19 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 20 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide" data-title="수행 체계">
@@ -1472,7 +1534,7 @@
           <h3>모델 라우팅 · 관제 · 기록</h3>
           <p>하이브리드 LLM 라우팅, 표·그림까지 읽는 문서 파서(Document Parser), 세션 단위 전 과정 기록 -
              <b>aisight에서 이미 상용 운영 중</b>인 기술이 AI 연결·수업 자료 DB·기록 관리 기능이 됩니다.</p>
-          <div class="seg fx"><em>이 플랫폼에서는</em><p>AI 등록·배분 (기능 ②) · 수업 자료 근거 답변 (기능 ⑦) · 관제·기록 (기능 ⑥)</p></div>
+          <div class="seg fx"><em>이 플랫폼에서는</em><p>AI 등록·배분 (기능 ②) · 수업 자료 근거 답변 (기능 ⑦) · 관제·기록·정책 상속 (기능 ⑥⑧)</p></div>
           <div class="fix">금융·제조 고객사가 검증한 통제 수준입니다.</div></div>
         <div class="card"><span class="accent"></span><div class="no">FROM Apps<span class="cat">배포 기술</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></div>
@@ -1494,7 +1556,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
         <span>엔진 재사용률이 높다는 것은 <b>일정·비용·안정성의 리스크가 낮다</b>는 뜻입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 20 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 21 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
   <section class="slide" data-title="기대 효과">
     <header class="s-head">
@@ -1537,7 +1599,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
         <span>시범 한 학기의 실측 데이터가 <b>확산 단계의 예산 근거</b>가 됩니다. 그 데이터까지가 본 사업의 납품물입니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 21 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 22 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
   <!-- 시작하려면 -->
   <section class="slide" data-title="시작하려면">
@@ -1550,7 +1612,7 @@
       <div class="rt-wrap fill">
         <table class="rt">
           <tr><th style="width:18%">구분</th><th>내용</th></tr>
-          <tr><td class="org">무엇을</td><td>학생 AI 활용 교육 플랫폼 <b>「AI 놀이터」</b> - 수업방 · 만들기 놀이터 · 승인형 갤러리 · 사용량 배분 · 안전 3중 구조</td></tr>
+          <tr><td class="org">무엇을</td><td>학생 AI 활용 교육 플랫폼 <b>「AI 놀이터」</b> - 수업방 · 만들기 놀이터 · 승인형 갤러리 · 사용량 배분 · 안전 3중 구조 · <b>중앙 정책 상속</b></td></tr>
           <tr><td class="org">어디서</td><td><b>NHN 클라우드 공공 전용존</b>(CSAP 인증) - 학생 데이터는 국내에만, <b>디지털서비스 계약으로 입찰 없이 조달</b> 가능</td></tr>
           <tr><td class="org">얼마 동안</td><td>구축 4개월 + <b>한 학기 시범 운영</b> (교사 연수 2회 · 현장 지원 · 실측 리포트 포함)</td></tr>
           <tr><td class="org">비용 원칙</td><td>구축비(일괄) + AI 사용료(<b>쓴 만큼만, 학급 단위 집계</b>) 분리 - 금액은 규모 확정 후 견적 제출</td></tr>
@@ -1560,7 +1622,7 @@
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
         <span>말보다 빠른 방법: <b>30분 실물 데모</b>를 준비해 두었습니다. 수업방을 그 자리에서 함께 열어 보시면 됩니다.</span></div>
     </div>
-    <footer class="s-foot"><span class="pg">- 22 -</span><span class="mark">SAILINGSTONE</span></footer>
+    <footer class="s-foot"><span class="pg">- 23 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
   <section class="slide dark" data-title="맺음">
