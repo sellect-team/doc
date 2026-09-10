@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AI 놀이터 구축 제안서</title>
-  <meta name="doc-version" content="1.6">
+  <meta name="doc-version" content="1.7">
   <meta name="doc-description" content="교육청·학교용 학생 AI 놀이터 플랫폼 기획·제안 - 교사가 상용 AI를 등록·배분하고, 학생이 만들고, 함께 검토하는 안전한 AI 학습 공간">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -472,8 +472,8 @@
     .dark .glow { position: absolute; right: -12rem; top: 50%; transform: translateY(-50%);
                   width: 46rem; height: 46rem; border-radius: 50%;
                   background: radial-gradient(circle, rgba(45,212,191,0.11) 0%, rgba(45,212,191,0.035) 45%, transparent 72%); }
-    .dark .logo { position: absolute; right: 5.5rem; top: 50%; transform: translateY(-50%);
-                  width: 14rem; z-index: 0; }
+    .dark .logo { position: absolute; right: 6rem; top: 50%; transform: translateY(-50%);
+                  width: 10rem; opacity: 0.5; z-index: 0; }
     .dark .top { position: absolute; top: 1.9rem; left: 2.8rem; right: 2.8rem;
                  display: flex; justify-content: space-between; align-items: center; }
     .dark .top .pillbadge { border: 1px solid var(--t400); color: var(--t400);
@@ -507,13 +507,13 @@
     <div class="glow" data-bleed></div>
     <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
     <div class="top">
-      <span class="pillbadge">SAILINGSTONE - AI PLAYGROUND FOR EDUCATION</span>
+      <span class="pillbadge">AI PLAYGROUND FOR EDUCATION</span>
       <span class="iwd">Intelligence with Data</span>
     </div>
     <h1>AI를 배우는 가장 좋은 방법은,<br><em>AI로 만들어 보는 것입니다.</em></h1>
     <p class="sub">학생 AI 놀이터 구축 제안 - 선생님이 상용 AI를 등록해 반별로 나누어 주고,<br>
       학생들은 안전한 울타리 안에서 만들고, 올리고, 서로의 작품을 검토하며 배웁니다.</p>
-    <p class="sub" style="margin-top:0.6rem"><b style="color:#fff">[OO]교육청 귀중</b> · 세일링스톤 제출 · 2026. 09</p>
+    <p class="sub" style="margin-top:0.6rem"><b style="color:#fff">[OO]교육청 귀중</b> · 2026. 09</p>
     <div class="pills">
       <span class="pill"><b>01</b>교사 주도 AI 배분</span>
       <span class="pill"><b>02</b>안전한 학생 놀이터</span>
@@ -1351,7 +1351,7 @@
               <td>법정대리인 동의 절차를 플랫폼에 내장, 동의 이력 보관 · 미동의 학생은 별칭 기반 최소 정보로 참여</td>
               <td>가입 · 명단 연결 단계</td></tr>
           <tr><td class="org">수집 최소화 · 국내 보관</td>
-              <td>수집 항목을 학급 운영 필수 정보로 한정, 대화 기록 · 작품은 <b>NHN 공공존 국내 리전</b>에 암호화 저장</td>
+              <td>수집 항목을 학급 운영 필수 정보로 한정, 대화 기록 · 작품은 <b>공공 전용존 국내 리전</b>에 암호화 저장</td>
               <td>전 데이터 계층</td></tr>
           <tr><td class="org">AI 학습 미사용</td>
               <td>학생 대화 · 산출물을 외부 AI 학습에 사용하지 않는 조건을 <b>모델 계약과 API 설정에 명시</b></td>
@@ -1384,9 +1384,9 @@
         <div class="krows">
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
             <span><h4>교육청 도입 요건에 맞는 선택</h4>
-            <p>NHN 클라우드는 <b>CSAP 인증을 IaaS·PaaS·DaaS 전 영역</b>에서 보유한 국내 클라우드로,
-               공공기관 전용 독립존을 운영합니다. 디지털서비스몰(디지털서비스 이용지원시스템)에
-               등록돼 있어 교육청이 <b>카탈로그 계약으로 신속하게 조달</b>할 수 있습니다.</p></span></div>
+            <p>NHN 클라우드는 <b>CSAP 인증을 IaaS·SaaS·DaaS 영역</b>에서 보유한 국내 클라우드로,
+               공공기관 전용 독립존을 <b>판교·평촌 리전</b>에 운영합니다. 디지털서비스 이용지원시스템에
+               등록돼 있어 교육청이 <b>입찰 절차 없이 수의계약으로 조달</b>하실 수 있습니다.</p></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>
             <span><h4>학생 데이터는 국내에, 흔적은 남게</h4>
             <p>대화 기록·작품·개인정보가 모두 국내 리전에 상주합니다. 개인정보보호법과
@@ -1420,7 +1420,7 @@
         </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/></svg></span>
-        <span>결론: <b>조달 가능(디지털서비스몰) + 심사 대응(CSAP 공공존) + 운영 효율(탄력 확장)</b> - 세 조건을 한 번에 충족합니다.</span></div>
+        <span>결론: <b>조달 단축(디지털서비스 수의계약) + 심사 대응(CSAP 공공존) + 운영 효율(탄력 확장)</b> - 세 조건을 한 번에 충족합니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 18 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
@@ -1431,7 +1431,7 @@
       <div class="s-right"><span class="sec">04 · Plan</span></div>
     </header>
     <div class="s-band"><p>설치도, 계정 만들기도, 운영 관리도 학교 몫이 아닙니다.
-      <strong>기획부터 연수·운영 지원까지 세일링스톤이 일괄 수행</strong>하고, 학교는 수업에서 써 보기만 하면 됩니다.</p></div>
+      <strong>기획부터 연수·운영 지원까지 수행사가 일괄 처리</strong>하고, 학교는 수업에서 써 보기만 하면 됩니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
         <div class="card"><span class="accent"></span><div class="no">STEP 1 <span class="cat">약 1개월</span></div><h3>준비</h3>
@@ -1453,9 +1453,9 @@
     <footer class="s-foot"><span class="pg">- 19 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
 
-  <section class="slide" data-title="왜 세일링스톤인가">
+  <section class="slide" data-title="수행 체계">
     <header class="s-head">
-      <h2><span class="bullet"></span>왜 세일링스톤인가 - <em>이미 만들어 본 것들로 짓습니다</em></h2>
+      <h2><span class="bullet"></span>수행 체계 - <em>이미 만들어 본 것들로 짓습니다</em></h2>
       <div class="s-right"><span class="sec">04 · Plan</span></div>
     </header>
     <div class="s-band"><p>AI 놀이터의 핵심 엔진은 새로 발명하지 않습니다.
@@ -1546,7 +1546,7 @@
         <table class="rt">
           <tr><th style="width:18%">구분</th><th>내용</th></tr>
           <tr><td class="org">무엇을</td><td>학생 AI 활용 교육 플랫폼 <b>「AI 놀이터」</b> - 수업방 · 만들기 놀이터 · 승인형 갤러리 · 사용량 배분 · 안전 3중 구조</td></tr>
-          <tr><td class="org">어디서</td><td><b>NHN 클라우드 공공 전용존</b>(CSAP 인증) - 학생 데이터는 국내에만, 디지털서비스몰 카탈로그 계약 가능</td></tr>
+          <tr><td class="org">어디서</td><td><b>NHN 클라우드 공공 전용존</b>(CSAP 인증) - 학생 데이터는 국내에만, <b>디지털서비스 계약으로 입찰 없이 조달</b> 가능</td></tr>
           <tr><td class="org">얼마 동안</td><td>구축 4개월 + <b>한 학기 시범 운영</b> (교사 연수 2회 · 현장 지원 · 실측 리포트 포함)</td></tr>
           <tr><td class="org">비용 원칙</td><td>구축비(일괄) + AI 사용료(<b>쓴 만큼만, 학급 단위 집계</b>) 분리 - 금액은 규모 확정 후 견적 제출</td></tr>
           <tr><td class="org">정하실 것</td><td>① 시범학교 수(2~3개교) · ② 계약 AI 모델(추후 교체 가능) · ③ 시작 시점(학기 초 권장)</td></tr>
@@ -1562,7 +1562,7 @@
     <div class="glow" data-bleed></div>
     <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
     <div class="top">
-      <span class="pillbadge">SAILINGSTONE - AI PLAYGROUND FOR EDUCATION</span>
+      <span class="pillbadge">AI PLAYGROUND FOR EDUCATION</span>
       <span class="iwd">Intelligence with Data</span>
     </div>
     <h1>아이들은 이미 AI 시대에 삽니다.<br><em>놀이터를 지어 줄 차례입니다.</em></h1>

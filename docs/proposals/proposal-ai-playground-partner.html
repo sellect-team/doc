@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>AI 놀이터 파트너 세일즈 킷</title>
+  <meta name="doc-version" content="1.0">
+  <meta name="doc-description" content="NHN 클라우드 영업 담당자용 - 학생 AI 놀이터 사업의 시장 기회, 클라우드 매출 구조, 역할 분담과 조달 경로, 교육청 세일즈 토킹 포인트">
+  <style>
+    /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
+    @font-face { font-family: "SUIT"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "SUIT ExtraBold"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+
+    :root {
+      --f:  "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      --fx: "SUIT ExtraBold", "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+    }
+    * { font-synthesis: none; -webkit-font-synthesis: none; }
+    b, strong { font-family: var(--fx); font-weight: 400; }
+    h1, h2, h3, h4, h5, h6 { font-weight: 400; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: min(1.25vw, 2.2222vh); }  /* 16:9 고정 캔버스 */
+    body {
+      font-family: var(--f);
+      background: #fff; color: #0F172A;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
+    }
+    :root {
+      --s900: #0F172A; --s800: #1E293B; --s700: #334155; --s600: #475569; --s500: #64748B;
+      --s400: #94A3B8; --s300: #CBD5E1; --s200: #E2E8F0; --s100: #F1F5F9; --s50: #F8FAFC;
+      --t800: #115E59; --t700: #0F766E; --t600: #0D9488; --t400: #2DD4BF; --t100: #CCFBF1; --t50: #F0FDFA;
+    }
+    .slide {
+      width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh);
+      overflow: hidden; position: relative; flex-shrink: 0;
+      padding: 1.6rem 2.6rem 0.9rem; display: flex; flex-direction: column;
+      background: #fff;
+    }
+
+    /* ── 공통 골격 ── */
+    .s-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.8rem; }
+    .s-head h2 { font-size: 2rem; font-family: var(--fx); letter-spacing: -0.02em; color: var(--s900); }
+    .s-head h2 em { color: var(--t600); font-style: normal; }
+    .bullet { display: inline-block; width: 0.55rem; height: 0.55rem;
+              background: var(--t400); margin-right: 0.75rem; vertical-align: middle; }
+    .s-right { display: flex; align-items: center; gap: 0.75rem; }
+    .s-right .sec { font-size: 0.95rem; color: var(--s400); letter-spacing: 0.04em; }
+
+    .s-band { margin: 0 -2.6rem; background: var(--s50);
+              border-top: 1px solid var(--s200); border-bottom: 1px solid var(--s200);
+              padding: 0.8rem 2.6rem; }
+    .s-band p { font-size: 1.12rem; line-height: 1.6; color: var(--s600); }
+    .s-band strong { color: var(--t600); font-family: var(--fx); }
+
+    .s-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+              font-size: 0.78rem; color: var(--s400); margin-top: 0.75rem; }
+    .s-foot .pg { grid-column: 2; }
+    .s-foot .mark { grid-column: 3; justify-self: end; letter-spacing: 0.14em; color: var(--s400); }
+
+    .content { flex: 1; min-height: 0; display: flex; flex-direction: column;
+               gap: 1.3rem; padding-top: 1.1rem; }
+    .fill { flex: 1; min-height: 0; }
+
+    .stripe { background: var(--s900); color: #E2E8F0; border-radius: 0.7rem;
+              padding: 0.75rem 1.4rem; font-size: 1rem;
+              display: flex; align-items: center; gap: 0.8rem; }
+    .stripe b { color: var(--t400); font-family: var(--fx); }
+    .stripe .sicon { color: var(--t400); display: flex; align-items: center; font-size: 1.15rem; }
+
+    /* ── 단색 라인 아이콘 ── */
+    .i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6;
+         stroke-linecap: round; stroke-linejoin: round; display: inline-block;
+         vertical-align: -0.12em; }
+
+    /* ── 카드 ── */
+    .cards { display: grid; gap: 1.3rem 2.6rem; grid-auto-rows: 1fr; }
+    .c2 { grid-template-columns: repeat(2, 1fr); }
+    .c3 { grid-template-columns: repeat(3, 1fr); }
+    .c4 { grid-template-columns: repeat(4, 1fr); }
+    .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
+            padding: 1.05rem 1.15rem 1rem; display: flex; flex-direction: column;
+            box-shadow: 0 6px 18px rgba(15,23,42,0.05); position: relative; overflow: hidden; }
+    .accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
+              background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
+    .card .no { font-size: 0.76rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.08em;
+                margin-bottom: 0.4rem; display: flex; justify-content: space-between; }
+    .card .no .cat { color: var(--s400); letter-spacing: 0.02em; }
+    .card .ico { font-size: 1.9rem; line-height: 1; margin-bottom: 0.7rem; color: var(--t600); }
+    .card .ico .i { stroke-width: 1.3; }
+    .card h3 { font-size: 1.3rem; font-family: var(--fx); color: var(--s900); margin-bottom: 0.5rem;
+               letter-spacing: -0.01em; }
+    .card p { font-size: 0.98rem; line-height: 1.6; color: var(--s500); }
+    .card .quote { margin-top: auto; padding-top: 0.85rem; font-size: 0.92rem; color: var(--s400);
+                   font-style: italic; border-top: 1px dashed var(--s200); line-height: 1.5; }
+    .card ul { list-style: none; margin-top: 0.6rem; display: flex; flex-direction: column; gap: 0.45rem; }
+    .card ul li { font-size: 0.95rem; color: var(--s500); padding-left: 1.2rem;
+                  position: relative; line-height: 1.5; }
+    .card ul li::before { content: "✓"; position: absolute; left: 0; color: var(--t600); font-family: var(--fx); }
+    .card ul li b { color: var(--s800); }
+    .card .fix { margin-top: auto; padding: 0.55rem 0.8rem; background: var(--t50);
+                 border: 1px solid var(--t100); border-radius: 0.6rem;
+                 font-size: 0.92rem; color: var(--t700); font-family: var(--fx); line-height: 1.5; }
+    .card .seg { margin-top: 0.6rem; }
+    .card .seg.fx { margin-top: auto; padding: 0.55rem 0.8rem; background: var(--t50);
+                    border: 1px solid var(--t100); border-radius: 0.6rem; }
+    .card .seg.fx em { display: block; font-style: normal; font-family: var(--fx);
+                       font-size: 0.76rem; color: var(--t600); letter-spacing: 0.06em;
+                       margin-bottom: 0.15rem; }
+    .card .seg.fx p { font-size: 0.92rem; color: var(--t700); line-height: 1.5; }
+    .card .seg.fx + .fix { margin-top: 0.6rem; }
+
+    /* ── 2단 ── */
+    .two { display: flex; gap: 2.6rem; align-items: stretch; }
+    .two > * { flex: 1; min-width: 0; min-height: 0; }
+    .krows { display: flex; flex-direction: column; gap: 1.1rem; height: 100%; }
+    .krow { flex: 1; display: flex; gap: 1rem; align-items: flex-start;
+            background: var(--s50); border: 1px solid var(--s200); border-radius: 0.85rem;
+            padding: 0.85rem 1.1rem; }
+    .krow .kico { width: 2.4rem; height: 2.4rem; border-radius: 0.65rem; background: var(--t50);
+                  border: 1px solid var(--t100); color: var(--t700);
+                  display: flex; align-items: center; justify-content: center; font-size: 1.15rem;
+                  flex-shrink: 0; }
+    .krow h4 { font-size: 1.1rem; font-family: var(--fx); color: var(--s900); }
+    .krow h4 small { font-size: 0.8rem; color: var(--s400); font-family: var(--fx); margin-left: 0.35rem; }
+    .krow p { font-size: 0.95rem; line-height: 1.55; color: var(--s500); margin-top: 0.2rem; }
+
+    /* ── 비교 테이블 ── */
+    .rt-wrap { border: 1px solid var(--s200); border-radius: 0.9rem; overflow: hidden;
+               display: flex; flex-direction: column; }
+    .rt { width: 100%; border-collapse: collapse; height: 100%; }
+    .rt th { background: var(--s50); border-bottom: 1px solid var(--s200);
+             font-family: var(--fx); font-weight: 400; font-size: 0.88rem; color: var(--s500);
+             text-align: left; padding: 0.6rem 1rem; }
+    .rt td { border-bottom: 1px solid var(--s100); padding: 0.6rem 1rem;
+             font-size: 0.93rem; color: var(--s600); vertical-align: top; line-height: 1.5; }
+    .rt tr:last-child td { border-bottom: none; }
+    .rt td.org { font-family: var(--fx); color: var(--s900); white-space: nowrap; }
+    .rt td.org small { display: block; font-size: 0.78rem; color: var(--s400); font-family: var(--f); }
+    .rt td b { color: var(--t700); }
+
+    /* ── 개념도: 사이클 ── */
+    .cyc { display: grid; grid-template-columns: 1fr 1.6rem 1fr 1.6rem 1fr 1.6rem 1fr; gap: 0.4rem;
+           align-items: stretch; }
+    .cnode { border: 1px solid var(--s200); background: #fff; border-radius: 0.85rem;
+             padding: 0.75rem 0.9rem; box-shadow: 0 6px 16px rgba(15,23,42,0.05);
+             position: relative; overflow: hidden; }
+    .cnode .accent { height: 0.16rem; border-radius: 0.85rem 0.85rem 0 0; }
+    .cnode b { display: flex; align-items: center; gap: 0.5rem; font-size: 1.05rem; color: var(--s900); }
+    .cnode b .i { color: var(--t600); flex-shrink: 0; }
+    .cnode p { font-size: 0.86rem; line-height: 1.5; color: var(--s500); margin-top: 0.35rem; }
+    .carr { display: flex; align-items: center; justify-content: center; color: var(--s300); font-size: 1rem; }
+
+    /* ── 아키텍처 ── */
+    .arch { height: 100%; display: flex; flex-direction: column; gap: 0.5rem;
+            justify-content: space-evenly; }
+    .arow { display: grid; gap: 1.2rem; }
+    .arow.u3 { grid-template-columns: 1fr 1fr 1fr; }
+    .anode { border: 1px solid var(--s200); background: var(--s50); border-radius: 0.7rem;
+             padding: 0.5rem 0.8rem; text-align: center; font-size: 0.98rem; font-family: var(--fx);
+             color: var(--s900); }
+    .anode small { display: block; font-family: var(--fx); color: var(--s500); font-size: 0.8rem; margin-top: 0.15rem; }
+    .adown { text-align: center; color: var(--s400); font-size: 0.85rem; line-height: 1; }
+    .plat { border: 1px solid var(--s200); border-radius: 0.9rem; padding: 0.7rem 0.9rem;
+            background: #fff; box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+            display: flex; flex-direction: column; gap: 0.55rem; position: relative; overflow: hidden; }
+    .plat .accent { height: 0.18rem; }
+    .plat .ph { display: flex; align-items: center; gap: 0.5rem; justify-content: center;
+                font-family: var(--fx); color: var(--s900); font-size: 1.05rem; }
+    .plat .ph small { color: var(--s400); font-size: 0.8rem; font-family: var(--fx); }
+    .pgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+    .pcell { border-radius: 0.6rem; padding: 0.5rem 0.65rem; font-size: 0.84rem; line-height: 1.4; }
+    .pcell b { display: flex; gap: 0.35rem; align-items: center; font-size: 0.9rem; }
+    .pcell small { display: block; margin-top: 0.2rem; font-size: 0.76rem; line-height: 1.4; }
+    .pcell.ws { background: var(--t50); border: 1px solid var(--t100); }
+    .pcell.ws b { color: var(--t800); } .pcell.ws small { color: var(--s600); }
+    .pcell.ops { background: var(--s900); }
+    .pcell.ops b { color: var(--t400); } .pcell.ops small { color: var(--s400); }
+    .a-src { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+    .srcc { border: 1px solid var(--s200); background: #fff; border-radius: 0.7rem;
+            padding: 0.45rem 0.7rem; display: flex; align-items: center; gap: 0.55rem; }
+    .srcc .i { color: var(--s500); flex-shrink: 0; }
+    .srcc b { font-size: 0.88rem; color: var(--s700); display: block; }
+    .srcc small { font-size: 0.72rem; color: var(--s500); display: block; }
+
+    /* ── 시나리오 타임라인 ── */
+    .tl { display: flex; flex-direction: column; gap: 0; height: 100%; }
+    .tli { flex: 1; display: flex; gap: 1rem; position: relative; padding-left: 0.2rem; }
+    .tli .tm { flex: 0 0 4.2rem; font-family: var(--fx); font-size: 0.95rem; color: var(--t700);
+               text-align: right; padding-top: 0.15rem; }
+    .tli .tdot { flex: 0 0 auto; width: 0.72rem; height: 0.72rem; border-radius: 50%;
+                 background: #fff; border: 2px solid var(--t400); margin-top: 0.3rem; z-index: 1; }
+    .tli .tline { position: absolute; left: 5.75rem; top: 1rem; bottom: -0.3rem; width: 2px;
+                  background: var(--s200); }
+    .tli:last-child .tline { display: none; }
+    .tli .tbody { flex: 1; padding-bottom: 0.6rem; }
+    .tli .tbody b { font-size: 1.05rem; color: var(--s900); font-family: var(--fx); }
+    .tli .tbody p { font-size: 0.93rem; color: var(--s500); line-height: 1.5; margin-top: 0.15rem; }
+    .tli .tbody p em { color: var(--t700); font-style: normal; font-family: var(--fx); }
+
+    /* ── 로드맵 ── */
+    .phases { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.6rem; height: 100%; }
+    .phase { border: 1px solid var(--s200); border-radius: 0.9rem; background: var(--s50);
+             display: flex; flex-direction: column; overflow: hidden; }
+    .phase .phh { padding: 0.7rem 1.1rem; font-family: var(--fx); color: #fff;
+                  background: var(--s900); font-size: 1.05rem;
+                  display: flex; justify-content: space-between; align-items: baseline; }
+    .phase .phh small { font-size: 0.8rem; color: var(--t400); font-family: var(--fx); }
+    .phase.hl .phh { background: var(--t700); }
+    .phase ul { list-style: none; padding: 0.85rem 1.1rem; display: flex; flex-direction: column;
+                gap: 0.5rem; flex: 1; }
+    .phase ul li { font-size: 0.94rem; color: var(--s600); padding-left: 1.2rem; position: relative;
+                   line-height: 1.5; }
+    .phase ul li::before { content: "✓"; position: absolute; left: 0; color: var(--t600); font-family: var(--fx); }
+    .phase .pfoot { padding: 0.55rem 1.1rem 0.8rem; font-size: 0.85rem; color: var(--s400);
+                    border-top: 1px dashed var(--s200); }
+
+    /* ── 목업 윈도 ── */
+    .win { background: #fff; border: 1px solid var(--s200); border-radius: 0.9rem;
+           box-shadow: 0 14px 34px rgba(15,23,42,0.10); overflow: hidden;
+           display: flex; flex-direction: column; }
+    .win .bar { display: flex; align-items: center; gap: 0.45rem; background: var(--s100);
+                border-bottom: 1px solid var(--s200); padding: 0.5rem 0.9rem; }
+    .win .dot { width: 0.52rem; height: 0.52rem; border-radius: 50%; background: var(--s300); }
+    .win .bar .t { margin-left: 0.4rem; font-size: 0.84rem; font-family: var(--fx); color: var(--s500); }
+    .win .bar .live { margin-left: auto; font-size: 0.7rem; font-family: var(--fx); color: var(--t600);
+                      background: var(--t50); border-radius: 99rem; padding: 0.14rem 0.6rem; }
+    .win .body { flex: 1; min-height: 0; padding: 0.8rem 0.95rem; display: flex; flex-direction: column;
+                 gap: 0.55rem; }
+    .mockcol { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .mockcol .win { flex: 1; min-height: 0; }
+    .mockcol .mcap { margin-top: 0.6rem; font-size: 0.9rem; line-height: 1.5; color: var(--s500); }
+    .mockcol .mcap b { color: var(--s800); font-family: var(--fx); }
+
+    /* 수업방 카드(목업 내부) */
+    .room { border: 1px solid var(--s200); border-radius: 0.6rem; padding: 0.5rem 0.7rem;
+            display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; }
+    .room .ric { width: 1.7rem; height: 1.7rem; border-radius: 0.45rem; background: var(--t50);
+                 border: 1px solid var(--t100); color: var(--t700); flex-shrink: 0;
+                 display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+    .room b { color: var(--s800); display: block; font-size: 0.88rem; }
+    .room small { color: var(--s400); display: block; font-size: 0.72rem; }
+    .room .st { margin-left: auto; font-size: 0.7rem; font-family: var(--fx); border-radius: 99rem;
+                padding: 0.16rem 0.55rem; white-space: nowrap; }
+    .room .st.on { background: var(--t50); color: var(--t700); border: 1px solid var(--t400); }
+    .room .st.off { background: var(--s100); color: var(--s500); border: 1px solid var(--s300); }
+    .room .st.warn { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+    .gauge { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--s400); }
+    .gauge .gbar { flex: 1; height: 0.4rem; border-radius: 99rem; background: var(--s100);
+                   overflow: hidden; position: relative; }
+    .gauge .gbar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99rem;
+                     background: var(--t400); }
+    .gauge b { font-family: var(--fx); color: var(--s700); font-size: 0.78rem; }
+
+    /* 카드 안 미니 화면 조각 (기능 ⑥ 안전) */
+    .card .ui { margin-top: auto; background: #fff; border: 1px solid var(--s200);
+                border-radius: 0.6rem; padding: 0.5rem 0.65rem; display: flex;
+                flex-direction: column; gap: 0.3rem; }
+    .card .ui .uttl { font-size: 0.7rem; font-family: var(--fx); color: var(--s400);
+                      letter-spacing: 0.05em; }
+    .card .ui .urow { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem;
+                      color: var(--s500); line-height: 1.4; }
+    .card .ui .urow.ok { color: var(--t700); }
+    .card .ui .uchip { margin-left: auto; flex-shrink: 0; font-size: 0.64rem; font-family: var(--fx);
+                       border-radius: 99rem; padding: 0.1rem 0.45rem; white-space: nowrap;
+                       background: var(--t50); color: var(--t700); border: 1px solid var(--t100); }
+    .card .ui .uchip.warn { background: #FFF7ED; color: #C2410C; border-color: #FED7AA; }
+
+    /* 갤러리 목업 */
+    .gal { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; }
+    .gitem { border: 1px solid var(--s200); border-radius: 0.6rem; overflow: hidden; background: #fff; }
+    .gitem .gthumb { height: 2.6rem; display: flex; align-items: center; justify-content: center;
+                     font-size: 1.2rem; color: var(--t600); background: var(--t50);
+                     border-bottom: 1px solid var(--s200); }
+    .gitem .gmeta { padding: 0.4rem 0.6rem; }
+    .gitem .gmeta b { font-size: 0.8rem; color: var(--s800); display: block; }
+    .gitem .gmeta small { font-size: 0.7rem; color: var(--s400); display: flex; gap: 0.55rem; margin-top: 0.15rem; }
+    .gbadge { font-size: 0.66rem; font-family: var(--fx); border-radius: 99rem; padding: 0.1rem 0.45rem; }
+    .gbadge.ok { background: var(--t50); color: var(--t700); border: 1px solid var(--t100); }
+    .gbadge.wait { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+
+    /* 채팅 목업 */
+    .msg { max-width: 88%; padding: 0.5rem 0.8rem; border-radius: 0.8rem;
+           font-size: 0.86rem; line-height: 1.45; }
+    .msg.q { align-self: flex-end; background: var(--s900); color: #fff; border-bottom-right-radius: 0.2rem; }
+    .msg.a { align-self: flex-start; background: var(--s50); border: 1px solid var(--s200);
+             color: var(--s600); border-bottom-left-radius: 0.2rem; }
+    .msg.a b { color: var(--t700); }
+    .sysnote { align-self: center; font-size: 0.72rem; color: var(--s400); background: var(--s50);
+               border: 1px dashed var(--s300); border-radius: 99rem; padding: 0.2rem 0.8rem; }
+
+    /* ── 실제 화면 목업: 앱 프레임 (사이드바 + 상단바 + 콘텐츠) ── */
+    .app { flex: 1; min-height: 0; display: flex; background: #F6F8FB; font-size: 0.8rem; }
+    .mnav { width: 6.9rem; background: var(--s900); display: flex; flex-direction: column;
+            padding: 0.45rem 0.45rem; gap: 0.12rem; flex-shrink: 0; overflow: hidden; }
+    .mnav .mlogo { display: flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.4rem 0.45rem;
+                   color: #fff; font-family: var(--fx); font-size: 0.78rem; white-space: nowrap; }
+    .mnav .mlogo .i { color: var(--t400); }
+    .mnav .ni { display: flex; align-items: center; gap: 0.4rem; color: var(--s400);
+                padding: 0.28rem 0.45rem; border-radius: 0.4rem; font-size: 0.68rem; white-space: nowrap; }
+    .mnav .ni .i { flex-shrink: 0; font-size: 0.8rem; }
+    .mnav .ni.on { background: var(--t700); color: #fff; font-family: var(--fx); }
+    .mnav .nsec { font-size: 0.58rem; color: var(--s600); letter-spacing: 0.12em;
+                  padding: 0.5rem 0.5rem 0.15rem; font-family: var(--fx); }
+    .mmain { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .mtop { display: flex; align-items: center; gap: 0.6rem; background: #fff;
+            border-bottom: 1px solid var(--s200); padding: 0.45rem 0.8rem; }
+    .mtop b { font-size: 0.92rem; color: var(--s900); font-family: var(--fx); }
+    .mtop .msel { font-size: 0.72rem; color: var(--s600); border: 1px solid var(--s300);
+                  border-radius: 0.4rem; padding: 0.2rem 0.55rem; background: #fff; }
+    .mtop .mbtn { margin-left: auto; background: var(--t600); color: #fff; font-family: var(--fx);
+                  font-size: 0.72rem; border-radius: 0.45rem; padding: 0.28rem 0.7rem; }
+    .mtop .mava { width: 1.35rem; height: 1.35rem; border-radius: 50%; background: var(--t100);
+                  color: var(--t800); display: flex; align-items: center; justify-content: center;
+                  font-size: 0.62rem; font-family: var(--fx); }
+    .mbody { flex: 1; min-height: 0; padding: 0.65rem 0.8rem; display: flex; flex-direction: column;
+             gap: 0.55rem; overflow: hidden; }
+
+    /* KPI 타일 */
+    .mkpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+    .mkpi { background: #fff; border: 1px solid var(--s200); border-radius: 0.55rem;
+            padding: 0.42rem 0.6rem; }
+    .mkpi .k { font-size: 0.64rem; color: var(--s500); }
+    .mkpi .v { font-size: 1.05rem; font-family: var(--fx); color: var(--s900); letter-spacing: -0.02em; }
+    .mkpi .v em { font-style: normal; font-size: 0.62rem; color: var(--t600); font-family: var(--fx);
+                  white-space: nowrap;
+                  margin-left: 0.25rem; }
+
+    /* 수업방·목록 카드 */
+    .mcards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .mcard { background: #fff; border: 1px solid var(--s200); border-radius: 0.6rem;
+             padding: 0.5rem 0.65rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .mcard .mrow1 { display: flex; align-items: center; gap: 0.4rem; }
+    .mcard .tag { font-size: 0.6rem; font-family: var(--fx); border-radius: 0.3rem;
+                  padding: 0.08rem 0.4rem; background: var(--t50); color: var(--t700);
+                  border: 1px solid var(--t100); }
+    .mcard .tag.gray { background: var(--s100); color: var(--s500); border-color: var(--s200); }
+    .mcard b { font-size: 0.82rem; color: var(--s900); font-family: var(--fx); }
+    .mcard small { font-size: 0.68rem; color: var(--s500); line-height: 1.4; }
+    .mcard .mfoot { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.1rem;
+                    font-size: 0.64rem; color: var(--s400); }
+    .mcard .mfoot .sp { margin-left: auto; }
+    .mstat { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.62rem;
+             font-family: var(--fx); border-radius: 99rem; padding: 0.1rem 0.45rem;
+             white-space: nowrap; }
+    .mstat.on { background: var(--t50); color: var(--t700); border: 1px solid var(--t400); }
+    .mstat.on::before { content: ""; width: 0.34rem; height: 0.34rem; border-radius: 50%;
+                        background: var(--t400); }
+    .mstat.off { background: var(--s100); color: var(--s500); border: 1px solid var(--s300); }
+    .mstat.warn { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+
+    /* 미니 게이지 */
+    .mg { display: flex; align-items: center; gap: 0.4rem; font-size: 0.64rem; color: var(--s400); }
+    .mg .mgb { flex: 1; height: 0.34rem; border-radius: 99rem; background: var(--s100);
+               overflow: hidden; position: relative; }
+    .mg .mgb i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99rem;
+                 background: var(--t500, #14B8A6); background: #14B8A6; }
+    .mg b { font-family: var(--fx); color: var(--s700); font-size: 0.66rem; }
+
+    /* 테이블 */
+    .mtbl { background: #fff; border: 1px solid var(--s200); border-radius: 0.6rem; overflow: hidden; }
+    .mtbl table { width: 100%; border-collapse: collapse; font-size: 0.68rem; }
+    .mtbl th { background: var(--s50); color: var(--s500); font-family: var(--fx); font-weight: 400;
+               text-align: left; padding: 0.3rem 0.6rem; border-bottom: 1px solid var(--s200);
+               font-size: 0.62rem; }
+    .mtbl td { padding: 0.32rem 0.6rem; border-bottom: 1px solid var(--s100); color: var(--s600); }
+    .mtbl tr:last-child td { border-bottom: none; }
+    .mtbl td b { color: var(--s800); font-family: var(--fx); }
+
+    /* 학생 상태 그리드 (라이브 보드) */
+    .sgrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.35rem; }
+    .schip { background: #fff; border: 1px solid var(--s200); border-radius: 0.45rem;
+             padding: 0.28rem 0.2rem; text-align: center; }
+    .schip b { display: block; font-size: 0.62rem; color: var(--s700); font-family: var(--fx); }
+    .schip small { font-size: 0.54rem; color: var(--s400); }
+    .schip.ok { border-color: var(--t400); background: var(--t50); }
+    .schip.ok small { color: var(--t700); }
+    .schip.help { border-color: #FED7AA; background: #FFF7ED; }
+    .schip.help small { color: #C2410C; }
+
+    /* 채팅 + 미리보기 2패널 (놀이터) */
+    .mduo { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.05fr 1fr; }
+    .mchat { display: flex; flex-direction: column; gap: 0.32rem; padding: 0.5rem 0.65rem;
+             background: #fff; border-right: 1px solid var(--s200); overflow: hidden; }
+    .mchat .mmsg { max-width: 90%; padding: 0.34rem 0.6rem; border-radius: 0.6rem;
+                   font-size: 0.68rem; line-height: 1.38; }
+    .mchat .mmsg.q { align-self: flex-end; background: var(--s900); color: #fff;
+                     border-bottom-right-radius: 0.15rem; }
+    .mchat .mmsg.a { align-self: flex-start; background: var(--s50); border: 1px solid var(--s200);
+                     color: var(--s600); border-bottom-left-radius: 0.15rem; }
+    .mchat .mmsg.a b { color: var(--t700); }
+    .mchat .minput { margin-top: auto; display: flex; align-items: center; gap: 0.4rem;
+                     border: 1px solid var(--s300); border-radius: 99rem; padding: 0.3rem 0.65rem;
+                     font-size: 0.64rem; color: var(--s400); }
+    .mchat .minput .send { margin-left: auto; width: 1.1rem; height: 1.1rem; border-radius: 50%;
+                           background: var(--t600); color: #fff; display: flex; align-items: center;
+                           justify-content: center; font-size: 0.55rem; }
+    .mprev { background: var(--s100); padding: 0.55rem; display: flex; flex-direction: column; }
+    .mprev .purl { display: flex; align-items: center; gap: 0.35rem; background: #fff;
+                   border: 1px solid var(--s200); border-radius: 99rem; padding: 0.2rem 0.55rem;
+                   font-size: 0.6rem; color: var(--t700); font-family: var(--fx); margin-bottom: 0.45rem; }
+    .mprev .pframe { flex: 1; background: #fff; border: 1px solid var(--s200); border-radius: 0.5rem;
+                     padding: 0.5rem 0.6rem; display: flex; flex-direction: column; gap: 0.35rem; }
+    .mprev .ph1 { font-size: 0.85rem; font-family: var(--fx); color: var(--t800); text-align: center; }
+    .mprev .pimg { height: 1.7rem; border-radius: 0.35rem; background: var(--t50);
+                   border: 1px dashed var(--t100); display: flex; align-items: center;
+                   justify-content: center; color: var(--t400); font-size: 0.7rem; }
+    .mprev .pcards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.3rem; }
+    .mprev .pc { background: #EFF9FF; border: 1px solid #BAE6FD; border-radius: 0.35rem;
+                 padding: 0.25rem 0.3rem; font-size: 0.56rem; color: var(--s600); text-align: center; }
+    .mprev .pc b { display: block; font-size: 0.6rem; color: var(--s800); }
+    .mprev .pfoot { margin-top: 0.45rem; display: flex; gap: 0.35rem; }
+    .mprev .pbtn { flex: 1; text-align: center; font-size: 0.62rem; font-family: var(--fx);
+                   border-radius: 0.4rem; padding: 0.26rem 0; background: #fff;
+                   border: 1px solid var(--s300); color: var(--s600); }
+    .mprev .pbtn.pr { background: var(--t600); border-color: var(--t600); color: #fff; }
+
+    /* 갤러리 그리드 */
+    .ggrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+    .gcard { background: #fff; border: 1px solid var(--s200); border-radius: 0.55rem; overflow: hidden; }
+    .gcard .gth { height: 1.9rem; display: flex; align-items: center; justify-content: center;
+                  font-size: 1.15rem; color: var(--t600); background: var(--t50);
+                  border-bottom: 1px solid var(--s200); position: relative; }
+    .gcard .gth .gb { position: absolute; top: 0.25rem; right: 0.25rem; }
+    .gcard .gm { padding: 0.25rem 0.45rem; }
+    .gcard .gm b { font-size: 0.68rem; color: var(--s800); display: block; font-family: var(--fx); }
+    .gcard .gm small { font-size: 0.58rem; color: var(--s400); display: flex; gap: 0.4rem;
+                       margin-top: 0.12rem; }
+
+    /* ── 목업 고도화 ── */
+    .win { box-shadow: 0 18px 44px rgba(15,23,42,0.13), 0 2px 6px rgba(15,23,42,0.06); }
+    .mnav .nuser { margin-top: auto; display: flex; align-items: center; gap: 0.35rem;
+                   background: var(--s800); border-radius: 0.45rem; padding: 0.3rem 0.4rem; }
+    .mnav .nuser .nava { width: 1.15rem; height: 1.15rem; border-radius: 50%; background: var(--t400);
+                         color: var(--s900); display: inline-flex; align-items: center; justify-content: center;
+                         font-family: var(--fx); font-size: 0.58rem; flex-shrink: 0; }
+    .mnav .nuser b { display: block; color: #fff; font-size: 0.6rem; font-family: var(--fx); line-height: 1.2; }
+    .mnav .nuser small { display: block; color: var(--s400); font-size: 0.52rem; line-height: 1.2; }
+    .mkpi { position: relative; padding-left: 0.85rem; }
+    .mkpi .kbar { position: absolute; left: 0.32rem; top: 0.45rem; bottom: 0.45rem; width: 0.18rem;
+                  border-radius: 99rem; background: var(--t400); }
+    .mkpi .kbar.warn { background: #FB923C; }
+    .mtop .msch { display: flex; align-items: center; gap: 0.3rem; border: 1px solid var(--s200);
+                  background: var(--s50); border-radius: 99rem; padding: 0.18rem 0.6rem;
+                  font-size: 0.66rem; color: var(--s400); }
+    .mprev .pnav { display: flex; align-items: center; gap: 0.45rem; background: var(--t800);
+                   border-radius: 0.4rem 0.4rem 0 0; margin: -0.5rem -0.6rem 0.1rem; padding: 0.3rem 0.6rem; }
+    .mprev .pnav b { color: #fff; font-size: 0.62rem; font-family: var(--fx); }
+    .mprev .pnav span { color: var(--t100); font-size: 0.54rem; margin-left: auto; display: flex; gap: 0.4rem; }
+    /* 최신 스타일 디테일 */
+    .schip { display: flex; align-items: center; gap: 0.32rem; text-align: left; padding: 0.26rem 0.38rem; }
+    .schip .sava { width: 1.05rem; height: 1.05rem; border-radius: 50%; background: var(--s200);
+                   color: var(--s600); display: inline-flex; align-items: center; justify-content: center;
+                   font-family: var(--fx); font-size: 0.54rem; flex-shrink: 0; }
+    .schip.ok .sava { background: var(--t400); color: var(--s900); }
+    .schip.help .sava { background: #FDBA74; color: #7C2D12; }
+    .schip > span.sbody { min-width: 0; }
+    .schip b, .schip small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mcard { border-radius: 0.7rem; box-shadow: 0 3px 10px rgba(15,23,42,0.04); }
+    .mkpi { border-radius: 0.65rem; box-shadow: 0 2px 8px rgba(15,23,42,0.04); }
+    .mtop { box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
+    .gcard { box-shadow: 0 3px 10px rgba(15,23,42,0.05); }
+    /* ── 다크 슬라이드 (표지·맺음) ── */
+    .dark { background:
+              linear-gradient(rgba(148,163,184,0.055) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(148,163,184,0.055) 1px, transparent 1px),
+              var(--s900);
+            background-size: 3.4rem 3.4rem, 3.4rem 3.4rem, auto;
+            color: #fff; justify-content: center; align-items: flex-start;
+            padding: 2.2rem 2.8rem; }
+    .dark .glow { position: absolute; right: -12rem; top: 50%; transform: translateY(-50%);
+                  width: 46rem; height: 46rem; border-radius: 50%;
+                  background: radial-gradient(circle, rgba(45,212,191,0.11) 0%, rgba(45,212,191,0.035) 45%, transparent 72%); }
+    .dark .logo { position: absolute; right: 6rem; top: 50%; transform: translateY(-50%);
+                  width: 10rem; opacity: 0.5; z-index: 0; }
+    .dark .top { position: absolute; top: 1.9rem; left: 2.8rem; right: 2.8rem;
+                 display: flex; justify-content: space-between; align-items: center; }
+    .dark .top .pillbadge { border: 1px solid var(--t400); color: var(--t400);
+                            font-size: 0.82rem; letter-spacing: 0.2em; padding: 0.5rem 1.6rem;
+                            border-radius: 99rem; }
+    .dark .top .iwd { color: var(--t400); font-size: 0.95rem; letter-spacing: 0.03em; font-family: var(--fx); }
+    .dark h1 { font-size: 3.4rem; font-family: var(--fx); letter-spacing: -0.03em; line-height: 1.16; }
+    .dark h1 em { color: var(--t400); font-style: normal; }
+    .dark .sub { font-size: 1.2rem; color: var(--s400); margin-top: 1.3rem; line-height: 1.65; }
+    .dark .entag { margin-top: 1.5rem; color: var(--t400); font-size: 0.92rem;
+                   letter-spacing: 0.22em; font-family: var(--fx); }
+    .dark .pills { display: flex; gap: 0.6rem; margin-top: 1.9rem; flex-wrap: wrap; }
+    .dark .pill { border: 1px solid var(--s700); background: rgba(30,41,59,0.7); color: var(--s300);
+                  font-size: 0.9rem; padding: 0.42rem 1rem; border-radius: 99rem; }
+    .dark .pill b { color: var(--t400); margin-right: 0.35rem; }
+    .dark .corner { position: absolute; left: 2.8rem; bottom: 1.5rem; right: 2.8rem;
+                    display: flex; justify-content: flex-start; gap: 0.9rem; align-items: center;
+                    font-size: 0.82rem; letter-spacing: 0.16em; }
+    .dark .corner .ai { color: var(--t400); font-family: var(--fx); }
+    .dark .corner .div { color: var(--s600); }
+    .dark .corner .cp { color: var(--s500); }
+    .dark .notice { margin-top: 1.9rem; display: inline-flex; align-items: center; gap: 0.6rem;
+                    border: 1px solid var(--s700); border-radius: 0.6rem; background: rgba(30,41,59,0.7);
+                    padding: 0.55rem 1rem; font-size: 0.88rem; color: var(--s400); position: relative; z-index: 1; }
+    .dark .notice .i { color: var(--t400); }
+
+    /* ── 파트너 킷 전용 컴포넌트 ── */
+    .narch { flex: 1; display: flex; flex-direction: column; gap: 0.32rem; min-height: 0; }
+    .nzone { border: 1px solid var(--s200); border-radius: 0.7rem; padding: 0.85rem 0.75rem 0.6rem;
+             position: relative; background: var(--s50);
+             flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .nzone.acc { border-color: var(--t400); background: var(--t50); }
+    .nzone.dk { border-color: var(--s700); background: var(--s900); }
+    .zlab { position: absolute; top: 0.34rem; left: 0.8rem; font-size: 0.64rem; font-family: var(--fx);
+            color: var(--s400); letter-spacing: 0.1em; }
+    .nzone.acc .zlab { color: var(--t700); }
+    .nzone.dk .zlab { color: var(--t400); }
+    .nrow { display: flex; gap: 0.5rem; }
+    .nsvc { flex: 1; min-width: 0; background: #fff; border: 1px solid var(--s200); border-radius: 0.55rem;
+            padding: 0.42rem 0.55rem; display: flex; align-items: center; gap: 0.5rem; }
+    .nzone.dk .nsvc { background: rgba(255,255,255,0.06); border-color: var(--s700); }
+    .nsvc .nic { width: 1.85rem; height: 1.85rem; flex: none; border-radius: 0.45rem; background: var(--t50);
+                 color: var(--t700); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .nzone.dk .nsvc .nic { background: rgba(45,212,191,0.14); color: var(--t400); }
+    .nsvc .ntx { min-width: 0; }
+    .nsvc b { display: block; font-size: 0.79rem; line-height: 1.2; color: var(--s900); }
+    .nzone.dk .nsvc b { color: #fff; }
+    .nsvc small { display: block; font-size: 0.67rem; line-height: 1.3; color: var(--s500); margin-top: 0.08rem; }
+    .ndown { text-align: center; color: var(--s300); font-size: 0.62rem; letter-spacing: 0.5em; line-height: 0.9; }
+
+    .grow { flex: 1; min-height: 0; display: flex; align-items: stretch; gap: 0.55rem; }
+    .gstage { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .gstage .gtop { font-size: 0.7rem; font-family: var(--fx); letter-spacing: 0.07em; color: var(--s400); }
+    .gstage .gttl { font-size: 0.98rem; font-family: var(--fx); color: var(--s900); margin-top: 0.15rem; }
+    .gstage .gsub { font-size: 0.76rem; color: var(--s500); line-height: 1.4; margin-top: 0.2rem; }
+    .gwrap { margin-top: 0.7rem; display: flex; align-items: flex-end; gap: 0.32rem; flex: 1; min-height: 0; }
+    .gcol { flex: 1; border-radius: 0.3rem 0.3rem 0 0; background: var(--s200); }
+    .gcol.a { background: var(--t400); } .gcol.b { background: var(--t600); } .gcol.c { background: var(--t800); }
+    .gstage .gbase { border-top: 2px solid var(--s300); padding-top: 0.35rem; font-size: 0.72rem; color: var(--s500); }
+    .gstage .gbase b { color: var(--t700); }
+
+    .rlist { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.55rem; }
+    .rlist span { font-size: 0.86rem; color: var(--s600); line-height: 1.45; padding-left: 1.1rem; position: relative; }
+    .rlist span::before { content: ""; position: absolute; left: 0; top: 0.52rem; width: 0.42rem; height: 0.42rem;
+                          border-radius: 50%; background: var(--t400); }
+    .rlist span b { color: var(--s900); }
+
+    .eq { display: flex; align-items: stretch; gap: 0.45rem; }
+    .eqb { flex: 1; min-width: 0; background: var(--s50); border: 1px solid var(--s200); border-radius: 0.6rem;
+           padding: 0.6rem 0.7rem; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+    .eqb .el { font-size: 0.7rem; color: var(--s500); font-family: var(--fx); letter-spacing: 0.04em; }
+    .eqb .ev { font-size: 1.15rem; font-family: var(--fx); color: var(--s900); margin-top: 0.2rem; line-height: 1.2; }
+    .eqb .eu { font-size: 0.68rem; color: var(--s400); margin-top: 0.15rem; line-height: 1.3; }
+    .eqb.res { background: var(--t600); border-color: var(--t600); }
+    .eqb.res .el { color: var(--t100); } .eqb.res .eu { color: var(--t100); }
+    .eqb.res .ev { color: #fff; font-size: 1.3rem; }
+    .eqop { align-self: center; font-family: var(--fx); color: var(--s400); font-size: 1.05rem; flex: none; }
+
+    .tcols { display: flex; gap: 0.55rem; flex: 1; min-height: 0; }
+    .tcol { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .tcol .tch { font-family: var(--fx); font-size: 0.92rem; color: var(--s900); }
+    .tcol .tch small { display: inline; margin-left: 0.4rem; font-size: 0.64rem; color: var(--s400); font-family: var(--f); letter-spacing: 0.06em; }
+    .tcol.rec .tch { color: var(--t700); }
+    .tstack { margin-top: 0.5rem; border: 1px solid var(--s200); border-radius: 0.5rem; padding: 0.35rem;
+              display: flex; flex-direction: column; gap: 0.25rem; background: #fff; }
+    .tcol.rec .tstack { border-color: var(--t400); border-width: 2px; }
+    .tlay { border-radius: 0.35rem; background: var(--s50); padding: 0.26rem 0.34rem; }
+    .tlay .llab { display: block; font-size: 0.6rem; color: var(--s400); letter-spacing: 0.04em; margin-bottom: 0.18rem; }
+    .tsplit { display: flex; gap: 0.18rem; }
+    .tsplit i, .tpool { flex: 1; font-style: normal; font-size: 0.58rem; text-align: center;
+                        border-radius: 0.22rem; padding: 0.2rem 0; line-height: 1.2; }
+    .tsplit i.k1 { background: var(--t100); color: var(--t800); }
+    .tsplit i.k2 { background: #DBEAFE; color: #1E40AF; }
+    .tsplit i.k3 { background: #FEF3C7; color: #92400E; }
+    .tpool { background: var(--s200); color: var(--s600); }
+    .tnote { margin-top: 0.45rem; font-size: 0.76rem; color: var(--s500); line-height: 1.45; }
+    .tnote b { color: var(--s900); }
+    .tcol.rec .tnote b { color: var(--t700); }
+
+    .krow > span:last-child { display: flex; flex-direction: column; flex: 1; min-width: 0; align-self: stretch; }
+    .krow .kfix { margin-top: auto; padding-top: 0.65rem; margin-top: auto; border-top: 1px solid var(--s200);
+                  font-size: 0.85rem; line-height: 1.45; color: var(--s500); }
+    .krow .kfix b { color: var(--t700); }
+
+    .mflab { margin-top: 0.85rem; font-size: 0.72rem; font-family: var(--fx); color: var(--s400); letter-spacing: 0.06em; }
+    .mflow { display: flex; align-items: stretch; gap: 0.3rem; margin-top: 0.35rem; }
+    .mflow span { flex: 1; min-width: 0; text-align: center; font-size: 0.76rem; line-height: 1.35;
+                  padding: 0.5rem 0.35rem; border-radius: 0.5rem; background: #fff; min-height: 3.7rem;
+                  border: 1px solid var(--s200); color: var(--s600); display: flex;
+                  align-items: center; justify-content: center; }
+    .mfcap { margin-top: 0.5rem; font-size: 0.8rem; color: var(--s500); line-height: 1.45; }
+    .mfcap b { color: var(--s900); }
+    .card.pos .mfcap b { color: var(--t700); }
+    .mflow i { font-style: normal; color: var(--s300); font-family: var(--fx); flex: none; align-self: center; }
+    .card.pos .mflow span { border-color: var(--t400); color: var(--t700); }
+    .card.pos .mflow i { color: var(--t400); }
+  </style>
+</head>
+<body>
+  <section class="slide dark" data-title="표지">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
+    <div class="top">
+      <span class="pillbadge">PARTNER SALES KIT</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>학생 AI 놀이터,<br><em>교육청 클라우드의 입구가 됩니다.</em></h1>
+    <p class="sub">NHN 클라우드 영업 담당자용 브리핑 - 이 사업이 무엇이고, 어떤 클라우드 매출로 이어지며,<br>
+      교육청에 어떻게 제안하는지 한 권에 정리했습니다.</p>
+    <p class="sub" style="margin-top:0.6rem"><b style="color:#fff">NHN 클라우드 귀중</b> · 세일링스톤 · 2026. 09</p>
+    <div class="pills">
+      <span class="pill"><b>01</b>시장 기회</span>
+      <span class="pill"><b>02</b>서비스 구성</span>
+      <span class="pill"><b>03</b>클라우드 매출 구조</span>
+      <span class="pill"><b>04</b>교육청 세일즈 가이드</span>
+    </div>
+    <div class="notice"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      파트너 내부 검토용입니다. 교육청 제출본은 별도 제안서로 제공됩니다.</div>
+    <div class="corner">
+      <span class="ai">PARTNER · EDUCATION · CLOUD</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
+    </div>
+  </section>
+
+  <section class="slide" data-title="한 장 요약">
+    <header class="s-head">
+      <h2><span class="bullet"></span>한 장 요약 - <em>3분이면 파악됩니다</em></h2>
+      <div class="s-right"><span class="sec">01 · Opportunity</span></div>
+    </header>
+    <div class="s-band"><p>교육청은 AI 활용 지침을 받았지만 학생에게 쥐여 줄 도구가 없습니다.
+      그 빈칸을 채우는 플랫폼이고, <strong>공공 클라우드 위에서만 성립하는 구조</strong>로 설계돼 있습니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M8 10h8"/><path d="M8 14h5"/></svg></span>
+            <span><h4>무엇을 파는가 <small>WHAT</small></h4>
+            <p>학생 AI 놀이터 - 선생님이 상용 AI를 등록해 반별로 나눠 주고, 학생은 개인 계정 없이
+               입장 코드로 들어와 글·그림·퀴즈·웹 작품을 만들고 전시하는 <b>학교용 AI 실습 플랫폼</b>입니다.</p>
+            <span class="kfix"><b>한 줄로.</b> 선생님이 AI를 나눠 주고, 학생이 만들어 전시하는 공간입니다.</span></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></span>
+            <span><h4>누가 사는가 <small>WHO</small></h4>
+            <p>시도교육청이 발주하고, 관내 학교가 씁니다. 시범 2~3개교로 시작해 학기 말 실측 리포트를
+               근거로 관내 확산 - <b>한 번 들어가면 학교 수만큼 커지는</b> 구조입니다.</p>
+            <span class="kfix"><b>영업 대상.</b> 학교가 아니라 <b>교육청 정보화 · 교육과정 담당 부서</b>입니다.</span></span></div>
+        </div>
+        <div class="krows">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg></span>
+            <span><h4>왜 지금인가 <small>WHY NOW</small></h4>
+            <p>생성형 AI 활용 지침은 내려왔는데 <b>통제 가능한 실습 환경이 없습니다.</b>
+               해외는 이미 교육구 단위로 교사 통제형 학생 AI 플랫폼을 도입하는 단계입니다.
+               국내에는 아직 이 자리를 채운 제품이 거의 없습니다.</p>
+            <span class="kfix"><b>타이밍.</b> 지침은 이미 내려왔고, 대응 제품은 아직 자리를 잡지 않았습니다.</span></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></span>
+            <span><h4>NHN에게 무엇인가 <small>WHY NHN</small></h4>
+            <p>학생 데이터라 <b>국내 리전과 CSAP가 협상 조건이 아니라 입찰 요건</b>입니다.
+               게다가 학생 수·작품 수·AI 호출이 늘수록 컴퓨팅과 스토리지가 따라 자랍니다.
+               학생이 만든 작품은 학년이 바뀌어도 지워지지 않습니다.</p>
+            <span class="kfix"><b>핵심.</b> 교육청 계정을 여는 사업이자, 해마다 자라는 AI 워크로드입니다.</span></span></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>클라우드를 따로 파는 것이 아니라, <b>클라우드가 요건이 되는 사업</b>을 함께 파는 구조입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 2 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="시장 기회">
+    <header class="s-head">
+      <h2><span class="bullet"></span>시장 기회 - <em>왜 지금 교육청인가</em></h2>
+      <div class="s-right"><span class="sec">01 · Opportunity</span></div>
+    </header>
+    <div class="s-band"><p>교육 시장은 예산이 늦게 열리는 대신 <strong>한 번 열리면 17개 시도로 같은 모양이 복제</strong>됩니다.
+      지금은 그 문이 열리기 직전 구간입니다.</p></div>
+    <div class="content">
+      <div class="cards c4 fill">
+        <div class="card"><span class="accent"></span><div class="no">01<span class="cat">정책</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></div>
+          <h3>규칙은 있고 도구가 없다</h3>
+          <p>교육부·교육청이 수행평가 AI 활용 관리 방안을 확정했습니다. "올바른 활용"이
+             공식 과제가 됐지만, 현장에는 통제 가능한 실습 환경이 없습니다.</p>
+          <div class="seg fx"><em>질문이 바뀌었습니다</em><p>"쓰게 할 것인가"에서 <b>"어떻게 관리하며 쓰게 할 것인가"</b>로 - 관리 방법을
+            묻는 순간부터 시스템 예산이 됩니다.</p></div>
+          <div class="fix">지침이 곧 수요를 만듭니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">02<span class="cat">경쟁 공백</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+          <h3>국내에 대응 제품이 없다</h3>
+          <p>학습관리(LMS)와 콘텐츠 제품은 많지만, <b>교사가 AI를 통제하고 학생이 만들어 보는 층</b>은
+             비어 있습니다. 지금 들어가면 비교 견적을 붙일 상대가 마땅치 않습니다.</p>
+          <div class="seg fx"><em>빈칸의 위치</em><p>LMS는 진도와 점수를, 개인 챗봇은 대화를 담당합니다.
+            그 사이 <b>"만들어 보는 층"</b>이 비어 있습니다.</p></div>
+          <div class="fix">비교 대상이 없을 때가 진입 적기입니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">03<span class="cat">해외 검증</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <h3>모델은 이미 증명됐다</h3>
+          <p>미국은 MagicSchool(13,000개교), SchoolAI 등 교사 통제형 학생 AI 플랫폼이
+             <b>교육구 단위로 도입</b>되는 단계입니다. 새로 설득할 개념이 아닙니다.</p>
+          <div class="seg fx"><em>주목할 점은 도입 단위</em><p>학교 단품 판매가 아니라 <b>교육구(우리의 교육청) 단위 계약</b>으로
+            확산됐습니다 - 같은 경로가 국내에도 열립니다.</p></div>
+          <div class="fix">"해외는 이미 합니다"가 통하는 분야입니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">04<span class="cat">확산 구조</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><circle cx="12" cy="4" r="2"/><path d="M12 7v2"/><path d="M10 14l-3.5 3.5"/><path d="M14 14l3.5 3.5"/></svg></div>
+          <h3>한 곳이 되면 옆이 따라온다</h3>
+          <p>교육청 사업은 <b>타 시도가 앞선 사례를 그대로 참고</b>합니다. 첫 레퍼런스 한 건이
+             다음 열 건의 영업 비용을 줄여 줍니다.</p>
+          <div class="seg fx"><em>복제 경로</em><p>시범 결과 리포트 → 관내 전 학교 확산 → <b>인접 시도 벤치마킹</b> -
+            교육 사업이 늘 밟아 온 순서입니다.</p></div>
+          <div class="fix">첫 교육청 한 곳이 가장 값어치 있습니다.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
+        <span>교육청은 <b>지금 예산 항목을 만들고 있는 중</b>입니다 - 만들어진 뒤에 들어가면 이미 스펙이 정해져 있습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 3 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="제품 한 장">
+    <header class="s-head">
+      <h2><span class="bullet"></span>AI 놀이터 - <em>한 장으로 보는 제품</em></h2>
+      <div class="s-right"><span class="sec">02 · Product</span></div>
+    </header>
+    <div class="s-band"><p>선생님이 울타리를 치고, 학생이 그 안에서 만들고, 만든 것이 학급 자산으로 쌓입니다.
+      영업 자리에서는 <strong>이 네 단계만 설명하시면</strong> 충분합니다.</p></div>
+    <div class="content">
+      <div class="cyc">
+        <div class="cnode"><span class="accent"></span>
+          <b><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>① 수업방 열기</b>
+          <p>선생님이 주제·AI 역할·사용 한도를 정해 수업방을 만들고, 학생은 코드로 입장합니다.
+             학생 개인 계정이 필요 없습니다.</p></div>
+        <div class="carr">›</div>
+        <div class="cnode"><span class="accent"></span>
+          <b><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>② 만들기</b>
+          <p>안전 필터가 켜진 AI와 대화하며 글·그림·퀴즈·웹 작품을 만듭니다.
+             정답 대신 힌트만 주는 학습 모드로 설정할 수 있습니다.</p></div>
+        <div class="carr">›</div>
+        <div class="cnode"><span class="accent"></span>
+          <b><svg class="i" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>③ 올리기</b>
+          <p>제출하면 선생님 승인을 거쳐 학급 갤러리에 게시됩니다.
+             웹 작품은 <b>주소가 자동 발급</b>돼 바로 열립니다.</p></div>
+        <div class="carr">›</div>
+        <div class="cnode"><span class="accent"></span>
+          <b><svg class="i" viewBox="0 0 24 24"><path d="M17 6.1H3"/><path d="M21 12.1H3"/><path d="M15.1 18H3"/></svg>④ 함께 배우기</b>
+          <p>친구 작품에 칭찬과 질문을 남기고 잘된 프롬프트를 따라 합니다.
+             선생님은 과정 기록으로 평가합니다.</p></div>
+      </div>
+      <div class="plat" style="margin-top:0.8rem"><span class="accent"></span>
+        <div class="ph">플랫폼이 대신 처리하는 것 <small>· 학교가 손대지 않아도 되는 영역</small></div>
+        <div class="pgrid">
+          <div class="pcell ws"><b>AI 게이트웨이</b><small>학교 계약 AI 키 관리 · 사용량 집계 · 개인정보 마스킹</small></div>
+          <div class="pcell ws"><b>사용량 배분 엔진</b><small>학교→학급→학생 배분 · 수업 종료 시 정산·회수</small></div>
+          <div class="pcell ops"><b>세이프티 · 감사</b><small>연령별 필터 · 위험 신호 알림 · 전 과정 기록</small></div>
+          <div class="pcell ops"><b>작품 격리 호스팅</b><small>학생 웹 작품에 주소 자동 발급 · 논리 격리</small></div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+        <span>특정 AI 회사에 묶이지 않습니다 - <b>키만 바꾸면 모델이 바뀌는 구조</b>라 교육청 정책 변화를 그대로 따라갑니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 4 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="왜 이 사업인가">
+    <header class="s-head">
+      <h2><span class="bullet"></span>왜 이 사업인가 - <em>클라우드 단품과 무엇이 다른가</em></h2>
+      <div class="s-right"><span class="sec">02 · Product</span></div>
+    </header>
+    <div class="s-band"><p>같은 인프라를 팔더라도 <strong>무엇과 함께 제안하느냐에 따라 대화가 달라집니다.</strong>
+      단품은 가격으로 비교되고, 사업은 요건으로 선택됩니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="card" style="display:flex; flex-direction:column">
+          <div class="no" style="color:var(--s400)">클라우드만 제안할 때</div>
+          <h3>가격과 스펙으로 비교됩니다</h3>
+          <div class="rlist">
+            <span><b>비교 축</b> - 단가·성능·SLA. 매년 재협상 대상이 됩니다.</span>
+            <span><b>교육청의 질문</b> - "왜 굳이 지금 옮겨야 하나요?"</span>
+            <span><b>예산 출처</b> - 정보화 인프라 항목. 규모가 정해져 있습니다.</span>
+            <span><b>경쟁 상황</b> - 타 클라우드와 같은 표 위에서 나란히 비교됩니다.</span>
+            <span><b>계약 주기</b> - 해마다 갱신 시점에 다시 설득해야 합니다.</span>
+            <span><b>우리의 위치</b> - 후보 공급사 가운데 하나.</span>
+          </div>
+          <div class="mflab">대화가 시작되는 순서</div>
+          <div class="mflow"><span>교육청이<br>먼저 필요를 느낌</span><i>›</i><span>요구 사양<br>공고</span><i>›</i><span>가격<br>경쟁</span></div>
+          <p class="mfcap">첫 단추가 교육청 쪽에 있습니다 - <b>우리가 대화를 여는 방법이 없습니다.</b></p>
+          <div class="seg fx" style="background:#FEF2F2; border-color:#FECACA"><em style="color:#B91C1C">한계</em><p style="color:#9A3412">교육청이 먼저 필요를 느껴야 대화가 시작됩니다 - 우리가 시점을 정할 수 없습니다.</p></div></div>
+        <div class="card pos" style="display:flex; flex-direction:column; background:var(--t50); border-color:var(--t400)">
+          <div class="no" style="color:var(--t700)">사업과 함께 제안할 때</div>
+          <h3>요건으로 선택됩니다</h3>
+          <div class="rlist">
+            <span><b>비교 축</b> - 학생 데이터를 다루므로 <b>국내 리전·CSAP가 입찰 요건</b>이 됩니다.</span>
+            <span><b>교육청의 질문</b> - "이걸로 수업을 어떻게 바꿀 수 있나요?"</span>
+            <span><b>예산 출처</b> - AI 교육 사업비. 인프라는 사업의 구성 요소로 들어갑니다.</span>
+            <span><b>경쟁 상황</b> - 같은 제안을 들고 오는 상대가 아직 없습니다.</span>
+            <span><b>계약 주기</b> - 사업이 이어지는 동안 유지되고, 확산되면 함께 늘어납니다.</span>
+            <span><b>우리의 위치</b> - 선택지가 아니라 <b>사업의 전제 조건.</b></span>
+          </div>
+          <div class="mflab">대화가 시작되는 순서</div>
+          <div class="mflow"><span>우리가<br>문제를 제기</span><i>›</i><span>시범 운영<br>합의</span><i>›</i><span>요건이<br>곧 사양</span></div>
+          <p class="mfcap">첫 단추를 우리가 쥡니다 - <b>먼저 문을 두드릴 수 있습니다.</b></p>
+          <div class="seg fx"><em>전환점</em><p>인프라 영업이 아니라 사업 제안이 되면, <b>대화를 여는 시점을 우리가 정할 수 있습니다.</b></p></div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
+        <span>클라우드를 파는 대화가 아니라, <b>클라우드가 조건으로 딸려 오는 대화</b>를 만드는 것이 이 사업의 역할입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 5 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="서비스 구성">
+    <header class="s-head">
+      <h2><span class="bullet"></span>서비스 구성 - <em>NHN 클라우드 공공존 배치안</em></h2>
+      <div class="s-right"><span class="sec">03 · Architecture</span></div>
+    </header>
+    <div class="s-band"><p>이미 컨테이너로 운영 중인 플랫폼을 <strong>공공 전용존에 그대로 올리는 구성</strong>입니다.
+      학생 데이터는 국내 리전을 벗어나지 않고, 외부 AI 호출만 게이트웨이를 통해 나갑니다.</p></div>
+    <div class="content">
+      <div class="narch">
+        <div class="nzone"><span class="zlab">① 사용자</span>
+          <div class="nrow">
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="10" y1="18" x2="14" y2="18"/></svg></span>
+              <span class="ntx"><b>학생 - 태블릿 · PC</b><small>계정 없이 입장 코드로 접속</small></span></div>
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+              <span class="ntx"><b>교사 - 수업방 · 관제</b><small>학교 계정 · 실시간 모니터링</small></span></div>
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/></svg></span>
+              <span class="ntx"><b>교육청 - 관리 콘솔</b><small>예산 · 정책 · 통계</small></span></div>
+          </div>
+        </div>
+        <div class="ndown">▼</div>
+        <div class="nzone"><span class="zlab">② 진입 · 보안 계층 (Public)</span>
+          <div class="nrow">
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+              <span class="ntx"><b>WAF</b><small>웹 방화벽 · 유해 요청 차단</small></span></div>
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
+              <span class="ntx"><b>Anti-DDoS</b><small>공개 서비스 앞단 보호</small></span></div>
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 8h14"/><circle cx="5" cy="8" r="2"/><circle cx="19" cy="8" r="2"/></svg></span>
+              <span class="ntx"><b>Load Balancer</b><small>트래픽 분산 · TLS 종료</small></span></div>
+          </div>
+        </div>
+        <div class="ndown">▼</div>
+        <div class="nzone acc"><span class="zlab">③ 애플리케이션 계층 - NKS 쿠버네티스 (Private)</span>
+          <div class="nrow">
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+              <span class="ntx"><b>플랫폼 서비스</b><small>놀이터 · 교사 콘솔 · 갤러리</small></span></div>
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg></span>
+              <span class="ntx"><b>AI 게이트웨이</b><small>키 관리 · 사용량 집계 · 마스킹</small></span></div>
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+              <span class="ntx"><b>학생 작품 호스팅</b><small>네임스페이스 격리 · 주소 자동 발급</small></span></div>
+          </div>
+        </div>
+        <div class="ndown">▼</div>
+        <div class="nzone"><span class="zlab">④ 데이터 계층 (Private · 국내 리전 상주)</span>
+          <div class="nrow">
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>
+              <span class="ntx"><b>RDS</b><small>수업방 · 사용량 · 감사 로그</small></span></div>
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><path d="M21 8v13H3V8"/><rect x="1" y="3" width="22" height="5" rx="1"/><line x1="10" y1="12" x2="14" y2="12"/></svg></span>
+              <span class="ntx"><b>Object Storage</b><small>학생 작품 · 포트폴리오 · 수업 자료</small></span></div>
+            <div class="nsvc"><span class="nic"><svg class="i" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg></span>
+              <span class="ntx"><b>Notification</b><small>동의 요청 · 위기 신호 알림</small></span></div>
+          </div>
+        </div>
+        <div class="ndown">▼</div>
+        <div class="nzone dk"><span class="zlab">⑤ 외부 연동 - 게이트웨이 경유 아웃바운드만 허용</span>
+          <div class="nrow">
+            <div class="nsvc"><span class="ntx"><b>상용 LLM API</b><small>개인정보 마스킹 후 호출 · 교육청 정책에 따라 모델 교체</small></span></div>
+            <div class="nsvc"><span class="ntx"><b>학교 시스템 연동</b><small>학사 정보 · SSO (요건 확정 시)</small></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+        <span>학생 데이터는 ④에 상주하고 밖으로 나가지 않습니다 - <b>보안 심사에서 가장 먼저 확인하는 지점</b>입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 6 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="제공 형태">
+    <header class="s-head">
+      <h2><span class="bullet"></span>제공 형태 - <em>어떻게 서비스할 것인가</em></h2>
+      <div class="s-right"><span class="sec">03 · Architecture</span></div>
+    </header>
+    <div class="s-band"><p>교육청이 늘어날 때 <strong>무엇을 공유하고 무엇을 분리할 것인가</strong>가 확산 속도와 심사 통과를 동시에 좌우합니다.
+      세 가지 중 <strong>혼합형</strong>을 권해 드립니다.</p></div>
+    <div class="content">
+      <div class="tcols" style="flex:none">
+        <div class="tcol">
+          <div class="tch">A. 교육청 전용 구축<small>SINGLE-TENANT</small></div>
+          <div class="tstack">
+            <div class="tlay"><span class="llab">진입 · 보안</span><div class="tsplit"><i class="k1">A교육청</i><i class="k2">B교육청</i><i class="k3">C교육청</i></div></div>
+            <div class="tlay"><span class="llab">애플리케이션</span><div class="tsplit"><i class="k1">전용</i><i class="k2">전용</i><i class="k3">전용</i></div></div>
+            <div class="tlay"><span class="llab">데이터</span><div class="tsplit"><i class="k1">전용</i><i class="k2">전용</i><i class="k3">전용</i></div></div>
+          </div>
+          <p class="tnote">심사는 가장 쉽지만 <b>교육청 수만큼 구축·운영 부담</b>이 늘어납니다.</p></div>
+        <div class="tcol">
+          <div class="tch">B. 공유형 SaaS<small>MULTI-TENANT</small></div>
+          <div class="tstack">
+            <div class="tlay"><span class="llab">진입 · 보안</span><div class="tsplit"><span class="tpool">전 교육청 공유</span></div></div>
+            <div class="tlay"><span class="llab">애플리케이션</span><div class="tsplit"><span class="tpool">전 교육청 공유</span></div></div>
+            <div class="tlay"><span class="llab">데이터</span><div class="tsplit"><span class="tpool">논리 분리로 공유</span></div></div>
+          </div>
+          <p class="tnote">개설은 가장 빠르지만 <b>학생 데이터가 한 저장소에 섞여</b> 심사 부담이 큽니다.</p></div>
+        <div class="tcol rec">
+          <div class="tch">C. 혼합형 - 권장안<small>SHARED PLATFORM · ISOLATED DATA</small></div>
+          <div class="tstack">
+            <div class="tlay"><span class="llab">진입 · 보안</span><div class="tsplit"><span class="tpool">공유</span></div></div>
+            <div class="tlay"><span class="llab">애플리케이션</span><div class="tsplit"><span class="tpool">공유 - 개선이 전체 동시 반영</span></div></div>
+            <div class="tlay"><span class="llab">데이터</span><div class="tsplit"><i class="k1">A 전용</i><i class="k2">B 전용</i><i class="k3">C 전용</i></div></div>
+          </div>
+          <p class="tnote">서비스는 함께 쓰고 <b>데이터 저장소만 교육청별로 분리</b> - 속도와 심사를 동시에 잡습니다.</p></div>
+      </div>
+      <div class="rt-wrap" style="margin-top:0.5rem">
+        <table class="rt">
+          <tr><th style="width:22%">비교 축</th><th style="width:26%">A. 전용 구축</th><th style="width:26%">B. 공유형 SaaS</th><th>C. 혼합형 (권장)</th></tr>
+          <tr><td class="org">신규 교육청 개설 속도<small>빠를수록 좋음</small></td><td>●○○○○ 건별 구축</td><td>●●●●● 즉시 개설</td><td><b>●●●●○ 데이터만 신설</b></td></tr>
+          <tr><td class="org">보안 심사 대응<small>쉬울수록 좋음</small></td><td>●●●●● 완전 분리</td><td>●●○○○ 소명 부담</td><td><b>●●●●○ 데이터 분리로 소명</b></td></tr>
+          <tr><td class="org">기능 개선 반영<small>빠를수록 좋음</small></td><td>●○○○○ 개별 배포</td><td>●●●●● 한 번에 반영</td><td><b>●●●●● 한 번에 반영</b></td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>권장 경로 - <b>시범은 A로 안전하게 열고, 확산 시점에 C로 전환</b>해 교육청이 늘어도 운영 인력이 늘지 않게 설계합니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 7 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="클라우드 매출 구조">
+    <header class="s-head">
+      <h2><span class="bullet"></span>클라우드 매출 구조 - <em>이 사업에 딸려 나가는 상품</em></h2>
+      <div class="s-right"><span class="sec">04 · Partner Economics</span></div>
+    </header>
+    <div class="s-band"><p>소요량은 세 변수로 결정됩니다. <strong>학교가 늘고, 학생이 쓰고, 작품이 쌓이는 만큼</strong>
+      컴퓨팅과 스토리지가 따라 올라가는 구조입니다.</p></div>
+    <div class="content">
+      <div class="eq" style="flex:none">
+        <div class="eqb"><span class="el">참여 학교 수</span><span class="ev">시범 2~3교</span><span class="eu">확산 시 수십~수백 교</span></div>
+        <span class="eqop">×</span>
+        <div class="eqb"><span class="el">학교당 학생 수</span><span class="ev">수백 명</span><span class="eu">수업 시간대에 집중</span></div>
+        <span class="eqop">×</span>
+        <div class="eqb"><span class="el">학생당 활동량</span><span class="ev">월 2회 이상</span><span class="eu">대화 · 생성 · 게시</span></div>
+        <span class="eqop">=</span>
+        <div class="eqb res"><span class="el">클라우드 소요량</span><span class="ev">컴퓨팅 · 스토리지</span><span class="eu">트래픽까지 동시 증가</span></div>
+      </div>
+      <div class="rt-wrap fill" style="margin-top:0.55rem">
+        <table class="rt">
+          <tr><th style="width:21%">상품</th><th style="width:33%">이 사업에서의 역할</th><th style="width:19%">시범 단계</th><th>관내 확산 시</th></tr>
+          <tr><td class="org">NKS<small>컨테이너</small></td><td>플랫폼 서비스와 학생 작품 호스팅을 한 클러스터에서 격리 운영</td>
+              <td>기본 클러스터</td><td><b>동시 수업 수에 비례해 노드 증설 · 시간대별 오토스케일</b></td></tr>
+          <tr><td class="org">Object Storage</td><td>학생 작품 · 포트폴리오 · 수업 자료 원본</td>
+              <td>소규모</td><td><b>작품이 학년마다 쌓여 매년 누적 증가</b></td></tr>
+          <tr><td class="org">RDS</td><td>수업방 · 사용량 · 감사 로그 등 운영 데이터</td>
+              <td>단일 인스턴스</td><td><b>교육청별 데이터 분리 구조라 교육청 수만큼 증설</b></td></tr>
+          <tr><td class="org">Security<small>WAF · Anti-DDoS</small></td><td>학생이 접속하는 공개 서비스 앞단 보호</td>
+              <td>필수 구성</td><td>공개 작품 주소가 늘어날수록 방어 범위 확대</td></tr>
+          <tr><td class="org">네트워크<small>LB · 아웃바운드</small></td><td>트래픽 분산과 외부 AI 호출 전송</td>
+              <td>기본</td><td>수업 시간대 피크 트래픽 · AI 호출량 증가</td></tr>
+          <tr><td class="org">Notification</td><td>법정대리인 동의 요청 · 위기 신호 알림</td>
+              <td>확산 시 적용</td><td>학부모 수만큼 발송량 증가</td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+        <span>정확한 금액은 규모 확정 후 산정합니다 - <b>이 표는 어떤 상품이 어느 축으로 늘어나는지</b>를 잡기 위한 것입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="확산 구조">
+    <header class="s-head">
+      <h2><span class="bullet"></span>확산 구조 - <em>쓸수록 자라는 워크로드</em></h2>
+      <div class="s-right"><span class="sec">04 · Partner Economics</span></div>
+    </header>
+    <div class="s-band"><p>학생 작품은 지워지지 않고 학년마다 쌓이고, 수업이 늘면 동시 접속이 늘어납니다.
+      <strong>한 번 올라가면 줄어들 이유가 없는 워크로드</strong>입니다.</p></div>
+    <div class="content">
+      <div class="grow">
+        <div class="gstage">
+          <div class="gtop">STEP 1 · 한 학기</div>
+          <div class="gttl">시범 2~3개교</div>
+          <div class="gsub">참여 학급 중심으로 개설. 전용 구축(A안)으로 안전하게 시작합니다.</div>
+          <div class="gwrap">
+            <span class="gcol a" style="height:16%"></span><span class="gcol a" style="height:11%"></span><span class="gcol a" style="height:13%"></span></div>
+          <div class="gbase">세 축 모두 <b>기준선</b></div></div>
+        <div style="flex:none; width:6.5rem; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:5.5rem; text-align:center; gap:0.2rem">
+          <span style="font-size:0.7rem; color:var(--t700); font-family:var(--fx); line-height:1.35">학기 말<br>실측 리포트</span>
+          <span style="color:var(--s300); font-size:1.1rem; font-family:var(--fx)">›</span></div>
+        <div class="gstage">
+          <div class="gtop">STEP 2 · 다음 학년도</div>
+          <div class="gttl">관내 학교 확산</div>
+          <div class="gsub">혼합형(C안)으로 전환. 학교가 늘어도 운영 인력은 늘지 않습니다.</div>
+          <div class="gwrap">
+            <span class="gcol b" style="height:54%"></span><span class="gcol b" style="height:46%"></span><span class="gcol b" style="height:50%"></span></div>
+          <div class="gbase">동시 수업 수 · 누적 작품 <b>급증</b></div></div>
+        <div style="flex:none; width:6.5rem; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:5.5rem; text-align:center; gap:0.2rem">
+          <span style="font-size:0.7rem; color:var(--t700); font-family:var(--fx); line-height:1.35">타 시도<br>벤치마킹</span>
+          <span style="color:var(--s300); font-size:1.1rem; font-family:var(--fx)">›</span></div>
+        <div class="gstage">
+          <div class="gtop">STEP 3 · 확산기</div>
+          <div class="gttl">인접 시도교육청</div>
+          <div class="gsub">앞선 교육청 사례를 그대로 참고합니다. 같은 기반에 데이터 영역만 추가됩니다.</div>
+          <div class="gwrap">
+            <span class="gcol c" style="height:92%"></span><span class="gcol c" style="height:84%"></span><span class="gcol c" style="height:88%"></span></div>
+          <div class="gbase">교육청 수만큼 <b>배수 증가</b></div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
+        <span>막대 세 개는 왼쪽부터 <b>컴퓨팅 · 스토리지 · 트래픽</b>입니다 - 학생이 만든 작품이 쌓이는 한 스토리지는 되돌아가지 않습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="조달 경로">
+    <header class="s-head">
+      <h2><span class="bullet"></span>조달 경로 - <em>입찰 없이 계약하는 길이 있습니다</em></h2>
+      <div class="s-right"><span class="sec">05 · Go-to-Market</span></div>
+    </header>
+    <div class="s-band"><p>교육청 영업의 가장 큰 벽은 조달 절차입니다. <strong>디지털서비스 전문계약제도를 쓰면
+      금액 제한 없이 수의계약</strong>이 가능하고, 계약까지 2주 내외로 줄어듭니다.</p></div>
+    <div class="content">
+      <div class="two" style="flex:none">
+        <div class="card" style="display:flex; flex-direction:column">
+          <div class="no" style="color:var(--s400)">일반 경로</div>
+          <h3>협상에 의한 계약</h3>
+          <div class="rlist">
+            <span>공고 기간만 <b>추정가격 1억 미만 10일 · 1억~10억 20일 · 10억 이상 40일</b></span>
+            <span>제안서 접수 → 평가위원회 심의 → 협상 → 계약</span>
+            <span>계약 체결까지 <b>2개월 이상</b> - 회계연도 안에 못 끝날 위험</span>
+          </div>
+          <div class="seg fx" style="background:#FEF2F2; border-color:#FECACA"><em style="color:#B91C1C">한계</em><p style="color:#9A3412">경쟁 입찰이므로 스펙이 공개되고, 우리가 만든 제안이 다른 사업자의 입찰 근거가 됩니다.</p></div></div>
+        <div class="card" style="display:flex; flex-direction:column; background:var(--t50); border-color:var(--t400)">
+          <div class="no" style="color:var(--t700)">권장 경로</div>
+          <h3>디지털서비스 전문계약제도</h3>
+          <div class="rlist">
+            <span>지방계약법 시행령 <b>제25조제1항제8호 차목</b> - 교육청도 동일 적용</span>
+            <span>정부 가이드라인 명문: <b>기관 내부규정에 금액 제한이 있어도 계약금액 제한 없이 수의계약 가능</b></span>
+            <span>이용계약 체결까지 <b>2주 내외</b> (기존 용역계약 2개월 이상)</span>
+          </div>
+          <div class="seg fx"><em>선행 조건</em><p>과기정통부 심사위원회의 <b>디지털서비스 선정</b>을 받아야 합니다 - 심사위원회는 월 1회 개최됩니다.</p></div></div>
+      </div>
+      <div class="rt-wrap" style="margin-top:0.75rem">
+        <table class="rt">
+          <tr><th style="width:20%">비교</th><th style="width:26%">일반 용역 · 물품</th><th style="width:26%">학교장터(S2B)</th><th>디지털서비스</th></tr>
+          <tr><td class="org">수의계약 한도</td><td>추정가격 <b>2천만원</b> 이하</td><td>물품 · 용역 <b>1억원</b></td><td><b>한도 없음</b></td></tr>
+          <tr><td class="org">계약 소요</td><td>2개월 이상</td><td>건별 상이</td><td><b>2주 내외</b></td></tr>
+          <tr><td class="org">현재 상태</td><td colspan="2">NHN Cloud(공공기관용) IaaS는 <b>2020년 11월 이용지원시스템에 선정·등록</b>돼 있습니다</td>
+              <td><b>AI 놀이터도 같은 경로로 등록 추진</b></td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+        <span>인프라와 플랫폼을 <b>같은 제도 안에서 한 번에</b> 계약할 수 있다는 점이 교육청 담당자에게 가장 큰 설득력을 갖습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="역할 분담">
+    <header class="s-head">
+      <h2><span class="bullet"></span>역할 분담 - <em>누가 무엇을 맡는가</em></h2>
+      <div class="s-right"><span class="sec">05 · Go-to-Market</span></div>
+    </header>
+    <div class="s-band"><p>영업은 함께 가되, <strong>구축과 현장 운영은 세일링스톤이 전담</strong>합니다.
+      NHN 클라우드는 인프라와 고객 관계에 집중하시면 됩니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">NHN 클라우드<span class="cat">인프라 · 관계</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
+          <h3>기반과 창구</h3>
+          <div class="rlist">
+            <span>공공 전용존 인프라 제공 및 확산 시 증설</span>
+            <span>교육청 담당자 <b>초기 미팅 주선과 동행</b></span>
+            <span>조달 경로 안내 - 이미 등록된 IaaS 계약 활용</span>
+            <span>보안 심사 대응 시 인증 자료 지원</span>
+            <span>확산 단계의 <b>증설 설계 협의</b></span>
+            <span>파트너 프로그램(크레딧 · 기술 지원) 활용</span>
+          </div>
+          <div class="seg fx"><em>NHN 클라우드가 얻는 것</em><p>교육청이라는 <b>신규 계정</b>과, 학생·작품이 늘수록 함께 자라는 워크로드</p></div>
+          <div class="fix">인프라 매출과 교육청 계정을 함께 확보합니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">세일링스톤<span class="cat">플랫폼 · 현장</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
+          <h3>제품과 실행</h3>
+          <div class="rlist">
+            <span>플랫폼 개발 · 구축 · 운영 <b>전량 수행</b></span>
+            <span>교사 연수 · 현장 지원 · 매뉴얼 · 헬프데스크</span>
+            <span>디지털서비스 심사 등록 추진</span>
+            <span>학기 말 실측 리포트 작성 - 확산 근거 자료</span>
+            <span>제안서 · 기술 검토 자료 작성과 데모 시연</span>
+            <span>보안 심사 대응 문서 준비</span>
+          </div>
+          <div class="seg fx"><em>세일링스톤이 지는 것</em><p>제품 품질과 현장 만족도에 대한 <b>책임 전부</b> - 사고와 장애 대응도 포함합니다</p></div>
+          <div class="fix">기술 질문과 현장 대응은 전부 넘기셔도 됩니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">교육청<span class="cat">의사결정</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
+          <h3>판단과 지정</h3>
+          <div class="rlist">
+            <span>시범학교 2~3곳과 참여 학급 지정</span>
+            <span>담당 부서 · 담당자 지정</span>
+            <span>예산 편성과 계약 절차 진행</span>
+            <span>학기 말 결과를 보고 <b>확산 여부 판단</b></span>
+            <span>학부모 동의 안내 협조 (양식과 발송은 시스템이 처리)</span>
+            <span>결과 보고회 참석</span>
+          </div>
+          <div class="seg fx"><em>교육청이 하지 않아도 되는 것</em><p>설치 · 계정 관리 · 운영 · 장애 대응 · 교사 교육 - <b>전부 수행사 몫</b>입니다</p></div>
+          <div class="fix">새 업무를 만들지 않는 것이 설계 원칙입니다.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <span>제안서 작성 · 기술 검토 · 데모 시연은 <b>세일링스톤이 준비해 동행</b>합니다 - 영업 부담을 늘리지 않습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="교육청 미팅 시나리오">
+    <header class="s-head">
+      <h2><span class="bullet"></span>교육청 미팅 - <em>30분 진행 시나리오</em></h2>
+      <div class="s-right"><span class="sec">05 · Go-to-Market</span></div>
+    </header>
+    <div class="s-band"><p>첫 미팅의 목표는 계약이 아니라 <strong>시범학교 두세 곳을 정하자는 합의</strong>입니다.
+      아래 순서대로 30분이면 충분합니다.</p></div>
+    <div class="content">
+      <div class="cards c4 fill">
+        <div class="card"><span class="accent"></span><div class="no">00-05분<span class="cat">문제 제기</span></div>
+          <h3>지침은 있고 도구가 없다</h3>
+          <p>"학생들은 이미 집에서 AI를 씁니다. 학교는 무엇을 물었는지 볼 수 없습니다."</p>
+          <div class="seg fx"><em>핵심 질문</em><p>"수행평가 AI 활용 지침이 내려왔는데, 현장에서 어떻게 관리하고 계신가요?"</p></div>
+          <div class="fix">대상: 정보화 · 교육과정 담당</div></div>
+        <div class="card"><span class="accent"></span><div class="no">05-15분<span class="cat">시연</span></div>
+          <h3>수업방을 그 자리에서</h3>
+          <p>수업방 개설부터 학생 화면, 교사 관제 보드, 갤러리까지 실제 화면으로 보여 드립니다.</p>
+          <div class="seg fx"><em>핵심 질문</em><p>"이 화면을 선생님들이 5분 만에 만들 수 있다면, 첫 수업은 어느 과목이 좋을까요?"</p></div>
+          <div class="fix">세일링스톤이 시연을 맡습니다</div></div>
+        <div class="card"><span class="accent"></span><div class="no">15-22분<span class="cat">요건 · 조달</span></div>
+          <h3>심사와 계약을 먼저</h3>
+          <p>국내 리전 상주, 법정대리인 동의 절차, 전 과정 기록 - 심사에서 묻는 항목을 먼저 짚습니다.</p>
+          <div class="seg fx"><em>핵심 질문</em><p>"입찰 없이 2주 안에 계약하는 경로가 있다면, 올해 예산으로 가능하실까요?"</p></div>
+          <div class="fix">NHN 클라우드가 설명하는 구간</div></div>
+        <div class="card"><span class="accent"></span><div class="no">22-30분<span class="cat">클로징</span></div>
+          <h3>시범학교 두세 곳</h3>
+          <p>전면 도입이 아니라 한 학기 시범입니다. 결과 리포트를 보고 확산을 판단하시면 됩니다.</p>
+          <div class="seg fx"><em>핵심 질문</em><p>"AI 수업에 관심 있는 선생님이 계신 학교 두세 곳만 떠올려 주시겠습니까?"</p></div>
+          <div class="fix">남길 자료: 교육청용 제안서 · 요건 별첨</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <span>이 자리에서 얻을 것은 <b>시범학교 후보 이름 두세 개</b>입니다 - 그것만 나오면 첫 미팅은 성공입니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="예상 질문 대응">
+    <header class="s-head">
+      <h2><span class="bullet"></span>예상 질문 대응 - <em>이 표만 있으면 됩니다</em></h2>
+      <div class="s-right"><span class="sec">05 · Go-to-Market</span></div>
+    </header>
+    <div class="s-band"><p>교육청 담당자가 실제로 묻는 질문과 <strong>그 자리에서 답할 근거</strong>를 정리했습니다.
+      더 깊이 들어오면 세일링스톤으로 넘기시면 됩니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:26%">교육청의 질문</th><th style="width:40%">이렇게 답하십시오</th><th>근거</th></tr>
+          <tr><td class="org">"초등학생도 AI를 쓸 수 있나요?"</td>
+              <td><b>개인 계정으로는 쓸 수 없습니다. 그래서 이 구조입니다.</b> 학생 계정 없이 교사 계정 아래 수업 세션으로 들어오고, 만 14세 미만은 법정대리인 동의 절차를 시스템이 관리합니다.</td>
+              <td>개인정보보호법 제22조의2 · 주요 AI 서비스 가입 연령은 만 14세 이상(일부는 만 18세)</td></tr>
+          <tr><td class="org">"AI 디지털교과서와 무엇이 다릅니까?"</td>
+              <td><b>대체가 아니라 그 위의 층입니다.</b> 교과 학습 도구가 아니라 학생이 직접 만들어 보는 실습·창작 공간입니다.</td>
+              <td>AI 디지털교과서는 2025년 8월 교육자료로 지위 확정 - 학교 자율 선택</td></tr>
+          <tr><td class="org">"도입해도 선생님들이 안 쓰면요?"</td>
+              <td><b>실제로 가장 자주 발생하는 문제입니다.</b> 수업방 5분 개설, 수업 템플릿, 연수 2회, 그리고 학기 말에 실제 사용률을 측정해 보고드립니다.</td>
+              <td>사용률 리포트 자체를 납품물에 포함</td></tr>
+          <tr><td class="org">"사고가 나면 누가 책임집니까?"</td>
+              <td>연령별 필터 · 개인정보 마스킹 · 위험 신호 알림의 <b>3중 안전망</b>과 전 과정 기록으로 대응합니다.</td>
+              <td>「학습지원 소프트웨어 선정 기준」(2025.12) 필수기준에 맞춰 설계</td></tr>
+          <tr><td class="org">"예산은 어디서 잡습니까?"</td>
+              <td>교육청 정보화 예산 또는 <b>AI 교육 관련 사업비</b>로 편성하실 수 있습니다. 시범 규모는 크지 않습니다.</td>
+              <td>AI 중점학교 2026년 1,000개교 → 2028년 2,000개교 확대 계획</td></tr>
+          <tr><td class="org">"계약 절차가 오래 걸리지 않나요?"</td>
+              <td><b>디지털서비스로 계약하면 금액 제한 없이 수의계약이 가능하고, 2주 내외로 끝납니다.</b></td>
+              <td>지방계약법 시행령 제25조제1항제8호 차목</td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span>답이 막히면 <b>"확인해서 정리해 드리겠습니다"</b>가 정답입니다 - 기술 질문은 세일링스톤이 24시간 안에 회신합니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="수행사 역량">
+    <header class="s-head">
+      <h2><span class="bullet"></span>수행사 - <em>세일링스톤은 어떤 회사인가</em></h2>
+      <div class="s-right"><span class="sec">06 · Partner</span></div>
+    </header>
+    <div class="s-band"><p>AI 놀이터의 핵심 엔진은 새로 발명하지 않습니다.
+      <strong>기업 현장에서 상용 운영 중인 자체 기술</strong>을 교육에 맞게 옮기는 사업입니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">FROM aisight<span class="cat">AI 운영 기술</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg></div>
+          <h3>모델 라우팅 · 관제 · 기록</h3>
+          <p>하이브리드 LLM 라우팅, 표·그림까지 읽는 문서 파서, 세션 단위 전 과정 기록 -
+             <b>기업 고객사에서 이미 상용 운영 중</b>인 기술입니다.</p>
+          <div class="seg fx"><em>이 사업에서는</em><p>AI 게이트웨이 · 수업 자료 근거 답변 · 관제와 감사 기록</p></div>
+          <div class="fix">금융 · 제조 고객사가 검증한 통제 수준입니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">FROM Apps<span class="cat">배포 기술</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></div>
+          <h3>작품 호스팅 · 주소 발급</h3>
+          <p>웹 산출물을 논리적으로 격리된 공간에 올리고 주소를 자동 발급하는
+             <b>자체 배포 플랫폼</b>이 그대로 학생 작품 배포 엔진이 됩니다.</p>
+          <div class="seg fx"><em>이 사업에서는</em><p>학생 웹 작품 주소 자동 발급 · 갤러리와 전시회 호스팅</p></div>
+          <div class="fix">컨테이너 기반이라 공공존 이전이 간단합니다.</div></div>
+        <div class="card"><span class="accent"></span><div class="no">DELIVERY<span class="cat">실행력</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <h3>구축까지 해 본 팀</h3>
+          <p>BI · AI 전문 인력 82명. 대기업 AI 플랫폼 구축 3건이 진행 중이고,
+             그중 한 건은 <b>해외 법인 전체로 확대</b>되는 단계입니다.</p>
+          <div class="seg fx"><em>진행 방식</em><p>전담 PM · 격주 개선 배포 · 교사 연수 직접 수행 · 학기 말 리포트</p></div>
+          <div class="fix">기획서가 아니라 운영 중인 코드베이스에서 출발합니다.</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>엔진 재사용률이 높다는 것은 <b>일정 · 비용 · 안정성 리스크가 낮다</b>는 뜻입니다 - 파트너가 안고 갈 위험이 적습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide" data-title="다음 단계">
+    <header class="s-head">
+      <h2><span class="bullet"></span>다음 단계 - <em>세 가지만 정하면 시작됩니다</em></h2>
+      <div class="s-right"><span class="sec">06 · Partner</span></div>
+    </header>
+    <div class="s-band"><p>준비 부담은 세일링스톤이 집니다.
+      <strong>함께 갈 교육청 한두 곳만 정해 주시면</strong> 제안서와 데모를 맞춰 준비하겠습니다.</p></div>
+    <div class="content">
+      <div class="tl fill">
+        <div class="tli"><span class="tm">STEP 1</span><span class="tdot"></span><span class="tline"></span>
+          <span class="tbody"><b>함께 갈 교육청 한두 곳 선정</b>
+          <p>이미 관계가 있는 교육청이면 가장 좋습니다. AI 교육에 관심이 있거나 정보화 예산을 검토 중인 곳,
+             혹은 <em>기존 인프라 계약이 있는 곳</em>부터 떠올려 주시면 됩니다.</p></span></div>
+        <div class="tli"><span class="tm">STEP 2</span><span class="tdot"></span><span class="tline"></span>
+          <span class="tbody"><b>내부 데모 세션 - 30분</b>
+          <p>NHN 클라우드 영업팀을 대상으로 먼저 시연합니다. 수업방을 직접 열어 보시면
+             <em>교육청에서 무엇을 보여 드릴지</em> 감이 잡힙니다. 질문 대응 요령도 이 자리에서 맞춥니다.</p></span></div>
+        <div class="tli"><span class="tm">STEP 3</span><span class="tdot"></span><span class="tline"></span>
+          <span class="tbody"><b>역할과 계약 구도 확정</b>
+          <p>주계약을 어느 쪽이 맡을지, 인프라와 플랫폼을 함께 계약할지 나눌지 -
+             <em>교육청 상황에 맞춰</em> 결정하면 됩니다. 어느 구도든 구축과 현장 운영은 세일링스톤이 맡습니다.</p></span></div>
+        <div class="tli"><span class="tm">그다음</span><span class="tdot"></span><span class="tline"></span>
+          <span class="tbody"><b>교육청 미팅 동행</b>
+          <p>제안서 · 데모 · 기술 검토 자료를 준비해 함께 들어갑니다.
+             첫 미팅의 목표는 계약이 아니라 <em>시범학교 두세 곳에 대한 합의</em>입니다.</p></span></div>
+        <div class="tli"><span class="tm">한 학기 뒤</span><span class="tdot"></span>
+          <span class="tbody"><b>실측 리포트로 확산 논의</b>
+          <p>몇 명이 무엇을 만들었고 안전 이슈는 없었는지를 실제 기록으로 정리해 드립니다.
+             이 리포트가 <em>관내 확산 예산의 근거 자료</em>가 되고, 그때 인프라도 함께 늘어납니다.</p></span></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+        <span>가장 빠른 방법은 <b>30분 데모</b>입니다 - 일정만 잡아 주시면 찾아뵙겠습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <section class="slide dark" data-title="맺음">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
+    <div class="top">
+      <span class="pillbadge">PARTNER SALES KIT</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>교육청의 AI는 이제 시작입니다.<br><em>그 아래 클라우드를 함께 깔죠.</em></h1>
+    <p class="sub">학생이 만든 작품은 지워지지 않고 쌓이고, 학교가 늘면 수업이 늘어납니다.<br>
+      한 번 올라가면 줄어들 이유가 없는 워크로드를 함께 만들겠습니다.</p>
+    <div class="entag">MAKE DATA SMARTER, MAKE DECISIONS FASTER.</div>
+    <div class="corner">
+      <span class="ai">PARTNER · EDUCATION · CLOUD</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE · www.sailingstone.io</span>
+    </div>
+  </section>
+
+</body>
+</html>
