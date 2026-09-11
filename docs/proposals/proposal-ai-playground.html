@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AI 놀이터 구축 제안서</title>
-  <meta name="doc-version" content="2.1">
+  <meta name="doc-version" content="2.2">
   <meta name="doc-description" content="교육청·학교용 학생 AI 놀이터 플랫폼 기획·제안 - 교사가 상용 AI를 등록·배분하고, 학생이 만들고, 함께 검토하는 안전한 AI 학습 공간">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -125,6 +125,10 @@
     .krow h4 { font-size: 1.1rem; font-family: var(--fx); color: var(--s900); }
     .krow h4 small { font-size: 0.8rem; color: var(--s400); font-family: var(--fx); margin-left: 0.35rem; }
     .krow p { font-size: 0.95rem; line-height: 1.55; color: var(--s500); margin-top: 0.2rem; }
+    .krow > span:last-child { display: flex; flex-direction: column; flex: 1; min-width: 0; align-self: stretch; }
+    .krow .kfix { margin-top: auto; padding-top: 0.65rem; border-top: 1px solid var(--s200);
+                  font-size: 0.85rem; line-height: 1.45; color: var(--s500); }
+    .krow .kfix b { color: var(--t700); }
 
     /* ── 비교 테이블 ── */
     .rt-wrap { border: 1px solid var(--s200); border-radius: 0.9rem; overflow: hidden;
@@ -572,23 +576,29 @@
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></span>
             <span><h4>학생에게는 <small>PLAYGROUND</small></h4>
             <p>혼내지 않는 연습장입니다. 실패해도 되는 공간에서 AI에게 말 거는 법,
-               결과를 의심하는 법, 내 생각을 얹는 법을 배웁니다.</p></span></div>
+               결과를 의심하는 법, 내 생각을 얹는 법을 배웁니다.</p>
+            <span class="kfix"><b>한마디로.</b> 실패해도 되는 곳에서 AI를 다루는 법을 배웁니다.</span></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
             <span><h4>선생님에게는 <small>CONTROL TOWER</small></h4>
             <p>수업 설계 도구이자 관제탑입니다. 한 화면에서 반 전체의 활동을 보고,
-               사용량을 조절하고, 도움이 필요한 학생을 먼저 찾아냅니다.</p></span></div>
+               사용량을 조절하고, 도움이 필요한 학생을 먼저 찾아냅니다.</p>
+            <span class="kfix"><b>한마디로.</b> 누구를 먼저 도울지가 화면에 떠 있습니다.</span></span></div>
         </div>
         <div class="krows">
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></span>
             <span><h4>학교·교육청에는 <small>GOVERNANCE</small></h4>
             <p>교육청이 정한 지침이 관내 모든 교실에 그대로 걸리고, 어떤 AI를 얼마나 썼는지
-               예산까지 집계됩니다. 지침 준수가 문서가 아니라 시스템으로 보장됩니다.</p></span></div>
+               예산까지 집계됩니다. 지침 준수가 문서가 아니라 시스템으로 보장됩니다.</p>
+            <span class="kfix"><b>한마디로.</b> 지침 한 벌이 모든 교실에서 똑같이 작동합니다.</span></span></div>
           <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
             <span><h4>학부모에게는 <small>TRUST</small></h4>
             <p>아이가 학교 관리 아래에서 AI를 배운다는 신뢰입니다.
-               대화는 기록되고, 데이터는 학습에 쓰이지 않으며, 유해물은 차단됩니다.</p></span></div>
+               대화는 기록되고, 데이터는 학습에 쓰이지 않으며, 유해물은 차단됩니다.</p>
+            <span class="kfix"><b>한마디로.</b> 아이가 무엇을 하는지 열람 링크로 볼 수 있습니다.</span></span></div>
         </div>
       </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+        <span>네 이해관계자가 <b>같은 데이터 위에서</b> 각자의 화면을 봅니다 - 그래서 하나의 플랫폼입니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 2 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
@@ -698,7 +708,7 @@
         </table>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.68.68 1.15 1.45 1.41 2.5"/></svg></span>
-        <span>우리의 자리: <b>수업방 통제(SchoolAI) + 승인형 갤러리(Seesaw) + 만들기·배포(Replit)</b>를 하나로 - 한국 교육청 요건에 맞춰서.</span></div>
+        <span>우리의 자리 - <b>수업방 통제(SchoolAI) + 승인형 갤러리(Seesaw) + 만들기·배포(Replit)</b>를 하나로 - 한국 교육청 요건에 맞춰서.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 5 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
@@ -1467,7 +1477,7 @@
                학생 작품 호스팅도 같은 클러스터 안에서 격리해 운영합니다.</p></span></div>
         </div>
         <div class="mockcol">
-          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">배치 구성 · NHN Cloud 공공존</span><span class="live">국내 리전</span></div>
+          <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">배치 구성 · NHN 클라우드 공공존</span><span class="live">국내 리전</span></div>
             <div class="body">
               <div class="room"><span class="ric"><svg class="i" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
                 <span><b>NKS (쿠버네티스)</b><small>플랫폼 서비스 + 학생 작품 격리 호스팅 · 오토스케일</small></span>
@@ -1491,7 +1501,7 @@
         </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/></svg></span>
-        <span>결론: <b>조달 단축(디지털서비스 수의계약) + 심사 대응(CSAP 공공존) + 운영 효율(탄력 확장)</b> - 세 조건을 한 번에 충족합니다.</span></div>
+        <span>결론 - <b>조달 단축(디지털서비스 수의계약) + 심사 대응(CSAP 공공존) + 운영 효율(탄력 확장)</b> - 세 조건을 한 번에 충족합니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 19 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
@@ -1577,28 +1587,28 @@
           <p>집에 유료 AI가 있는 아이와 없는 아이의 격차가 사라집니다. 전원이 같은 조건에서
              만들어 보고, 작품과 포트폴리오가 남습니다.</p>
           <div class="seg fx"><em>달라지는 장면</em><p>방과 후 각자가 아니라, 수업 시간에 반 전체가 함께 만듭니다.</p></div>
-          <div class="fix">지표: 1인당 완성 작품 수 · 포트폴리오 보유율</div></div>
+          <div class="fix">지표 - 1인당 완성 작품 수 · 포트폴리오 보유율</div></div>
         <div class="card"><span class="accent"></span><div class="no">교사</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
           <h3>준비는 짧게, 지도는 깊게</h3>
           <p>계정·통제 걱정이 사라지고 수업 설계에 집중합니다. 라이브 보드가
              도움이 필요한 학생을 먼저 알려 줍니다.</p>
           <div class="seg fx"><em>달라지는 장면</em><p>"누가 뭘 하는지 모른다"는 불안이 한 화면으로 정리됩니다.</p></div>
-          <div class="fix">지표: 수업방 개설 소요 시간 · 교사 재사용률</div></div>
+          <div class="fix">지표 - 수업방 개설 소요 시간 · 교사 재사용률</div></div>
         <div class="card"><span class="accent"></span><div class="no">학교 · 교육청</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
           <h3>예산과 지침의 이행</h3>
           <p>AI 예산이 학생 단위까지 투명하게 집계되고, 수행평가 AI 활용 지침 준수가
              시스템 기록으로 증빙됩니다.</p>
           <div class="seg fx"><em>달라지는 장면</em><p>"AI 예산을 어디에 썼나"에 리포트 한 장으로 답합니다.</p></div>
-          <div class="fix">지표: 예산 집행 리포트 · 지침 위반 건수</div></div>
+          <div class="fix">지표 - 예산 집행 리포트 · 지침 위반 건수</div></div>
         <div class="card"><span class="accent"></span><div class="no">학부모</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <h3>불안에서 신뢰로</h3>
           <p>아이의 AI 사용이 학교 울타리 안으로 들어옵니다. 동의 절차와 열람 링크로
              "무엇을 하는지"가 투명해집니다.</p>
           <div class="seg fx"><em>달라지는 장면</em><p>가정통신문 대신, 아이 작품을 여는 열람 링크가 갑니다.</p></div>
-          <div class="fix">지표: 학부모 동의율 · 만족도 조사</div></div>
+          <div class="fix">지표 - 학부모 동의율 · 만족도 조사</div></div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
         <span>시범 한 학기의 실측 데이터가 <b>확산 단계의 예산 근거</b>가 됩니다. 그 데이터까지가 본 사업의 납품물입니다.</span></div>
@@ -1624,7 +1634,7 @@
         </table>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
-        <span>말보다 빠른 방법: <b>30분 실물 데모</b>를 준비해 두었습니다. 수업방을 그 자리에서 함께 열어 보시면 됩니다.</span></div>
+        <span>말보다 빠른 방법 - <b>30분 실물 데모</b>를 준비해 두었습니다. 수업방을 그 자리에서 함께 열어 보시면 됩니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 23 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
