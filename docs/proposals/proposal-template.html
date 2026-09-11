@@ -91,6 +91,7 @@
        border-top으로 주면 모서리에서 라운드가 끊긴다.
        카드 안에 상단만 둥근 도형을 겹쳐 넣어야 라운드가 매끄럽고,
        PPT로 옮길 때도 도형 2개로 그대로 재현된다. */
+    .accent { display: none; }
     .accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
               background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
 
@@ -109,7 +110,7 @@
     .anode.tt small { color: var(--t700); }
     .adown { text-align: center; color: var(--s400); font-size: 0.85rem; line-height: 1; }
     .plat { flex: 1; border: 1px solid var(--s200); border-radius: 0.9rem; position: relative; overflow: hidden;
-            padding: 1rem 1.2rem; background: #fff; box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+            padding: 1rem 1.2rem; background: #fff; box-shadow: 0 1px 2px rgba(15,23,42,0.04);
             display: flex; flex-direction: column; gap: 0.7rem; }
     .plat .ph { display: flex; align-items: center; gap: 0.5rem; font-family: var(--fx);
                 color: var(--s900); font-size: 1.1rem; }
@@ -305,7 +306,7 @@
           <div class="anode">[사용자 그룹 2]<small>[관리자 - 무엇을 하는지]</small></div>
         </div>
         <div class="adown">▾</div>
-        <div class="plat"><span class="accent"></span>
+        <div class="plat">
           <div class="ph"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>[제안 솔루션명]<span class="tag">[배포 형태 - 온프레미스 / 클라우드]</span></div>
           <div class="fns">
             <div class="fn"><b>[기능 1]</b>[한 줄 설명]</div>

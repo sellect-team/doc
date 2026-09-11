@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AI 놀이터 구축 제안서</title>
-  <meta name="doc-version" content="2.2">
+  <meta name="doc-version" content="2.3">
   <meta name="doc-description" content="교육청·학교용 학생 AI 놀이터 플랫폼 기획·제안 - 교사가 상용 AI를 등록·배분하고, 학생이 만들고, 함께 검토하는 안전한 AI 학습 공간">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -81,7 +81,8 @@
     .c4 { grid-template-columns: repeat(4, 1fr); }
     .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
             padding: 1.05rem 1.15rem 1rem; display: flex; flex-direction: column;
-            box-shadow: 0 6px 18px rgba(15,23,42,0.05); position: relative; overflow: hidden; }
+            box-shadow: 0 1px 2px rgba(15,23,42,0.04); position: relative; overflow: hidden; }
+    .accent { display: none; }
     .accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
               background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
     .card .no { font-size: 0.76rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.08em;
@@ -148,7 +149,7 @@
     .cyc { display: grid; grid-template-columns: 1fr 1.6rem 1fr 1.6rem 1fr 1.6rem 1fr; gap: 0.4rem;
            align-items: stretch; }
     .cnode { border: 1px solid var(--s200); background: #fff; border-radius: 0.85rem;
-             padding: 0.75rem 0.9rem; box-shadow: 0 6px 16px rgba(15,23,42,0.05);
+             padding: 0.75rem 0.9rem; box-shadow: 0 1px 2px rgba(15,23,42,0.04);
              position: relative; overflow: hidden; }
     .cnode .accent { height: 0.16rem; border-radius: 0.85rem 0.85rem 0 0; }
     .cnode b { display: flex; align-items: center; gap: 0.5rem; font-size: 1.05rem; color: var(--s900); }
@@ -167,7 +168,7 @@
     .anode small { display: block; font-family: var(--fx); color: var(--s500); font-size: 0.8rem; margin-top: 0.15rem; }
     .adown { text-align: center; color: var(--s400); font-size: 0.85rem; line-height: 1; }
     .plat { border: 1px solid var(--s200); border-radius: 0.9rem; padding: 0.7rem 0.9rem;
-            background: #fff; box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+            background: #fff; box-shadow: 0 1px 2px rgba(15,23,42,0.04);
             display: flex; flex-direction: column; gap: 0.55rem; position: relative; overflow: hidden; }
     .plat .accent { height: 0.18rem; }
     .plat .ph { display: flex; align-items: center; gap: 0.5rem; justify-content: center;
@@ -551,22 +552,22 @@
       <strong>만들기 - 올리기 - 배우기 순환</strong> 구조입니다.</p></div>
     <div class="content">
       <div class="cyc">
-        <div class="cnode"><span class="accent"></span>
+        <div class="cnode">
           <b><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>① 수업방 열기</b>
           <p>선생님이 주제·AI 역할(페르소나)·사용 한도를 정해 수업방을 만들고, 학생은 코드로 입장합니다.
              학생 개인 계정이 필요 없습니다.</p></div>
         <div class="carr">›</div>
-        <div class="cnode"><span class="accent"></span>
+        <div class="cnode">
           <b><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>② 만들기</b>
           <p>안전 필터가 켜진, 수업 자료를 아는 AI와 대화하며 글·그림·퀴즈·웹 작품을 만듭니다.
              어려우면 힌트만 주는 학습 모드로 스스로 풀게 합니다.</p></div>
         <div class="carr">›</div>
-        <div class="cnode"><span class="accent"></span>
+        <div class="cnode">
           <b><svg class="i" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>③ 올리기</b>
           <p>완성작을 제출하면 선생님 승인을 거쳐 학급 갤러리에 게시됩니다.
              웹 작품은 자동으로 주소가 발급돼 바로 열어 볼 수 있습니다.</p></div>
         <div class="carr">›</div>
-        <div class="cnode"><span class="accent"></span>
+        <div class="cnode">
           <b><svg class="i" viewBox="0 0 24 24"><path d="M17 6.1H3"/><path d="M21 12.1H3"/><path d="M15.1 18H3"/></svg>④ 함께 배우기</b>
           <p>친구 작품에 칭찬과 질문을 남기고, 잘된 프롬프트를 따라 해 봅니다.
              선생님은 과정 기록으로 평가하고 다음 수업을 설계합니다.</p></div>
@@ -611,21 +612,21 @@
       <strong>"어떤 울타리 안에서 제대로 배우게 할 것인가"</strong>입니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">POLICY<span class="cat">정책 환경</span></div>
+        <div class="card"><div class="no">POLICY<span class="cat">정책 환경</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></div>
           <h3>지침은 나왔고, 도구가 없다</h3>
           <p>교육부와 시·도교육청이 2025년 12월 「수행평가 시 인공지능 활용 관리 방안」을 확정하고
              2026학년도 지침을 개정했습니다. "올바른 활용"이 공식 과제가 됐지만, 정작 현장에는
              <b>통제 가능한 실습 환경</b>이 없습니다.</p>
           <div class="fix">규칙만 있고 놀이터가 없는 상태 - 지금이 도입 적기입니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">CLASSROOM<span class="cat">교실 현실</span></div>
+        <div class="card"><div class="no">CLASSROOM<span class="cat">교실 현실</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M22 21v-1a7 7 0 0 0-5-6.7"/></svg></div>
           <h3>개인 계정으로 각자 접속</h3>
           <p>학생들은 집에서 개인 계정으로 챗봇을 씁니다. 선생님은 누가 무엇을 물었는지,
              과제를 AI가 대신 했는지 알 수 없습니다. 나이 제한·개인정보·유해 답변 문제도
              <b>전부 개인에게 맡겨져</b> 있습니다.</p>
           <div class="fix">보이지 않는 사용을 보이는 교실 활동으로 옮겨야 합니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">GLOBAL<span class="cat">해외 흐름</span></div>
+        <div class="card"><div class="no">GLOBAL<span class="cat">해외 흐름</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
           <h3>해외는 이미 플랫폼 단계</h3>
           <p>미국은 MagicSchool(13,000개교), SchoolAI 등 <b>교사 통제형 학생 AI 플랫폼</b>이
@@ -647,21 +648,21 @@
       이 플랫폼의 모든 기능은 <strong>아래 세 문제의 해답</strong>으로 설계됐습니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">고민 01</div>
+        <div class="card"><div class="no">고민 01</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
           <h3>"계정과 비용을 어떻게 하나요?"</h3>
           <p>학생 수만큼 유료 계정을 만들 수도, 교사 계정 하나를 돌려 쓸 수도 없습니다.
              학생마다 쓰는 양이 달라 비용 예측도 안 됩니다.</p>
           <div class="quote">"AI 수업을 하고 싶어도 30명 계정 문제에서 막힙니다."</div>
           <div class="fix">→ 학교가 API 키 하나만 등록하면, 반별·학생별로 사용량을 나눠 줍니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">고민 02</div>
+        <div class="card"><div class="no">고민 02</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <h3>"아이들에게 안전한가요?"</h3>
           <p>유해 답변, 개인정보 입력, 나이 제한, 그리고 AI가 과제를 대신 해 주는 문제까지 -
              일반 챗봇을 그대로 열어 줄 수는 없습니다.</p>
           <div class="quote">"뭘 묻고 뭘 답했는지 보이지 않는 게 제일 불안해요."</div>
           <div class="fix">→ 모든 대화가 기록되고, 위험 신호는 즉시 선생님께 알립니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">고민 03</div>
+        <div class="card"><div class="no">고민 03</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
           <h3>"만든 것을 어디에 모으나요?"</h3>
           <p>학생들이 AI로 만든 글·그림·웹 작품이 개인 화면에서 사라집니다. 모아서 전시하고,
@@ -750,7 +751,7 @@
           <div class="anode">학교 · 교육청 관리자<small>키 등록 · 예산 · 정책 · 통계</small></div>
         </div>
         <div class="adown">▾ ▾ ▾</div>
-        <div class="plat"><span class="accent"></span>
+        <div class="plat">
           <div class="ph">AI 놀이터 플랫폼 <small>· AI PLAYGROUND CORE</small></div>
           <div class="pgrid">
             <div class="pcell ws"><b>수업방 (Space)</b><small>주제·페르소나·기간·인원 설정, 링크·코드 입장</small></div>
@@ -765,7 +766,7 @@
         </div>
         <div class="adown">▾ 표준 API (교체 가능)</div>
         <div class="a-src">
-          <div class="srcc"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg><span><b>Claude</b><small>Anthropic API</small></span></div>
+          <div class="srcc"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg><span><b>Claude</b><small>Anthropic API</small></span></div>
           <div class="srcc"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span><b>GPT</b><small>OpenAI API</small></span></div>
           <div class="srcc"><svg class="i" viewBox="0 0 24 24"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg><span><b>Gemini</b><small>Google API</small></span></div>
           <div class="srcc"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg><span><b>자체 운영 모델</b><small>공공존 GPU 위 오픈 모델 · 지정 모델</small></span></div>
@@ -789,7 +790,7 @@
           <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">AI 놀이터 · 교사 콘솔</span><span class="live">김윤아 선생님</span></div>
             <div class="app">
               <div class="mnav">
-              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>AI 놀이터</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
               <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
@@ -875,7 +876,7 @@
           <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">AI 놀이터 · 학교 관리 센터</span><span class="live">실시간</span></div>
             <div class="app">
               <div class="mnav">
-              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>AI 놀이터</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2 11.39 11.61"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg>AI 키</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>예산 배분</div>
@@ -949,7 +950,7 @@
           <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">AI 놀이터 · 수업 종료 정산</span><span class="live">자동 생성</span></div>
             <div class="app">
               <div class="mnav">
-              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>AI 놀이터</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
               <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
@@ -1081,7 +1082,7 @@
           <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">AI 놀이터 · 학급 갤러리</span><span class="live">작품 21개</span></div>
             <div class="app">
               <div class="mnav">
-              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>AI 놀이터</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
@@ -1136,7 +1137,7 @@
       이상 신호는 즉시 알려지는</strong> 3중 구조입니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">LAYER 1<span class="cat">사전 차단</span></div>
+        <div class="card"><div class="no">LAYER 1<span class="cat">사전 차단</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <h3>울타리 먼저</h3>
           <ul>
@@ -1148,7 +1149,7 @@
           <div class="ui"><div class="uttl">실제 동작 예</div>
             <div class="urow"><span>"내 이름은 김민준이고 전화번호는..."</span></div>
             <div class="urow ok"><span>"내 이름은 김**이고 [비공개]..."</span><span class="uchip">자동 마스킹</span></div></div></div>
-        <div class="card"><span class="accent"></span><div class="no">LAYER 2<span class="cat">실시간 관제</span></div>
+        <div class="card"><div class="no">LAYER 2<span class="cat">실시간 관제</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
           <h3>선생님의 눈</h3>
           <ul>
@@ -1160,7 +1161,7 @@
           <div class="ui"><div class="uttl">실제 동작 예</div>
             <div class="urow"><span>14:22 · 3학년 2반 이OO 우려 표현 감지</span><span class="uchip warn">즉시 알림</span></div>
             <div class="urow ok"><span>담임 · 상담교사에게 통지 완료</span></div></div></div>
-        <div class="card"><span class="accent"></span><div class="no">LAYER 3<span class="cat">기록과 준수</span></div>
+        <div class="card"><div class="no">LAYER 3<span class="cat">기록과 준수</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
           <h3>남는 기록</h3>
           <ul>
@@ -1205,7 +1206,7 @@
           <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">AI 놀이터 · 교사 콘솔</span><span class="live">3학년 2반 과학</span></div>
             <div class="app">
               <div class="mnav">
-              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>AI 놀이터</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
               <div class="ni on"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
@@ -1303,13 +1304,13 @@
       지금 하는 수업에 AI 활동을 얹는 방식입니다.</p></div>
     <div class="content">
       <div class="cards c3">
-        <div class="card"><span class="accent"></span><div class="no">초등 고학년 <span class="cat">시범 권장</span></div><h3>만들며 익히는 첫 AI</h3>
+        <div class="card"><div class="no">초등 고학년 <span class="cat">시범 권장</span></div><h3>만들며 익히는 첫 AI</h3>
           <div class="seg"><p>국어(이야기 쓰기) · 사회(우리 고장 조사) · 창체 활동에 <b>놀이터 만들기</b>를 결합합니다.</p></div>
           <div class="seg fx"><em>활동 예</em><p>우리 동네 소개 웹 · 독서 뒷이야기 쓰기 · 안전 골든벨 퀴즈</p></div></div>
-        <div class="card"><span class="accent"></span><div class="no">중학교 <span class="cat">확산 단계</span></div><h3>질문을 다듬는 훈련</h3>
+        <div class="card"><div class="no">중학교 <span class="cat">확산 단계</span></div><h3>질문을 다듬는 훈련</h3>
           <div class="seg"><p>정보 교과 · 자유학기 주제선택과 연계해 <b>프롬프트 작성과 답 검증</b>을 배웁니다.</p></div>
           <div class="seg fx"><em>활동 예</em><p>자료 조사 비교 검증 · 토론 반대 논거 만들기 · 진로 인터뷰 시뮬레이션</p></div></div>
-        <div class="card"><span class="accent"></span><div class="no">고등학교 <span class="cat">확산 단계</span></div><h3>프로젝트와 포트폴리오</h3>
+        <div class="card"><div class="no">고등학교 <span class="cat">확산 단계</span></div><h3>프로젝트와 포트폴리오</h3>
           <div class="seg"><p>정보 · 탐구 과목의 <b>프로젝트 수행 도구</b>로 쓰고, 과정 기록을 세특 참고 자료로 남깁니다.</p></div>
           <div class="seg fx"><em>활동 예</em><p>탐구 보고서 자료 정리 · 데이터 기반 발표 자료 · 창업 아이디어 검증</p></div></div>
       </div>
@@ -1363,7 +1364,7 @@
           <div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">AI 놀이터 · 라이브 보드</span><span class="live">28명 접속</span></div>
             <div class="app">
               <div class="mnav">
-              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg>AI 놀이터</div>
+              <div class="mlogo"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>AI 놀이터</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>대시보드</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>수업방</div>
               <div class="ni"><svg class="i" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>수업 자료</div>
@@ -1515,17 +1516,20 @@
       <strong>기획부터 연수·운영 지원까지 수행사가 일괄 처리</strong>하고, 학교는 수업에서 써 보기만 하면 됩니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">STEP 1 <span class="cat">약 1개월 · 구축과 병행</span></div><h3>준비</h3>
+        <div class="card"><div class="no">STEP 1 <span class="cat">약 1개월 · 구축과 병행</span></div><h3>준비</h3>
           <div class="seg"><p>시범 단위(학교 2~3곳 또는 교육청 자체 프로그램)와 참여 학급을 정하고, 학부모 동의를 받습니다.</p></div>
           <div class="seg"><p>선생님들과 첫 연수에서 <b>수업방 만들기를 직접 실습</b>합니다 - 5분이면 열립니다.</p></div>
+          <ul><li>시범 단위와 참여 학급 <b>확정</b></li><li>학부모 동의 완료 (동의 관리 기능)</li><li>1차 연수 - 수업방 개설 실습</li></ul>
           <div class="seg fx"><em>학교가 할 일</em><p>참여 학급 정하기, 연수 참석 (반나절)</p></div></div>
-        <div class="card"><span class="accent"></span><div class="no">STEP 2 <span class="cat">구축 완료 후 한 학기</span></div><h3>수업에서 쓰기</h3>
+        <div class="card"><div class="no">STEP 2 <span class="cat">구축 완료 후 한 학기</span></div><h3>수업에서 쓰기</h3>
           <div class="seg"><p>학급마다 <b>월 2회 이상 AI 활동 수업</b>을 함께 운영합니다. 글쓰기 · 퀴즈 · 웹 만들기 중 수업에 맞는 것부터.</p></div>
           <div class="seg"><p>불편한 점은 격주로 고쳐 배포하고, 중간에 심화 연수와 <b>수업 템플릿 공유회</b>를 엽니다.</p></div>
+          <ul><li>학급별 AI 활동 수업 <b>월 2회 이상</b></li><li>격주 개선 배포 이력</li><li>심화 연수 · 템플릿 공유회 1회</li></ul>
           <div class="seg fx"><em>학교가 할 일</em><p>평소 수업에 활동 얹기 - 준비물 없음</p></div></div>
-        <div class="card"><span class="accent"></span><div class="no">STEP 3 <span class="cat">학기 말</span></div><h3>결과 보고</h3>
+        <div class="card"><div class="no">STEP 3 <span class="cat">학기 말</span></div><h3>결과 보고</h3>
           <div class="seg"><p>몇 명이 무엇을 만들었고, 예산이 어디에 쓰였고, 안전 이슈는 없었는지 - <b>실제 기록으로 리포트</b>를 드립니다.</p></div>
           <div class="seg"><p>이 리포트가 다른 학교로 넓힐지 판단하는 <b>확산 근거 자료</b>가 됩니다.</p></div>
+          <ul><li>실측 리포트 - <b>사용 · 예산 · 안전</b></li><li>결과 보고회</li><li>확산 판단 자료 제출</li></ul>
           <div class="seg fx"><em>학교가 할 일</em><p>결과 보고회 참석, 확산 여부 판단</p></div></div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
@@ -1543,14 +1547,14 @@
       <strong>기업 현장에서 검증한 자체 기술</strong>을 교육에 맞게 옮기는 사업입니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">FROM aisight<span class="cat">AI 운영 기술</span></div>
-          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg></div>
+        <div class="card"><div class="no">FROM aisight<span class="cat">AI 운영 기술</span></div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg></div>
           <h3>모델 라우팅 · 관제 · 기록</h3>
           <p>하이브리드 LLM 라우팅, 표·그림까지 읽는 문서 파서(Document Parser), 세션 단위 전 과정 기록 -
              <b>aisight에서 이미 상용 운영 중</b>인 기술이 AI 연결·수업 자료 DB·기록 관리 기능이 됩니다.</p>
           <div class="seg fx"><em>이 플랫폼에서는</em><p>AI 등록·배분 (기능 ②) · 수업 자료 근거 답변 (기능 ⑦) · 관제·기록·정책 상속 (기능 ⑥⑧)</p></div>
           <div class="fix">금융·제조 고객사가 검증한 통제 수준입니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">FROM Apps<span class="cat">배포 기술</span></div>
+        <div class="card"><div class="no">FROM Apps<span class="cat">배포 기술</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></div>
           <h3>작품 호스팅 · 주소 발급</h3>
           <p>개인이 만든 웹 산출물을 논리적으로 격리된 공간에 올리고 주소를 자동 발급하는
@@ -1558,7 +1562,7 @@
              "만들면 바로 내 주소"는 이미 우리가 매일 쓰는 기능입니다.</p>
           <div class="seg fx"><em>이 플랫폼에서는</em><p>웹 작품 주소 자동 발급 (기능 ④) · 갤러리·전시회 호스팅 (기능 ⑤)</p></div>
           <div class="fix">학생 작품 격리 호스팅은 Apps의 교육판입니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">DELIVERY<span class="cat">실행력</span></div>
+        <div class="card"><div class="no">DELIVERY<span class="cat">실행력</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
           <h3>직접 구축해 온 팀</h3>
           <p>BI·AI 전문 인력 82명, 대기업 AI 플랫폼 구축 3건 진행 중. 기획 문서가 아니라
@@ -1581,28 +1585,28 @@
       시범 운영 종료 시 아래 지표를 실측 보고합니다.</p></div>
     <div class="content">
       <div class="cards c4 fill">
-        <div class="card"><span class="accent"></span><div class="no">학생</div>
+        <div class="card"><div class="no">학생</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></div>
           <h3>경험의 평등</h3>
           <p>집에 유료 AI가 있는 아이와 없는 아이의 격차가 사라집니다. 전원이 같은 조건에서
              만들어 보고, 작품과 포트폴리오가 남습니다.</p>
           <div class="seg fx"><em>달라지는 장면</em><p>방과 후 각자가 아니라, 수업 시간에 반 전체가 함께 만듭니다.</p></div>
           <div class="fix">지표 - 1인당 완성 작품 수 · 포트폴리오 보유율</div></div>
-        <div class="card"><span class="accent"></span><div class="no">교사</div>
+        <div class="card"><div class="no">교사</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
           <h3>준비는 짧게, 지도는 깊게</h3>
           <p>계정·통제 걱정이 사라지고 수업 설계에 집중합니다. 라이브 보드가
              도움이 필요한 학생을 먼저 알려 줍니다.</p>
           <div class="seg fx"><em>달라지는 장면</em><p>"누가 뭘 하는지 모른다"는 불안이 한 화면으로 정리됩니다.</p></div>
           <div class="fix">지표 - 수업방 개설 소요 시간 · 교사 재사용률</div></div>
-        <div class="card"><span class="accent"></span><div class="no">학교 · 교육청</div>
+        <div class="card"><div class="no">학교 · 교육청</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
           <h3>예산과 지침의 이행</h3>
           <p>AI 예산이 학생 단위까지 투명하게 집계되고, 수행평가 AI 활용 지침 준수가
              시스템 기록으로 증빙됩니다.</p>
           <div class="seg fx"><em>달라지는 장면</em><p>"AI 예산을 어디에 썼나"에 리포트 한 장으로 답합니다.</p></div>
           <div class="fix">지표 - 예산 집행 리포트 · 지침 위반 건수</div></div>
-        <div class="card"><span class="accent"></span><div class="no">학부모</div>
+        <div class="card"><div class="no">학부모</div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <h3>불안에서 신뢰로</h3>
           <p>아이의 AI 사용이 학교 울타리 안으로 들어옵니다. 동의 절차와 열람 링크로

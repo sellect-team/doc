@@ -81,7 +81,8 @@
     .c4 { grid-template-columns: repeat(4, 1fr); }
     .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
             padding: 1.05rem 1.15rem 1rem; display: flex; flex-direction: column;
-            box-shadow: 0 6px 18px rgba(15,23,42,0.05); position: relative; overflow: hidden; }
+            box-shadow: 0 1px 2px rgba(15,23,42,0.04); position: relative; overflow: hidden; }
+    .accent { display: none; }
     .accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
               background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
     .card .no { font-size: 0.76rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.08em;
@@ -179,7 +180,7 @@
     .cyc { display: grid; grid-template-columns: 1fr 1.6rem 1fr 1.6rem 1fr 1.6rem 1fr; gap: 0.4rem;
            align-items: stretch; }
     .cnode { border: 1px solid var(--s200); background: #fff; border-radius: 0.85rem;
-             padding: 0.75rem 0.9rem; box-shadow: 0 6px 16px rgba(15,23,42,0.05);
+             padding: 0.75rem 0.9rem; box-shadow: 0 1px 2px rgba(15,23,42,0.04);
              position: relative; overflow: hidden; }
     .cnode .accent { height: 0.16rem; border-radius: 0.85rem 0.85rem 0 0; }
     .cnode b { display: flex; align-items: center; gap: 0.5rem; font-size: 1.05rem; color: var(--s900); }
@@ -198,7 +199,7 @@
     .anode small { display: block; font-family: var(--fx); color: var(--s500); font-size: 0.8rem; margin-top: 0.15rem; }
     .adown { text-align: center; color: var(--s400); font-size: 0.85rem; line-height: 1; }
     .plat { border: 1px solid var(--s200); border-radius: 0.9rem; padding: 0.7rem 0.9rem;
-            background: #fff; box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+            background: #fff; box-shadow: 0 1px 2px rgba(15,23,42,0.04);
             display: flex; flex-direction: column; gap: 0.55rem; position: relative; overflow: hidden; }
     .plat .accent { height: 0.18rem; }
     .plat .ph { display: flex; align-items: center; gap: 0.5rem; justify-content: center;
@@ -575,21 +576,21 @@
       <strong>"개발 부담 감소와 셀프서비스 외에, aisight의 가치는 무엇인가."</strong></p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">배경 01<span class="cat">REQUEST</span></div>
+        <div class="card"><div class="no">배경 01<span class="cat">REQUEST</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
           <h3>"Tableau를 웹으로"</h3>
           <p>GBC 내부에서 Tableau 대시보드를 웹 대시보드로 전환하자는 요청이 나왔습니다.
              라이선스 부담, 화면 자유도, 포탈과의 이질감이 배경입니다.</p>
           <div class="seg fx"><em>배경 신호</em><p>라이선스 갱신 부담 · 화면 개선 요구 누적 · 포탈과 이원화된 사용 경험</p></div>
           <div class="fix">전환 자체는 이미 정해진 방향입니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">배경 02<span class="cat">OPTIONS</span></div>
+        <div class="card"><div class="no">배경 02<span class="cat">OPTIONS</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
           <h3>두 갈래 견적</h3>
           <p>단순 웹 재개발과 aisight 플랫폼 - 두 견적이 이미 전달되어 있습니다.
              이 문서는 그 갈림길에서 무엇이 다른지 보여 드리는 판단 자료입니다.</p>
           <div class="seg fx"><em>기전달</em><p>단순 웹 개발 견적 · aisight 플랫폼 견적 (별도 문서)</p></div>
           <div class="fix">가격표가 아니라 구조의 차이를 봅니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">배경 03<span class="cat">QUESTION</span></div>
+        <div class="card"><div class="no">배경 03<span class="cat">QUESTION</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg></div>
           <h3>오늘의 질문</h3>
           <p>소개 미팅에서 두 가지 가치는 이미 확인해 주셨습니다 - 개발 부담 감소,
@@ -612,22 +613,22 @@
       <strong>앞으로의 요구까지 흡수하는 구조</strong>를 함께 갖추는 일입니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">가치 01<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span></div><h3>요청 대기의 소멸</h3>
+        <div class="card"><div class="no">가치 01<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span></div><h3>요청 대기의 소멸</h3>
           <p>담당자가 직접 만들 수도, 관리자가 받아 처리할 수도 - 누가 만들어도 개발이 아니라 조립이라 당일 처리됩니다.</p>
           <div class="fix">요청 큐가 길어지지 않습니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">가치 02<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg></span></div><h3>묻는 대시보드</h3>
+        <div class="card"><div class="no">가치 02<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 8.5-8.5 8.38 8.38 0 0 1 8.5 8.5z"/></svg></span></div><h3>묻는 대시보드</h3>
           <p>자연어로 질문하면 차트와 요약으로 답합니다. 보는 도구가 답을 얻는 도구가 됩니다. 쓰던 개인 Claude로 이어가는 MCP 연동도 함께입니다.</p>
           <div class="fix">Tableau에도 없는 층.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">가치 03<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span></div><h3>지표 거버넌스</h3>
+        <div class="card"><div class="no">가치 03<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span></div><h3>지표 거버넌스</h3>
           <p>셀프서비스가 만들 지표 난립을 표준 지표 사전·권한·이력으로 통제합니다. 자유와 통제를 동시에.</p>
           <div class="fix">같은 이름 = 같은 숫자.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">가치 04<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span></div><h3>비용 구조의 전환</h3>
+        <div class="card"><div class="no">가치 04<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span></div><h3>비용 구조의 전환</h3>
           <p>다시 짓는 것은 같지만 그다음이 다릅니다 - 이후 요청이 조립으로 흡수되어 공수가 늘지 않는 구조.</p>
           <div class="fix">요청이 늘어도 공수는 그대로.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">가치 05<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span></div><h3>포탈은 그대로</h3>
+        <div class="card"><div class="no">가치 05<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span></div><h3>포탈은 그대로</h3>
           <p>기존 커스텀 포탈에 임베드되어 사용자 동선이 바뀌지 않습니다. 전환에서 가장 큰 리스크가 사라집니다.</p>
           <div class="fix">재교육 · 이탈 리스크 0.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">가치 06<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span></div><h3>확장 로드맵</h3>
+        <div class="card"><div class="no">가치 06<span class="cat"><svg class="i" viewBox="0 0 24 24" style="width:1.15em;height:1.15em"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span></div><h3>확장 로드맵</h3>
           <p>리포트 자동화·문서 지능·지식그래프로 이어지는 다음 단계가 같은 플랫폼 위에 준비되어 있습니다.</p>
           <div class="fix">별도 시스템이 아닌 모듈 추가.</div></div>
       </div>
@@ -755,7 +756,7 @@
               <td>저장되는 것은 위젯 설정뿐 - <b>플랫폼 업그레이드가 전체 화면에 한 번에</b> 적용</td></tr>
         </table>
       </div>
-      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg></span>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg></span>
         <span>LLM은 aisight 안에서 알맞은 자리에 씁니다 - 코드 생성이 아니라 <b>질의 · 요약 · 리포트 초안</b>에.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 6 -</span><span class="mark">SAILINGSTONE</span></footer>
@@ -827,7 +828,7 @@
              MCP로 aisight 데이터를 본인 권한 범위에서 조회합니다.</p>
         </div>
       </div>
-      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg></span>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg></span>
         <span>이 연동 패턴은 <b>삼성전자 마케팅 현장 검증을 거친 방식</b>입니다 - 데모에서 실제로 보여 드립니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
@@ -841,7 +842,7 @@
       겪어 본 조직일수록 통제 설계가 먼저입니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">통제 01<span class="cat">DICTIONARY</span></div>
+        <div class="card"><div class="no">통제 01<span class="cat">DICTIONARY</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
           <h3>표준 지표 사전</h3>
           <p>Studio의 <b>"데이터 지식" 메뉴</b>가 지표의 정의·산식·출처를 한곳에 모으고,
@@ -849,14 +850,14 @@
              법인마다 다르게 계산되는 일이 구조적으로 사라집니다.</p>
           <div class="seg fx"><em>예시</em><p>"eStore 전환율 = eStore Revenue 주문 / Clicks" - 산식이 위젯에 자동 표기</p></div>
           <div class="fix">지표 정의의 단일 출처(Single Source).</div></div>
-        <div class="card"><span class="accent"></span><div class="no">통제 02<span class="cat">ACCESS</span></div>
+        <div class="card"><div class="no">통제 02<span class="cat">ACCESS</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
           <h3>권한과 행 수준 보안</h3>
           <p>역할·조직 기준으로 화면 접근을 통제하고, 데이터는 행 단위로 필터링합니다.
              유럽 담당자는 유럽 데이터만, 경영진은 전체를 - 같은 대시보드에서.</p>
           <div class="seg fx"><em>예시</em><p>같은 대시보드를 열어도 유럽법인 담당자에게는 유럽 행만 보입니다</p></div>
           <div class="fix">AI 질의도 같은 권한 범위 안에서만 답합니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">통제 03<span class="cat">AUDIT</span></div>
+        <div class="card"><div class="no">통제 03<span class="cat">AUDIT</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
           <h3>이력과 감사</h3>
           <p>누가 어떤 대시보드를 만들고 고쳤는지, 어떤 질의를 했는지 전부 기록됩니다.
@@ -921,7 +922,7 @@
             <span><h4>SSO · 권한 연동</h4>
             <p>포탈의 로그인·권한 체계에 그대로 연동됩니다. 이중 로그인도,
                별도 계정 관리도 생기지 않습니다.</p></span></div>
-          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 4-4"/></svg></span>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg></span>
             <span><h4>연동도 같은 팀이 합니다</h4>
             <p>그 포탈을 설계·구축·운영해 온 것이 세일링스톤입니다. 연동 지점을 아는 팀이라
                <b>통합 리스크가 가장 작은 조합</b>입니다.</p></span></div>
@@ -1197,21 +1198,21 @@
     <div class="s-band"><p>낯선 업체의 소개가 아니라, <strong>지금 그 포탈을 만들고 운영하는 팀</strong>의 제안입니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><span class="accent"></span><div class="no">PORTAL<span class="cat">도메인 이해</span></div>
+        <div class="card"><div class="no">PORTAL<span class="cat">도메인 이해</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
           <h3>포탈을 만든 회사</h3>
           <p>GBC 커스텀 포탈을 설계·구축·운영해 왔습니다. 데이터 구조와 업무 흐름을
              이미 알고 있어 <b>분석·인수인계 비용이 0</b>입니다.</p>
           <div class="seg fx"><em>이미 아는 것</em><p>데이터 구조 · 업무 용어 · 결재 흐름 · 운영 일정</p></div>
           <div class="fix">통합 리스크가 가장 작은 선택지.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">AISIGHT<span class="cat">상용 플랫폼</span></div>
+        <div class="card"><div class="no">AISIGHT<span class="cat">상용 플랫폼</span></div>
           <div class="ico"><img src="../solutions/assets/aisight-marketing/logo.png" alt="aisight" style="height:2rem; display:block"></div>
           <h3>운영 중인 플랫폼</h3>
           <p>aisight는 금융·제조 고객사에서 상용 운영 중인 BI·AI 플랫폼입니다.
              하이브리드 LLM 라우팅 · 문서 파서 · 사용량 관제 · 전 과정 기록.</p>
           <div class="seg fx"><em>핵심 모듈</em><p>대시보드 · AI 질의 · 지표 사전 · 문서 지능 · 관제</p></div>
           <div class="fix">데모가 아닌 운영 시스템에서 출발합니다.</div></div>
-        <div class="card"><span class="accent"></span><div class="no">DELIVERY<span class="cat">실행력</span></div>
+        <div class="card"><div class="no">DELIVERY<span class="cat">실행력</span></div>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
           <h3>전환까지 해 본 팀</h3>
           <p>BI·AI 전문 인력 82명, 15년을 함께해 온 리더십. 대기업 AI 플랫폼
