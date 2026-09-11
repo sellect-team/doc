@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AI 놀이터 구축 제안서</title>
-  <meta name="doc-version" content="2.3">
+  <meta name="doc-version" content="2.4">
   <meta name="doc-description" content="교육청·학교용 학생 AI 놀이터 플랫폼 기획·제안 - 교사가 상용 AI를 등록·배분하고, 학생이 만들고, 함께 검토하는 안전한 AI 학습 공간">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -82,7 +82,6 @@
     .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
             padding: 1.05rem 1.15rem 1rem; display: flex; flex-direction: column;
             box-shadow: 0 1px 2px rgba(15,23,42,0.04); position: relative; overflow: hidden; }
-    .accent { display: none; }
     .accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
               background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
     .card .no { font-size: 0.76rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.08em;
@@ -612,7 +611,7 @@
       <strong>"어떤 울타리 안에서 제대로 배우게 할 것인가"</strong>입니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><div class="no">POLICY<span class="cat">정책 환경</span></div>
+        <div class="card"><div class="no">POLICY<span class="cat">정책 환경</span></div><span class="accent"></span>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></div>
           <h3>지침은 나왔고, 도구가 없다</h3>
           <p>교육부와 시·도교육청이 2025년 12월 「수행평가 시 인공지능 활용 관리 방안」을 확정하고
@@ -751,7 +750,7 @@
           <div class="anode">학교 · 교육청 관리자<small>키 등록 · 예산 · 정책 · 통계</small></div>
         </div>
         <div class="adown">▾ ▾ ▾</div>
-        <div class="plat">
+        <div class="plat"><span class="accent"></span>
           <div class="ph">AI 놀이터 플랫폼 <small>· AI PLAYGROUND CORE</small></div>
           <div class="pgrid">
             <div class="pcell ws"><b>수업방 (Space)</b><small>주제·페르소나·기간·인원 설정, 링크·코드 입장</small></div>
@@ -1304,7 +1303,7 @@
       지금 하는 수업에 AI 활동을 얹는 방식입니다.</p></div>
     <div class="content">
       <div class="cards c3">
-        <div class="card"><div class="no">초등 고학년 <span class="cat">시범 권장</span></div><h3>만들며 익히는 첫 AI</h3>
+        <div class="card"><div class="no">초등 고학년 <span class="cat">시범 권장</span></div><span class="accent"></span><h3>만들며 익히는 첫 AI</h3>
           <div class="seg"><p>국어(이야기 쓰기) · 사회(우리 고장 조사) · 창체 활동에 <b>놀이터 만들기</b>를 결합합니다.</p></div>
           <div class="seg fx"><em>활동 예</em><p>우리 동네 소개 웹 · 독서 뒷이야기 쓰기 · 안전 골든벨 퀴즈</p></div></div>
         <div class="card"><div class="no">중학교 <span class="cat">확산 단계</span></div><h3>질문을 다듬는 훈련</h3>
@@ -1521,7 +1520,7 @@
           <div class="seg"><p>선생님들과 첫 연수에서 <b>수업방 만들기를 직접 실습</b>합니다 - 5분이면 열립니다.</p></div>
           <ul><li>시범 단위와 참여 학급 <b>확정</b></li><li>학부모 동의 완료 (동의 관리 기능)</li><li>1차 연수 - 수업방 개설 실습</li></ul>
           <div class="seg fx"><em>학교가 할 일</em><p>참여 학급 정하기, 연수 참석 (반나절)</p></div></div>
-        <div class="card"><div class="no">STEP 2 <span class="cat">구축 완료 후 한 학기</span></div><h3>수업에서 쓰기</h3>
+        <div class="card"><div class="no">STEP 2 <span class="cat">구축 완료 후 한 학기</span></div><span class="accent"></span><h3>수업에서 쓰기</h3>
           <div class="seg"><p>학급마다 <b>월 2회 이상 AI 활동 수업</b>을 함께 운영합니다. 글쓰기 · 퀴즈 · 웹 만들기 중 수업에 맞는 것부터.</p></div>
           <div class="seg"><p>불편한 점은 격주로 고쳐 배포하고, 중간에 심화 연수와 <b>수업 템플릿 공유회</b>를 엽니다.</p></div>
           <ul><li>학급별 AI 활동 수업 <b>월 2회 이상</b></li><li>격주 개선 배포 이력</li><li>심화 연수 · 템플릿 공유회 1회</li></ul>
@@ -1547,7 +1546,7 @@
       <strong>기업 현장에서 검증한 자체 기술</strong>을 교육에 맞게 옮기는 사업입니다.</p></div>
     <div class="content">
       <div class="cards c3 fill">
-        <div class="card"><div class="no">FROM aisight<span class="cat">AI 운영 기술</span></div>
+        <div class="card"><div class="no">FROM aisight<span class="cat">AI 운영 기술</span></div><span class="accent"></span>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg></div>
           <h3>모델 라우팅 · 관제 · 기록</h3>
           <p>하이브리드 LLM 라우팅, 표·그림까지 읽는 문서 파서(Document Parser), 세션 단위 전 과정 기록 -
@@ -1599,7 +1598,7 @@
              도움이 필요한 학생을 먼저 알려 줍니다.</p>
           <div class="seg fx"><em>달라지는 장면</em><p>"누가 뭘 하는지 모른다"는 불안이 한 화면으로 정리됩니다.</p></div>
           <div class="fix">지표 - 수업방 개설 소요 시간 · 교사 재사용률</div></div>
-        <div class="card"><div class="no">학교 · 교육청</div>
+        <div class="card"><div class="no">학교 · 교육청</div><span class="accent"></span>
           <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
           <h3>예산과 지침의 이행</h3>
           <p>AI 예산이 학생 단위까지 투명하게 집계되고, 수행평가 AI 활용 지침 준수가
