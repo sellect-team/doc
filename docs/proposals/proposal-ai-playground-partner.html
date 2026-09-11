@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AI 놀이터 파트너 세일즈 킷</title>
-  <meta name="doc-version" content="1.3">
+  <meta name="doc-version" content="1.4">
   <meta name="doc-description" content="NHN 클라우드 영업 담당자용 - 학생 AI 놀이터 사업의 시장 기회, 클라우드 매출 구조, 역할 분담과 조달 경로, 교육청 세일즈 토킹 포인트">
   <style>
     /* ── SUIT 폰트: 기본(Regular) + ExtraBold 2종 ── */
@@ -587,6 +587,7 @@
 
     .rt.compact th { padding: 0.5rem 0.9rem; font-size: 0.84rem; }
     .rt.compact td { padding: 0.48rem 0.9rem; font-size: 0.88rem; line-height: 1.45; }
+    .rt.compact td.org small { display: inline; margin-left: 0.35rem; }
 
     .shotmain { display: flex; flex-direction: column; min-height: 0; }
     .shotmain .sh { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.35rem; }
@@ -681,7 +682,7 @@
             <p>학생 데이터를 다루는 사업이라 <b>국내 리전과 CSAP가 협상 조건이 아니라 입찰 요건</b>이 됩니다.
                여기에 학생 수·작품 수·AI 호출이 늘수록 컴퓨팅과 스토리지가 따라 자랍니다.
                학생이 만든 작품은 학년이 바뀌어도 지워지지 않습니다.</p>
-            <span class="kfix"><b>정리하면.</b> 교육청 계정을 여는 사업이자, 해마다 자라는 AI 워크로드입니다.</span></span></div>
+            <span class="kfix"><b>정리하면.</b> 교육청 계정을 여는 사업이자, 자체 모델을 택하면 GPU까지 이어지는 AI 워크로드입니다.</span></span></div>
         </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
@@ -756,7 +757,7 @@
             <span><b>예산 출처</b> - 정보화 인프라 항목. 규모가 정해져 있습니다.</span>
             <span><b>경쟁 상황</b> - 타 클라우드와 같은 표 위에서 나란히 비교됩니다.</span>
             <span><b>계약 주기</b> - 해마다 갱신 시점에 다시 설득해야 합니다.</span>
-            <span><b>클라우드의 위치</b> - 여러 후보 공급사 가운데 하나.</span>
+            <span><b>선택 기준</b> - 가격과 사양. 표 위에서 줄 세워집니다.</span>
           </div>
           <div class="mflab">대화가 시작되는 순서</div>
           <div class="mflow"><span>교육청이<br>먼저 필요를 느낌</span><i>›</i><span>요구 사양<br>공고</span><i>›</i><span>가격<br>경쟁</span></div>
@@ -771,7 +772,7 @@
             <span><b>예산 출처</b> - AI 교육 사업비. 인프라는 사업의 구성 요소로 들어갑니다.</span>
             <span><b>경쟁 상황</b> - 같은 제안을 들고 오는 상대가 아직 없습니다.</span>
             <span><b>계약 주기</b> - 사업이 이어지는 동안 유지되고, 확산되면 함께 늘어납니다.</span>
-            <span><b>클라우드의 위치</b> - 선택지가 아니라 <b>사업의 전제 조건.</b></span>
+            <span><b>선택 기준</b> - 요건 충족 여부. 클라우드가 <b>사업의 전제 조건</b>이 됩니다.</span>
           </div>
           <div class="mflab">대화가 시작되는 순서</div>
           <div class="mflow"><span>우리가<br>문제를 제기</span><i>›</i><span>시범 운영<br>합의</span><i>›</i><span>요건이<br>곧 사양</span></div>
@@ -871,7 +872,7 @@
       <div class="s-right"><span class="sec">03 · Architecture</span></div>
     </header>
     <div class="s-band"><p>이미 컨테이너로 운영 중인 플랫폼을 <strong>공공 전용존에 그대로 올리는 구성</strong>입니다.
-      학생 데이터는 국내 리전을 벗어나지 않고, 외부 AI 호출만 게이트웨이를 통해 나갑니다.</p></div>
+      AI 모델은 상용 API를 쓰거나 <strong>NHN GPU 위에 직접 올리거나</strong>, 교육청 요건에 따라 고릅니다.</p></div>
     <div class="content">
       <div class="narch">
         <div class="nzone"><span class="zlab">① 사용자</span>
@@ -918,15 +919,16 @@
           </div>
         </div>
         <div class="ndown">▼</div>
-        <div class="nzone dk"><span class="zlab">⑤ 외부 연동 - 게이트웨이 경유 아웃바운드만 허용</span>
+        <div class="nzone dk"><span class="zlab">⑤ AI 모델 경로 - 교육청 요건에 따라 선택 · 외부 연동</span>
           <div class="nrow">
-            <div class="nsvc"><span class="ntx"><b>상용 LLM API</b><small>개인정보 마스킹 후 호출 · 교육청 정책에 따라 모델 교체</small></span></div>
+            <div class="nsvc"><span class="ntx"><b>경로 A · 상용 LLM API</b><small>게이트웨이 경유 · 마스킹 후 호출 · 모델 교체 가능</small></span></div>
+            <div class="nsvc"><span class="ntx"><b>경로 B · NHN GPU 위 자체 운영 모델</b><small>오픈 모델을 공공존 안에서 서빙 · 데이터가 밖으로 나가지 않음</small></span></div>
             <div class="nsvc"><span class="ntx"><b>학교 시스템 연동</b><small>학사 정보 · SSO (요건 확정 시)</small></span></div>
           </div>
         </div>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-        <span>학생 데이터는 ④에 상주하고 밖으로 나가지 않습니다 - <b>보안 심사에서 가장 먼저 확인하는 지점</b>입니다.</span></div>
+        <span>학생 데이터는 ④에 상주하고 밖으로 나가지 않습니다 - 경로 B를 고르면 <b>AI 처리까지 공공존 안에서 끝납니다.</b></span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 7 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
@@ -984,8 +986,7 @@
       <h2><span class="bullet"></span>클라우드 매출 구조 - <em>이 사업이 끌고 오는 상품</em></h2>
       <div class="s-right"><span class="sec">04 · Partner Economics</span></div>
     </header>
-    <div class="s-band"><p>소요량은 세 변수로 결정됩니다. <strong>학교가 늘고, 학생이 쓰고, 작품이 쌓이는 만큼</strong>
-      컴퓨팅과 스토리지가 따라 올라가는 구조입니다.</p></div>
+    <div class="s-band"><p><strong>학교가 늘고, 학생이 쓰고, 작품이 쌓이는 만큼</strong> 컴퓨팅과 스토리지가 올라가고, 자체 모델을 택하면 GPU까지 더해집니다.</p></div>
     <div class="content">
       <div class="eq" style="flex:none">
         <div class="eqb"><span class="el">참여 학교 수</span><span class="ev">시범 2~3교</span><span class="eu">확산 시 수십~수백 교</span></div>
@@ -996,11 +997,11 @@
         <span class="eqop">=</span>
         <div class="eqb res"><span class="el">클라우드 소요량</span><span class="ev">컴퓨팅 · 스토리지</span><span class="eu">트래픽까지 동시 증가</span></div>
       </div>
-      <div class="rt-wrap fill" style="margin-top:0.55rem">
-        <table class="rt">
+      <div class="rt-wrap fill" style="margin-top:0.4rem">
+        <table class="rt compact">
           <tr><th style="width:21%">상품</th><th style="width:33%">이 사업에서의 역할</th><th style="width:19%">시범 단계</th><th>관내 확산 시</th></tr>
-          <tr><td class="org">NKS<small>컨테이너</small></td><td>플랫폼 서비스와 학생 작품 호스팅을 한 클러스터에서 격리 운영</td>
-              <td>기본 클러스터</td><td><b>동시 수업 수에 비례해 노드 증설 · 시간대별 오토스케일</b></td></tr>
+          <tr><td class="org">NKS<small>컨테이너</small></td><td>플랫폼 서비스 · 학생 작품 격리 호스팅</td>
+              <td>기본 클러스터</td><td><b>동시 수업 수에 비례해 노드 증설</b></td></tr>
           <tr><td class="org">Object Storage</td><td>학생 작품 · 포트폴리오 · 수업 자료 원본</td>
               <td>소규모</td><td><b>작품이 학년마다 쌓여 매년 누적 증가</b></td></tr>
           <tr><td class="org">RDS</td><td>수업방 · 사용량 · 감사 로그 등 운영 데이터</td>
@@ -1011,6 +1012,8 @@
               <td>기본</td><td>수업 시간대 피크 트래픽 · AI 호출량 증가</td></tr>
           <tr><td class="org">Notification</td><td>법정대리인 동의 요청 · 위기 신호 알림</td>
               <td>확산 시 적용</td><td>학부모 수만큼 발송량 증가</td></tr>
+          <tr><td class="org">GPU Instance<small>AI EasyMaker</small></td><td>자체 운영 모델(경로 B) 선택 시 오픈 모델 서빙</td>
+              <td>요건 시</td><td><b>AI 처리량이 그대로 GPU 소요량이 됩니다</b></td></tr>
         </table>
       </div>
       <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
