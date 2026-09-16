@@ -226,6 +226,36 @@
     .seg.fx em { color: var(--t700); margin-bottom: 0.1rem; }
     .seg.fx p { color: var(--t800); font-size: 0.88rem; }
 
+    /* ── HR 데이터 분석 레퍼런스 ── */
+    .hrmods { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.9rem; }
+    .hrmod { background: #fff; border: 1px solid var(--s200); border-radius: 0.8rem;
+             padding: 0.8rem 0.9rem 0.75rem; box-shadow: 0 1px 2px rgba(15,23,42,0.04); }
+    .hrmod .ic { width: 2rem; height: 2rem; border-radius: 0.55rem; background: var(--t50);
+                 color: var(--t600); display: flex; align-items: center; justify-content: center;
+                 font-size: 1.15rem; margin-bottom: 0.55rem; }
+    .hrmod b { display: block; font-size: 0.98rem; color: var(--s900); letter-spacing: -0.01em; }
+    .hrmod p { font-size: 0.8rem; line-height: 1.45; color: var(--s500); margin-top: 0.25rem; }
+    .hrlab { display: flex; align-items: center; gap: 0.7rem; font-size: 0.8rem; font-family: var(--fx);
+             color: var(--s500); letter-spacing: 0.12em; }
+    .hrlab i { flex: 1; height: 1px; background: var(--s200); }
+    .hrcs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem 2.6rem; }
+    .hrc { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
+           padding: 1rem 1.15rem 0.95rem; display: flex; flex-direction: column; }
+    .hrc .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .hrc .who { background: #fff; border: 1px solid var(--s300); border-radius: 0.35rem;
+                font-size: 0.8rem; font-family: var(--fx); color: var(--s700); padding: 0.18rem 0.55rem; }
+    .hrc .when { font-size: 0.78rem; color: var(--s400); }
+    .hrc .when em { font-style: normal; color: var(--t600); font-family: var(--fx); }
+    .hrc h3 { font-size: 1.18rem; font-family: var(--fx); color: var(--s900); letter-spacing: -0.01em;
+              padding-bottom: 0.5rem; margin-bottom: 0.55rem; border-bottom: 1px solid var(--s200); }
+    .hrc h3 small { font-size: 0.8rem; color: var(--s400); font-family: var(--f); margin-left: 0.4rem; }
+    .hrc em.k { display: block; font-style: normal; font-size: 0.76rem; font-family: var(--fx);
+                color: var(--t700); margin-bottom: 0.3rem; }
+    .hrc ul { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+    .hrc li { font-size: 0.88rem; line-height: 1.5; color: var(--s600); display: flex; gap: 0.55rem; align-items: flex-start; }
+    .hrc li i { width: 0.3rem; height: 0.3rem; border-radius: 50%; background: var(--t400);
+                flex-shrink: 0; margin-top: 0.55rem; }
+
     /* ── 다크 맺음 ── */
     .dark { background: var(--s900); color: #fff; justify-content: center; align-items: flex-start;
             padding: 2.2rem 2.8rem; }
@@ -262,6 +292,60 @@
 <body>
 
   <!-- 17p 지식 그래프 -->
+  <section class="slide" data-title="HR 데이터 분석 레퍼런스">
+    <header class="s-head">
+      <h2><span class="bullet"></span>인사 데이터를 대시보드로, <em>HR 데이터 분석 레퍼런스</em></h2>
+      <div class="s-right"><span class="sec">01 · Who We Are</span></div>
+    </header>
+    <div class="s-band"><p><strong>LG전자 · 삼성전자 DX · 삼성전자 DS</strong> 세 곳의 인사 데이터를 Tableau 대시보드와 포털로 구축했습니다. 인력 현황부터 발령 추적, 권한별 열람 제한까지 같은 모듈 구성을 세 곳에서 반복 수행했고, 구축 이후 유지보수와 단계 확장으로 이어지고 있습니다.</p></div>
+    <div class="content">
+      <div class="hrlab">공통 모듈 - 세 곳 모두 적용<i></i></div>
+      <div class="hrmods">
+        <div class="hrmod"><div class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 15.5a5 5 0 0 1 5.5 4.5"/></svg></div><b>인력 현황</b><p>성별 · 연령 · 학력 등 재직 인원 구성</p></div>
+        <div class="hrmod"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h13"/><path d="M14 4l3 3-3 3"/><path d="M20 17H7"/><path d="M10 14l-3 3 3 3"/></svg></div><b>발령 · 이동</b><p>입사 · 퇴사 · 발령 · 해외 발령 이력</p></div>
+        <div class="hrmod"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg></div><b>조건 추출</b><p>원하는 조건의 인원만 골라 목록 다운로드</p></div>
+        <div class="hrmod"><div class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg></div><b>핵심 인력 추적</b><p>핵심인재 · 관리직의 이동과 해외 발령 관리</p></div>
+        <div class="hrmod"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H4z"/><path d="M20 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/></svg></div><b>교육 · 복지 활용도</b><p>사내 교육, 휴가 · 복지 제도 이용 측정</p></div>
+        <div class="hrmod"><div class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/><path d="M9 12l2 2 4-4"/></svg></div><b>권한별 열람 제한</b><p>부서 · 역할에 따라 조회 인원을 제한하는 RLS</p></div>
+      </div>
+      <div class="hrlab">고객별 프로젝트<i></i></div>
+      <div class="hrcs fill">
+        <div class="hrc">
+          <div class="top"><span class="who">LG전자</span><span class="when"><em>2023</em> 구축 · 이후 유지보수</span></div>
+          <h3>HR Index 대시보드<small>대시보드 + 포털</small></h3>
+          <em class="k">이 프로젝트의 특화 항목</em>
+          <ul>
+            <li><i></i><span>핵심인재 현황과 관리 대시보드</span></li>
+            <li><i></i><span>부서장 · 팀장 등 관리직의 인사 이동과 해외 발령 인원 추적</span></li>
+            <li><i></i><span>2차 프로젝트로 포털까지 확장</span></li>
+          </ul>
+        </div>
+        <div class="hrc">
+          <div class="top"><span class="who">삼성전자 DX</span><span class="when"><em>2023~2024</em> 구축 · 이후 유지보수</span></div>
+          <h3>HR DataLab<small>대시보드 + 포털</small></h3>
+          <em class="k">이 프로젝트의 특화 항목</em>
+          <ul>
+            <li><i></i><span>출생 연 · 월 기준으로 피크임금 도달 시기와 정년퇴직 시기를 산출</span></li>
+            <li><i></i><span>도래가 임박한 인원 목록을 추출해 다운로드</span></li>
+            <li><i></i><span>사내 교육 활용도 파악 · 측정</span></li>
+          </ul>
+        </div>
+        <div class="hrc">
+          <div class="top"><span class="who">삼성전자 DS</span><span class="when"><em>2024~현재</em> 4차 진행 중 · 단계별 확장</span></div>
+          <h3>HR 분석 플랫폼<small>대시보드 + 포털</small></h3>
+          <em class="k">이 프로젝트의 특화 항목</em>
+          <ul>
+            <li><i></i><span>인사 이동을 추적해 특정 인원의 전체 경력을 확인</span></li>
+            <li><i></i><span>부서장 평가 등 평가 요소로 활용할 항목을 한 화면에서 확인</span></li>
+            <li><i></i><span>휴가 사용 · 복지 제도 활용도 파악 · 측정</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/></svg></span>
+        <span>세 곳 모두 <b>민감한 인사 정보</b>를 다루는 사업입니다. 부서와 권한에 따라 조회 가능한 인원을 제한하는 <b>RLS 설계와 반영</b>까지 포함해 수행했습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
   <section class="slide" data-title="지식 그래프 (Graph DB)">
     <header class="s-head">
       <h2><span class="bullet"></span>지식 그래프(Graph DB) 기반 <em>시맨틱 질의 검증</em></h2>
