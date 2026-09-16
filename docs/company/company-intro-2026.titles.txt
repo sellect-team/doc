@@ -20,6 +20,7 @@ aisight Ops
 Apps (AI 산출물 배포)
 Insight Mate (Excel 플러그인)
 bibidi 연말정산
+bibidi 연말정산 화면
 Tableau 데이터 문화 교육
 Tableau Extension 아키텍처
 03. 사례 및 예시

@@ -300,6 +300,23 @@
     .ysec .t { display: flex; align-items: center; gap: 0.45rem; font-size: 0.92rem; color: var(--t800); font-family: var(--fx); }
     .ysec .t .i { color: var(--t600); }
 
+    /* ── bibidi 실제 화면 ── */
+    .ys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+    .ys .w2 { grid-column: span 2; }
+    .shot { display: flex; flex-direction: column; }
+    .shot .frame { border: 1px solid var(--s200); border-radius: 0.8rem; overflow: hidden; background: #fff;
+                   box-shadow: 0 1px 2px rgba(15,23,42,0.04); }
+    .shot .frame img { display: block; width: 100%; }
+    .shot .r1 img { height: 11.6rem; }
+    .shot .r2 img { height: 8.8rem; }
+    .shot .cap { margin-top: 0.5rem; }
+    .shot .cap .h { display: flex; align-items: center; gap: 0.5rem; }
+    .shot .cap .tag { font-size: 0.62rem; font-family: var(--fx); letter-spacing: 0.12em; color: var(--t700);
+                      background: var(--t50); border: 1px solid var(--t100); border-radius: 0.3rem; padding: 0.1rem 0.4rem; }
+    .shot .cap .tag.pv { color: var(--pp); background: #F3F1FD; border-color: #E4E0FA; }
+    .shot .cap b { font-size: 0.98rem; color: var(--s900); letter-spacing: -0.01em; }
+    .shot .cap p { font-size: 0.8rem; line-height: 1.45; color: var(--s500); margin-top: 0.15rem; }
+
     /* ── 다크 맺음 ── */
     .dark { background: var(--s900); color: #fff; justify-content: center; align-items: flex-start;
             padding: 2.2rem 2.8rem; }
@@ -449,6 +466,35 @@
         <span><b>2027년 귀속분부터 AI 상담 · 서류 인식이 전면 도입</b>됩니다. 국내 연말정산 자료 DB에 근거해서만 답하고, 계산 근거와 출처를 함께 보여줍니다.</span></div>
     </div>
     <footer class="s-foot"><span class="pg">- 22 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+  <section class="slide" data-title="bibidi 연말정산 화면">
+    <header class="s-head">
+      <h2><span class="bullet"></span>담당자 혼자 짊어지지 않는 연말정산, <em>실제 화면으로</em></h2>
+      <div class="s-right"><span class="sec">02 · Product & Service</span></div>
+    </header>
+    <div class="s-band"><p>관리자는 <strong>전 직원의 진행 상황을 한 화면</strong>에서 챙기고, 근로자는 <strong>설문 - 업로드 - 서류 - 결과</strong> 네 단계로 끝냅니다. 아래는 bibidi 연말정산의 실제 화면입니다 (데이터는 예시).</p></div>
+    <div class="content">
+      <div class="ys fill">
+        <div class="shot"><div class="frame r1"><img src="assets/bibidi-shots/survey.png" alt="부양가족 설문 화면"></div>
+          <div class="cap"><div class="h"><span class="tag">USER</span><b>부양가족 설문 - 가산세 지점을 미리 걸러냅니다</b></div>
+            <p>짧은 질문이 나이 · 소득 요건을 그 자리에서 판단합니다</p></div></div>
+        <div class="shot"><div class="frame r1"><img src="assets/bibidi-shots/nts-input.png" alt="국세청 자료 입력 화면"></div>
+          <div class="cap"><div class="h"><span class="tag">USER</span><b>국세청 간소화 PDF - 올리면 항목별로 자동 인식</b></div>
+            <p>원본 금액과 반영 금액을 나란히 보여줘 바로 검증합니다</p></div></div>
+        <div class="shot"><div class="frame r1"><img src="assets/bibidi-shots/result.png" alt="연말정산 결과 화면"></div>
+          <div class="cap"><div class="h"><span class="tag">USER</span><b>연말정산 결과 - 확정 전에 미리 봅니다</b></div>
+            <p>예상 결정세액 · 차감징수세액을 제출 즉시 계산합니다</p></div></div>
+        <div class="shot w2"><div class="frame r2"><img src="assets/bibidi-shots/admin-progress.png" alt="관리자 진행 현황 화면"></div>
+          <div class="cap"><div class="h"><span class="tag">ADMIN</span><b>진행 현황 - 수백 명 중 누구를 챙겨야 할지 바로 보입니다</b></div>
+            <p>미접속 · 입력중 · 입력완료 · 검토완료 4단계로 보고, 상태별 인원을 클릭해 그 대상자에게만 리마인드를 보냅니다</p></div></div>
+        <div class="shot"><div class="frame r2"><img src="assets/bibidi-shots/ai-preview.png" alt="AI 상담 미리보기 화면"></div>
+          <div class="cap"><div class="h"><span class="tag pv">PREVIEW</span><b>AI 상담 - 출처를 붙여 답합니다</b></div>
+            <p>연말정산 자료 DB에 근거해서만 답합니다 (2027년 귀속분부터)</p></div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+        <span>설문으로 걸러내고, 자동으로 계산하고, 확정 전에 미리 보여줍니다. <b>연말정산, 마법처럼 끝.</b></span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 23 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
   <section class="slide" data-title="지식 그래프 (Graph DB)">
     <header class="s-head">
