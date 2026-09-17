@@ -9,6 +9,7 @@
 //
 // 사용법: node scripts/html2pptx.mjs <입력.html> <출력.pptx> ["문서 제목"]
 import fs from "node:fs";
+import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
@@ -353,8 +354,19 @@ for (const s of slides) {
     try {
       if (it.src.startsWith("data:")) { imgs.set(it.src, it.src); continue; }
       const p = decodeURIComponent(new URL(it.src).pathname.replace(/^\//, ""));
-      const buf = fs.readFileSync(p);
       const ext = path.extname(p).slice(1).toLowerCase();
+      if (ext === "webp" || ext === "avif") {
+        // PowerPoint 2016~2021 · Keynote는 webp를 못 그린다 -> Pillow로 PNG 재인코딩
+        // (브라우저 canvas는 file:// 이미지를 오염(tainted) 처리해 toDataURL이 막힌다)
+        const out = path.join(tmpDir, `img-${imgs.size}.png`);
+        const py = ["python", "python3"]; let done = false;
+        for (const exe of py) {
+          try { execFileSync(exe, ["-c", "import sys;from PIL import Image;Image.open(sys.argv[1]).convert('RGBA').save(sys.argv[2])", p, out], { stdio: "pipe" }); done = true; break; } catch {}
+        }
+        if (!done) throw new Error("webp -> png 변환 실패 (Pillow 필요): " + p);
+        imgs.set(it.src, "data:image/png;base64," + fs.readFileSync(out).toString("base64")); continue;
+      }
+      const buf = fs.readFileSync(p);
       imgs.set(it.src, `data:image/${ext === "jpg" ? "jpeg" : ext};base64,${buf.toString("base64")}`);
     } catch { /* 못 읽으면 건너뜀 */ }
   }
