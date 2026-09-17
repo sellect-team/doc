@@ -353,7 +353,7 @@ for (const s of slides) {
     if (it.kind !== "img" || !it.src || imgs.has(it.src)) continue;
     try {
       if (it.src.startsWith("data:")) { imgs.set(it.src, it.src); continue; }
-      const p = decodeURIComponent(new URL(it.src).pathname.replace(/^\//, ""));
+      const p = fileURLToPath(it.src);   // Windows(/C:/..)와 Linux(/home/..) 모두 올바른 경로
       const ext = path.extname(p).slice(1).toLowerCase();
       if (ext === "webp" || ext === "avif") {
         // PowerPoint 2016~2021 · Keynote는 webp를 못 그린다 -> Pillow로 PNG 재인코딩
@@ -368,7 +368,7 @@ for (const s of slides) {
       }
       const buf = fs.readFileSync(p);
       imgs.set(it.src, `data:image/${ext === "jpg" ? "jpeg" : ext};base64,${buf.toString("base64")}`);
-    } catch { /* 못 읽으면 건너뜀 */ }
+    } catch (e) { console.warn("  ! 이미지 건너뜀 " + it.src + ": " + String(e.message).slice(0, 120)); }
   }
 }
 await browser.close();

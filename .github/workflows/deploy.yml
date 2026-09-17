@@ -57,7 +57,7 @@ jobs:
       - name: PPT 생성 (변환 문서는 원본 PPTX, 네이티브 문서는 도형으로 변환)
         run: |
           npm install pptxgenjs
-          python3 -m pip install --quiet pillow
+          python3 -m pip install --quiet pillow || python3 -m pip install --quiet --break-system-packages pillow
           node scripts/make-pptx.mjs
           node scripts/make-pptx.mjs --tenant docs-sovereigns
 
