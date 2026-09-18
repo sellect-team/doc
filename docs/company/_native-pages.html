@@ -564,6 +564,57 @@
     .dm-foot small { font-size: 0.82rem; color: var(--s500); }
     .dm-foot small b { color: var(--s800); font-family: var(--fx); }
 
+    /* ── 23p Tableau 교육 ── */
+    .ed { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2.2rem; align-items: stretch; }
+    .ed-l { display: flex; flex-direction: column; gap: 0.6rem; }
+    .ed-step { display: grid; grid-template-columns: 2.4rem 1fr auto; gap: 0.8rem; align-items: center;
+               background: #fff; border: 1px solid var(--s200); border-radius: 0.8rem; padding: 0.65rem 0.95rem; flex: 1; }
+    .ed-step .ic { width: 2.4rem; height: 2.4rem; border-radius: 0.6rem; background: var(--t50); color: var(--t600);
+                   display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .ed-step b { display: block; font-size: 1.02rem; color: var(--s900); letter-spacing: -0.01em; }
+    .ed-step p { font-size: 0.82rem; line-height: 1.45; color: var(--s500); margin-top: 0.15rem; }
+    .ed-step small { font-size: 0.72rem; color: var(--t700); background: var(--t50); border: 1px solid var(--t100);
+                     border-radius: 0.35rem; padding: 0.15rem 0.5rem; white-space: nowrap; font-family: var(--fx); }
+    .ed-r { display: flex; flex-direction: column; gap: 0.8rem; }
+    .bp { border: 1px solid var(--s200); border-radius: 0.9rem; padding: 0.9rem 1rem; background: var(--s50); flex: 1; display: flex; flex-direction: column; gap: 0.6rem; }
+    .bp .bt { display: flex; justify-content: space-between; align-items: baseline; }
+    .bp .bt b { font-size: 0.8rem; letter-spacing: 0.14em; color: var(--s500); font-family: var(--fx); }
+    .bp .bt small { font-size: 0.72rem; color: var(--s400); }
+    .bp .tg { background: var(--s900); color: #fff; border-radius: 0.5rem; padding: 0.45rem 0.8rem; font-size: 0.82rem; display: flex; justify-content: space-between; }
+    .bp .tg em { font-style: normal; color: var(--t400); font-family: var(--fx); }
+    .bp3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; flex: 1; }
+    .bp3 > div { background: #fff; border: 1px solid var(--s200); border-radius: 0.7rem; padding: 0.7rem 0.75rem; display: flex; flex-direction: column; gap: 0.35rem; }
+    .bp3 b { font-size: 0.98rem; color: var(--s900); font-family: var(--fx); }
+    .bp3 b small { display: block; font-size: 0.68rem; color: var(--t600); letter-spacing: 0.08em; font-family: var(--fx); margin-bottom: 0.1rem; }
+    .bp3 span { font-size: 0.78rem; color: var(--s500); line-height: 1.4; padding-left: 0.6rem; position: relative; }
+    .bp3 span i { position: absolute; left: 0; top: 0.5rem; width: 0.25rem; height: 0.25rem; border-radius: 50%; background: var(--t400); }
+    .ed-foot { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+    .ed-foot > div { display: flex; align-items: center; gap: 0.55rem; font-size: 0.84rem; color: var(--s700);
+                     background: var(--t50); border: 1px solid var(--t100); border-radius: 0.6rem; padding: 0.5rem 0.8rem; }
+    .ed-foot .i { color: var(--t600); flex-shrink: 0; }
+    .ed-foot b { font-family: var(--fx); color: var(--s900); }
+
+    /* ── 34p 도입 절차 ── */
+    .rd { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; align-items: stretch; }
+    .rd-s { background: #fff; border: 1px solid var(--s200); border-radius: 0.9rem; padding: 1rem 1.1rem 0.9rem; display: flex; flex-direction: column; gap: 0.55rem; position: relative; }
+    .rd-s.now { border-color: var(--t400); box-shadow: 0 6px 18px rgba(13,148,136,0.08); }
+    .rd-s .k { display: flex; align-items: center; gap: 0.6rem; }
+    .rd-s .k .n { width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--s900); color: #fff; font-family: var(--fx); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; }
+    .rd-s.now .k .n { background: var(--t600); }
+    .rd-s .k b { font-size: 1.2rem; font-family: var(--fx); color: var(--s900); letter-spacing: -0.01em; }
+    .rd-s .k small { margin-left: auto; font-size: 0.78rem; color: var(--t700); font-family: var(--fx); background: var(--t50); border: 1px solid var(--t100); border-radius: 0.35rem; padding: 0.15rem 0.5rem; }
+    .rd-s > p { font-size: 1rem; line-height: 1.6; color: var(--s600); }
+    .rd-s ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.3rem; }
+    .rd-s li { display: flex; gap: 0.5rem; font-size: 0.95rem; line-height: 1.45; color: var(--s600); }
+    .rd-s li .i { color: var(--t600); flex-shrink: 0; margin-top: 0.2rem; font-size: 0.85rem; }
+    .rd-s .out { margin-top: auto; border-top: 1px dashed var(--s200); padding-top: 0.6rem; font-size: 0.86rem; color: var(--s500); }
+    .rd-s .out b { color: var(--s800); font-family: var(--fx); }
+    .rd-p { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
+    .rd-p > div { display: flex; gap: 0.6rem; align-items: flex-start; background: var(--s50); border: 1px solid var(--s200); border-radius: 0.7rem; padding: 0.6rem 0.8rem; }
+    .rd-p .i { color: var(--t600); flex-shrink: 0; margin-top: 0.15rem; }
+    .rd-p b { display: block; font-size: 0.9rem; color: var(--s900); }
+    .rd-p p { font-size: 0.76rem; line-height: 1.4; color: var(--s500); margin-top: 0.1rem; }
+
     /* ── 다크 맺음 ── */
     .dark { background: var(--s900); color: #fff; justify-content: center; align-items: flex-start;
             padding: 2.2rem 2.8rem; }
@@ -718,6 +769,71 @@
     </div>
     <footer class="s-foot"><span class="pg">- 26 -</span><span class="mark">SAILINGSTONE</span></footer>
   </section>
+  <section class="slide" data-title="Tableau 데이터 문화 교육">
+    <header class="s-head line">
+      <h2><span class="bullet"></span>기능 교육이 아니라 데이터 문화, <em>Tableau 데이터 문화 교육</em></h2>
+      <div class="s-right"><span class="sec">02 · Product & Service</span></div>
+    </header>
+    <div class="content">
+      <p class="lead">Tableau 단순 기능에 머문 교육으로는 조직이 바뀌지 않습니다. 개인의 운영 · 활용 능력을 높이고, <strong>조직 안에 데이터 문화가 퍼지는 것</strong>까지를 목표로 다섯 개 프로그램을 운영합니다.</p>
+      <div class="ed fill">
+        <div class="ed-l">
+          <div class="ed-step"><span class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5v4"/><path d="M5 19v-3a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v3"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><circle cx="12" cy="19" r="2"/></svg></span><div><b>데이터 기반 조직 체험</b><p>데이터로 결정하는 조직이 어떻게 일하는지 사례로 체험하고, 우리 조직의 출발점을 진단합니다</p></div><small>전 임직원 · 리더</small></div>
+          <div class="ed-step"><span class="ic"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span><div><b>데이터 준비의 모든 것</b><p>연결 · 정제 · 결합 · 추출 - 분석 전에 데이터를 쓸 수 있는 상태로 만드는 과정 전체</p></div><small>데이터 담당자</small></div>
+          <div class="ed-step"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span><div><b>기초 · 중급 데이터 분석</b><p>시각화 문법부터 계산 필드 · LOD · 대시보드 설계까지, 실제 업무 데이터로 실습</p></div><small>현업 분석가</small></div>
+          <div class="ed-step"><span class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01"/><path d="M7 17h.01"/></svg></span><div><b>Tableau Server Admin · Architecture</b><p>사이트 · 권한 · 스케줄 · 성능 운영과 확장 아키텍처 - 운영자가 스스로 관리하는 수준까지</p></div><small>서버 운영자</small></div>
+          <div class="ed-step"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M5 21V4"/><path d="M5 4h12l-2 4 2 4H5"/></svg></span><div><b>데이터 문화 확산 프로그램</b><p>사내 챔피언 육성, 표준 템플릿과 가이드, 정기 커뮤니티로 교육 이후에도 활용이 이어지게</p></div><small>챔피언 · 관리자</small></div>
+        </div>
+        <div class="ed-r">
+          <div class="bp">
+            <div class="bt"><b>TABLEAU BLUEPRINT</b><small>Tableau 공식 데이터 문화 프레임워크 기준</small></div>
+            <div class="tg"><span>Trusted &amp; Governed - 신뢰할 수 있는 데이터 위에서</span><em>Analytics Strategy</em></div>
+            <div class="bp3">
+              <div><b><small>AGILITY</small>민첩성</b><span><i></i>Deployment - 배포</span><span><i></i>Monitoring - 모니터링</span><span><i></i>Maintenance - 유지</span></div>
+              <div><b><small>PROFICIENCY</small>숙련도</b><span><i></i>Education - 교육</span><span><i></i>Measurement - 측정</span><span><i></i>Analytics Best Practices</span></div>
+              <div><b><small>COMMUNITY</small>커뮤니티</b><span><i></i>Communications - 소통</span><span><i></i>Engagement - 참여</span><span><i></i>Support - 지원</span></div>
+            </div>
+          </div>
+          <div class="ed-foot">
+            <div><svg class="i" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/></svg><span><b>공식 자격</b> 전문가의 1:1 지원</span></div>
+            <div><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg><span><b>표준 템플릿</b> · 가이드 제공</span></div>
+            <div><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>TA 레퍼런스 <b>SK하이닉스 · 한화생명</b></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 23 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+  <section class="slide" data-title="도입 절차">
+    <header class="s-head line">
+      <h2><span class="bullet"></span>도입은 가볍게 시작합니다, <em>진단에서 확산까지</em></h2>
+      <div class="s-right"><span class="sec">03 · Use Cases</span></div>
+    </header>
+    <div class="content">
+      <p class="lead">전사를 한 번에 바꾸는 방식이 아닙니다. <strong>PoC로 실제 효과를 먼저 확인</strong>하고 검증된 곳부터 넓혀갑니다. 앞의 사례 세 건 모두 이 경로입니다.</p>
+      <div class="rd fill">
+        <div class="rd-s"><div class="k"><span class="n">1</span><b>진단과 기획</b><small>1개월 이내</small></div>
+          <p>데이터 환경과 업무를 함께 살펴보고, 효과가 가장 빠른 영역을 정합니다.</p>
+          <ul><li><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>업무 흐름 · 데이터 현황 진단</span></li><li><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>적용 우선순위와 목표 지표 합의</span></li><li><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>필요 사양 · 접근 권한 확정</span></li></ul>
+          <div class="out">산출물 · <b>진단 리포트, 적용 설계안</b></div></div>
+        <div class="rd-s now"><div class="k"><span class="n">2</span><b>PoC 검증</b><small>2~3개월</small></div>
+          <p>핵심 업무 한두 개에 귀사의 실제 데이터로 적용해 효과를 직접 확인합니다.</p>
+          <ul><li><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>실데이터 연결과 지표 기준 등록</span></li><li><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>현업 시나리오로 답변 품질 검증</span></li><li><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>판단 기준은 킥오프에서 함께 확정</span></li></ul>
+          <div class="out">산출물 · <b>PoC 결과 · 효과 측정 리포트</b> - 본 구축 여부와 무관하게 제공</div></div>
+        <div class="rd-s"><div class="k"><span class="n">3</span><b>단계적 확산</b><small>4~12개월</small></div>
+          <p>한 번에 전사를 열지 않습니다. 부서 단위로 나눠 열고 정착시킨 뒤 넓힙니다.</p>
+          <ul><li><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>부서별 온보딩과 사용자 교육</span></li><li><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>운영 이관과 지표 거버넌스 정착</span></li><li><svg class="i" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>2차 · 3차 과업으로 적용 영역 확대</span></li></ul>
+          <div class="out">산출물 · <b>확산 로드맵, 운영 가이드</b></div></div>
+      </div>
+      <div class="rd-p">
+        <div><svg class="i" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg><div><b>기존 BI 자산은 버리지 않습니다</b><p>쓰던 화면은 그대로 둔 채 위에 얹고, 이관이 필요한 것만 단순한 것부터 옮깁니다</p></div></div>
+        <div><svg class="i" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M3 13l2-6 2 6a2 2 0 0 1-4 0z"/><path d="M17 13l2-6 2 6a2 2 0 0 1-4 0z"/></svg><div><b>병행 운영 뒤 전환</b><p>두 화면의 숫자가 같다는 것을 증명한 뒤에만 전환합니다</p></div></div>
+        <div><svg class="i" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/></svg><div><b>통제된 데이터 안에서</b><p>사내 데이터를 밖으로 내보내지 않는 환경으로 구축하고, 권한은 기존 체계를 따릅니다</p></div></div>
+        <div><svg class="i" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v8h14v-8"/><path d="M12 8v12"/><path d="M12 8c-2-4-6-3-5-1s5 1 5 1z"/><path d="M12 8c2-4 6-3 5-1s-5 1-5 1z"/></svg><div><b>PoC 산출물은 남깁니다</b><p>재현 화면과 측정 결과는 본 구축 여부와 무관하게 검토 자료로 드립니다</p></div></div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 34 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
   <section class="slide" data-title="지식 그래프 (Graph DB)">
     <header class="s-head line">
       <h2><span class="bullet"></span>지식 그래프(Graph DB) 기반 <em>시맨틱 질의 검증</em></h2>
@@ -729,7 +845,7 @@
         <div class="gview">
           <div class="gt">KNOWLEDGE GRAPH VIEW</div>
           <div class="gn">개념도 - 라벨 · 속성 · 관계의 상세 정의는 온톨로지 스키마로 일원화해 관리됩니다.</div>
-          <svg class="graph" viewBox="0 0 860 430" xmlns="http://www.w3.org/2000/svg">
+          <svg class="graph" data-pptx-raster viewBox="0 0 860 430" xmlns="http://www.w3.org/2000/svg">
             <g stroke="#CBD5E1" stroke-width="1" opacity="0.55">
               <line x1="120" y1="70" x2="60" y2="30"/><line x1="120" y1="70" x2="55" y2="90"/><line x1="120" y1="70" x2="100" y2="15"/>
               <circle cx="120" cy="70" r="9" fill="#E2E8F0" stroke="none"/><circle cx="60" cy="30" r="5" fill="#E2E8F0" stroke="none"/>

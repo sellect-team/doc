@@ -100,7 +100,8 @@ function extract() {
         // 완벽히 옮겨지는 아이콘만 진짜 벡터 도형으로. 나머지는 투명 PNG로 남긴다.
         let vec = null;
         try { vec = window.__svg2vec ? window.__svg2vec(el) : null; } catch (e) { vec = { ok: false, reason: e.message }; }
-        if (vec && vec.ok) {
+        // data-pptx-raster가 붙은 SVG(복잡한 다이어그램)는 벡터 대신 고해상도 PNG로 옮긴다
+        if (vec && vec.ok && !el.hasAttribute("data-pptx-raster")) {
           images.push({ kind: "vec", mark: el.dataset.pptxMark, ...rel(r), vb: vec.vb, shapes: vec.shapes });
         } else {
           images.push({ kind: "svg", mark: el.dataset.pptxMark, ...rel(r), why: (vec && vec.reason) || "알 수 없음" });
