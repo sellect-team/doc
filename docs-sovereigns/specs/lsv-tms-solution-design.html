@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LSV 골프카트 관제시스템 솔루션 설계서</title>
+<meta name="doc-version" content="0.1">
+<meta name="doc-description" content="모듈 구조 · 멀티테넌트 RLS · 테이블 19종 · REST API 40종과 WS 2채널 · 판정 알고리즘과 알림 규칙 - 개발 착수 기준의 솔루션 설계">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-SemiBold.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Light.woff2") format("woff2");font-weight:300;font-display:swap}
+/* ============================================================
+   세일링스톤 문서 규격 - SUIT · slate · teal
+   ============================================================ */
+:root{
+  --violet:#0D9488; --voltage:#2DD4BF; --iris:#0F766E;
+  --lilac:#F0FDFA; --peri:#CBD5E1; --chartreuse:#2DD4BF; --powder:#38BDF8;
+  --bone:#F8FAFC; --paper:#FFFFFF; --ink:#0F172A; --carbon:#334155;
+  --slate:#64748B; --lavender:#94A3B8; --midnight:#0F172A;
+  --rose:#E11D48;   /* 상태 전용 - 경고·정비 표시에만 사용 */
+  --line:#E2E8F0;
+  --mint:#2DD4BF; --teal:#0D9488;   /* 세일링스톤 브랜드 - 회사소개서 기준 */
+  --fd:"SUIT","Pretendard Variable",Pretendard,-apple-system,sans-serif;
+  --fu:"SUIT","Pretendard Variable",Pretendard,-apple-system,sans-serif;
+  --pad:3.5rem;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:min(1.25vw,2.2222vh)}
+body{
+  margin:0; background:#E2E8F0; font-family:var(--fu);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-height:100vh; color:var(--ink); -webkit-font-smoothing:antialiased;
+  word-break:keep-all;
+}
+section.slide{
+  width:min(100vw,177.7778vh); height:min(56.25vw,100vh);
+  position:relative; overflow:hidden; background:var(--bone);
+  padding:2.7rem var(--pad) 2rem; display:flex; flex-direction:column;
+  font-size:1rem; line-height:1.5; letter-spacing:-0.001em;
+}
+.slide.tint{background:var(--lilac)}
+
+.s-head{margin-bottom:1rem}
+.eyebrow{font-weight:700; font-size:0.7rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
+h2.title{font-family:var(--fd); font-weight:800; font-size:2rem; letter-spacing:-0.032em; line-height:1.15; margin:0.4rem 0 0}
+.lead{font-weight:300; font-size:1.02rem; line-height:1.5; margin:0.45rem 0 0; max-width:66ch}
+.lead b{font-weight:600; color:var(--violet)}
+
+.body{flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center}
+.grid{display:grid; gap:1rem}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1.05rem 1.15rem}
+.card.lil{background:var(--lilac)}
+.card h3{font-family:var(--fd); font-weight:800; font-size:1rem; letter-spacing:-0.02em; margin:0.4rem 0 0; line-height:1.25}
+.card p{font-size:0.84rem; line-height:1.5; color:var(--carbon); margin:0.45rem 0 0}
+.card ul{margin:0.45rem 0 0; padding:0; list-style:none}
+.card li{position:relative; padding:0.22rem 0 0.22rem 0.85rem; font-size:0.82rem; color:var(--carbon); line-height:1.42}
+.card li::before{content:""; position:absolute; left:0; top:0.62rem; width:0.28rem; height:0.28rem; border-radius:50%; background:var(--violet)}
+.card li b{font-weight:600; color:var(--ink)}
+.tag{display:inline-block; background:var(--lilac); color:var(--violet); font-weight:600; font-size:0.7rem; padding:0.16rem 0.62rem; border-radius:999px}
+.tag.gray{background:#F1F5F9; color:var(--slate)}
+.tag.r{background:#FEE2E2; color:var(--rose)}
+.tags{display:flex; gap:0.35rem; flex-wrap:wrap; margin-top:0.6rem}
+.num{font-family:var(--fd); font-weight:800; font-size:1.9rem; letter-spacing:-0.04em; line-height:1; color:var(--violet)}
+.unit{font-size:0.74rem; color:var(--slate); margin-top:0.28rem}
+
+table{width:100%; border-collapse:separate; border-spacing:0; background:var(--paper);
+  border:1px solid var(--peri); border-radius:1.25rem; overflow:hidden; font-size:0.82rem}
+th,td{text-align:left; padding:0.5rem 0.8rem; border-bottom:1px solid var(--lilac); vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-weight:700; font-size:0.66rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--slate); white-space:nowrap}
+td.g{color:var(--slate)}
+td b{font-weight:600}
+td.c{text-align:center}
+table.tight th, table.tight td{padding:0.4rem 0.75rem; font-size:0.77rem}
+table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
+.sid{font-family:var(--fd); font-weight:800; font-size:0.74rem; color:var(--violet)}
+.yes{color:var(--violet); font-weight:600}
+.no{color:var(--lavender)}
+
+.s-foot{display:flex; justify-content:space-between; align-items:center;
+  font-size:0.68rem; letter-spacing:0.04em; color:var(--slate); padding-top:0.7rem}
+.s-foot .mark{font-family:var(--fd); font-weight:800; letter-spacing:-0.02em}
+
+.note{background:var(--lilac); border:1px solid var(--peri); border-radius:1.25rem;
+  padding:0.8rem 1.1rem; font-size:0.82rem; color:var(--carbon); margin-top:0.85rem}
+.note b{font-weight:600; color:var(--violet)}
+
+/* 표지 */
+.cover{justify-content:space-between; padding:3.4rem var(--pad) 3rem}
+.brand{display:flex; align-items:center; gap:0.6rem; font-family:var(--fd); font-weight:800; font-size:1.1rem; letter-spacing:-0.04em}
+.brand .mk{width:1.85rem; height:1.85rem; border-radius:50%; background:var(--violet); color:#FFFFFF;
+  display:grid; place-items:center; font-family:var(--fd); font-weight:800; font-size:0.85rem}
+.cov-mid{display:grid; grid-template-columns:1.35fr 1fr; gap:3.4rem; align-items:center}
+.cov-card{padding:1.5rem 1.6rem}
+.cov-rows{margin-top:0.9rem}
+.cov-rows .r{display:flex; justify-content:space-between; align-items:baseline;
+  padding:0.55rem 0; border-bottom:1px solid var(--lilac); font-size:0.88rem; color:var(--carbon)}
+.cov-rows .r:last-child{border-bottom:0}
+.cov-rows b{font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:-0.03em; color:var(--ink)}
+.cover h1{font-family:var(--fd); font-weight:800; font-size:3.5rem; letter-spacing:-0.04em; line-height:1.03; margin:0.9rem 0 0}
+.cover h1 em{font-style:normal; color:var(--violet)}
+.cover .sub{font-weight:300; font-size:1.25rem; margin-top:1rem}
+.cover .meta{display:flex; gap:2.4rem; align-items:flex-end}
+.cover .meta div{font-size:0.78rem; color:var(--slate)}
+.cover .meta b{display:block; font-family:var(--fd); font-weight:800; font-size:0.95rem; letter-spacing:-0.02em; color:var(--ink); margin-bottom:0.2rem}
+
+/* 단계 흐름 */
+.flow{display:flex; align-items:stretch; gap:0.55rem}
+.flow .step{flex:1; background:var(--paper); border:1px solid var(--peri); border-radius:1rem; padding:0.75rem 0.8rem}
+.flow .step .k{font-weight:700; font-size:0.62rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
+.flow .step h4{font-family:var(--fd); font-weight:800; font-size:0.92rem; letter-spacing:-0.02em; margin:0.3rem 0 0}
+.flow .step p{font-size:0.76rem; color:var(--carbon); margin:0.3rem 0 0; line-height:1.42}
+.flow .step .scr{display:inline-block; margin-top:0.4rem; font-family:var(--fd); font-weight:800;
+  font-size:0.64rem; color:var(--violet); background:var(--lilac); border-radius:999px; padding:0.12rem 0.5rem}
+.flow .arw{align-self:center; color:var(--lavender); font-size:0.85rem; flex:none}
+
+/* 스윔레인 */
+.axis{display:grid; grid-template-columns:6.4rem 1fr; gap:0.5rem; margin-bottom:0.35rem}
+.axis .ticks{display:grid; grid-template-columns:repeat(5,1fr); gap:0.5rem; font-size:0.6rem; color:var(--lavender)}
+.axis .ticks span{border-left:1px solid var(--peri); padding-left:0.3rem}
+.lanes{display:flex; flex-direction:column; gap:0.45rem}
+.lane{display:grid; grid-template-columns:6.4rem 1fr; gap:0.5rem}
+.lane .lb{display:flex; flex-direction:column; align-items:flex-start; justify-content:center;
+  font-weight:600; font-size:0.76rem; color:var(--violet); background:var(--lilac);
+  border:1px solid var(--peri); border-radius:0.8rem; padding:0.4rem 0.55rem; line-height:1.3}
+.lane .lb em{font-style:normal; font-size:0.6rem; color:var(--slate); font-weight:400}
+.lane .steps{display:grid; grid-template-columns:repeat(5,1fr); gap:0.5rem}
+.lane .s{background:var(--paper); border:1px solid var(--peri); border-radius:0.8rem; padding:0.45rem 0.6rem;
+  font-size:0.72rem; color:var(--carbon); line-height:1.35}
+.lane .s b{display:block; font-size:0.76rem; color:var(--ink); font-weight:600; margin-bottom:0.12rem}
+.lane .s .scr{display:block; margin-top:0.25rem; font-family:var(--fd); font-weight:800; font-size:0.62rem; color:var(--violet)}
+.lane .s.hold{border-style:dashed; background:var(--bone); color:var(--lavender); display:flex; align-items:center}
+.lane .s.on{background:var(--lilac); border-color:var(--violet)}
+.lane .s.warn{border-color:var(--rose)}
+.lane .s.warn b{color:var(--rose)}
+
+/* 타임라인 */
+.tl{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.tl .seg{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1rem 1.1rem}
+.tl .seg .t{font-family:var(--fd); font-weight:800; font-size:0.76rem; color:var(--violet); letter-spacing:0.02em}
+.tl .seg h3{font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:-0.02em; margin:0.35rem 0 0}
+.tl .seg ul{margin:0.5rem 0 0; padding:0; list-style:none}
+.tl .seg li{font-size:0.8rem; color:var(--carbon); padding:0.24rem 0; border-bottom:1px solid var(--lilac); display:flex; gap:0.45rem}
+.tl .seg li:last-child{border-bottom:0}
+.tl .seg li .who{color:var(--slate); font-size:0.7rem; width:4.4rem; flex:none}
+.tl .seg li .sid{margin-left:auto}
+
+/* 상태 전이도 */
+.dia{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:0.8rem; flex:1; min-height:0}
+.dia svg{width:100%; height:100%; display:block}
+
+
+/* 세일링스톤 브랜드 - 회사소개서 로고 체계 */
+.lgm{width:100%; height:100%; display:block}
+.brand .mk{background:transparent; color:var(--mint); width:2rem; height:2rem; padding:0}
+.cov-top{display:flex; align-items:center; justify-content:space-between}
+.cov-top .iwd{font-size:0.82rem; color:var(--slate); letter-spacing:-0.01em}
+.cov-corner{display:flex; align-items:center; gap:0.7rem; font-size:0.7rem; color:var(--lavender);
+  letter-spacing:0.08em; margin-top:0.9rem}
+.cov-corner b{font-weight:600; color:var(--slate); letter-spacing:0.06em}
+.cov-corner .bar{color:var(--peri)}
+.end-logo{display:flex; align-items:center; gap:0.6rem; margin-bottom:1.1rem;
+  font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:-0.04em}
+.end-logo .mk{width:1.9rem; height:1.9rem; color:var(--mint)}
+.s-foot .mark .lgm{width:0.78rem; height:0.78rem; display:inline-block; vertical-align:-0.1rem; margin-right:0.28rem}
+
+/* 맺음 */
+.end{justify-content:center}
+.end h2{font-family:var(--fd); font-weight:800; font-size:3rem; letter-spacing:-0.04em; line-height:1.08; margin:0}
+.end h2 em{font-style:normal; color:var(--violet)}
+.end p{font-weight:300; font-size:1.15rem; margin-top:1rem; max-width:52ch}
+.end .info{display:flex; gap:2.2rem; margin-top:2.2rem; font-size:0.82rem; color:var(--slate)}
+.end .info b{display:block; font-family:var(--fd); font-weight:800; font-size:0.92rem; color:var(--ink); letter-spacing:-0.02em; margin-bottom:0.15rem}
+
+.code{background:var(--bone); border:1px solid var(--peri); border-radius:1rem; padding:0.8rem 1rem;
+  font-family:ui-monospace,"Cascadia Mono",Consolas,monospace; font-size:0.68rem; line-height:1.55;
+  white-space:pre; color:var(--carbon); overflow:hidden}
+.code b{color:var(--teal); font-weight:700}
+.grid.g2{grid-template-columns:repeat(2,1fr)}
+</style>
+</head>
+<body>
+<section class="slide cover" data-title="표지">
+  <div class="cov-top">
+    <div class="brand"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
+    <span class="iwd">Intelligence with Data</span>
+  </div>
+  <div class="cov-mid">
+    <div>
+      <div class="eyebrow">설계 산출물 · Solution Design</div>
+      <h1>골프카트 관제시스템<br><em>솔루션 설계서</em></h1>
+      <p class="sub">화면 뒤에서 동작하는 구조 · 데이터 · API · 판정 규칙을 개발 착수 수준으로 정의합니다.</p>
+    </div>
+    <div class="card cov-card">
+      <div class="eyebrow">문서 요약</div>
+      <div class="cov-rows">
+        <div class="r"><span>도메인 모듈</span><b>13개</b></div>
+        <div class="r"><span>테이블 정의</span><b>19개</b></div>
+        <div class="r"><span>API 명세</span><b>REST 40 + WS 2</b></div>
+        <div class="r"><span>알고리즘 · 규칙</span><b>판정 3종 · 알림 6종</b></div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="meta">
+    <div><b>LSV 귀중</b>제출처</div>
+    <div><b>v0.1 · 2026. 09</b>문서 버전</div>
+    <div><b>세일링스톤</b>작성</div>
+  </div>
+  <div class="cov-corner"><b>AI · BI · ANALYTICS</b><span class="bar">|</span><span>© 2026 SAILINGSTONE</span></div>
+</section>
+
+<!-- 문서 개요 -->
+<section class="slide" data-title="문서 개요">
+  <div class="s-head">
+    <div class="eyebrow">문서 개요</div>
+    <h2 class="title">이 문서의 범위와 표기</h2>
+    <p class="lead">화면정의서가 정의한 화면을 <b>바로 개발할 수 있는 수준의 내부 설계</b>로 구체화하며, 착수 후 개발 기준 문서로 사용합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g4" style="margin-bottom:0.85rem">
+      <div class="card">
+        <span class="tag">범위</span>
+        <h3>포함하는 것</h3>
+        <ul>
+          <li>모듈 구조 · 멀티테넌트 설계</li>
+          <li>테이블 정의와 파티션 전략</li>
+          <li>API 명세 · 실시간 파이프라인</li>
+          <li>판정 알고리즘 · 알림 규칙 · 에러 코드</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">범위</span>
+        <h3>포함하지 않는 것</h3>
+        <ul>
+          <li>화면 레이아웃(화면정의서 v0.5)</li>
+          <li>업무 절차(액션 플로우 v0.3)</li>
+          <li>2단계 확장 기능의 상세 설계</li>
+          <li>단말 펌웨어 내부 설계</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">표기</span>
+        <h3>ID 체계</h3>
+        <ul>
+          <li>테이블 <b>TBL-00</b> · API는 메서드 + 경로</li>
+          <li>알림 규칙 <b>ALR-*</b> · 에러 <b>ERR-0000</b></li>
+          <li>협의 전 값은 <b>P_* 파라미터</b>로 선언</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">기준 문서</span>
+        <h3>상위 문서</h3>
+        <ul>
+          <li>구축 제안서 v0.4</li>
+          <li>화면정의서 v0.5(SCR-010~160)</li>
+          <li>사용자 액션 플로우 v0.3</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><b>협의 값은 파라미터로 분리</b>했습니다 - 수집 주기 · 임계값 · 보관 기간처럼 확정 전인 값은 P_* 파라미터와 (TBD) 표기로 선언해 두었으며, 확정 시 코드 수정 없이 설정으로 반영합니다.</div>
+  </div>
+  <div class="s-foot"><span>기준 문서 - 제안서 v0.4 · 화면정의서 v0.5 · 액션 플로우 v0.3</span><span class="mark">SAILINGSTONE · 2</span></div>
+</section>
+
+<!-- 설계 원칙 -->
+<section class="slide" data-title="설계 원칙">
+  <div class="s-head">
+    <div class="eyebrow">01. 전체 구조</div>
+    <h2 class="title">설계 원칙 다섯 가지</h2>
+    <p class="lead">모든 세부 설계는 아래 다섯 원칙을 따르며, 원칙과 충돌하는 요구는 <b>협의 항목으로 승격</b>합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g3" style="margin-bottom:0.9rem">
+      <div class="card">
+        <span class="tag">원칙 1</span>
+        <h3>격리를 데이터 계층에서</h3>
+        <p>골프장 격리는 화면이나 API 코드가 아니라 <b>DB 행 수준 보안(RLS)</b>에서 보장합니다. 코드 실수가 격리 사고로 이어지지 않게 합니다.</p>
+      </div>
+      <div class="card">
+        <span class="tag">원칙 2</span>
+        <h3>수집과 조회의 분리</h3>
+        <p>단말 수집 경로와 화면 조회 경로를 프로세스 단위로 분리해, 조회 부하가 수집 유실로 이어지지 않게 합니다.</p>
+      </div>
+      <div class="card">
+        <span class="tag">원칙 3</span>
+        <h3>원본 보존 · 판정 재계산</h3>
+        <p>수신 원본(CAN 프레임 · 위치)은 그대로 적재하고, 상태 · 트립 · 알림은 원본에서 <b>재계산 가능</b>하게 설계합니다.</p>
+      </div>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <span class="tag">원칙 4</span>
+        <h3>이력은 지우지 않는다</h3>
+        <p>차량 · 골프장 · 계정의 삭제는 비활성화로 처리하고, 정비 기록 수정은 이전 값을 이력으로 보존합니다. 감사 로그는 전 쓰기 작업에 적용합니다.</p>
+      </div>
+      <div class="card">
+        <span class="tag">원칙 5</span>
+        <h3>협의 값은 설정으로</h3>
+        <p>수집 주기 · 속도 임계 · 보관 기간 등 협의 대상 값은 파라미터 테이블과 환경 변수로 두고, 확정 시 배포 없이 반영합니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>원칙과 충돌하는 요구는 착수 협의 안건으로 등록</span><span class="mark">SAILINGSTONE · 3</span></div>
+</section>
+
+<!-- 시스템 구성도 -->
+<section class="slide" data-title="시스템 구성도">
+  <div class="s-head">
+    <div class="eyebrow">01. 전체 구조</div>
+    <h2 class="title">시스템 구성과 프로세스 배치</h2>
+    <p class="lead">수집 · 처리 · 조회를 <b>3개 프로세스</b>로 나누어 배치하며, 각 프로세스는 독립적으로 재시작할 수 있습니다.</p>
+  </div>
+  <div class="body">
+    <div class="flow" style="margin-bottom:0.95rem">
+      <div class="step"><div class="k">단말</div><h4>카트 단말</h4><p>CAN · GPS 수집, 음영 구간 로컬 버퍼와 재전송을 담당합니다.</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">수집</div><h4>Collector</h4><p>TLS 소켓 수신 · 단말 인증 · 패킷 검증 후 원본을 적재하고 처리 큐에 넘깁니다.</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">처리</div><h4>Worker</h4><p>신호 파싱 · 상태 판정 · 트립 분할 · 알림 규칙을 실행하고 이벤트를 발행합니다.</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">조회</div><h4>API · WS</h4><p>REST 조회와 WebSocket 실시간 배포, 인증 · 권한 · 테넌트 컨텍스트를 담당합니다.</p></div>
+    </div>
+    <table class="tight dense">
+      <tr><th>프로세스</th><th>기술</th><th>포트 · 프로토콜</th><th>확장 방식</th><th>장애 시 영향</th></tr>
+      <tr><td><b>collector</b></td><td class="g">NestJS 독립 앱(TCP 서버)</td><td class="g">P_COLLECT_PORT · TLS TCP</td><td class="g">수평 확장(단말-인스턴스 고정 배정)</td><td class="g">단말이 로컬 버퍼 유지, 복구 후 재전송</td></tr>
+      <tr><td><b>worker</b></td><td class="g">NestJS 큐 소비자(BullMQ · Redis)</td><td class="g">내부 큐</td><td class="g">큐 파티션 단위 확장</td><td class="g">원본은 적재됨, 판정만 지연 후 따라잡음</td></tr>
+      <tr><td><b>api</b></td><td class="g">NestJS HTTP · WebSocket 게이트웨이</td><td class="g">443 · HTTPS / WSS</td><td class="g">무상태 수평 확장</td><td class="g">수집은 계속, 화면 조회만 일시 중단</td></tr>
+    </table>
+    <div class="note"><b>저장소는 셋</b>입니다 - PostgreSQL 16(운영 · 시계열), Redis(큐 · 최신 상태 캐시), S3 호환 스토리지(점검 사진 · 코스 배경 · 내보내기 파일).</div>
+  </div>
+  <div class="s-foot"><span>운영 환경 기준 - 개발 환경은 단일 인스턴스로 축소 배치</span><span class="mark">SAILINGSTONE · 4</span></div>
+</section>
+
+<!-- 모듈 구조 -->
+<section class="slide" data-title="모듈 구조">
+  <div class="s-head">
+    <div class="eyebrow">01. 전체 구조</div>
+    <h2 class="title">NestJS 모듈 구조와 의존 규칙</h2>
+    <p class="lead">도메인 <b>13개 모듈</b>로 나누고, 의존은 공통 모듈 방향으로만 허용해 순환 참조를 차단합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="margin-bottom:0.85rem; font-size:0.74rem">
+      <tr><th>모듈</th><th>책임</th><th>주요 제공 기능</th><th>대응 화면</th></tr>
+      <tr><td><b>auth</b></td><td class="g">인증 · 세션</td><td class="g">로그인, OTP 2단계, 토큰 발급 · 갱신</td><td class="g">공통 로그인</td></tr>
+      <tr><td><b>tenant</b></td><td class="g">테넌트 컨텍스트</td><td class="g">골프장 스코프 주입, RLS 세션 변수 설정</td><td class="g">전 화면 공통</td></tr>
+      <tr><td><b>site · central</b></td><td class="g">골프장 · 중앙 콘솔</td><td class="g">골프장 등록 · 상태, 통합 현황 집계</td><td class="g">SCR-150 · 160</td></tr>
+      <tr><td><b>user</b></td><td class="g">계정 · 권한</td><td class="g">계정 CRUD, 역할 · 허용 기능</td><td class="g">SCR-140</td></tr>
+      <tr><td><b>cart · device</b></td><td class="g">차량 · 단말</td><td class="g">차량 등록, 단말 배정 · 교체 이력, MES 연계</td><td class="g">SCR-060 ~ 080</td></tr>
+      <tr><td><b>telemetry</b></td><td class="g">수집 데이터</td><td class="g">원본 적재, 최신 상태 캐시, 조회 API</td><td class="g">SCR-010 · 020</td></tr>
+      <tr><td><b>trip</b></td><td class="g">운행 · 트립</td><td class="g">트립 분할 · 홀 구간 · 집계 · 재계산</td><td class="g">SCR-040 · 050</td></tr>
+      <tr><td><b>alert</b></td><td class="g">알림</td><td class="g">규칙 평가, 이벤트 생명주기, 발송 채널</td><td class="g">SCR-030</td></tr>
+      <tr><td><b>maintenance</b></td><td class="g">정비</td><td class="g">정비 이력, 체크리스트, 소모품 주기</td><td class="g">SCR-090 ~ 120</td></tr>
+      <tr><td><b>course</b></td><td class="g">코스 · 지오펜스</td><td class="g">홀 마킹, 지오펜스 판정 제공</td><td class="g">SCR-130</td></tr>
+      <tr><td><b>report</b></td><td class="g">리포트</td><td class="g">기간 집계, 내보내기 파일 생성</td><td class="g">SCR-050</td></tr>
+    </table>
+    <div class="note"><b>의존 규칙</b> - 도메인 모듈은 tenant · auth 공통 모듈에만 의존하고 서로는 이벤트로 통신합니다(예: trip 종료 이벤트를 report가 구독). 순환 참조는 CI에서 검사해 차단합니다.</div>
+  </div>
+  <div class="s-foot"><span>모듈 = NestJS Module 단위, 폴더 구조와 일치</span><span class="mark">SAILINGSTONE · 5</span></div>
+</section>
+
+<!-- 멀티테넌트 설계 -->
+<section class="slide" data-title="멀티테넌트 설계">
+  <div class="s-head">
+    <div class="eyebrow">01. 전체 구조</div>
+    <h2 class="title">멀티테넌트 격리 구현</h2>
+    <p class="lead">모든 요청은 <b>테넌트 컨텍스트를 먼저 확정</b>한 뒤 처리되며, 격리는 PostgreSQL 행 수준 보안이 최종 방어선입니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1.05fr 1fr; gap:0.9rem; margin-bottom:0.85rem">
+      <div>
+        <table class="tight dense" style="margin-bottom:0.7rem">
+          <tr><th>JWT 클레임</th><th>값</th><th>용도</th></tr>
+          <tr><td><b>sub</b></td><td class="g">user_account.id</td><td class="g">감사 로그 주체</td></tr>
+          <tr><td><b>role</b></td><td class="g">global · site_admin · operator · mechanic · viewer</td><td class="g">기능 권한 판정</td></tr>
+          <tr><td><b>site</b></td><td class="g">소속 골프장 id(전역 관리자는 null)</td><td class="g">테넌트 스코프</td></tr>
+          <tr><td><b>act_site</b></td><td class="g">전역 관리자가 전환해 보는 골프장 id</td><td class="g">골프장 전환</td></tr>
+        </table>
+        <div class="note" style="margin:0"><b>요청 처리 순서</b> - ① 토큰 검증(auth) ② 테넌트 확정(tenant: site 또는 act_site) ③ DB 세션 변수 설정 ④ 컨트롤러 진입. 세션 변수가 없는 쿼리는 RLS가 0건을 반환해 실패가 아니라 <b>빈 결과로 격리</b>됩니다.</div>
+      </div>
+      <div class="code">-- 골프장 스코프 테이블 공통 정책
+ALTER TABLE cart ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY cart_isolation ON cart
+  USING (
+    current_setting('app.role') = 'global'
+    OR site_id = current_setting('app.site_id')::uuid
+  );
+
+-- 트랜잭션마다 tenant 미들웨어가 설정
+SET LOCAL app.role    = 'site_admin';
+SET LOCAL app.site_id = '&lt;골프장 id&gt;';</div>
+    </div>
+    <div class="grid g3">
+      <div class="card"><span class="tag">적용 대상</span><h3>site_id 보유 전 테이블</h3><p>기준 정보 · 운영 · 시계열의 골프장 스코프 테이블 전체에 같은 정책을 일괄 적용하고, 마이그레이션 검사로 누락을 차단합니다.</p></div>
+      <div class="card"><span class="tag">예외</span><h3>전역 테이블 3종</h3><p>site(골프장 목록) · user_account(전역 계정) · audit_log는 전용 정책을 둡니다. 골프장 관리자는 site에서 자기 행만 조회합니다.</p></div>
+      <div class="card"><span class="tag">검증</span><h3>격리 자동 시험</h3><p>CI에서 골프장 2개 시드 후 교차 조회가 전부 0건인지 확인하는 격리 시험을 상시 실행합니다.</p></div>
+    </div>
+  </div>
+  <div class="s-foot"><span>전역 관리자의 골프장 전환도 같은 경로로 처리</span><span class="mark">SAILINGSTONE · 6</span></div>
+</section>
+
+<!-- 데이터 모델 전체 구성 -->
+<section class="slide" data-title="데이터 모델 전체 구성">
+  <div class="s-head">
+    <div class="eyebrow">02. 데이터 설계</div>
+    <h2 class="title">테이블 전체 구성 19개</h2>
+    <p class="lead">테이블은 <b>기준 정보 · 운영 · 시계열 · 시스템 4개 그룹</b>으로 나누며, 시계열만 파티션을 적용합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.65rem; line-height:1.3">
+      <tr><th>그룹</th><th>테이블</th><th>설명</th><th>격리</th><th>보존</th></tr>
+      <tr><td rowspan="6"><b>기준 정보</b></td><td class="g">TBL-01 site</td><td class="g">골프장(테넌트 루트)</td><td class="g">전역 정책</td><td class="g">영구</td></tr>
+      <tr><td class="g">TBL-02 user_account</td><td class="g">계정 · 역할 · 2단계 인증</td><td class="g">전역 정책</td><td class="g">영구</td></tr>
+      <tr><td class="g">TBL-03 cart</td><td class="g">카트(차량)</td><td class="g">site_id</td><td class="g">영구 · 비활성화</td></tr>
+      <tr><td class="g">TBL-04 device</td><td class="g">단말 기기</td><td class="g">site_id</td><td class="g">영구</td></tr>
+      <tr><td class="g">TBL-05 device_assignment</td><td class="g">카트-단말 배정 · 교체 이력</td><td class="g">site_id</td><td class="g">영구</td></tr>
+      <tr><td class="g">TBL-06 course · TBL-07 hole</td><td class="g">코스 배경 · 홀 지오펜스</td><td class="g">site_id</td><td class="g">영구 · 개정 이력</td></tr>
+      <tr><td rowspan="7"><b>운영</b></td><td class="g">TBL-08 trip</td><td class="g">트립(운행 단위)</td><td class="g">site_id</td><td class="g">P_RETENTION</td></tr>
+      <tr><td class="g">TBL-09 trip_hole</td><td class="g">트립의 홀별 구간</td><td class="g">site_id</td><td class="g">trip과 동일</td></tr>
+      <tr><td class="g">TBL-10 alert_rule</td><td class="g">알림 규칙 · 파라미터</td><td class="g">site_id</td><td class="g">영구</td></tr>
+      <tr><td class="g">TBL-11 alert_event</td><td class="g">알림 이벤트 · 조치 이력</td><td class="g">site_id</td><td class="g">P_RETENTION</td></tr>
+      <tr><td class="g">TBL-12 maintenance_log</td><td class="g">정비 · 수리 이력</td><td class="g">site_id</td><td class="g">영구</td></tr>
+      <tr><td class="g">TBL-13 checklist_result</td><td class="g">점검 체크리스트 결과</td><td class="g">site_id</td><td class="g">영구</td></tr>
+      <tr><td class="g">TBL-14 consumable_rule</td><td class="g">소모품 교체 주기 규칙</td><td class="g">site_id</td><td class="g">영구</td></tr>
+      <tr><td rowspan="3"><b>시계열</b></td><td class="g">TBL-15 telemetry_point</td><td class="g">위치 · 속도 · SoC 포인트</td><td class="g">site_id</td><td class="g">월 파티션 · P_RETENTION</td></tr>
+      <tr><td class="g">TBL-16 can_frame_raw</td><td class="g">CAN 프레임 원본</td><td class="g">site_id</td><td class="g">월 파티션 · P_RETENTION_RAW</td></tr>
+      <tr><td class="g">TBL-17 dtc_event</td><td class="g">고장 코드 발생 · 해제</td><td class="g">site_id</td><td class="g">영구</td></tr>
+      <tr><td rowspan="2"><b>시스템</b></td><td class="g">TBL-18 audit_log</td><td class="g">쓰기 작업 감사 로그</td><td class="g">전용 정책</td><td class="g">P_RETENTION</td></tr>
+      <tr><td class="g">TBL-19 app_parameter</td><td class="g">P_* 파라미터 저장소</td><td class="g">전역 + site 덮어쓰기</td><td class="g">영구</td></tr>
+    </table>
+  </div>
+  <div class="s-foot"><span>PK는 전부 uuid v7(시간 정렬) · 생성 시각 기본 포함</span><span class="mark">SAILINGSTONE · 7</span></div>
+</section>
+
+<!-- 테이블 정의 - 골프장과 계정 -->
+<section class="slide" data-title="테이블 정의 - 골프장과 계정">
+  <div class="s-head">
+    <div class="eyebrow">02. 데이터 설계</div>
+    <h2 class="title">골프장 · 계정 테이블 정의</h2>
+    <p class="lead">골프장은 테넌트의 루트이며, 계정은 <b>소속 골프장과 역할</b>로 접근 범위가 정해집니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="gap:0.9rem">
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th colspan="4">TBL-01 site - 골프장</th></tr>
+          <tr><th>컬럼</th><th>타입</th><th>제약</th><th>설명</th></tr>
+          <tr><td><b>id</b></td><td class="g">uuid</td><td class="g">PK</td><td class="g">골프장 식별자</td></tr>
+          <tr><td><b>code</b></td><td class="g">varchar(16)</td><td class="g">UNIQUE</td><td class="g">GC-01 형식, 등록 후 불변</td></tr>
+          <tr><td><b>name</b></td><td class="g">varchar(80)</td><td class="g">NOT NULL</td><td class="g">골프장명</td></tr>
+          <tr><td><b>hole_layout</b></td><td class="g">jsonb</td><td class="g">-</td><td class="g">홀 수 · 코스 구성(OUT · IN)</td></tr>
+          <tr><td><b>status</b></td><td class="g">enum</td><td class="g">NOT NULL</td><td class="g">preparing · active · closed</td></tr>
+          <tr><td><b>manager_user_id</b></td><td class="g">uuid</td><td class="g">FK NULL</td><td class="g">골프장 관리자(미지정 시 preparing)</td></tr>
+          <tr><td><b>opened_at</b></td><td class="g">date</td><td class="g">NULL</td><td class="g">개장일</td></tr>
+          <tr><td><b>created_at</b></td><td class="g">timestamptz</td><td class="g">DEFAULT now()</td><td class="g">등록 시각</td></tr>
+        </table>
+      </div>
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th colspan="4">TBL-02 user_account - 계정</th></tr>
+          <tr><th>컬럼</th><th>타입</th><th>제약</th><th>설명</th></tr>
+          <tr><td><b>id</b></td><td class="g">uuid</td><td class="g">PK</td><td class="g">계정 식별자</td></tr>
+          <tr><td><b>site_id</b></td><td class="g">uuid</td><td class="g">FK NULL</td><td class="g">소속 골프장, 전역 관리자는 NULL</td></tr>
+          <tr><td><b>login_id</b></td><td class="g">varchar(40)</td><td class="g">UNIQUE</td><td class="g">로그인 아이디</td></tr>
+          <tr><td><b>password_hash</b></td><td class="g">text</td><td class="g">NOT NULL</td><td class="g">argon2id 해시</td></tr>
+          <tr><td><b>role</b></td><td class="g">enum</td><td class="g">NOT NULL</td><td class="g">global · site_admin · operator · mechanic · viewer</td></tr>
+          <tr><td><b>allowed_features</b></td><td class="g">jsonb</td><td class="g">-</td><td class="g">역할 기본값의 개별 조정분</td></tr>
+          <tr><td><b>otp_secret</b></td><td class="g">text</td><td class="g">NULL 암호화</td><td class="g">2단계 인증(앱 OTP)</td></tr>
+          <tr><td><b>status</b></td><td class="g">enum</td><td class="g">NOT NULL</td><td class="g">active · suspended</td></tr>
+          <tr><td><b>last_login_at</b></td><td class="g">timestamptz</td><td class="g">NULL</td><td class="g">최근 접속</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="note" style="margin-top:0.75rem"><b>역할 5종은 화면 문서와 1:1</b>입니다 - global(전역 관리자) · site_admin(골프장 관리자) · operator(관제 운영자) · mechanic(정비 담당자) · viewer(조회 전용). 역할 변경 · 정지는 audit_log에 기록합니다.</div>
+  </div>
+  <div class="s-foot"><span>비밀번호 규칙 · 잠금 정책은 P_PASSWORD_* 파라미터</span><span class="mark">SAILINGSTONE · 8</span></div>
+</section>
+
+<!-- 테이블 정의 - 차량과 단말 -->
+<section class="slide" data-title="테이블 정의 - 차량과 단말">
+  <div class="s-head">
+    <div class="eyebrow">02. 데이터 설계</div>
+    <h2 class="title">차량 · 단말 · 배정 테이블 정의</h2>
+    <p class="lead">차량과 단말을 분리하고 <b>배정 이력 테이블</b>로 연결해, 단말 교체 후에도 데이터가 차량 기준으로 이어집니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="gap:0.9rem; margin-bottom:0.75rem">
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th colspan="4">TBL-03 cart - 차량</th></tr>
+          <tr><th>컬럼</th><th>타입</th><th>제약</th><th>설명</th></tr>
+          <tr><td><b>id</b></td><td class="g">uuid</td><td class="g">PK</td><td class="g">차량 식별자</td></tr>
+          <tr><td><b>site_id</b></td><td class="g">uuid</td><td class="g">FK NOT NULL</td><td class="g">소속 골프장</td></tr>
+          <tr><td><b>vin</b></td><td class="g">varchar(32)</td><td class="g">UNIQUE</td><td class="g">차대번호</td></tr>
+          <tr><td><b>model</b></td><td class="g">varchar(40)</td><td class="g">-</td><td class="g">모델명 · 연식</td></tr>
+          <tr><td><b>alias</b></td><td class="g">varchar(40)</td><td class="g">-</td><td class="g">현장 별칭(#101 등)</td></tr>
+          <tr><td><b>state</b></td><td class="g">enum</td><td class="g">NOT NULL</td><td class="g">대기 · 배차 · 운행 · 복귀 · 충전 · 정비</td></tr>
+          <tr><td><b>mes_parts</b></td><td class="g">jsonb</td><td class="g">-</td><td class="g">MES 부품 시리얼(최소 항목)</td></tr>
+          <tr><td><b>active</b></td><td class="g">boolean</td><td class="g">DEFAULT true</td><td class="g">폐차 · 대차는 false</td></tr>
+        </table>
+      </div>
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th colspan="4">TBL-04 device - 단말</th></tr>
+          <tr><th>컬럼</th><th>타입</th><th>제약</th><th>설명</th></tr>
+          <tr><td><b>id</b></td><td class="g">uuid</td><td class="g">PK</td><td class="g">단말 식별자</td></tr>
+          <tr><td><b>site_id</b></td><td class="g">uuid</td><td class="g">FK NOT NULL</td><td class="g">배치 골프장</td></tr>
+          <tr><td><b>serial</b></td><td class="g">varchar(40)</td><td class="g">UNIQUE</td><td class="g">단말 시리얼</td></tr>
+          <tr><td><b>mac · imei</b></td><td class="g">macaddr · varchar(20)</td><td class="g">UNIQUE</td><td class="g">중복 등록 검증 대상</td></tr>
+          <tr><td><b>token_hash</b></td><td class="g">text</td><td class="g">NOT NULL</td><td class="g">단말 인증 토큰 해시</td></tr>
+          <tr><td><b>fw_version</b></td><td class="g">varchar(20)</td><td class="g">-</td><td class="g">펌웨어 버전</td></tr>
+          <tr><td><b>last_seen_at</b></td><td class="g">timestamptz</td><td class="g">NULL</td><td class="g">마지막 수신(통신 두절 판정)</td></tr>
+        </table>
+      </div>
+    </div>
+    <table class="tight dense" style="font-size:0.71rem">
+      <tr><th colspan="4">TBL-05 device_assignment - 배정 이력</th></tr>
+      <tr><th>컬럼</th><th>타입 · 제약</th><th>설명</th><th>규칙</th></tr>
+      <tr><td><b>cart_id · device_id</b></td><td class="g">uuid FK</td><td class="g">배정 쌍</td><td class="g">동시 유효 배정은 카트당 1건(부분 UNIQUE)</td></tr>
+      <tr><td><b>assigned_at · released_at</b></td><td class="g">timestamptz · NULL</td><td class="g">배정 · 해제 시각</td><td class="g">해제 없이 새 배정 등록 시 자동 해제 + 이력</td></tr>
+    </table>
+  </div>
+  <div class="s-foot"><span>수집 데이터는 device가 아닌 cart 기준으로 조회</span><span class="mark">SAILINGSTONE · 9</span></div>
+</section>
+
+<!-- 테이블 정의 - 운행 -->
+<section class="slide" data-title="테이블 정의 - 운행">
+  <div class="s-head">
+    <div class="eyebrow">02. 데이터 설계</div>
+    <h2 class="title">트립 · 홀 구간 테이블 정의</h2>
+    <p class="lead">트립은 리포트의 기준 단위이며, 집계 값은 <b>종료 시 확정 · 재계산 가능</b>으로 설계합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="gap:0.9rem; margin-bottom:0.75rem">
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th colspan="4">TBL-08 trip - 트립</th></tr>
+          <tr><th>컬럼</th><th>타입</th><th>제약</th><th>설명</th></tr>
+          <tr><td><b>id</b></td><td class="g">uuid</td><td class="g">PK</td><td class="g">트립 식별자</td></tr>
+          <tr><td><b>site_id · cart_id</b></td><td class="g">uuid</td><td class="g">FK NOT NULL</td><td class="g">골프장 · 차량</td></tr>
+          <tr><td><b>started_at</b></td><td class="g">timestamptz</td><td class="g">NOT NULL</td><td class="g">시작 판정 시각</td></tr>
+          <tr><td><b>ended_at</b></td><td class="g">timestamptz</td><td class="g">NULL</td><td class="g">종료 판정 시각(진행 중 NULL)</td></tr>
+          <tr><td><b>distance_m</b></td><td class="g">integer</td><td class="g">-</td><td class="g">궤적 누적 거리(m)</td></tr>
+          <tr><td><b>max_speed_kmh</b></td><td class="g">numeric(5,1)</td><td class="g">-</td><td class="g">최고 속도</td></tr>
+          <tr><td><b>point_count</b></td><td class="g">integer</td><td class="g">-</td><td class="g">수신 포인트 수(결손율 계산)</td></tr>
+          <tr><td><b>status</b></td><td class="g">enum</td><td class="g">NOT NULL</td><td class="g">open · closed · recalc</td></tr>
+        </table>
+      </div>
+      <div>
+        <table class="tight dense" style="font-size:0.71rem; margin-bottom:0.7rem">
+          <tr><th colspan="4">TBL-09 trip_hole - 홀 구간</th></tr>
+          <tr><th>컬럼</th><th>타입</th><th>제약</th><th>설명</th></tr>
+          <tr><td><b>trip_id</b></td><td class="g">uuid</td><td class="g">FK NOT NULL</td><td class="g">소속 트립</td></tr>
+          <tr><td><b>hole_no</b></td><td class="g">smallint</td><td class="g">NOT NULL</td><td class="g">홀 번호</td></tr>
+          <tr><td><b>entered_at · exited_at</b></td><td class="g">timestamptz</td><td class="g">-</td><td class="g">지오펜스 진입 · 이탈</td></tr>
+          <tr><td><b>duration_s</b></td><td class="g">integer</td><td class="g">-</td><td class="g">소요 시간(초)</td></tr>
+        </table>
+        <div class="note" style="margin:0"><b>집계 확정 규칙</b> - distance · max_speed · 홀 구간은 트립 종료 이벤트에서 한 번에 계산해 저장하고, 홀 마킹이 바뀌면 status를 recalc로 바꿔 워커가 재계산합니다. 재계산 이력은 audit_log에 남깁니다.</div>
+      </div>
+    </div>
+    <div class="note"><b>조회 최적화</b> - 리포트 화면(SCR-050)은 trip 집계 컬럼만 읽고, 재생 화면(SCR-040)만 telemetry_point를 기간 조회합니다. 인덱스는 (site_id, started_at DESC)와 (cart_id, started_at DESC) 2개를 둡니다.</div>
+  </div>
+  <div class="s-foot"><span>트립 판정 파라미터는 알고리즘 페이지에 정의</span><span class="mark">SAILINGSTONE · 10</span></div>
+</section>
+
+<!-- 테이블 정의 - 알림과 정비 -->
+<section class="slide" data-title="테이블 정의 - 알림과 정비">
+  <div class="s-head">
+    <div class="eyebrow">02. 데이터 설계</div>
+    <h2 class="title">알림 · 정비 테이블 정의</h2>
+    <p class="lead">알림은 <b>발생 - 확인 - 종결의 생명주기</b>를 갖고, 정비 기록은 수정 시 이전 값을 보존합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="gap:0.9rem; margin-bottom:0.75rem">
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th colspan="4">TBL-11 alert_event - 알림 이벤트</th></tr>
+          <tr><th>컬럼</th><th>타입</th><th>제약</th><th>설명</th></tr>
+          <tr><td><b>id</b></td><td class="g">uuid</td><td class="g">PK</td><td class="g">이벤트 식별자</td></tr>
+          <tr><td><b>site_id · cart_id</b></td><td class="g">uuid</td><td class="g">FK · cart NULL</td><td class="g">시스템 알림은 cart NULL</td></tr>
+          <tr><td><b>rule_code</b></td><td class="g">varchar(20)</td><td class="g">NOT NULL</td><td class="g">ALR-* 규칙 코드</td></tr>
+          <tr><td><b>severity</b></td><td class="g">enum</td><td class="g">NOT NULL</td><td class="g">info · warn · critical</td></tr>
+          <tr><td><b>payload</b></td><td class="g">jsonb</td><td class="g">-</td><td class="g">발생 시점 값(SoC · 코드 등)</td></tr>
+          <tr><td><b>status</b></td><td class="g">enum</td><td class="g">NOT NULL</td><td class="g">open · ack · closed</td></tr>
+          <tr><td><b>acked_by · acked_at</b></td><td class="g">uuid · timestamptz</td><td class="g">NULL</td><td class="g">확인자 · 확인 시각</td></tr>
+          <tr><td><b>closed_note</b></td><td class="g">text</td><td class="g">NULL</td><td class="g">조치 내용(종결 시 필수)</td></tr>
+        </table>
+      </div>
+      <div>
+        <table class="tight dense" style="font-size:0.71rem; margin-bottom:0.7rem">
+          <tr><th colspan="3">TBL-12 maintenance_log - 정비 이력</th></tr>
+          <tr><th>컬럼</th><th>타입 · 제약</th><th>설명</th></tr>
+          <tr><td><b>type</b></td><td class="g">enum</td><td class="g">repair · inspect · consumable</td></tr>
+          <tr><td><b>summary · detail</b></td><td class="g">text · jsonb</td><td class="g">요약 · 항목별 내용</td></tr>
+          <tr><td><b>worker_id · occurred_at</b></td><td class="g">uuid FK · timestamptz</td><td class="g">작업자 · 작업 시각</td></tr>
+          <tr><td><b>revisions</b></td><td class="g">jsonb</td><td class="g">수정 전 값 배열(불변 이력)</td></tr>
+        </table>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th colspan="3">TBL-13 checklist_result - 점검 결과</th></tr>
+          <tr><th>컬럼</th><th>타입 · 제약</th><th>설명</th></tr>
+          <tr><td><b>item_code · result</b></td><td class="g">varchar · enum</td><td class="g">항목 코드 · ok / ng</td></tr>
+          <tr><td><b>action · photo_key</b></td><td class="g">text NULL</td><td class="g">ng 조치 · 사진(S3 키)</td></tr>
+          <tr><td><b>checked_by · checked_at</b></td><td class="g">uuid · timestamptz</td><td class="g">점검자 · 시각</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="note"><b>ng 항목은 정비로 승격</b>됩니다 - 체크리스트 ng 저장 시 maintenance_log(inspect)와 알림 이벤트를 함께 생성해, 액션 플로우 시나리오 01 · 03의 흐름을 데이터로 보장합니다.</div>
+  </div>
+  <div class="s-foot"><span>소모품 주기(TBL-14)는 D-n 계산 규칙만 보유</span><span class="mark">SAILINGSTONE · 11</span></div>
+</section>
+
+<!-- 테이블 정의 - 시계열 -->
+<section class="slide" data-title="테이블 정의 - 시계열">
+  <div class="s-head">
+    <div class="eyebrow">02. 데이터 설계</div>
+    <h2 class="title">시계열 테이블과 파티션 전략</h2>
+    <p class="lead">시계열 3종은 <b>월 단위 파티션</b>으로 적재하고, 보관 기간이 지난 파티션은 통째로 분리 · 보관합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1.15fr 1fr; gap:0.9rem; margin-bottom:0.75rem">
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th colspan="4">TBL-15 telemetry_point - 수집 포인트</th></tr>
+          <tr><th>컬럼</th><th>타입</th><th>제약</th><th>설명</th></tr>
+          <tr><td><b>time</b></td><td class="g">timestamptz</td><td class="g">PK 일부</td><td class="g">단말 기준 수집 시각</td></tr>
+          <tr><td><b>cart_id</b></td><td class="g">uuid</td><td class="g">PK 일부</td><td class="g">차량(배정 이력으로 환원)</td></tr>
+          <tr><td><b>site_id</b></td><td class="g">uuid</td><td class="g">NOT NULL</td><td class="g">RLS 스코프</td></tr>
+          <tr><td><b>lat · lng</b></td><td class="g">double</td><td class="g">-</td><td class="g">위도 · 경도(보정 후)</td></tr>
+          <tr><td><b>speed_kmh</b></td><td class="g">smallint</td><td class="g">-</td><td class="g">VCU wSpeed 환산</td></tr>
+          <tr><td><b>soc</b></td><td class="g">smallint</td><td class="g">-</td><td class="g">BMS SOC 신호(%)</td></tr>
+          <tr><td><b>seq</b></td><td class="g">bigint</td><td class="g">-</td><td class="g">단말 시퀀스(중복 · 순서 복원)</td></tr>
+        </table>
+      </div>
+      <div class="code">-- 월 파티션 선언
+CREATE TABLE telemetry_point (...)
+PARTITION BY RANGE (time);
+
+CREATE TABLE telemetry_point_2026_10
+  PARTITION OF telemetry_point
+  FOR VALUES FROM ('2026-10-01')
+              TO ('2026-11-01');
+
+-- 워커가 익월 파티션을 선생성,
+-- P_RETENTION 경과 파티션은
+-- DETACH 후 S3로 내보내 보관</div>
+    </div>
+    <table class="tight dense" style="font-size:0.71rem">
+      <tr><th>테이블</th><th>구성</th><th>비고</th></tr>
+      <tr><td><b>TBL-16 can_frame_raw</b></td><td class="g">time · device_id · frame_id · payload(bytea) · seq</td><td class="g">파싱 실패분 포함 전량 보존, 재파싱의 원천</td></tr>
+      <tr><td><b>TBL-17 dtc_event</b></td><td class="g">site_id · cart_id · source(BMS · MCU · VCU · AGV) · code · occurred_at · cleared_at</td><td class="g">발생 - 해제 쌍으로 관리, 알림 · 정비 화면 공용</td></tr>
+    </table>
+  </div>
+  <div class="s-foot"><span>쓰기는 COPY 배치(1초 버퍼) · 중복 seq는 무시</span><span class="mark">SAILINGSTONE · 12</span></div>
+</section>
+
+<!-- 단말 수집 인터페이스 -->
+<section class="slide" data-title="단말 수집 인터페이스">
+  <div class="s-head">
+    <div class="eyebrow">03. 수집 설계</div>
+    <h2 class="title">단말 수집 프로토콜 (안)</h2>
+    <p class="lead">단말 인터페이스 문서 확정 전까지는 아래 <b>가정 프로토콜</b>로 개발하고, 수신 계층을 어댑터로 분리해 교체 비용을 고정합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1.15fr 1fr; gap:0.9rem; margin-bottom:0.75rem">
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th>필드</th><th>크기</th><th>설명</th></tr>
+          <tr><td><b>magic · version</b></td><td class="g">2B · 1B</td><td class="g">패킷 식별 · 프로토콜 버전</td></tr>
+          <tr><td><b>device_serial</b></td><td class="g">16B</td><td class="g">단말 식별(토큰 인증 후 검증)</td></tr>
+          <tr><td><b>seq</b></td><td class="g">8B</td><td class="g">단조 증가 시퀀스</td></tr>
+          <tr><td><b>timestamp</b></td><td class="g">8B</td><td class="g">수집 시각(UTC ms)</td></tr>
+          <tr><td><b>payload</b></td><td class="g">TLV 가변</td><td class="g">GPS · 속도 · SoC · CAN 프레임 목록</td></tr>
+          <tr><td><b>crc</b></td><td class="g">4B</td><td class="g">무결성 검증(실패 시 폐기 · 카운트)</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">인증</span><h3>단말 토큰 + TLS</h3><p>연결 수립 시 단말 토큰을 검증하고, 이후 패킷은 세션에 귀속합니다. 토큰은 등록 화면(SCR-080)에서 발급 · 회수합니다.</p></div>
+        <div class="card"><span class="tag">재전송</span><h3>ACK · 시퀀스 갭</h3><p>서버는 마지막 처리 seq를 ACK로 회신하고, 단말은 미ACK 분을 로컬 버퍼에서 재전송합니다. 중복 seq는 서버가 무시합니다.</p></div>
+      </div>
+    </div>
+    <div class="note"><b>확정 문서 반영 절차</b> - 실제 단말 프로토콜 문서를 받으면 수신 어댑터(파서 1개 파일)만 교체합니다. 어댑터 출력은 내부 표준 메시지(NormalizedPacket)로 고정되어 이후 파이프라인은 수정이 없습니다. (TBD - 단말 인터페이스 문서 · 전송 주기)</div>
+  </div>
+  <div class="s-foot"><span>가정 주기 1초(P_COLLECT_INTERVAL) 기준 설계</span><span class="mark">SAILINGSTONE · 13</span></div>
+</section>
+
+<!-- CAN 신호 매핑 -->
+<section class="slide" data-title="CAN 신호 매핑">
+  <div class="s-head">
+    <div class="eyebrow">03. 수집 설계</div>
+    <h2 class="title">CAN 신호와 내부 필드 매핑</h2>
+    <p class="lead">요구사항정의서의 제어기 4종 신호를 <b>내부 필드로 정규화</b>하며, 미정의 신호는 원문 그대로 보존합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.72rem; margin-bottom:0.75rem">
+      <tr><th>제어기</th><th>신호</th><th>내부 필드</th><th>변환</th><th>사용 화면</th></tr>
+      <tr><td rowspan="3"><b>BMS</b></td><td class="g">SOC · SOH</td><td class="g">telemetry_point.soc · cart_health.soh</td><td class="g">% 정수 절사</td><td class="g">SCR-010 · 060 · 110</td></tr>
+      <tr><td class="g">PackV · Current</td><td class="g">dtc_event.raw(이벤트 시점 스냅숏)</td><td class="g">V · A 소수 1자리</td><td class="g">SCR-070 · 120</td></tr>
+      <tr><td class="g">배터리 고장 코드</td><td class="g">dtc_event(source=BMS)</td><td class="g">DTC 사전 매핑</td><td class="g">SCR-030 · 120</td></tr>
+      <tr><td><b>MCU</b></td><td class="g">모터 상태 · 고장 코드</td><td class="g">dtc_event(source=MCU)</td><td class="g">DTC 사전 매핑</td><td class="g">SCR-120</td></tr>
+      <tr><td rowspan="2"><b>VCU</b></td><td class="g">wSpeed</td><td class="g">telemetry_point.speed_kmh</td><td class="g">km/h 환산 · 정수</td><td class="g">SCR-020 · 040</td></tr>
+      <tr><td class="g">주행 모드 · 고장 코드</td><td class="g">cart_mode · dtc_event(source=VCU)</td><td class="g">열거값 매핑</td><td class="g">SCR-070</td></tr>
+      <tr><td><b>AGV</b></td><td class="g">자율주행 상태 · 고장 코드</td><td class="g">dtc_event(source=AGV)</td><td class="g">DTC 사전 매핑</td><td class="g">SCR-120</td></tr>
+    </table>
+    <div class="grid g3">
+      <div class="card"><span class="tag">MultiDataMode</span><h3>묶음 프레임 해석</h3><p>하나의 프레임에 여러 값이 실리는 구간은 모드 바이트로 분기해 해석하고, 해석 규칙은 DBC 확정본 기준으로 테이블화합니다.</p></div>
+      <div class="card"><span class="tag">미정의 코드</span><h3>원문 보존 · 후행 매핑</h3><p>DTC 사전에 없는 코드는 원문으로 표시 · 저장하고, 사전 갱신 시 과거 이벤트에 명칭을 소급 적용합니다.</p></div>
+      <div class="card"><span class="tag">이상값</span><h3>범위 검증</h3><p>좌표 · 속도 · SoC는 물리 범위를 벗어나면 보정 플래그와 함께 저장하고 화면에는 보정 값을 표시합니다.</p></div>
+    </div>
+  </div>
+  <div class="s-foot"><span>(TBD) CAN DBC 원본 · DTC 사전 - 착수 전 필수 수령 자료</span><span class="mark">SAILINGSTONE · 14</span></div>
+</section>
+
+<!-- API 설계 규약 -->
+<section class="slide" data-title="API 설계 규약">
+  <div class="s-head">
+    <div class="eyebrow">04. API 설계</div>
+    <h2 class="title">API 공통 규약</h2>
+    <p class="lead">모든 API는 <b>같은 인증 · 페이징 · 에러 규약</b>을 따르며, 예외를 만들지 않습니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1.1fr 1fr; gap:0.9rem; margin-bottom:0.75rem">
+      <div>
+        <table class="tight dense" style="font-size:0.73rem">
+          <tr><th>항목</th><th>규약</th></tr>
+          <tr><td><b>기본 경로</b></td><td class="g">https://&lt;호스트&gt;/api/v1 - 주요 버전만 경로에 표기</td></tr>
+          <tr><td><b>인증</b></td><td class="g">Authorization: Bearer &lt;access token&gt; (만료 30분, refresh 14일)</td></tr>
+          <tr><td><b>페이징</b></td><td class="g">cursor 방식 - ?cursor=&amp;limit=50(최대 200), 응답에 next_cursor</td></tr>
+          <tr><td><b>시간</b></td><td class="g">저장 · 전송은 UTC ISO 8601, 표시 변환은 화면 담당</td></tr>
+          <tr><td><b>멱등성</b></td><td class="g">등록 계열 POST는 Idempotency-Key 헤더 지원</td></tr>
+          <tr><td><b>정렬 · 필터</b></td><td class="g">?sort=-started_at&amp;state=운행 형식, 허용 필드는 API별 명세</td></tr>
+          <tr><td><b>율 제한</b></td><td class="g">계정당 60 req/분(조회) · 내보내기는 동시 1건</td></tr>
+        </table>
+      </div>
+      <div class="code">// 에러 응답 공통 포맷
+HTTP 4xx / 5xx
+{
+  "error": {
+    "code": "ERR-2002",
+    "message": "타 골프장 자원에
+                접근할 수 없습니다",
+    "detail": { "site_id": "..." },
+    "trace_id": "req_01J8..."
+  }
+}
+// trace_id는 로그와 1:1 대응</div>
+    </div>
+    <div class="note"><b>권한 표기</b> - 이후 명세의 권한 열은 최소 요구 역할입니다. 상위 역할은 자동 포함하되, 전역 관리자(global)는 골프장 전환(act_site) 상태에서만 골프장 데이터에 접근합니다.</div>
+  </div>
+  <div class="s-foot"><span>응답 본문은 snake_case · 요청 검증 실패는 ERR-3xxx</span><span class="mark">SAILINGSTONE · 15</span></div>
+</section>
+
+<!-- API 명세 - 인증과 계정 -->
+<section class="slide" data-title="API 명세 - 인증과 계정">
+  <div class="s-head">
+    <div class="eyebrow">04. API 설계</div>
+    <h2 class="title">인증 · 계정 API 8종</h2>
+    <p class="lead">로그인은 <b>2단계 인증을 포함한 2회 왕복</b>으로 처리하며, 계정 관리는 전역 관리자 전용입니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.72rem">
+      <tr><th>메서드 · 경로</th><th>권한</th><th>요청 핵심</th><th>응답 핵심</th></tr>
+      <tr><td><b>POST /auth/login</b></td><td class="g">공개</td><td class="g">login_id, password</td><td class="g">temp_token(OTP 대기) 또는 토큰 쌍(2단계 미사용 계정)</td></tr>
+      <tr><td><b>POST /auth/otp</b></td><td class="g">temp_token</td><td class="g">otp_code 6자리</td><td class="g">access_token, refresh_token, 사용자 요약</td></tr>
+      <tr><td><b>POST /auth/refresh</b></td><td class="g">refresh</td><td class="g">refresh_token</td><td class="g">새 토큰 쌍(회전 방식, 재사용 감지 시 전 세션 종료)</td></tr>
+      <tr><td><b>POST /auth/logout</b></td><td class="g">로그인</td><td class="g">-</td><td class="g">현재 세션 종료</td></tr>
+      <tr><td><b>GET /me</b></td><td class="g">로그인</td><td class="g">-</td><td class="g">역할 · 소속 · 허용 기능 목록(메뉴 구성의 근거)</td></tr>
+      <tr><td><b>GET /users</b></td><td class="g">site_admin</td><td class="g">?role=&amp;status=</td><td class="g">계정 목록(골프장 관리자는 소속 골프장만)</td></tr>
+      <tr><td><b>POST /users</b></td><td class="g">global</td><td class="g">login_id, role, site_id</td><td class="g">초기 비밀번호 발급 · 초대 발송</td></tr>
+      <tr><td><b>PATCH /users/:id</b></td><td class="g">global</td><td class="g">role, status, allowed_features</td><td class="g">변경 결과(본인 권한 하향은 ERR-4002)</td></tr>
+    </table>
+    <div class="note" style="margin-top:0.75rem"><b>화면 대응</b> - 공통 로그인 화면과 SCR-140(이용자 · 권한 관리)이 이 8종만으로 동작하도록 명세를 맞췄습니다. 비밀번호 초기화는 PATCH /users/:id의 reset_password 액션으로 처리합니다.</div>
+  </div>
+  <div class="s-foot"><span>토큰 서명 키는 환경 변수 · 회전 절차는 운영 문서로</span><span class="mark">SAILINGSTONE · 16</span></div>
+</section>
+
+<!-- API 명세 - 중앙 콘솔 -->
+<section class="slide" data-title="API 명세 - 중앙 콘솔">
+  <div class="s-head">
+    <div class="eyebrow">04. API 설계</div>
+    <h2 class="title">중앙 콘솔 API 6종</h2>
+    <p class="lead">SCR-150 · 160이 사용하는 API이며, <b>전역 관리자 전용 + 골프장 전환</b>이 핵심 동작입니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.72rem">
+      <tr><th>메서드 · 경로</th><th>권한</th><th>요청 핵심</th><th>응답 핵심</th></tr>
+      <tr><td><b>GET /sites</b></td><td class="g">global</td><td class="g">?status=</td><td class="g">골프장 목록(코드 · 홀 구성 · 카트 수 · 관리자 · 상태)</td></tr>
+      <tr><td><b>POST /sites</b></td><td class="g">global</td><td class="g">name, code, hole_layout</td><td class="g">골프장 생성 + 격리 공간 초기화(RLS 검증 포함)</td></tr>
+      <tr><td><b>PATCH /sites/:id</b></td><td class="g">global</td><td class="g">status(active · closed), name</td><td class="g">상태 변경(closed는 접속 차단 · 이력 보존)</td></tr>
+      <tr><td><b>POST /sites/:id/manager</b></td><td class="g">global</td><td class="g">login_id 또는 기존 계정 id</td><td class="g">골프장 관리자 지정 · 초대 발송</td></tr>
+      <tr><td><b>GET /central/overview</b></td><td class="g">global</td><td class="g">-</td><td class="g">전 골프장 KPI 합산 + 골프장별 행(카트 · 운행 · SoC 평균 · 미조치)</td></tr>
+      <tr><td><b>POST /auth/switch-site</b></td><td class="g">global</td><td class="g">site_id</td><td class="g">act_site 클레임이 갱신된 토큰(골프장 화면 진입)</td></tr>
+    </table>
+    <div class="note" style="margin-top:0.75rem"><b>통합 현황의 집계 경로</b> - GET /central/overview는 골프장별 최신 상태 캐시(Redis)를 합산해 30초 캐시로 응답하며, 시계열 테이블을 직접 조회하지 않습니다. 골프장 간 비교 분석 API는 2단계에서 별도 정의합니다.</div>
+  </div>
+  <div class="s-foot"><span>SCR-150 · 160 대응 · 감사 로그 필수 구간</span><span class="mark">SAILINGSTONE · 17</span></div>
+</section>
+
+<!-- API 명세 - 차량과 관제 -->
+<section class="slide" data-title="API 명세 - 차량과 관제">
+  <div class="s-head">
+    <div class="eyebrow">04. API 설계</div>
+    <h2 class="title">차량 · 관제 API 9종</h2>
+    <p class="lead">실시간 관제는 <b>REST 최초 적재 + WebSocket 증분</b> 조합으로 동작합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.71rem">
+      <tr><th>메서드 · 경로</th><th>권한</th><th>요청 핵심</th><th>응답 핵심</th></tr>
+      <tr><td><b>GET /carts</b></td><td class="g">viewer</td><td class="g">?state=&amp;q=&amp;active=</td><td class="g">차량 목록 + 최신 위치 · SoC · 상태(SCR-060)</td></tr>
+      <tr><td><b>GET /carts/:id</b></td><td class="g">viewer</td><td class="g">-</td><td class="g">기본 정보 · 단말 배정 · 최근 고장 코드(SCR-070)</td></tr>
+      <tr><td><b>POST /carts</b></td><td class="g">global</td><td class="g">vin, model, device_serial, mes 연계 여부</td><td class="g">등록 결과 + 중복 검증(ERR-3003) · 첫 수신 대기 상태</td></tr>
+      <tr><td><b>PATCH /carts/:id</b></td><td class="g">site_admin</td><td class="g">alias(별칭), 메모</td><td class="g">변경 결과(별칭은 골프장 관리자 허용)</td></tr>
+      <tr><td><b>PATCH /carts/:id/deactivate</b></td><td class="g">global</td><td class="g">사유</td><td class="g">비활성화(삭제 아님) · 목록 기본 제외</td></tr>
+      <tr><td><b>POST /carts/:id/device</b></td><td class="g">global</td><td class="g">device_serial</td><td class="g">단말 교체(기존 해제 + 이력 기록)</td></tr>
+      <tr><td><b>GET /carts/:id/telemetry</b></td><td class="g">viewer</td><td class="g">?from=&amp;to=(최대 24시간)</td><td class="g">포인트 배열(재생 · 궤적용, 간축 옵션)</td></tr>
+      <tr><td><b>WS sub cart-positions</b></td><td class="g">viewer</td><td class="g">구독 - 현재 골프장</td><td class="g">위치 · 속도 · SoC · 상태 증분(수집 주기 간격)</td></tr>
+      <tr><td><b>WS sub alerts</b></td><td class="g">operator</td><td class="g">구독 - 현재 골프장</td><td class="g">알림 이벤트 발생 · 상태 변경 푸시</td></tr>
+    </table>
+    <div class="note" style="margin-top:0.7rem"><b>WS 채널 격리</b> - 채널명은 서버가 토큰의 골프장 스코프로 강제 매핑하며, 클라이언트가 임의 골프장 채널을 지정할 수 없습니다. 전역 관리자는 switch-site 후 해당 골프장 채널에 붙습니다.</div>
+  </div>
+  <div class="s-foot"><span>SCR-010 ~ 080 대응 · 지도 마커는 WS 증분으로 갱신</span><span class="mark">SAILINGSTONE · 18</span></div>
+</section>
+
+<!-- API 명세 - 운행 · 정비 · 설정 -->
+<section class="slide" data-title="API 명세 - 운행 · 정비 · 설정">
+  <div class="s-head">
+    <div class="eyebrow">04. API 설계</div>
+    <h2 class="title">운행 · 정비 · 설정 API 19종</h2>
+    <p class="lead">기록 계열 API 19종은 <b>작성자 · 시각 · 이력 보존</b>을 공통 규칙으로 갖습니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.695rem">
+      <tr><th>메서드 · 경로</th><th>권한</th><th>핵심 동작</th></tr>
+      <tr><td><b>GET /trips</b> · <b>GET /trips/:id</b></td><td class="g">viewer</td><td class="g">기간 · 카트 조건 목록과 집계, 홀 구간 포함 상세(SCR-050)</td></tr>
+      <tr><td><b>GET /trips/:id/track</b></td><td class="g">viewer</td><td class="g">재생용 궤적(시각 정렬 · 결손 구간 표시, SCR-040)</td></tr>
+      <tr><td><b>POST /trips/:id/recalc</b></td><td class="g">site_admin</td><td class="g">홀 구간 재계산 요청(홀 마킹 변경 후)</td></tr>
+      <tr><td><b>GET /reports/trips</b></td><td class="g">site_admin</td><td class="g">기간 집계 리포트 + 내보내기(xlsx · csv, 비동기 생성)</td></tr>
+      <tr><td><b>GET /alerts</b> · <b>PATCH /alerts/:id/ack · /close</b></td><td class="g">operator</td><td class="g">이벤트 목록 · 확인 · 종결(종결 시 조치 내용 필수, SCR-030)</td></tr>
+      <tr><td><b>GET · POST /maintenance</b></td><td class="g">mechanic</td><td class="g">정비 이력 조회 · 등록, 수정은 revisions에 이전 값 보존(SCR-090)</td></tr>
+      <tr><td><b>GET · POST /checklists</b></td><td class="g">mechanic</td><td class="g">체크리스트 항목 판정 저장, ng는 정비 · 알림 자동 생성(SCR-100)</td></tr>
+      <tr><td><b>GET /battery/summary</b></td><td class="g">viewer</td><td class="g">SoC 구간별 대수 · 대상 목록(SCR-110)</td></tr>
+      <tr><td><b>GET /dtc</b> · <b>GET /dtc/dictionary</b></td><td class="g">operator</td><td class="g">고장 코드 목록 · 코드 사전 조회(SCR-120)</td></tr>
+      <tr><td><b>GET /courses/:id</b> · <b>PUT /courses/:id/holes</b></td><td class="g">global</td><td class="g">코스 배경 · 홀 지오펜스 일괄 저장(개정 이력 유지, SCR-130)</td></tr>
+      <tr><td><b>GET · PUT /parameters</b></td><td class="g">global</td><td class="g">P_* 파라미터 조회 · 변경(변경은 감사 로그 + 즉시 반영)</td></tr>
+    </table>
+    <div class="note" style="margin-top:0.7rem"><b>합계 REST 40종 + WS 2채널</b> - 이 목록이 1단계 화면 16개 전체를 커버하는지 화면 - API 대응표로 교차 검증했습니다(대응 없는 화면 없음).</div>
+  </div>
+  <div class="s-foot"><span>내보내기 파일은 S3 서명 URL로 10분간 제공</span><span class="mark">SAILINGSTONE · 19</span></div>
+</section>
+
+<!-- 실시간 처리 파이프라인 -->
+<section class="slide" data-title="실시간 처리 파이프라인">
+  <div class="s-head">
+    <div class="eyebrow">05. 핵심 로직</div>
+    <h2 class="title">수신에서 화면까지의 처리 경로</h2>
+    <p class="lead">패킷 1건이 화면에 도달하는 경로를 <b>6단계</b>로 고정하며, 각 단계는 실패해도 이전 단계의 결과를 잃지 않습니다.</p>
+  </div>
+  <div class="body">
+    <div class="flow sm" style="margin-bottom:0.85rem">
+      <div class="step"><div class="k">1</div><h4>수신 · 검증</h4><p>TLS 세션에서 CRC · 시퀀스 검증, 실패는 폐기 카운트.</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">2</div><h4>원본 적재</h4><p>can_frame_raw · telemetry_point에 배치 COPY.</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">3</div><h4>정규화</h4><p>어댑터가 내부 표준 메시지로 변환해 큐 발행.</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">4</div><h4>판정</h4><p>상태 엔진 · 트립 분할 · 알림 규칙을 순서대로 평가.</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">5</div><h4>상태 반영</h4><p>최신 상태 캐시(Redis) 갱신 + 변경분만 DB 기록.</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">6</div><h4>배포</h4><p>WS 채널 브로드캐스트 · 알림 채널 발송.</p></div>
+    </div>
+    <div class="grid g3">
+      <div class="card"><span class="tag">전달 보장</span><h3>최소 1회 + 멱등</h3><p>큐는 최소 1회 전달이며, 판정 단계는 seq 기준 멱등으로 작성해 중복 처리가 상태를 바꾸지 않습니다.</p></div>
+      <div class="card"><span class="tag">순서</span><h3>카트 단위 직렬화</h3><p>같은 카트의 메시지는 같은 큐 파티션으로 보내 순서를 보장하고, 카트 간에는 병렬 처리합니다.</p></div>
+      <div class="card"><span class="tag">지연 목표</span><h3>수신 - 화면 2초 이내</h3><p>수집 주기 1초 가정 시 화면 반영 지연 목표는 p95 2초입니다. 단계별 처리 시간을 지표로 수집합니다.</p></div>
+    </div>
+  </div>
+  <div class="s-foot"><span>장애 시 재처리는 원본 재파싱으로 수행(원칙 3)</span><span class="mark">SAILINGSTONE · 20</span></div>
+</section>
+
+<!-- 상태 판정 엔진 -->
+<section class="slide" data-title="상태 판정 엔진">
+  <div class="s-head">
+    <div class="eyebrow">05. 핵심 로직</div>
+    <h2 class="title">카트 상태 판정 규칙</h2>
+    <p class="lead">상태 6종의 전이는 <b>우선순위가 있는 단일 판정 함수</b>로 구현해, 화면 · 리포트 · 알림이 같은 결과를 공유합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1fr 1.08fr; gap:0.9rem">
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th>우선순위</th><th>상태</th><th>진입 조건</th></tr>
+          <tr><td><b>1</b></td><td><b>정비</b></td><td class="g">미해제 critical DTC 존재 또는 정비 담당자의 수동 지정</td></tr>
+          <tr><td><b>2</b></td><td><b>충전</b></td><td class="g">충전 구역 지오펜스 내 + 정지 + SoC 상승 추세</td></tr>
+          <tr><td><b>3</b></td><td><b>운행</b></td><td class="g">속도 ≥ P_V_MOVE(기본 3km/h)가 P_T_MOVE(기본 10초) 지속</td></tr>
+          <tr><td><b>4</b></td><td><b>복귀</b></td><td class="g">트립 종료 판정 후 카트고지 도착 전까지</td></tr>
+          <tr><td><b>5</b></td><td><b>배차</b></td><td class="g">운영자의 배차 등록(수동 입력) 후 출발 전</td></tr>
+          <tr><td><b>6</b></td><td><b>대기</b></td><td class="g">카트고지 구역 내 정지(기본 상태)</td></tr>
+        </table>
+      </div>
+      <div class="code" style="font-size:0.63rem">// worker/state-engine.ts
+evaluate(cart, p): State {
+  if (openDtc(cart, CRITICAL)
+      || cart.manual === 정비) return 정비
+  if (inZone(p, CHARGE)
+      && p.speed === 0
+      && socRising(cart))      return 충전
+  if (movedFor(cart, P_V_MOVE,
+               P_T_MOVE))      return 운행
+  if (cart.trip?.closing)      return 복귀
+  if (cart.dispatched)         return 배차
+  return 대기
+}
+// 상태 변경 시에만 state_changed
+// 이벤트 발행(WS · 알림 공용)</div>
+    </div>
+    <div class="note" style="margin-top:0.75rem"><b>수동 지정과 자동 판정의 충돌</b> - 정비 수동 지정은 자동 판정보다 우선하며, 해제도 사람이 합니다. 통신 두절 카트는 마지막 상태를 유지하되 화면에 두절 배지를 함께 표시합니다(화면정의서 공통 상태).</div>
+  </div>
+  <div class="s-foot"><span>상태 열거값은 문서 · 코드 · DB가 동일 표기 사용</span><span class="mark">SAILINGSTONE · 21</span></div>
+</section>
+
+<!-- 트립 분할 알고리즘 -->
+<section class="slide" data-title="트립 분할 알고리즘">
+  <div class="s-head">
+    <div class="eyebrow">05. 핵심 로직</div>
+    <h2 class="title">트립 시작 · 종료와 홀 구간 분할</h2>
+    <p class="lead">트립은 <b>출발 판정 - 홀 구간 기록 - 종료 확정</b>의 3단계로 만들어지며, 모든 판정 값은 파라미터입니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1fr 1.05fr; gap:0.9rem">
+      <div class="code">// worker/trip-engine.ts
+onPoint(cart, p):
+  if (!cart.trip && p.speed >= P_V_MOVE
+      && !inZone(p, DEPOT))
+    openTrip(cart, p)          // 시작
+
+  if (cart.trip && inZone(p, DEPOT)
+      && idleFor(cart, P_T_END)) // 기본 5분
+    closeTrip(cart)            // 종료 · 집계 확정
+
+onGeofence(cart, hole, enter|exit):
+  enter: closeSegment(cart.currentHole)
+         openSegment(hole)     // 홀 구간
+  exit : markExit(hole)
+
+onGap(cart, gapSec):           // 통신 공백
+  if (gapSec > P_T_GAP)        // 기본 3분
+    recordGap(cart.trip)       // 보간 없이 공백 기록</div>
+      <div>
+        <table class="tight dense" style="font-size:0.71rem; margin-bottom:0.7rem">
+          <tr><th>파라미터</th><th>기본값</th><th>의미</th></tr>
+          <tr><td><b>P_V_MOVE</b></td><td class="g">3 km/h</td><td class="g">이동 판정 속도</td></tr>
+          <tr><td><b>P_T_MOVE</b></td><td class="g">10초</td><td class="g">이동 지속 시간</td></tr>
+          <tr><td><b>P_T_END</b></td><td class="g">5분</td><td class="g">카트고지 내 정지 - 종료 판정</td></tr>
+          <tr><td><b>P_T_GAP</b></td><td class="g">3분</td><td class="g">통신 공백 기록 기준</td></tr>
+          <tr><td><b>P_GEO_RADIUS</b></td><td class="g">15 m</td><td class="g">홀 지오펜스 기본 반경</td></tr>
+        </table>
+        <div class="note" style="margin:0"><b>종료 시 집계 확정</b> - 거리(궤적 누적) · 최고 속도 · 홀별 소요 · 결손율을 계산해 trip에 저장합니다. 홀 마킹이 바뀌면 해당 기간 트립을 recalc 상태로 바꿔 워커가 재계산하고, 이전 값은 감사 로그에 남깁니다.</div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>판정 값 변경은 파라미터 화면에서 즉시 반영</span><span class="mark">SAILINGSTONE · 22</span></div>
+</section>
+
+<!-- 알림 규칙 엔진 -->
+<section class="slide" data-title="알림 규칙 엔진">
+  <div class="s-head">
+    <div class="eyebrow">05. 핵심 로직</div>
+    <h2 class="title">알림 규칙 6종과 생명주기</h2>
+    <p class="lead">알림은 <b>규칙 코드 단위로 선언</b>되어 있으며, 조건 · 등급 · 채널 · 해제까지 테이블로 관리합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.71rem; margin-bottom:0.75rem">
+      <tr><th>규칙</th><th>발생 조건</th><th>등급</th><th>채널</th><th>자동 해제</th></tr>
+      <tr><td><b>ALR-DTC</b></td><td class="g">critical 등급 DTC 발생</td><td class="g">critical</td><td class="g">웹 + 모바일 푸시</td><td class="g">해제 코드 수신 시(이벤트는 종결 입력 필요)</td></tr>
+      <tr><td><b>ALR-SOC</b></td><td class="g">SoC ≤ P_SOC_WARN(기본 20%)</td><td class="g">warn</td><td class="g">웹</td><td class="g">SoC ≥ 임계 + 5%p 회복 시</td></tr>
+      <tr><td><b>ALR-COMM</b></td><td class="g">무수신 ≥ P_COMM_MIN(기본 3분)</td><td class="g">warn</td><td class="g">웹</td><td class="g">수신 재개 시</td></tr>
+      <tr><td><b>ALR-GEO</b></td><td class="g">운영 구역 이탈(코스 외곽 지오펜스)</td><td class="g">warn</td><td class="g">웹 + 푸시</td><td class="g">구역 복귀 시</td></tr>
+      <tr><td><b>ALR-CONS</b></td><td class="g">소모품 주기 D-3 도래</td><td class="g">info</td><td class="g">웹</td><td class="g">교체 등록 시</td></tr>
+      <tr><td><b>ALR-CHECK</b></td><td class="g">체크리스트 ng 판정 저장</td><td class="g">warn</td><td class="g">웹</td><td class="g">연계 정비 종결 시</td></tr>
+    </table>
+    <div class="grid g3">
+      <div class="card"><span class="tag">중복 억제</span><h3>규칙 · 카트 단위 1건</h3><p>같은 규칙 · 같은 카트의 미종결 이벤트가 있으면 새 이벤트를 만들지 않고 발생 횟수만 누적합니다(P_SUPPRESS_MIN 내 재발생).</p></div>
+      <div class="card"><span class="tag">생명주기</span><h3>open - ack - closed</h3><p>발생(open) 후 확인(ack)과 종결(closed)은 사람이 진행하며, 종결에는 조치 내용이 필수입니다. 미확인 경과는 화면에서 승격 표시합니다.</p></div>
+      <div class="card"><span class="tag">발송</span><h3>채널 어댑터</h3><p>웹(WS) · 모바일 푸시 · 문자를 채널 어댑터로 추상화하고, 1단계는 웹 + 푸시를 구현하며 문자는 어댑터만 준비합니다.</p></div>
+    </div>
+  </div>
+  <div class="s-foot"><span>규칙 파라미터는 골프장별 덮어쓰기 허용(TBL-10)</span><span class="mark">SAILINGSTONE · 23</span></div>
+</section>
+
+<!-- 에러 코드 체계 -->
+<section class="slide" data-title="에러 코드 체계">
+  <div class="s-head">
+    <div class="eyebrow">05. 핵심 로직</div>
+    <h2 class="title">에러 코드 체계와 대표 코드</h2>
+    <p class="lead">에러 코드는 <b>대역으로 원인 계층을 구분</b>해, 로그 검색과 화면 안내문 매핑을 단순하게 만듭니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:0.8fr 1.3fr; gap:0.9rem">
+      <div>
+        <table class="tight dense" style="font-size:0.72rem">
+          <tr><th>대역</th><th>계층</th></tr>
+          <tr><td><b>ERR-1xxx</b></td><td class="g">인증 · 세션</td></tr>
+          <tr><td><b>ERR-2xxx</b></td><td class="g">권한 · 테넌트</td></tr>
+          <tr><td><b>ERR-3xxx</b></td><td class="g">요청 검증</td></tr>
+          <tr><td><b>ERR-4xxx</b></td><td class="g">자원 · 상태 충돌</td></tr>
+          <tr><td><b>ERR-5xxx</b></td><td class="g">수집 · 단말</td></tr>
+          <tr><td><b>ERR-9xxx</b></td><td class="g">서버 내부</td></tr>
+        </table>
+      </div>
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th>코드</th><th>의미</th><th>화면 처리</th></tr>
+          <tr><td><b>ERR-1001 · 1002</b></td><td class="g">비밀번호 불일치 · OTP 불일치</td><td class="g">남은 시도 횟수 안내</td></tr>
+          <tr><td><b>ERR-1003</b></td><td class="g">토큰 만료</td><td class="g">무중단 갱신 시도 후 로그인 화면</td></tr>
+          <tr><td><b>ERR-2001 · 2002</b></td><td class="g">기능 권한 없음 · 타 골프장 접근</td><td class="g">접근 불가 안내(메뉴 숨김이 1차 방어)</td></tr>
+          <tr><td><b>ERR-3001 ~ 3003</b></td><td class="g">필수 누락 · 형식 오류 · 중복 값</td><td class="g">필드 단위 오류 표시(3003은 기존 자원 링크)</td></tr>
+          <tr><td><b>ERR-4001 · 4002</b></td><td class="g">자원 없음 · 상태 충돌</td><td class="g">4002 예 - 열린 트립 재계산, 본인 권한 하향</td></tr>
+          <tr><td><b>ERR-5001 · 5002</b></td><td class="g">단말 인증 실패 · 시퀀스 이상</td><td class="g">화면 미노출, 수집 지표로 집계</td></tr>
+          <tr><td><b>ERR-9001</b></td><td class="g">내부 오류</td><td class="g">trace_id 표시 + 재시도 안내</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="note" style="margin-top:0.75rem"><b>안내문은 코드 - 문구 사전으로 관리</b>합니다 - 화면은 코드로만 분기하고 문구는 사전 파일에서 읽어, 문구 수정이 배포 없이 가능합니다.</div>
+  </div>
+  <div class="s-foot"><span>코드 신설은 이 대역 규칙 안에서만 허용</span><span class="mark">SAILINGSTONE · 24</span></div>
+</section>
+
+<!-- 비기능 설계 -->
+<section class="slide" data-title="비기능 설계">
+  <div class="s-head">
+    <div class="eyebrow">06. 운영 준비</div>
+    <h2 class="title">성능 목표와 용량 산정</h2>
+    <p class="lead">성능 목표는 <b>골프장 4곳 · 카트 200대</b> 기준으로 정하며, 산정 근거를 파라미터로 남깁니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="gap:0.9rem; margin-bottom:0.75rem">
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th>항목</th><th>목표</th><th>산정 근거</th></tr>
+          <tr><td><b>수집 처리량</b></td><td class="g">200 msg/s 지속</td><td class="g">200대 × 1초 주기, 피크 2배 여유</td></tr>
+          <tr><td><b>화면 반영 지연</b></td><td class="g">p95 2초 이내</td><td class="g">수신 - 판정 - WS 배포 합산</td></tr>
+          <tr><td><b>조회 응답</b></td><td class="g">p95 500ms</td><td class="g">목록 · 상세 API(리포트 집계 제외)</td></tr>
+          <tr><td><b>WS 동시 접속</b></td><td class="g">골프장당 30 · 전체 150</td><td class="g">관제실 · 사무실 · DID · 모바일</td></tr>
+          <tr><td><b>리포트 생성</b></td><td class="g">월 단위 30초 이내</td><td class="g">trip 집계 컬럼만 사용(원칙)</td></tr>
+        </table>
+      </div>
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th>저장 용량(1초 주기 가정)</th><th>산정</th></tr>
+          <tr><td><b>포인트 발생량</b></td><td class="g">운영 10시간 × 3,600 × 200대 = 일 720만 건</td></tr>
+          <tr><td><b>일 저장량</b></td><td class="g">약 0.5GB(행 70B × 720만, 인덱스 포함 추정)</td></tr>
+          <tr><td><b>월 저장량</b></td><td class="g">약 15GB(원시 기준)</td></tr>
+          <tr><td><b>12개월 보관</b></td><td class="g">약 180GB - P_RETENTION과 파티션 보관으로 관리</td></tr>
+        </table>
+        <div class="note" style="margin:0.7rem 0 0"><b>주기가 5초로 확정되면 1/5로 감소</b>합니다 - 수집 주기는 용량 · 처리량 · 재생 품질을 함께 결정하므로 착수 협의 1순위 항목입니다. (TBD)</div>
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="card"><span class="tag">가용성</span><h3>프로세스 자동 재시작</h3><p>컨테이너 헬스체크와 자동 재시작을 기본으로 하고, 수집 유실은 단말 재전송이 흡수합니다.</p></div>
+      <div class="card"><span class="tag">백업</span><h3>일일 스냅숏 + WAL</h3><p>DB는 일일 스냅숏과 WAL 아카이브로 시점 복구를 지원하고, 복구 절차를 운영 문서로 제공합니다.</p></div>
+      <div class="card"><span class="tag">관측</span><h3>지표 · 로그 · 추적</h3><p>단계별 처리 시간 · 폐기 카운트 · 큐 적체를 지표로 수집하고, trace_id로 요청 - 로그를 연결합니다.</p></div>
+    </div>
+  </div>
+  <div class="s-foot"><span>목표 미달 시 병목 단계를 지표로 특정해 보강</span><span class="mark">SAILINGSTONE · 25</span></div>
+</section>
+
+<!-- 배포와 환경 구성 -->
+<section class="slide" data-title="배포와 환경 구성">
+  <div class="s-head">
+    <div class="eyebrow">06. 운영 준비</div>
+    <h2 class="title">환경 구성과 배포 절차</h2>
+    <p class="lead">개발 · 운영 <b>2환경</b>을 같은 구성으로 유지하고, 배포는 자동화 파이프라인으로만 수행합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1.1fr 1fr; gap:0.9rem; margin-bottom:0.75rem">
+      <div>
+        <table class="tight dense" style="font-size:0.71rem">
+          <tr><th>환경 변수</th><th>설명</th></tr>
+          <tr><td><b>DATABASE_URL</b></td><td class="g">PostgreSQL 접속(환경별 분리)</td></tr>
+          <tr><td><b>REDIS_URL</b></td><td class="g">큐 · 캐시</td></tr>
+          <tr><td><b>JWT_SECRET · JWT_TTL</b></td><td class="g">토큰 서명 · 수명</td></tr>
+          <tr><td><b>COLLECT_PORT · COLLECT_TLS_*</b></td><td class="g">수집 소켓 · 인증서</td></tr>
+          <tr><td><b>S3_BUCKET · S3_*</b></td><td class="g">사진 · 내보내기 · 파티션 보관</td></tr>
+          <tr><td><b>PUSH_* (FCM)</b></td><td class="g">모바일 푸시 발송</td></tr>
+          <tr><td><b>P_&#42; 초기값</b></td><td class="g">파라미터 시드(이후 DB가 우선)</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">파이프라인</span><h3>푸시 - 검사 - 배포</h3><p>GitHub Actions에서 타입 검사 · 단위 시험 · 격리 시험 · 빌드를 통과한 이미지만 배포합니다. 운영 배포는 태그 기준 수동 승인입니다.</p></div>
+        <div class="card"><span class="tag">마이그레이션</span><h3>Prisma migrate 단일 경로</h3><p>스키마 변경은 마이그레이션 파일로만 반영하고, RLS 정책 누락 검사를 마이그레이션 검증 단계에 포함합니다.</p></div>
+      </div>
+    </div>
+    <div class="note"><b>초기 데이터(시드)</b> - 전역 관리자 1계정, 알림 규칙 6종, 파라미터 기본값, 체크리스트 표준 항목을 시드 스크립트로 제공하며, 시범 골프장 등록부터는 화면(SCR-150)에서 진행합니다.</div>
+  </div>
+  <div class="s-foot"><span>개발 환경은 docker compose 단일 파일로 기동</span><span class="mark">SAILINGSTONE · 26</span></div>
+</section>
+
+<!-- 개발 착수 체크리스트 -->
+<section class="slide" data-title="개발 착수 체크리스트">
+  <div class="s-head">
+    <div class="eyebrow">06. 운영 준비</div>
+    <h2 class="title">착수 전 확정 항목과 첫 작업</h2>
+    <p class="lead">아래 <b>확정 대기 6건</b>은 설계의 파라미터로 이미 분리되어 있어, 확정이 늦어져도 개발 착수를 막지 않습니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.71rem; margin-bottom:0.75rem">
+      <tr><th>확정 대기(TBD)</th><th>영향 지점</th><th>확정 전 진행 방법</th></tr>
+      <tr><td><b>수집 주기</b></td><td class="g">파티션 · 용량 · 재생 품질</td><td class="g">1초 가정 개발, 파라미터 변경으로 반영</td></tr>
+      <tr><td><b>단말 인터페이스 문서</b></td><td class="g">수신 어댑터(파서 1개 파일)</td><td class="g">가정 프로토콜 + 단말 시뮬레이터로 개발</td></tr>
+      <tr><td><b>CAN DBC · DTC 사전</b></td><td class="g">신호 매핑 테이블 · 코드 명칭</td><td class="g">SOC 신호 · 속도 등 핵심만 가정 매핑</td></tr>
+      <tr><td><b>보관 기간</b></td><td class="g">P_RETENTION · 파티션 보관</td><td class="g">12개월 가정, 파라미터 변경으로 반영</td></tr>
+      <tr><td><b>판정 임계값</b></td><td class="g">상태 · 트립 · 알림 파라미터</td><td class="g">기본값으로 개발, 실측 주행에서 보정</td></tr>
+      <tr><td><b>충전소 · 카트고지 좌표</b></td><td class="g">지오펜스 시드</td><td class="g">홀 마킹 화면에서 현장 확정</td></tr>
+    </table>
+    <div class="grid g3">
+      <div class="card"><span class="tag">착수 1주 차</span><h3>골격 세우기</h3><ul><li>리포지토리 · CI · 개발 환경 구성</li><li>스키마 마이그레이션 v1 + RLS 정책</li><li>auth · tenant 모듈과 격리 자동 시험</li></ul></div>
+      <div class="card"><span class="tag">착수 2주 차</span><h3>수집 경로 관통</h3><ul><li>단말 시뮬레이터(가정 프로토콜)</li><li>collector - worker - WS 경로 관통</li><li>상태 판정 · 트립 분할 1차 동작</li></ul></div>
+      <div class="card"><span class="tag">동시 진행</span><h3>화면 착수 준비</h3><ul><li>GET /me · 목록 API 우선 확정</li><li>화면 - API 대응표 공유</li><li>파라미터 기본값 합의</li></ul></div>
+    </div>
+  </div>
+  <div class="s-foot"><span>확정 즉시 반영 - 코드 수정 없이 파라미터 변경</span><span class="mark">SAILINGSTONE · 27</span></div>
+</section>
+
+<section class="slide end" data-title="맺음">
+  <div class="end-logo"><span class="mk"><svg class="lgm" viewBox="-6 -16 569 645" aria-label="세일링스톤"><path fill="currentColor" d="M540 135 L540 135 L296 -5 L296 -5 L296 -5 L296 -5 L278 -10 L273 -9 L269 -8 L265 -7 L261 -5 L261 -5 L260 -5 L260 -5 L260 -5 L260 -5 L260 -5 L17 135 L0 166 L0 446 L0 446 L0 455 L1 455 L1 455 L1 457 L1 457 L2 458 L2 458 L2 459 L2 458 L4 463 L4 464 L8 469 L8 469 L9 470 L10 471 L10 471 L10 471 L10 472 L10 472 L10 472 L17 477 L17 477 L17 477 L261 618 L261 618 L278 623 L296 618 L539 478 L539 478 L539 477 L540 477 L540 477 L542 476 L543 475 L543 475 L543 475 L543 475 L546 473 L546 472 L550 469 L550 468 L550 468 L550 468 L550 468 L550 468 L553 464 L555 461 L555 460 L555 458 L556 455 L557 453 L557 451 L557 450 L557 450 L557 450 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 447 L557 446 L557 166 L540 135 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M27 152 L27 152 L243 27 L248 43 L351 223 L20 414 L20 166 L27 152 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M24 457 L24 457 L24 457 L20 451 L20 451 L20 451 L20 451 L20 450 L20 450 L20 448 L20 446 L20 446 L27 433 L361 240 L490 462 L35 462 L24 457 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M286 600 L286 600 L278 603 L271 600 L271 600 L66 482 L491 482 L286 600 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M537 161 L537 161 L537 166 L537 445 L537 445 L537 446 L537 446 L537 447 L537 448 L536 453 L535 454 L533 457 L532 459 L529 460 L529 460 L528 461 L528 461 L523 462 L521 462 L508 454 L379 230 L514 152 L522 150 L530 152 L530 152 L537 161 Z"></path><path fill="var(--logo-bg,#F8FAFC)" d="M267 14 L267 14 L270 12 L270 12 L270 12 L272 11 L278 9 L285 11 L286 11 L286 11 L502 136 L369 213 L265 33 L263 25 L267 14 Z"></path></svg></span>세일링스톤</div>
+  <div class="eyebrow">맺음</div>
+  <h2>설계는 준비되어 있습니다<br><em>확정 값만 채우면 개발이 시작됩니다</em></h2>
+  <p>협의 대기 값은 전부 파라미터로 분리되어 있어, 확정되는 순서대로 반영하며 착수 첫 주부터 골격 코드를 세울 수 있습니다.</p>
+  <div class="info">
+    <div><b>세일링스톤</b>세일즈 그룹</div>
+    <div><b>문서</b>솔루션 설계서 v0.1</div>
+    <div><b>작성</b>2026. 09</div>
+  </div>
+</section>
+
+</body>
+</html>

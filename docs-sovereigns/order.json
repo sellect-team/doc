@@ -3,6 +3,7 @@
     "proposals--lsv-tms-proposal-summary",
     "proposals--lsv-tms-proposal",
     "specs--lsv-tms-screen-spec",
-    "specs--lsv-tms-user-flow"
+    "specs--lsv-tms-user-flow",
+    "specs--lsv-tms-solution-design"
   ]
 }
