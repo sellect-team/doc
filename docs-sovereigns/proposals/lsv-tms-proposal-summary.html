@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LSV 골프카트 관제시스템(TMS) 구축 제안 요약본</title>
-<meta name="doc-version" content="0.2">
+<meta name="doc-version" content="0.3">
 <meta name="doc-description" content="구축 제안서 요약본 8페이지 - 범위 · 화면 · 구조 · 보완 제안을 한 번에 훑는 보고용">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -259,7 +259,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
       <div class="eyebrow">한눈에</div>
       <div class="cov-rows">
         <div class="r"><span>1단계 구축 대상</span><b>12건</b></div>
-        <div class="r"><span>구성 화면</span><b>14개</b></div>
+        <div class="r"><span>구성 화면</span><b>16개</b></div>
         <div class="r"><span>정의서 보완 제안</span><b>8건</b></div>
         <div class="r"><span>2단계 확장 대상</span><b>5건</b></div>
         <div class="r"><span>수행 방식</span><b>턴키 일괄</b></div>
@@ -298,7 +298,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
       <div class="card">
         <span class="tag">제안 요지 02</span>
         <h3>화면과 데이터까지 확정</h3>
-        <p>6개 메뉴 14개 화면과 수집 대상 4개 제어기를 함께 정의해 착수 시점의 재논의를 줄입니다.</p>
+        <p>6개 메뉴 16개 화면과 수집 대상 4개 제어기를 함께 정의해 착수 시점의 재논의를 줄입니다.</p>
       </div>
       <div class="card">
         <span class="tag">제안 요지 03</span>
@@ -387,17 +387,17 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
   <div class="s-head">
     <div class="eyebrow">02. 1단계 구축 범위</div>
     <h2 class="title">화면 구성과 산출물</h2>
-    <p class="lead">1단계 기능을 <b>6개 메뉴 · 14개 화면</b>으로 배치하고 화면정의서로 확정합니다.</p>
+    <p class="lead">1단계 기능을 <b>6개 메뉴 · 14개 화면과 중앙 콘솔 2개 화면</b>으로 배치하고 화면정의서로 확정합니다.</p>
   </div>
   <div class="body">
     <div class="grid g3" style="margin-bottom:1.1rem">
       <div class="card"><span class="tag">대시보드 1 · 관제 2</span><h3>상시 화면</h3><p>종합 관제 대시보드, 실시간 관제 지도, 알림 센터. 관제실 대형 화면 전용 레이아웃을 제공합니다.</p></div>
       <div class="card"><span class="tag">운행 2 · 차량 3</span><h3>조회 · 분석 화면</h3><p>운행경로 재생, 트립 리포트, 차량 목록 · 상세 · 등록. 조건 검색과 내보내기를 공통 규칙으로 정의합니다.</p></div>
-      <div class="card"><span class="tag">정비 4 · 설정 2</span><h3>기록 · 설정 화면</h3><p>정비 이력, 점검 체크리스트, 배터리 요약, DTC 진단, 코스 마킹, 이용자 권한 관리.</p></div>
+      <div class="card"><span class="tag">정비 4 · 설정 2 · 중앙 2</span><h3>기록 · 설정 · 중앙 화면</h3><p>정비 이력, 점검 체크리스트, 배터리 요약, DTC 진단, 코스 마킹, 이용자 권한 관리, 중앙 콘솔(골프장 등록 · 통합 현황).</p></div>
     </div>
-    <div class="note"><b>함께 제출하는 산출물</b> - 화면정의서(14개 화면 · 공통 · 변형 화면 · 26p)와 사용자 액션 플로우(시나리오 7개 · 예외 3건 · 18p)를 별도 문서로 제공하며, 작성 예시는 전체 제안서에 수록되어 있습니다.</div>
+    <div class="note"><b>함께 제출하는 산출물</b> - 화면정의서(16개 화면 · 공통 · 변형 화면 · 28p)와 사용자 액션 플로우(시나리오 8개 · 예외 3건 · 19p)를 별도 문서로 제공하며, 작성 예시는 전체 제안서에 수록되어 있습니다.</div>
   </div>
-  <div class="s-foot"><span>화면 ID - SCR-010 ~ SCR-140</span><span class="mark">SAILINGSTONE · 05</span></div>
+  <div class="s-foot"><span>화면 ID - SCR-010 ~ SCR-160</span><span class="mark">SAILINGSTONE · 05</span></div>
 </section>
 
 <!-- 시스템 구조 -->
@@ -419,7 +419,7 @@ table.tight th, table.tight td{padding:0.44rem 0.8rem; font-size:0.79rem}
     </div>
     <div class="grid g3">
       <div class="card"><span class="tag">기술 구성</span><h3>Next.js · NestJS</h3><p>TypeScript 단일 언어로 관제 화면과 수집 서버를 구성하고 AWS 서울 리전에서 운영합니다.</p></div>
-      <div class="card"><span class="tag">데이터</span><h3>PostgreSQL 16 · RLS</h3><p>골프장 단위 행 수준 보안으로 데이터를 격리하고 주행 이력은 시계열 파티션으로 관리합니다.</p></div>
+      <div class="card"><span class="tag">데이터</span><h3>골프장별 격리 · 중앙 콘솔</h3><p>골프장 단위 행 수준 보안으로 데이터를 격리하고, 대동 중앙 콘솔이 골프장 등록과 전 골프장 통합 관제를 담당합니다.</p></div>
       <div class="card"><span class="tag">보안</span><h3>전 구간 공통 규칙</h3><p>TLS 전송 암호화, 세션 인증과 IP 제한, 권한 3단계, 2단계 인증, 변경 이력 기록을 적용합니다.</p></div>
     </div>
   </div>

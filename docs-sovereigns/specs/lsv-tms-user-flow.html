@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LSV 골프카트 관제시스템 사용자 액션 플로우</title>
-<meta name="doc-version" content="0.2">
-<meta name="doc-description" content="역할 5개와 업무 시나리오 7개 - 권한·화면 접근 맵, 상태 전이도, 예외 처리, 인수 시험 항목까지 정의">
+<meta name="doc-version" content="0.3">
+<meta name="doc-description" content="역할 5개와 업무 시나리오 8개 - 권한·화면 접근 맵, 상태 전이도, 예외 처리, 인수 시험 항목까지 정의">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 @font-face{font-family:"SUIT";src:url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
@@ -199,7 +199,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
       <div class="eyebrow">문서 요약</div>
       <div class="cov-rows">
         <div class="r"><span>사용자 역할</span><b>5개</b></div>
-        <div class="r"><span>업무 시나리오</span><b>7개</b></div>
+        <div class="r"><span>업무 시나리오</span><b>8개</b></div>
         <div class="r"><span>예외 시나리오</span><b>3개</b></div>
         <div class="r"><span>인수 시험 항목</span><b>연계 정의</b></div>
       </div>
@@ -207,7 +207,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
   </div>
   <div class="meta">
     <div><b>LSV 귀중</b>제출처</div>
-    <div><b>v0.2 · 2026. 08</b>문서 버전</div>
+    <div><b>v0.3 · 2026. 09</b>문서 버전</div>
     <div><b>세일링스톤</b>작성</div>
   </div>
   <div class="cov-corner"><b>AI · BI · ANALYTICS</b><span class="bar">|</span><span>© 2026 SAILINGSTONE</span></div>
@@ -230,7 +230,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
       <div class="card">
         <span class="tag">구성</span>
         <h3>역할 · 시나리오 · 화면</h3>
-        <p>역할 5개와 시나리오 7개를 정의하고, 각 단계에 사용하는 화면 ID를 함께 적습니다.</p>
+        <p>역할 5개와 시나리오 8개를 정의하고, 각 단계에 사용하는 화면 ID를 함께 적습니다.</p>
       </div>
       <div class="card">
         <span class="tag">확장</span>
@@ -245,7 +245,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
     </div>
     <div class="note"><b>표기</b> - 화면 ID(SCR-000)는 화면정의서와 동일합니다. 시간 · 임계값은 협의 전 기준안이며, 확정되면 이 문서와 화면정의서를 함께 갱신합니다.</div>
   </div>
-  <div class="s-foot"><span>기준 문서 - 화면정의서 v0.3</span><span class="mark">SAILINGSTONE · 02</span></div>
+  <div class="s-foot"><span>기준 문서 - 화면정의서 v0.5</span><span class="mark">SAILINGSTONE · 2</span></div>
 </section>
 
 <!-- 사용자 역할 -->
@@ -259,9 +259,9 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
     <div class="grid g3" style="margin-bottom:0.85rem">
       <div class="card">
         <span class="tag">전역 관리자</span>
-        <h3>본사 운영 담당</h3>
-        <p>여러 골프장을 함께 관리하며 코스 · 차량 · 계정 등 기준 정보를 설정합니다.</p>
-        <ul><li>주 사용 화면 - <b>SCR-080 · 130 · 140</b></li><li>사용 빈도 - 주 1~2회</li></ul>
+        <h3>대동 중앙 콘솔 운영</h3>
+        <p>대동모빌리티 본사에서 골프장 등록과 계정 발급, 전 골프장 통합 현황 관제를 담당합니다.</p>
+        <ul><li>주 사용 화면 - <b>SCR-150 · 160 · 140</b></li><li>사용 빈도 - 매일 통합 현황 확인</li></ul>
       </div>
       <div class="card">
         <span class="tag">골프장 관리자</span>
@@ -295,7 +295,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>권한 등급 - 전역 관리자 · 골프장 관리자 · 조회 전용</span><span class="mark">SAILINGSTONE · 03</span></div>
+  <div class="s-foot"><span>권한 등급 - 전역 관리자 · 골프장 관리자 · 조회 전용</span><span class="mark">SAILINGSTONE · 3</span></div>
 </section>
 
 <!-- 권한 매트릭스 -->
@@ -318,10 +318,11 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
       <tr><td><b>고장 · DTC 진단</b></td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회 · 조치</td><td class="c no">-</td></tr>
       <tr><td><b>코스 · 홀 마킹</b></td><td class="c yes">설정</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td></tr>
       <tr><td><b>이용자 · 권한 관리</b></td><td class="c yes">설정</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td></tr>
+      <tr><td><b>골프장 등록 · 통합 현황(중앙 콘솔)</b></td><td class="c yes">설정 · 조회</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td></tr>
     </table>
     <div class="note"><b>확정 필요</b> - 골프장 관리자에게 계정 관리 권한을 일부 위임할지, 조회 전용 계정에 리포트 내보내기를 허용할지는 운영 정책에 따라 결정합니다.</div>
   </div>
-  <div class="s-foot"><span>요구사항정의서 권한 항목 재정의(안)</span><span class="mark">SAILINGSTONE · 04</span></div>
+  <div class="s-foot"><span>요구사항정의서 권한 항목 재정의(안)</span><span class="mark">SAILINGSTONE · 4</span></div>
 </section>
 
 <!-- 화면 접근 맵 -->
@@ -329,7 +330,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
   <div class="s-head">
     <div class="eyebrow">역할과 권한</div>
     <h2 class="title">역할별 화면 접근 맵</h2>
-    <p class="lead">14개 화면을 역할별로 나누면 <b>상시 화면과 가끔 쓰는 화면</b>이 구분되고, 메뉴 노출 기준이 정해집니다.</p>
+    <p class="lead">16개 화면을 역할별로 나누면 <b>상시 화면과 가끔 쓰는 화면</b>이 구분되고, 메뉴 노출 기준이 정해집니다.</p>
   </div>
   <div class="body">
     <table class="tight dense">
@@ -345,10 +346,11 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
       <tr><td><span class="sid">SCR-110</span> 배터리 요약</td><td class="c yes">수시</td><td class="c yes">매일</td><td class="c yes">수시</td><td class="c yes">매일</td><td class="c no">-</td></tr>
       <tr><td><span class="sid">SCR-120</span> DTC 진단</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">조회</td><td class="c yes">상시</td><td class="c no">-</td></tr>
       <tr><td><span class="sid">SCR-130 · 140</span> 코스 마킹 · 계정</td><td class="c yes">설정</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td></tr>
+      <tr><td><span class="sid">SCR-150 · 160</span> 중앙 콘솔</td><td class="c yes">상시</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td><td class="c no">-</td></tr>
     </table>
     <div class="note"><b>메뉴 노출 기준</b> - 접근 권한이 없는 화면은 메뉴에서 숨기고, 링크로 진입해도 접근을 차단합니다. 상시 화면은 로그인 직후 기본 화면 후보로 둡니다.</div>
   </div>
-  <div class="s-foot"><span>상시 · 매일 · 수시 · 가끔은 사용 빈도 기준안</span><span class="mark">SAILINGSTONE · 05</span></div>
+  <div class="s-foot"><span>상시 · 매일 · 수시 · 가끔은 사용 빈도 기준안</span><span class="mark">SAILINGSTONE · 5</span></div>
 </section>
 
 <!-- 하루 운영 타임라인 -->
@@ -393,7 +395,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
     </div>
     <div class="note"><b>운영 시간대와 인원 구성</b>은 골프장 운영 방식에 따라 조정합니다. 위 구간 구분은 시나리오 정의를 위한 기준안이며, 시나리오 01 · 02 · 05가 각 구간을 대표합니다.</div>
   </div>
-  <div class="s-foot"><span>역할 · 시간대별 사용 흐름</span><span class="mark">SAILINGSTONE · 06</span></div>
+  <div class="s-foot"><span>역할 · 시간대별 사용 흐름</span><span class="mark">SAILINGSTONE · 6</span></div>
 </section>
 
 <!-- 카트 상태 전이도 -->
@@ -449,7 +451,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
     </div>
     <div class="note"><b>판정은 서버에서 일괄 수행</b>합니다. 화면 · 리포트 · 알림이 서로 다른 값을 보이지 않도록 상태는 한 곳에서 계산하고, 속도 · 지속 시간 등 임계값은 협의 후 확정합니다.</div>
   </div>
-  <div class="s-foot"><span>트립 판정 기준 - 요구사항정의서 보완 제안 반영</span><span class="mark">SAILINGSTONE · 07</span></div>
+  <div class="s-foot"><span>트립 판정 기준 - 요구사항정의서 보완 제안 반영</span><span class="mark">SAILINGSTONE · 7</span></div>
 </section>
 
 <!-- 알림 상태 전이도 -->
@@ -499,7 +501,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
     </table>
     <div class="note"><b>중복 억제</b> - 동일 카트의 동일 이벤트는 일정 시간 내 1회만 발송하고 반복 횟수로 묶어 표시합니다. 미확인 긴급 이벤트만 재발송 대상입니다.</div>
   </div>
-  <div class="s-foot"><span>대응 시간 기준은 운영 인력 구성에 맞춰 확정</span><span class="mark">SAILINGSTONE · 08</span></div>
+  <div class="s-foot"><span>대응 시간 기준은 운영 인력 구성에 맞춰 확정</span><span class="mark">SAILINGSTONE · 8</span></div>
 </section>
 
 <!-- 시나리오 01 -->
@@ -551,7 +553,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>인수 시험 항목으로 재사용</span><span class="mark">SAILINGSTONE · 09</span></div>
+  <div class="s-foot"><span>인수 시험 항목으로 재사용</span><span class="mark">SAILINGSTONE · 9</span></div>
 </section>
 
 <!-- 시나리오 02 -->
@@ -861,6 +863,59 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
 </section>
 
 <!-- 예외 시나리오 -->
+
+<!-- 시나리오 08 -->
+<section class="slide" data-title="시나리오 08 신규 골프장 개설">
+  <div class="s-head">
+    <div class="eyebrow">시나리오 08 · 전역 관리자 · 골프장 관리자</div>
+    <h2 class="title">신규 골프장 등록과 개장 준비</h2>
+    <p class="lead">중앙 콘솔에서 골프장을 등록하면 <b>격리된 운영 공간이 즉시 생성</b>되는 흐름입니다.</p>
+  </div>
+  <div class="body">
+    <div class="flow" style="margin-bottom:0.9rem">
+      <div class="step"><div class="k">01</div><h4>골프장 등록</h4><p>골프장명 · 코드 · 홀 구성을 등록합니다.</p><span class="scr">SCR-150</span></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">02</div><h4>관리자 계정 발급</h4><p>골프장 관리자 계정을 발급하고 초대합니다.</p><span class="scr">SCR-140</span></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">03</div><h4>코스 · 홀 마킹</h4><p>코스 배경과 홀 지오펜스를 설정합니다.</p><span class="scr">SCR-130</span></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">04</div><h4>카트 등록</h4><p>투입 카트와 단말을 일괄 등록합니다.</p><span class="scr">SCR-080</span></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">05</div><h4>개장 확인</h4><p>통합 현황에서 수신 · 격리 상태를 확인합니다.</p><span class="scr">SCR-160</span></div>
+    </div>
+    <div class="grid g3">
+      <div class="card">
+        <span class="tag">격리 확인</span>
+        <h3>개장 전 점검 항목</h3>
+        <ul>
+          <li>골프장 관리자 계정으로 <b>타 골프장 데이터가 보이지 않는지</b> 확인</li>
+          <li>카트 신호가 해당 골프장에만 적재되는지 확인</li>
+          <li>알림 수신자가 해당 골프장 인원으로 한정되는지 확인</li>
+        </ul>
+      </div>
+      <div class="card lil">
+        <span class="tag gray">휴장 · 해지</span>
+        <h3>삭제 대신 비활성화</h3>
+        <ul>
+          <li>휴장 골프장은 접속을 차단하되 이력은 보존</li>
+          <li>재개장 시 기존 데이터를 그대로 복귀</li>
+          <li>중앙 통합 현황에는 상태만 표시</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">예외</span>
+        <h3>준비 미완료</h3>
+        <ul>
+          <li>관리자 미지정 시 준비 중 상태로 유지하고 개장 차단</li>
+          <li>홀 마킹 전에는 지도 기능을 제한하고 안내 표시</li>
+          <li>골프장 코드 중복 시 저장을 막고 기존 골프장 안내</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>대응 요구사항 - 중앙 관리 구조(대동 요청 반영)</span><span class="mark">SAILINGSTONE · 16</span></div>
+</section>
+
 <section class="slide" data-title="예외 시나리오">
   <div class="s-head">
     <div class="eyebrow">예외 처리</div>
@@ -902,7 +957,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
     </div>
     <div class="note"><b>예외도 화면에 드러나야 합니다</b> - 미수신 · 오탐 · 미확인은 각각 목록 표기, 묶음 표시, 승격 배지로 화면에 나타내고, 조치 결과를 기록해 반복 여부를 볼 수 있게 합니다.</div>
   </div>
-  <div class="s-foot"><span>임계 시간과 억제 시간은 협의 후 확정</span><span class="mark">SAILINGSTONE · 16</span></div>
+  <div class="s-foot"><span>임계 시간과 억제 시간은 협의 후 확정</span><span class="mark">SAILINGSTONE · 17</span></div>
 </section>
 
 <!-- 인수 시험 -->
@@ -926,7 +981,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
       <tr><td><b>AT-09</b></td><td>예외 - 권한</td><td class="g">역할별 계정 5종</td><td class="g">각 계정으로 로그인 후 메뉴 · 버튼 확인</td><td class="g">권한 매트릭스와 노출 · 동작이 일치한다</td></tr>
     </table>
   </div>
-  <div class="s-foot"><span>시험 데이터와 환경은 착수 시 별도 협의</span><span class="mark">SAILINGSTONE · 17</span></div>
+  <div class="s-foot"><span>시험 데이터와 환경은 착수 시 별도 협의</span><span class="mark">SAILINGSTONE · 18</span></div>
 </section>
 
 <!-- 맺음 -->

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LSV 골프카트 관제시스템 화면정의서</title>
-<meta name="doc-version" content="0.4">
+<meta name="doc-version" content="0.5">
 <meta name="doc-description" content="1단계 14개 화면과 공통·변형 화면을 실제 프로그램 수준으로 정의 - 앱 셸, 로그인, 대형 화면, 모바일, 데이터 항목까지">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -354,13 +354,13 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
     <div>
       <div class="eyebrow">설계 산출물 · Screen Specification</div>
       <h1>골프카트 관제시스템<br><em>화면정의서</em></h1>
-      <p class="sub">1단계 14개 화면을 실제 프로그램 화면 수준으로 정의합니다.</p>
+      <p class="sub">1단계 16개 화면을 실제 프로그램 화면 수준으로 정의합니다.</p>
     </div>
     <div class="card cov-card">
       <div class="eyebrow">문서 요약</div>
       <div class="cov-rows">
-        <div class="r"><span>정의 화면</span><b>14개</b></div>
-        <div class="r"><span>메뉴 구성</span><b>6개</b></div>
+        <div class="r"><span>정의 화면</span><b>16개</b></div>
+        <div class="r"><span>메뉴 구성</span><b>6개 + 중앙 콘솔</b></div>
         <div class="r"><span>화면 시안</span><b>전 화면 + 변형</b></div>
         <div class="r"><span>공통 · 변형 화면</span><b>4종</b></div>
       </div>
@@ -368,7 +368,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
   </div>
   <div class="meta">
     <div><b>LSV 귀중</b>제출처</div>
-    <div><b>v0.4 · 2026. 08</b>문서 버전</div>
+    <div><b>v0.5 · 2026. 09</b>문서 버전</div>
     <div><b>세일링스톤</b>작성</div>
   </div>
   <div class="cov-corner"><b>AI · BI · ANALYTICS</b><span class="bar">|</span><span>© 2026 SAILINGSTONE</span></div>
@@ -424,15 +424,15 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
     </div>
     <div class="note"><b>선행 확정 필요</b> - 수집 주기, 보관 기간, 코스 좌표 확보 방법, 단말 사양이 확정되면 해당 화면의 표시 항목과 갱신 주기를 반영해 개정합니다.</div>
   </div>
-  <div class="s-foot"><span>기준 문서 - LSV 골프카트 관제시스템 구축 제안서</span><span class="mark">SAILINGSTONE · 02</span></div>
+  <div class="s-foot"><span>기준 문서 - LSV 골프카트 관제시스템 구축 제안서</span><span class="mark">SAILINGSTONE · 2</span></div>
 </section>
 
 <!-- 화면 목록 -->
 <section class="slide" data-title="화면 목록">
   <div class="s-head">
     <div class="eyebrow">화면 목록</div>
-    <h2 class="title">1단계 화면 14개</h2>
-    <p class="lead">메뉴 6개에 화면 14개를 배치하고, 로그인 화면은 <b>공통 화면</b>으로 분류합니다.</p>
+    <h2 class="title">1단계 화면 16개</h2>
+    <p class="lead">메뉴 6개와 중앙 콘솔에 화면 16개를 배치하고, 로그인 화면은 <b>공통 화면</b>으로 분류합니다.</p>
   </div>
   <div class="body">
     <table class="tight dense">
@@ -451,9 +451,11 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       <tr><td><span class="sid">SCR-120</span></td><td><b>고장 · DTC 진단</b></td><td class="g">정비</td><td class="g">관리자 · 담당자</td><td class="g">코드 목록 · 코드 사전 · 신호 원문</td></tr>
       <tr><td><span class="sid">SCR-130</span></td><td><b>코스 · 홀 마킹</b></td><td class="g">설정</td><td class="g">전역 관리자</td><td class="g">마킹 도구 · 지오펜스 반경 · 홀 목록</td></tr>
       <tr><td><span class="sid">SCR-140</span></td><td><b>이용자 · 권한 관리</b></td><td class="g">설정</td><td class="g">전역 관리자</td><td class="g">계정 목록 · 권한 편집 · 2단계 인증</td></tr>
+      <tr><td><span class="sid">SCR-150</span></td><td><b>골프장 관리</b></td><td class="g">중앙 콘솔</td><td class="g">전역 관리자</td><td class="g">골프장 목록 · 등록 · 관리자 계정 발급 · 상태 관리</td></tr>
+      <tr><td><span class="sid">SCR-160</span></td><td><b>통합 관제 현황</b></td><td class="g">중앙 콘솔</td><td class="g">전역 관리자</td><td class="g">전 골프장 KPI · 골프장별 현황 · 미조치 경고 요약</td></tr>
     </table>
   </div>
-  <div class="s-foot"><span>공통 화면 - 로그인 · 2단계 인증</span><span class="mark">SAILINGSTONE · 03</span></div>
+  <div class="s-foot"><span>공통 화면 - 로그인 · 2단계 인증</span><span class="mark">SAILINGSTONE · 3</span></div>
 </section>
 
 <!-- 공통 레이아웃 -->
@@ -523,7 +525,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>공통 레이아웃</span><span class="mark">SAILINGSTONE · 04</span></div>
+  <div class="s-foot"><span>공통 레이아웃</span><span class="mark">SAILINGSTONE · 4</span></div>
 </section>
 
 <!-- 공통 컴포넌트 -->
@@ -574,7 +576,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       <tr><td><b>내보내기</b></td><td class="g">SCR-050 · 090</td><td class="g">현재 조회 조건 기준 CSV · 엑셀 생성, 대용량은 비동기 처리 후 알림</td></tr>
     </table>
   </div>
-  <div class="s-foot"><span>공통 컴포넌트</span><span class="mark">SAILINGSTONE · 05</span></div>
+  <div class="s-foot"><span>공통 컴포넌트</span><span class="mark">SAILINGSTONE · 5</span></div>
 </section>
 
 <!-- 상호작용 상태 -->
@@ -629,7 +631,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
     </div>
     <div class="note"><b>연결 상태</b> - 실시간 화면은 상단에 연결됨 · 재연결 중 · 끊김 3단계를 표시하고, 끊긴 동안 수신하지 못한 데이터는 복구 시 반영합니다. 권한이 없는 동작은 버튼을 숨기고, 조회만 가능한 계정에는 편집 컨트롤을 노출하지 않습니다.</div>
   </div>
-  <div class="s-foot"><span>상태 정의는 전 화면 공통</span><span class="mark">SAILINGSTONE · 06</span></div>
+  <div class="s-foot"><span>상태 정의는 전 화면 공통</span><span class="mark">SAILINGSTONE · 6</span></div>
 </section>
 
 <!-- SCR-010 -->
@@ -742,7 +744,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 종합 관제 대시보드</span><span class="mark">SAILINGSTONE · 07</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 종합 관제 대시보드</span><span class="mark">SAILINGSTONE · 7</span></div>
 </section>
 
 <!-- SCR-020 -->
@@ -850,7 +852,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 실시간 위치 관제</span><span class="mark">SAILINGSTONE · 08</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 실시간 위치 관제</span><span class="mark">SAILINGSTONE · 8</span></div>
 </section>
 
 <!-- SCR-030 -->
@@ -949,7 +951,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 차량 정비 · 고장 알림</span><span class="mark">SAILINGSTONE · 09</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 차량 정비 · 고장 알림</span><span class="mark">SAILINGSTONE · 9</span></div>
 </section>
 
 <!-- SCR-040 -->
@@ -2039,6 +2041,195 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
   <div class="s-foot"><span>대응 요구사항 - 이용자 관리</span><span class="mark">SAILINGSTONE · 20</span></div>
 </section>
 
+
+<!-- SCR-150 -->
+<section class="slide" data-title="SCR-150 골프장 관리">
+  <div class="s-head">
+    <div class="eyebrow">SCR-150 · 중앙 콘솔</div>
+    <h2 class="title">골프장 관리 (중앙 콘솔)</h2>
+  </div>
+  <div class="body">
+    <div class="scr">
+      <div class="ui">
+        <div class="ui-top">
+          <span class="lg"><i></i>LSV TMS</span><span class="sel">본사 · 중앙 콘솔</span>
+          <span class="sp"></span><span class="bell">알림<b>3</b></span><span class="sel">전역 관리자</span><span class="av"></span>
+        </div>
+        <div class="app">
+          <nav class="gnb">
+            <a><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>통합 현황</a>
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M3 21h18"></path><path d="M5 21V8l7-5 7 5v13"></path><path d="M9 21v-6h6v6"></path></svg>골프장</a>
+            <a><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>계정 · 권한</a>
+            <span class="ver">v1.0 · 중앙</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">중앙 콘솔 · 골프장 관리</div>
+            <div class="ui-head"><h5>골프장 관리</h5><span class="sp"></span>
+              <span class="fld"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>골프장명 · 코드</span>
+              <span class="btn gh">운영 현황</span><span class="btn fill">골프장 등록</span></div>
+            <div class="ui-body">
+              <div class="chips"><span class="on">전체 4</span><span>운영 중 3</span><span>준비 중 1</span><span>휴장 0</span></div>
+              <div class="ui-cols" style="grid-template-columns:1.4fr 1fr">
+                <div class="pane">
+                  <table class="tbl">
+                    <tr><th class="s">코드</th><th>골프장</th><th>홀 구성</th><th>카트</th><th>관리자</th><th>개장</th><th>상태</th></tr>
+                    <tr class="sel"><td class="id">GC-01</td><td>서울 CC</td><td>27홀 · 3코스</td><td class="n">50</td><td>park.gm</td><td class="n">2026-04</td><td><span class="pill v">운영 중</span></td></tr>
+                    <tr><td class="id">GC-02</td><td>남부 CC</td><td>18홀 · 2코스</td><td class="n">36</td><td>jung.gm</td><td class="n">2026-06</td><td><span class="pill v">운영 중</span></td></tr>
+                    <tr class="hov"><td class="id">GC-03</td><td>동부 CC</td><td>18홀 · 2코스</td><td class="n">40</td><td>han.gm</td><td class="n">2026-07</td><td><span class="pill v">운영 중</span></td></tr>
+                    <tr><td class="id">GC-04</td><td>중부 CC</td><td>9홀 · 1코스</td><td class="n">-</td><td>미지정</td><td class="n">-</td><td><span class="pill r">준비 중</span></td></tr>
+                  </table>
+                  <div class="pager"><span>전체 4건</span><b>1</b></div>
+                </div>
+                <div class="pane bone">
+                  <span class="ph">골프장 등록<em>신규</em></span>
+                  <div class="form" style="grid-template-columns:1fr">
+                    <div><label>골프장명 <span class="req">*</span></label><span class="fld box">중부 CC</span></div>
+                    <div><label>골프장 코드 <span class="req">*</span></label><span class="fld box">GC-04</span></div>
+                    <div><label>홀 구성 <span class="req">*</span></label><span class="fld box">9홀 · 1코스</span></div>
+                    <div><label>골프장 관리자 계정 <span class="req">*</span></label><span class="fld box">계정 발급 · 초대 발송</span></div>
+                  </div>
+                  <span class="ph">개장 준비</span>
+                  <div class="chk"><i class="on"></i>격리 공간 생성 · 관리자 초대</div>
+                  <div class="chk"><i></i>코스 · 홀 마킹(SCR-130)</div>
+                  <div class="chk"><i></i>카트 등록(SCR-080)</div>
+                  <div style="display:flex; gap:0.25rem; margin-top:auto"><span class="btn gh">휴장 처리</span><span class="btn fill">저장</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="def">
+        <div class="blk">
+          <div class="h">화면 정보</div>
+          <div class="kv"><span>화면 ID</span><b>SCR-150</b></div>
+          <div class="kv"><span>진입 경로</span><span>중앙 콘솔 &gt; 골프장</span></div>
+          <div class="kv"><span>접근 권한</span><span>전역 관리자</span></div>
+          <div class="kv"><span>갱신 방식</span><span>저장 즉시 반영</span></div>
+        </div>
+        <div class="blk">
+          <div class="h">등록 규칙</div>
+          <ul>
+            <li>저장 즉시 골프장 <b>격리 공간을 생성</b>하고 관리자 초대를 발송</li>
+            <li>관리자 미지정 골프장은 준비 중 상태로 유지하고 개장 차단</li>
+            <li>해지는 삭제가 아닌 휴장 · 비활성화로 처리해 이력 보존</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <div class="h">격리 규칙</div>
+          <ul>
+            <li>골프장 계정은 타 골프장 데이터에 접근 불가</li>
+            <li>골프장 전환과 등록 · 해지는 전역 관리자 전용</li>
+            <li>골프장 코드 중복 시 저장을 막고 기존 골프장 안내</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>중앙 콘솔</em><span class="on">SCR-150</span>→<span>SCR-140</span>→<span>SCR-130</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>대응 요구사항 - 중앙 관리 구조(대동 요청 반영)</span><span class="mark">SAILINGSTONE · 21</span></div>
+</section>
+
+<!-- SCR-160 -->
+<section class="slide" data-title="SCR-160 통합 관제 현황">
+  <div class="s-head">
+    <div class="eyebrow">SCR-160 · 중앙 콘솔</div>
+    <h2 class="title">통합 관제 현황 (중앙 콘솔)</h2>
+  </div>
+  <div class="body">
+    <div class="scr">
+      <div class="ui">
+        <div class="ui-top">
+          <span class="lg"><i></i>LSV TMS</span><span class="sel">본사 · 중앙 콘솔</span>
+          <span class="sp"></span><span class="bell">알림<b>3</b></span><span class="sel">전역 관리자</span><span class="av"></span>
+        </div>
+        <div class="app">
+          <nav class="gnb">
+            <a class="on"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v4h-6z"></path><path d="M14 12h6v8h-6z"></path><path d="M4 14h6v6H4z"></path></svg>통합 현황</a>
+            <a><svg viewBox="0 0 24 24"><path d="M3 21h18"></path><path d="M5 21V8l7-5 7 5v13"></path><path d="M9 21v-6h6v6"></path></svg>골프장</a>
+            <a><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>계정 · 권한</a>
+            <span class="ver">v1.0 · 중앙</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">중앙 콘솔 · 통합 관제 현황</div>
+            <div class="ui-head"><h5>통합 관제 현황</h5><span class="st run"><i></i>연결됨</span><span class="sp"></span>
+              <span class="fld sel">자동 갱신 30초</span><span class="btn fill">골프장 이동</span></div>
+            <div class="ui-body">
+              <div class="ui-cols" style="grid-template-columns:1.5fr 0.8fr">
+                <div style="display:flex; flex-direction:column; gap:0.42rem; min-height:0">
+                  <div class="kpi" style="grid-template-columns:repeat(5,1fr)">
+                    <div><b>3</b><span>운영 골프장</span></div>
+                    <div><b>126</b><span>전체 카트</span></div>
+                    <div><b>41</b><span>운행 중</span></div>
+                    <div><b style="color:var(--rose)">9</b><span>정비 필요</span></div>
+                    <div><b style="color:var(--rose)">3</b><span>미조치 경고</span></div>
+                  </div>
+                  <div class="pane" style="flex:1">
+                    <table class="tbl">
+                      <tr><th class="s">골프장</th><th>카트</th><th>운행</th><th>충전</th><th>SoC 평균</th><th>미조치</th><th>상태</th></tr>
+                      <tr class="sel"><td class="id">서울 CC</td><td class="n">50</td><td class="n">18</td><td class="n">8</td><td class="n">64%</td><td class="n">2</td><td><span class="pill v">정상</span></td></tr>
+                      <tr><td class="id">남부 CC</td><td class="n">36</td><td class="n">12</td><td class="n">6</td><td class="n">58%</td><td class="n">1</td><td><span class="pill v">정상</span></td></tr>
+                      <tr class="hov"><td class="id">동부 CC</td><td class="n">40</td><td class="n">11</td><td class="n">9</td><td class="n">61%</td><td class="n">0</td><td><span class="pill v">정상</span></td></tr>
+                      <tr><td class="id">중부 CC</td><td class="n">-</td><td class="n">-</td><td class="n">-</td><td class="n">-</td><td class="n">-</td><td><span class="pill r">준비 중</span></td></tr>
+                    </table>
+                  </div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:0.42rem; min-height:0">
+                  <div class="pane bone" style="flex:1.2">
+                    <span class="ph">전 골프장 경고<em>미조치 3</em></span>
+                    <div class="st fix" style="justify-content:space-between"><span><i></i>DTC · 서울 #101</span><span style="color:var(--slate)">2분</span></div>
+                    <div class="st fix" style="justify-content:space-between"><span><i></i>배터리 · 남부 #204</span><span style="color:var(--slate)">9분</span></div>
+                    <div class="st disp" style="justify-content:space-between"><span><i></i>통신 두절 · 서울 #114</span><span style="color:var(--slate)">14분</span></div>
+                  </div>
+                  <div class="pane bone" style="flex:1">
+                    <span class="ph">골프장별 가동률</span>
+                    <div class="grow"><span style="font-size:0.53rem; width:2rem">서울</span><span class="gauge"><i style="width:72%"></i></span><span style="font-size:0.53rem">72%</span></div>
+                    <div class="grow"><span style="font-size:0.53rem; width:2rem">남부</span><span class="gauge"><i style="width:64%"></i></span><span style="font-size:0.53rem">64%</span></div>
+                    <div class="grow"><span style="font-size:0.53rem; width:2rem">동부</span><span class="gauge"><i style="width:55%"></i></span><span style="font-size:0.53rem">55%</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="def">
+        <div class="blk">
+          <div class="h">화면 정보</div>
+          <div class="kv"><span>화면 ID</span><b>SCR-160</b></div>
+          <div class="kv"><span>진입 경로</span><span>중앙 콘솔 로그인 직후</span></div>
+          <div class="kv"><span>접근 권한</span><span>전역 관리자</span></div>
+          <div class="kv"><span>갱신 방식</span><span>30초 자동 갱신</span></div>
+        </div>
+        <div class="blk">
+          <div class="h">표시 규칙</div>
+          <ul>
+            <li>골프장 행을 선택하면 해당 골프장 대시보드(SCR-010)로 전환</li>
+            <li>수치는 골프장별 집계를 합산해 표시</li>
+            <li>준비 중 골프장은 수치 없이 상태만 표시</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <div class="h">범위</div>
+          <ul>
+            <li>1단계는 현황 조회 기본형으로 구성</li>
+            <li>골프장 간 비교 분석 · 통계 리포트는 2단계 확장</li>
+            <li>경고는 발생 골프장 라벨과 함께 통합 표시</li>
+          </ul>
+        </div>
+        <div class="blk">
+          <div class="h">화면 전이</div>
+          <div class="flowline"><em>로그인</em><span class="on">SCR-160</span>→<span>SCR-010</span><span>SCR-150</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>대응 요구사항 - 중앙 관리 구조(대동 요청 반영)</span><span class="mark">SAILINGSTONE · 22</span></div>
+</section>
+
 <!-- 공통 화면 - 로그인 -->
 <section class="slide" data-title="공통 화면 로그인 · 2단계 인증">
   <div class="s-head">
@@ -2103,7 +2294,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 이용자 관리(패스워드 규칙 · 2단계 인증)</span><span class="mark">SAILINGSTONE · 21</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 이용자 관리(패스워드 규칙 · 2단계 인증)</span><span class="mark">SAILINGSTONE · 23</span></div>
 </section>
 
 <!-- 대형 화면(DID) -->
@@ -2189,7 +2380,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 대형 모니터 · DID 출력용 다크 모드</span><span class="mark">SAILINGSTONE · 22</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 대형 모니터 · DID 출력용 다크 모드</span><span class="mark">SAILINGSTONE · 24</span></div>
 </section>
 
 <!-- 모바일 알림 -->
@@ -2267,7 +2458,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>대응 요구사항 - 긴급 고장 시 모바일 연동</span><span class="mark">SAILINGSTONE · 23</span></div>
+  <div class="s-foot"><span>대응 요구사항 - 긴급 고장 시 모바일 연동</span><span class="mark">SAILINGSTONE · 25</span></div>
 </section>
 
 <!-- 데이터 항목 정의 -->
@@ -2293,7 +2484,7 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
     </table>
     <div class="note"><b>확정 후 반영</b> - 수집 주기와 보관 기간이 정해지면 갱신 열과 조회 가능 기간을 확정하고, 화면별 최대 조회 범위를 함께 표기합니다.</div>
   </div>
-  <div class="s-foot"><span>상세 스키마와 API 명세는 착수 단계에서 별도 작성</span><span class="mark">SAILINGSTONE · 24</span></div>
+  <div class="s-foot"><span>상세 스키마와 API 명세는 착수 단계에서 별도 작성</span><span class="mark">SAILINGSTONE · 26</span></div>
 </section>
 
 <!-- 화면 전이 맵 -->
@@ -2333,9 +2524,10 @@ table.dense th, table.dense td{padding:0.3rem 0.75rem; font-size:0.75rem}
       <tr><td><span class="sid">SCR-060</span> 차량 목록</td><td class="g">차량 메뉴</td><td class="g">SCR-070 · 080</td><td class="g">등록은 전역 관리자만</td></tr>
       <tr><td><span class="sid">SCR-100</span> 체크리스트</td><td class="g">정비 메뉴</td><td class="g">SCR-090</td><td class="g">불량 항목이 정비로 이어짐</td></tr>
       <tr><td><span class="sid">SCR-130</span> 홀 마킹</td><td class="g">설정 메뉴</td><td class="g">SCR-040</td><td class="g">설정 후 검증 주행으로 확인</td></tr>
+      <tr><td><span class="sid">SCR-160</span> 통합 현황</td><td class="g">중앙 콘솔 로그인 직후</td><td class="g">SCR-010(골프장 전환) · 150</td><td class="g">전역 관리자 전용</td></tr>
     </table>
   </div>
-  <div class="s-foot"><span>진입 경로가 하나뿐인 화면은 메뉴에서도 접근할 수 있게 합니다</span><span class="mark">SAILINGSTONE · 25</span></div>
+  <div class="s-foot"><span>진입 경로가 하나뿐인 화면은 메뉴에서도 접근할 수 있게 합니다</span><span class="mark">SAILINGSTONE · 27</span></div>
 </section>
 
 <!-- 맺음 -->
