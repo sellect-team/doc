@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LSV 골프카트 관제시스템 솔루션 설계서</title>
-<meta name="doc-version" content="0.1">
+<meta name="doc-version" content="0.2">
 <meta name="doc-description" content="모듈 구조 · 멀티테넌트 RLS · 테이블 19종 · REST API 40종과 WS 2채널 · 판정 알고리즘과 알림 규칙 - 개발 착수 기준의 솔루션 설계">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -212,7 +212,7 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
   </div>
   <div class="meta">
     <div><b>LSV 귀중</b>제출처</div>
-    <div><b>v0.1 · 2026. 09</b>문서 버전</div>
+    <div><b>v0.2 · 2026. 09</b>문서 버전</div>
     <div><b>세일링스톤</b>작성</div>
   </div>
   <div class="cov-corner"><b>AI · BI · ANALYTICS</b><span class="bar">|</span><span>© 2026 SAILINGSTONE</span></div>
@@ -367,6 +367,71 @@ table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
   <div class="s-foot"><span>모듈 = NestJS Module 단위, 폴더 구조와 일치</span><span class="mark">SAILINGSTONE · 5</span></div>
 </section>
 
+<!-- 프론트엔드 구조 -->
+<section class="slide" data-title="프론트엔드 구조">
+  <div class="s-head">
+    <div class="eyebrow">01. 전체 구조</div>
+    <h2 class="title">프론트엔드 구조와 라우트 맵</h2>
+    <p class="lead">관제 웹은 단일 웹 앱이며, <b>화면 ID와 라우트를 1:1로 맵핑</b>해 문서와 코드가 같은 이름을 사용합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1.08fr 1fr; gap:0.9rem">
+      <div>
+        <table class="tight dense" style="font-size:0.69rem">
+          <tr><th>화면</th><th>라우트</th><th>비고</th></tr>
+          <tr><td><b>SCR-010</b> 대시보드</td><td class="g">/dashboard</td><td class="g">로그인 직후 기본 화면</td></tr>
+          <tr><td><b>SCR-020 · 030</b> 관제 · 알림</td><td class="g">/monitor · /alerts</td><td class="g">WS 구독 화면</td></tr>
+          <tr><td><b>SCR-040 · 050</b> 재생 · 리포트</td><td class="g">/trips/[id]/replay · /reports</td><td class="g">기간 조건은 URL 쿼리 보존</td></tr>
+          <tr><td><b>SCR-060 ~ 080</b> 차량</td><td class="g">/carts · /carts/[id] · /carts/new</td><td class="g">수정은 /carts/[id]/edit</td></tr>
+          <tr><td><b>SCR-090 ~ 120</b> 정비</td><td class="g">/maintenance · /checklists · /battery · /dtc</td><td class="g">-</td></tr>
+          <tr><td><b>SCR-130 · 140</b> 설정</td><td class="g">/settings/course · /settings/users</td><td class="g">전역 관리자 가드</td></tr>
+          <tr><td><b>SCR-150 · 160</b> 중앙 콘솔</td><td class="g">/central/sites · /central</td><td class="g">global 역할은 /central로 진입</td></tr>
+          <tr><td><b>공통 · 변형</b></td><td class="g">/login · /did · /m/alerts</td><td class="g">DID 다크 · 모바일 알림 변형</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">실시간 상태</span><h3>WS - 스토어 - 화면</h3><p>WS 수신분은 전역 스토어(Zustand) 한 곳에 반영하고 화면은 구독만 합니다. 재연결 시 REST로 최신 상태를 재적재한 뒤 증분을 다시 잇습니다.</p></div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">권한 노출</span><h3>GET /me 기반 가드</h3><p>메뉴 · 버튼 노출과 라우트 가드는 GET /me의 허용 기능 목록 하나로 판정하며, 서버 권한 검사와 같은 코드를 공유합니다.</p></div>
+        <div class="card"><span class="tag">표시 변형</span><h3>같은 앱의 3가지 모드</h3><p>기본 · DID 다크 전체 화면 · 모바일 알림 뷰는 별도 앱이 아니라 같은 화면의 표시 변형으로 구현합니다(화면정의서 공통 · 변형 4종 대응).</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>라우트 이름은 화면정의서 화면 ID와 함께 관리</span><span class="mark">SAILINGSTONE · 6</span></div>
+</section>
+
+<!-- 리포지토리 구조 -->
+<section class="slide" data-title="리포지토리 구조">
+  <div class="s-head">
+    <div class="eyebrow">01. 전체 구조</div>
+    <h2 class="title">리포지토리 구조와 공유 규칙</h2>
+    <p class="lead">모노레포 한 벌로 관리하며, 상태 · 역할 · 에러 코드 같은 <b>공유 타입은 한 곳에서만 정의</b>합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:0.95fr 1.1fr; gap:0.9rem">
+      <div class="code">lsv-tms/
+├─ apps/
+│  ├─ api/            # REST · WS 게이트웨이
+│  ├─ collector/      # 단말 수집 서버
+│  ├─ worker/         # 판정 · 알림 · 집계
+│  └─ web/            # Next.js 관제 웹
+├─ packages/
+│  ├─ shared/         # DTO · enum · 에러 코드
+│  │                  # 상태 6종 · 역할 · ALR/ERR
+│  ├─ db/             # Prisma 스키마 · 마이그레이션
+│  │                  # RLS 정책 · 시드
+│  └─ sim/            # 단말 시뮬레이터
+│                     # 가정 프로토콜 송신기
+└─ .github/workflows/ # 검사 · 빌드 · 배포</div>
+      <div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">타입 공유</span><h3>shared가 단일 출처</h3><p>카트 상태 6종 · 역할 5종 · 에러 코드 · API DTO는 packages/shared에서만 선언하고 웹과 서버가 함께 가져다 씁니다. 문서 · 코드 · DB 표기가 갈라지지 않습니다.</p></div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">작업 규칙</span><h3>PR 단위 · 보호 브랜치</h3><p>main은 보호 브랜치로 두고 PR 단위로만 병합하며, CI(타입 검사 · 단위 시험 · 격리 시험)를 통과해야 병합됩니다.</p></div>
+        <div class="card"><span class="tag">시뮬레이터</span><h3>단말 없이 개발 · 시연</h3><p>packages/sim이 가정 프로토콜로 카트 N대의 주행 · SoC · DTC를 송신해, 실 단말 수령 전에 전 구간을 개발 · 시연할 수 있습니다.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>폴더 이름은 모듈 구조 페이지의 모듈명과 일치</span><span class="mark">SAILINGSTONE · 7</span></div>
+</section>
+
 <!-- 멀티테넌트 설계 -->
 <section class="slide" data-title="멀티테넌트 설계">
   <div class="s-head">
@@ -405,7 +470,7 @@ SET LOCAL app.site_id = '&lt;골프장 id&gt;';</div>
       <div class="card"><span class="tag">검증</span><h3>격리 자동 시험</h3><p>CI에서 골프장 2개 시드 후 교차 조회가 전부 0건인지 확인하는 격리 시험을 상시 실행합니다.</p></div>
     </div>
   </div>
-  <div class="s-foot"><span>전역 관리자의 골프장 전환도 같은 경로로 처리</span><span class="mark">SAILINGSTONE · 6</span></div>
+  <div class="s-foot"><span>전역 관리자의 골프장 전환도 같은 경로로 처리</span><span class="mark">SAILINGSTONE · 8</span></div>
 </section>
 
 <!-- 데이터 모델 전체 구성 -->
@@ -438,7 +503,7 @@ SET LOCAL app.site_id = '&lt;골프장 id&gt;';</div>
       <tr><td class="g">TBL-19 app_parameter</td><td class="g">P_* 파라미터 저장소</td><td class="g">전역 + site 덮어쓰기</td><td class="g">영구</td></tr>
     </table>
   </div>
-  <div class="s-foot"><span>PK는 전부 uuid v7(시간 정렬) · 생성 시각 기본 포함</span><span class="mark">SAILINGSTONE · 7</span></div>
+  <div class="s-foot"><span>PK는 전부 uuid v7(시간 정렬) · 생성 시각 기본 포함</span><span class="mark">SAILINGSTONE · 9</span></div>
 </section>
 
 <!-- 테이블 정의 - 골프장과 계정 -->
@@ -482,7 +547,7 @@ SET LOCAL app.site_id = '&lt;골프장 id&gt;';</div>
     </div>
     <div class="note" style="margin-top:0.75rem"><b>역할 5종은 화면 문서와 1:1</b>입니다 - global(전역 관리자) · site_admin(골프장 관리자) · operator(관제 운영자) · mechanic(정비 담당자) · viewer(조회 전용). 역할 변경 · 정지는 audit_log에 기록합니다.</div>
   </div>
-  <div class="s-foot"><span>비밀번호 규칙 · 잠금 정책은 P_PASSWORD_* 파라미터</span><span class="mark">SAILINGSTONE · 8</span></div>
+  <div class="s-foot"><span>비밀번호 규칙 · 잠금 정책은 P_PASSWORD_* 파라미터</span><span class="mark">SAILINGSTONE · 10</span></div>
 </section>
 
 <!-- 테이블 정의 - 차량과 단말 -->
@@ -529,7 +594,7 @@ SET LOCAL app.site_id = '&lt;골프장 id&gt;';</div>
       <tr><td><b>assigned_at · released_at</b></td><td class="g">timestamptz · NULL</td><td class="g">배정 · 해제 시각</td><td class="g">해제 없이 새 배정 등록 시 자동 해제 + 이력</td></tr>
     </table>
   </div>
-  <div class="s-foot"><span>수집 데이터는 device가 아닌 cart 기준으로 조회</span><span class="mark">SAILINGSTONE · 9</span></div>
+  <div class="s-foot"><span>수집 데이터는 device가 아닌 cart 기준으로 조회</span><span class="mark">SAILINGSTONE · 11</span></div>
 </section>
 
 <!-- 테이블 정의 - 운행 -->
@@ -569,7 +634,7 @@ SET LOCAL app.site_id = '&lt;골프장 id&gt;';</div>
     </div>
     <div class="note"><b>조회 최적화</b> - 리포트 화면(SCR-050)은 trip 집계 컬럼만 읽고, 재생 화면(SCR-040)만 telemetry_point를 기간 조회합니다. 인덱스는 (site_id, started_at DESC)와 (cart_id, started_at DESC) 2개를 둡니다.</div>
   </div>
-  <div class="s-foot"><span>트립 판정 파라미터는 알고리즘 페이지에 정의</span><span class="mark">SAILINGSTONE · 10</span></div>
+  <div class="s-foot"><span>트립 판정 파라미터는 알고리즘 페이지에 정의</span><span class="mark">SAILINGSTONE · 12</span></div>
 </section>
 
 <!-- 테이블 정의 - 알림과 정비 -->
@@ -615,7 +680,7 @@ SET LOCAL app.site_id = '&lt;골프장 id&gt;';</div>
     </div>
     <div class="note"><b>ng 항목은 정비로 승격</b>됩니다 - 체크리스트 ng 저장 시 maintenance_log(inspect)와 알림 이벤트를 함께 생성해, 액션 플로우 시나리오 01 · 03의 흐름을 데이터로 보장합니다.</div>
   </div>
-  <div class="s-foot"><span>소모품 주기(TBL-14)는 D-n 계산 규칙만 보유</span><span class="mark">SAILINGSTONE · 11</span></div>
+  <div class="s-foot"><span>소모품 주기(TBL-14)는 D-n 계산 규칙만 보유</span><span class="mark">SAILINGSTONE · 13</span></div>
 </section>
 
 <!-- 테이블 정의 - 시계열 -->
@@ -659,7 +724,50 @@ CREATE TABLE telemetry_point_2026_10
       <tr><td><b>TBL-17 dtc_event</b></td><td class="g">site_id · cart_id · source(BMS · MCU · VCU · AGV) · code · occurred_at · cleared_at</td><td class="g">발생 - 해제 쌍으로 관리, 알림 · 정비 화면 공용</td></tr>
     </table>
   </div>
-  <div class="s-foot"><span>쓰기는 COPY 배치(1초 버퍼) · 중복 seq는 무시</span><span class="mark">SAILINGSTONE · 12</span></div>
+  <div class="s-foot"><span>쓰기는 COPY 배치(1초 버퍼) · 중복 seq는 무시</span><span class="mark">SAILINGSTONE · 14</span></div>
+</section>
+
+<!-- 코스 테이블과 인덱스 -->
+<section class="slide" data-title="코스 테이블과 인덱스">
+  <div class="s-head">
+    <div class="eyebrow">02. 데이터 설계</div>
+    <h2 class="title">코스 테이블과 인덱스 설계</h2>
+    <p class="lead">지오펜스는 홀 전용이 아니라 <b>카트고지 · 충전소 · 위험 구역까지 한 체계</b>로 정의하며, 조회 인덱스를 함께 확정합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="gap:0.9rem; margin-bottom:0.75rem">
+      <div>
+        <table class="tight dense" style="font-size:0.7rem">
+          <tr><th colspan="3">TBL-06 course - 코스</th></tr>
+          <tr><th>컬럼</th><th>타입 · 제약</th><th>설명</th></tr>
+          <tr><td><b>site_id · name</b></td><td class="g">uuid FK · varchar</td><td class="g">골프장 · 코스명(OUT · IN)</td></tr>
+          <tr><td><b>bg_image_key</b></td><td class="g">text NULL</td><td class="g">배경 이미지(S3), 미제공 시 도식 지도</td></tr>
+          <tr><td><b>transform</b></td><td class="g">jsonb</td><td class="g">기준점 3쌍(픽셀 - 위경도)과 아핀 행렬</td></tr>
+          <tr><td><b>revision</b></td><td class="g">integer</td><td class="g">마킹 개정 번호(트립 재계산 기준)</td></tr>
+        </table>
+      </div>
+      <div>
+        <table class="tight dense" style="font-size:0.7rem">
+          <tr><th colspan="3">TBL-07 hole - 지오펜스 지점</th></tr>
+          <tr><th>컬럼</th><th>타입 · 제약</th><th>설명</th></tr>
+          <tr><td><b>course_id · hole_no</b></td><td class="g">uuid FK · smallint</td><td class="g">홀 번호(구역형은 NULL)</td></tr>
+          <tr><td><b>kind</b></td><td class="g">enum</td><td class="g">hole · depot(카트고지) · charge(충전소) · hazard(위험)</td></tr>
+          <tr><td><b>center_lat · center_lng</b></td><td class="g">double NOT NULL</td><td class="g">중심 좌표</td></tr>
+          <tr><td><b>radius_m</b></td><td class="g">smallint</td><td class="g">반경(기본 P_GEO_RADIUS 15m)</td></tr>
+        </table>
+      </div>
+    </div>
+    <table class="tight dense" style="font-size:0.7rem">
+      <tr><th>인덱스</th><th>대상</th><th>지원 조회</th></tr>
+      <tr><td><b>PK(time, cart_id)</b></td><td class="g">telemetry_point</td><td class="g">재생 · 궤적 기간 조회(파티션 프루닝과 결합)</td></tr>
+      <tr><td><b>(site_id, started_at DESC) · (cart_id, started_at DESC)</b></td><td class="g">trip</td><td class="g">리포트 목록 · 차량별 이력</td></tr>
+      <tr><td><b>(site_id, status, created_at DESC)</b></td><td class="g">alert_event</td><td class="g">미조치 목록 · 알림 센터 필터</td></tr>
+      <tr><td><b>(cart_id, occurred_at DESC) + 부분(cleared_at IS NULL)</b></td><td class="g">dtc_event</td><td class="g">차량 상세 · 미해제 코드 판정</td></tr>
+      <tr><td><b>(cart_id, occurred_at DESC)</b></td><td class="g">maintenance_log</td><td class="g">정비 타임라인</td></tr>
+      <tr><td><b>UNIQUE(login_id) · UNIQUE(vin) · UNIQUE(serial)</b></td><td class="g">user_account · cart · device</td><td class="g">중복 등록 검증(ERR-3003)</td></tr>
+    </table>
+  </div>
+  <div class="s-foot"><span>상태 판정의 DEPOT · CHARGE 구역은 kind로 정의된 지점 사용</span><span class="mark">SAILINGSTONE · 15</span></div>
 </section>
 
 <!-- 단말 수집 인터페이스 -->
@@ -689,7 +797,7 @@ CREATE TABLE telemetry_point_2026_10
     </div>
     <div class="note"><b>확정 문서 반영 절차</b> - 실제 단말 프로토콜 문서를 받으면 수신 어댑터(파서 1개 파일)만 교체합니다. 어댑터 출력은 내부 표준 메시지(NormalizedPacket)로 고정되어 이후 파이프라인은 수정이 없습니다. (TBD - 단말 인터페이스 문서 · 전송 주기)</div>
   </div>
-  <div class="s-foot"><span>가정 주기 1초(P_COLLECT_INTERVAL) 기준 설계</span><span class="mark">SAILINGSTONE · 13</span></div>
+  <div class="s-foot"><span>가정 주기 1초(P_COLLECT_INTERVAL) 기준 설계</span><span class="mark">SAILINGSTONE · 16</span></div>
 </section>
 
 <!-- CAN 신호 매핑 -->
@@ -716,7 +824,7 @@ CREATE TABLE telemetry_point_2026_10
       <div class="card"><span class="tag">이상값</span><h3>범위 검증</h3><p>좌표 · 속도 · SoC는 물리 범위를 벗어나면 보정 플래그와 함께 저장하고 화면에는 보정 값을 표시합니다.</p></div>
     </div>
   </div>
-  <div class="s-foot"><span>(TBD) CAN DBC 원본 · DTC 사전 - 착수 전 필수 수령 자료</span><span class="mark">SAILINGSTONE · 14</span></div>
+  <div class="s-foot"><span>(TBD) CAN DBC 원본 · DTC 사전 - 착수 전 필수 수령 자료</span><span class="mark">SAILINGSTONE · 17</span></div>
 </section>
 
 <!-- API 설계 규약 -->
@@ -755,7 +863,7 @@ HTTP 4xx / 5xx
     </div>
     <div class="note"><b>권한 표기</b> - 이후 명세의 권한 열은 최소 요구 역할입니다. 상위 역할은 자동 포함하되, 전역 관리자(global)는 골프장 전환(act_site) 상태에서만 골프장 데이터에 접근합니다.</div>
   </div>
-  <div class="s-foot"><span>응답 본문은 snake_case · 요청 검증 실패는 ERR-3xxx</span><span class="mark">SAILINGSTONE · 15</span></div>
+  <div class="s-foot"><span>응답 본문은 snake_case · 요청 검증 실패는 ERR-3xxx</span><span class="mark">SAILINGSTONE · 18</span></div>
 </section>
 
 <!-- API 명세 - 인증과 계정 -->
@@ -779,7 +887,7 @@ HTTP 4xx / 5xx
     </table>
     <div class="note" style="margin-top:0.75rem"><b>화면 대응</b> - 공통 로그인 화면과 SCR-140(이용자 · 권한 관리)이 이 8종만으로 동작하도록 명세를 맞췄습니다. 비밀번호 초기화는 PATCH /users/:id의 reset_password 액션으로 처리합니다.</div>
   </div>
-  <div class="s-foot"><span>토큰 서명 키는 환경 변수 · 회전 절차는 운영 문서로</span><span class="mark">SAILINGSTONE · 16</span></div>
+  <div class="s-foot"><span>토큰 서명 키는 환경 변수 · 회전 절차는 운영 문서로</span><span class="mark">SAILINGSTONE · 19</span></div>
 </section>
 
 <!-- API 명세 - 중앙 콘솔 -->
@@ -801,7 +909,7 @@ HTTP 4xx / 5xx
     </table>
     <div class="note" style="margin-top:0.75rem"><b>통합 현황의 집계 경로</b> - GET /central/overview는 골프장별 최신 상태 캐시(Redis)를 합산해 30초 캐시로 응답하며, 시계열 테이블을 직접 조회하지 않습니다. 골프장 간 비교 분석 API는 2단계에서 별도 정의합니다.</div>
   </div>
-  <div class="s-foot"><span>SCR-150 · 160 대응 · 감사 로그 필수 구간</span><span class="mark">SAILINGSTONE · 17</span></div>
+  <div class="s-foot"><span>SCR-150 · 160 대응 · 감사 로그 필수 구간</span><span class="mark">SAILINGSTONE · 20</span></div>
 </section>
 
 <!-- API 명세 - 차량과 관제 -->
@@ -826,7 +934,7 @@ HTTP 4xx / 5xx
     </table>
     <div class="note" style="margin-top:0.7rem"><b>WS 채널 격리</b> - 채널명은 서버가 토큰의 골프장 스코프로 강제 매핑하며, 클라이언트가 임의 골프장 채널을 지정할 수 없습니다. 전역 관리자는 switch-site 후 해당 골프장 채널에 붙습니다.</div>
   </div>
-  <div class="s-foot"><span>SCR-010 ~ 080 대응 · 지도 마커는 WS 증분으로 갱신</span><span class="mark">SAILINGSTONE · 18</span></div>
+  <div class="s-foot"><span>SCR-010 ~ 080 대응 · 지도 마커는 WS 증분으로 갱신</span><span class="mark">SAILINGSTONE · 21</span></div>
 </section>
 
 <!-- API 명세 - 운행 · 정비 · 설정 -->
@@ -853,7 +961,87 @@ HTTP 4xx / 5xx
     </table>
     <div class="note" style="margin-top:0.7rem"><b>합계 REST 40종 + WS 2채널</b> - 이 목록이 1단계 화면 16개 전체를 커버하는지 화면 - API 대응표로 교차 검증했습니다(대응 없는 화면 없음).</div>
   </div>
-  <div class="s-foot"><span>내보내기 파일은 S3 서명 URL로 10분간 제공</span><span class="mark">SAILINGSTONE · 19</span></div>
+  <div class="s-foot"><span>내보내기 파일은 S3 서명 URL로 10분간 제공</span><span class="mark">SAILINGSTONE · 22</span></div>
+</section>
+
+<!-- WS 메시지와 응답 예시 -->
+<section class="slide" data-title="WS 메시지와 응답 예시">
+  <div class="s-head">
+    <div class="eyebrow">04. API 설계</div>
+    <h2 class="title">WS 메시지와 응답 형식 예시</h2>
+    <p class="lead">실시간 메시지와 응답 본문은 <b>packages/shared의 타입 선언이 단일 출처</b>이며, 아래는 그 대표 형태입니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="gap:0.9rem; margin-bottom:0.75rem">
+      <div class="code" style="font-size:0.64rem">// WS cart-positions (수집 주기 간격 배치)
+{ "type": "positions",
+  "ts": "2026-09-29T02:11:04Z",
+  "items": [{
+    "cart_id": "01J9...", "alias": "#101",
+    "lat": 35.123456, "lng": 128.567890,
+    "speed_kmh": 12, "soc": 62,
+    "state": "운행", "comm": "ok"   // ok · gap
+  }] }
+
+// WS alerts (발생 · 상태 변경 시)
+{ "type": "alert",
+  "event": "open",                 // open · ack · closed
+  "item": { "id": "01J9...", "rule": "ALR-COMM",
+    "severity": "warn", "cart_alias": "#114",
+    "payload": { "gap_min": 3 } } }</div>
+      <div class="code" style="font-size:0.64rem">// GET /carts 응답 (200)
+{ "items": [{
+    "id": "01J9...", "alias": "#101",
+    "vin": "LSV26-0101", "state": "운행",
+    "soc": 62, "last_seen_at": "2026-09-29T02:11:03Z",
+    "device": { "serial": "TMU-24-118",
+                "fw_version": "1.2.0" }
+  }],
+  "next_cursor": "eyJvZmZzZXQi..." }
+
+// POST /sites 요청 (중앙 콘솔)
+{ "name": "중부 CC", "code": "GC-04",
+  "hole_layout": { "holes": 9, "courses": 1 } }
+// 201 응답: site + 초기화 결과(RLS 검증 포함)</div>
+    </div>
+    <table class="tight dense" style="font-size:0.7rem">
+      <tr><th>알림 발송 대상</th><th>웹 표시</th><th>모바일 푸시</th></tr>
+      <tr><td><b>critical</b></td><td class="g">전 역할(조회 전용 포함)</td><td class="g">골프장 관리자 · 관제 운영자 · 정비 담당자</td></tr>
+      <tr><td><b>warn</b></td><td class="g">관제 · 정비 화면 역할</td><td class="g">규칙별 지정(ALR-GEO만 기본 발송)</td></tr>
+      <tr><td><b>info</b></td><td class="g">알림 센터 목록만</td><td class="g">발송 없음</td></tr>
+    </table>
+  </div>
+  <div class="s-foot"><span>필드 추가는 하위 호환 - 삭제 · 개명은 버전 협의 후</span><span class="mark">SAILINGSTONE · 23</span></div>
+</section>
+
+<!-- 화면 - API - 테이블 추적표 -->
+<section class="slide" data-title="화면 - API - 테이블 추적표">
+  <div class="s-head">
+    <div class="eyebrow">04. API 설계</div>
+    <h2 class="title">화면 - API - 테이블 추적표</h2>
+    <p class="lead">화면 16개가 어떤 API와 테이블에 닿는지 한 장으로 정리해 <b>누락 없는 커버리지</b>를 보증합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.655rem; line-height:1.32">
+      <tr><th>화면</th><th>사용 API</th><th>주 테이블</th></tr>
+      <tr><td><b>SCR-010</b> 대시보드</td><td class="g">GET /carts · /alerts · /battery/summary + WS 2채널</td><td class="g">cart · telemetry_point · alert_event</td></tr>
+      <tr><td><b>SCR-020</b> 실시간 관제</td><td class="g">GET /carts + WS cart-positions</td><td class="g">telemetry_point · cart</td></tr>
+      <tr><td><b>SCR-030</b> 알림 센터</td><td class="g">GET /alerts · PATCH ack · close + WS alerts</td><td class="g">alert_event · alert_rule</td></tr>
+      <tr><td><b>SCR-040</b> 운행경로 재생</td><td class="g">GET /trips/:id/track</td><td class="g">trip · telemetry_point</td></tr>
+      <tr><td><b>SCR-050</b> 트립 리포트</td><td class="g">GET /trips · /reports/trips</td><td class="g">trip · trip_hole</td></tr>
+      <tr><td><b>SCR-060 · 070</b> 차량 목록 · 상세</td><td class="g">GET /carts · /carts/:id · /carts/:id/telemetry</td><td class="g">cart · device · dtc_event</td></tr>
+      <tr><td><b>SCR-080</b> 차량 등록</td><td class="g">POST /carts · /carts/:id/device · PATCH deactivate</td><td class="g">cart · device · device_assignment</td></tr>
+      <tr><td><b>SCR-090 · 100</b> 정비 · 체크리스트</td><td class="g">GET · POST /maintenance · /checklists</td><td class="g">maintenance_log · checklist_result</td></tr>
+      <tr><td><b>SCR-110</b> 배터리 요약</td><td class="g">GET /battery/summary</td><td class="g">telemetry_point · cart</td></tr>
+      <tr><td><b>SCR-120</b> DTC 진단</td><td class="g">GET /dtc · /dtc/dictionary</td><td class="g">dtc_event</td></tr>
+      <tr><td><b>SCR-130</b> 코스 · 홀 마킹</td><td class="g">GET /courses/:id · PUT /courses/:id/holes</td><td class="g">course · hole</td></tr>
+      <tr><td><b>SCR-140</b> 이용자 · 권한</td><td class="g">GET · POST · PATCH /users</td><td class="g">user_account · audit_log</td></tr>
+      <tr><td><b>SCR-150</b> 골프장 관리</td><td class="g">GET · POST /sites · PATCH /sites/:id · POST manager</td><td class="g">site · user_account</td></tr>
+      <tr><td><b>SCR-160</b> 통합 현황</td><td class="g">GET /central/overview · POST /auth/switch-site</td><td class="g">site + 최신 상태 캐시</td></tr>
+      <tr><td><b>공통</b> 로그인 · 모드</td><td class="g">POST /auth/login · /auth/otp · GET /me</td><td class="g">user_account · audit_log</td></tr>
+    </table>
+  </div>
+  <div class="s-foot"><span>대응 없는 화면 · 사용처 없는 API 모두 0건</span><span class="mark">SAILINGSTONE · 24</span></div>
 </section>
 
 <!-- 실시간 처리 파이프라인 -->
@@ -883,7 +1071,7 @@ HTTP 4xx / 5xx
       <div class="card"><span class="tag">지연 목표</span><h3>수신 - 화면 2초 이내</h3><p>수집 주기 1초 가정 시 화면 반영 지연 목표는 p95 2초입니다. 단계별 처리 시간을 지표로 수집합니다.</p></div>
     </div>
   </div>
-  <div class="s-foot"><span>장애 시 재처리는 원본 재파싱으로 수행(원칙 3)</span><span class="mark">SAILINGSTONE · 20</span></div>
+  <div class="s-foot"><span>장애 시 재처리는 원본 재파싱으로 수행(원칙 3)</span><span class="mark">SAILINGSTONE · 25</span></div>
 </section>
 
 <!-- 상태 판정 엔진 -->
@@ -924,7 +1112,7 @@ evaluate(cart, p): State {
     </div>
     <div class="note" style="margin-top:0.75rem"><b>수동 지정과 자동 판정의 충돌</b> - 정비 수동 지정은 자동 판정보다 우선하며, 해제도 사람이 합니다. 통신 두절 카트는 마지막 상태를 유지하되 화면에 두절 배지를 함께 표시합니다(화면정의서 공통 상태).</div>
   </div>
-  <div class="s-foot"><span>상태 열거값은 문서 · 코드 · DB가 동일 표기 사용</span><span class="mark">SAILINGSTONE · 21</span></div>
+  <div class="s-foot"><span>상태 열거값은 문서 · 코드 · DB가 동일 표기 사용</span><span class="mark">SAILINGSTONE · 26</span></div>
 </section>
 
 <!-- 트립 분할 알고리즘 -->
@@ -967,7 +1155,43 @@ onGap(cart, gapSec):           // 통신 공백
       </div>
     </div>
   </div>
-  <div class="s-foot"><span>판정 값 변경은 파라미터 화면에서 즉시 반영</span><span class="mark">SAILINGSTONE · 22</span></div>
+  <div class="s-foot"><span>판정 값 변경은 파라미터 화면에서 즉시 반영</span><span class="mark">SAILINGSTONE · 27</span></div>
+</section>
+
+<!-- 지도 좌표 변환 -->
+<section class="slide" data-title="지도 좌표 변환">
+  <div class="s-head">
+    <div class="eyebrow">05. 핵심 로직</div>
+    <h2 class="title">지도 표시와 좌표 변환 설계</h2>
+    <p class="lead">코스 배경 이미지와 GPS 좌표는 <b>기준점 3쌍의 아핀 변환</b>으로 정합하며, 지오펜스 판정은 서버 한 곳에서만 수행합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1fr 1.05fr; gap:0.9rem; margin-bottom:0.75rem">
+      <div class="code" style="font-size:0.62rem">// packages/shared/geo.ts
+// 1) 정합: 홀 마킹 화면에서 기준점 3쌍 지정
+//    (이미지 픽셀 x,y) - (위경도 lat,lng)
+//    최소제곱으로 아핀 행렬 A 산출
+//    course.transform에 저장
+toScreen(lat, lng) = A · [lng, lat, 1]
+
+// 2) 지오펜스 판정 (worker 전용)
+inZone(p, g) =
+  haversineM(p, g.center) &lt;= g.radius_m
+// 진입 · 이탈은 연속 2포인트 확인 후 확정
+// (경계 진동으로 인한 중복 이벤트 방지)
+
+// 3) 재생 보간
+// 수집 주기 사이는 직선 보간,
+// 통신 공백(P_T_GAP 초과)은 점선 표시</div>
+      <div>
+        <div class="card" style="margin-bottom:0.5rem"><span class="tag">판정 위치</span><h3>서버 1곳 · 화면은 표시만</h3><p>홀 진입 · 이탈과 구역 판정은 worker에서만 수행해 트립 · 알림 · 화면이 같은 결과를 공유합니다.</p></div>
+        <div class="card" style="margin-bottom:0.5rem"><span class="tag">배경 미제공 대비</span><h3>도식 지도 자동 생성</h3><p>배경 이미지를 받지 못하면 실측 주행 궤적으로 코스 라인을 생성해 도식 지도로 대체합니다(제안서 위험 대응과 동일).</p></div>
+        <div class="card"><span class="tag">렌더링</span><h3>캔버스 레이어 분리</h3><p>배경 · 궤적 · 마커를 레이어로 분리해 다시 그리는 범위를 줄이고, 마커는 주기 사이를 부드럽게 이동시킵니다.</p></div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:0"><b>변환 정확도 검증</b> - 기준점 저장 시 검증점 오차(m)를 표시하고, P_GEO_RADIUS의 절반을 넘으면 재지정을 안내합니다.</div>
+  </div>
+  <div class="s-foot"><span>기준점 지정 UI는 SCR-130 홀 마킹 화면에 포함</span><span class="mark">SAILINGSTONE · 28</span></div>
 </section>
 
 <!-- 알림 규칙 엔진 -->
@@ -993,7 +1217,7 @@ onGap(cart, gapSec):           // 통신 공백
       <div class="card"><span class="tag">발송</span><h3>채널 어댑터</h3><p>웹(WS) · 모바일 푸시 · 문자를 채널 어댑터로 추상화하고, 1단계는 웹 + 푸시를 구현하며 문자는 어댑터만 준비합니다.</p></div>
     </div>
   </div>
-  <div class="s-foot"><span>규칙 파라미터는 골프장별 덮어쓰기 허용(TBL-10)</span><span class="mark">SAILINGSTONE · 23</span></div>
+  <div class="s-foot"><span>규칙 파라미터는 골프장별 덮어쓰기 허용(TBL-10)</span><span class="mark">SAILINGSTONE · 29</span></div>
 </section>
 
 <!-- 에러 코드 체계 -->
@@ -1031,7 +1255,7 @@ onGap(cart, gapSec):           // 통신 공백
     </div>
     <div class="note" style="margin-top:0.75rem"><b>안내문은 코드 - 문구 사전으로 관리</b>합니다 - 화면은 코드로만 분기하고 문구는 사전 파일에서 읽어, 문구 수정이 배포 없이 가능합니다.</div>
   </div>
-  <div class="s-foot"><span>코드 신설은 이 대역 규칙 안에서만 허용</span><span class="mark">SAILINGSTONE · 24</span></div>
+  <div class="s-foot"><span>코드 신설은 이 대역 규칙 안에서만 허용</span><span class="mark">SAILINGSTONE · 30</span></div>
 </section>
 
 <!-- 비기능 설계 -->
@@ -1070,7 +1294,7 @@ onGap(cart, gapSec):           // 통신 공백
       <div class="card"><span class="tag">관측</span><h3>지표 · 로그 · 추적</h3><p>단계별 처리 시간 · 폐기 카운트 · 큐 적체를 지표로 수집하고, trace_id로 요청 - 로그를 연결합니다.</p></div>
     </div>
   </div>
-  <div class="s-foot"><span>목표 미달 시 병목 단계를 지표로 특정해 보강</span><span class="mark">SAILINGSTONE · 25</span></div>
+  <div class="s-foot"><span>목표 미달 시 병목 단계를 지표로 특정해 보강</span><span class="mark">SAILINGSTONE · 31</span></div>
 </section>
 
 <!-- 배포와 환경 구성 -->
@@ -1101,7 +1325,7 @@ onGap(cart, gapSec):           // 통신 공백
     </div>
     <div class="note"><b>초기 데이터(시드)</b> - 전역 관리자 1계정, 알림 규칙 6종, 파라미터 기본값, 체크리스트 표준 항목을 시드 스크립트로 제공하며, 시범 골프장 등록부터는 화면(SCR-150)에서 진행합니다.</div>
   </div>
-  <div class="s-foot"><span>개발 환경은 docker compose 단일 파일로 기동</span><span class="mark">SAILINGSTONE · 26</span></div>
+  <div class="s-foot"><span>개발 환경은 docker compose 단일 파일로 기동</span><span class="mark">SAILINGSTONE · 32</span></div>
 </section>
 
 <!-- 개발 착수 체크리스트 -->
@@ -1127,7 +1351,7 @@ onGap(cart, gapSec):           // 통신 공백
       <div class="card"><span class="tag">동시 진행</span><h3>화면 착수 준비</h3><ul><li>GET /me · 목록 API 우선 확정</li><li>화면 - API 대응표 공유</li><li>파라미터 기본값 합의</li></ul></div>
     </div>
   </div>
-  <div class="s-foot"><span>확정 즉시 반영 - 코드 수정 없이 파라미터 변경</span><span class="mark">SAILINGSTONE · 27</span></div>
+  <div class="s-foot"><span>확정 즉시 반영 - 코드 수정 없이 파라미터 변경</span><span class="mark">SAILINGSTONE · 33</span></div>
 </section>
 
 <section class="slide end" data-title="맺음">
@@ -1137,7 +1361,7 @@ onGap(cart, gapSec):           // 통신 공백
   <p>협의 대기 값은 전부 파라미터로 분리되어 있어, 확정되는 순서대로 반영하며 착수 첫 주부터 골격 코드를 세울 수 있습니다.</p>
   <div class="info">
     <div><b>세일링스톤</b>세일즈 그룹</div>
-    <div><b>문서</b>솔루션 설계서 v0.1</div>
+    <div><b>문서</b>솔루션 설계서 v0.2</div>
     <div><b>작성</b>2026. 09</div>
   </div>
 </section>
