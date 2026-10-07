@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SELLECT 솔루션 설계서</title>
+<meta name="doc-version" content="0.1">
+<meta name="doc-description" content="SELLECT 시스템 설계 레퍼런스 - 아키텍처 · 엔티티 25종 · API 전체 · 인증/SSE/콘텐츠 정책 설계 · 인프라 · 기술 부채">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* ============================================================
+   세일링스톤 문서 규격 - SUIT · slate · teal
+   ============================================================ */
+:root{
+  --violet:#FF5A5F; --voltage:#FF7A7F; --iris:#E04E53;
+  --lilac:#FFF1F1; --peri:#E6E6E6; --chartreuse:#C9A96A; --powder:#38BDF8;
+  --bone:#FAFAFA; --paper:#FFFFFF; --ink:#1A1A1A; --carbon:#3D3D3D;
+  --slate:#8A8A8A; --lavender:#B5B5B5; --midnight:#0B0B0D;
+  --rose:#E11D48;   /* 상태 전용 - 경고·정비 표시에만 사용 */
+  --line:#E2E8F0;
+  --mint:#FF5A5F; --teal:#E04E53;   /* 세일링스톤 브랜드 - 회사소개서 기준 */
+  --fd:"Pretendard Variable",Pretendard,-apple-system,sans-serif;
+  --fu:"Pretendard Variable",Pretendard,-apple-system,sans-serif;
+  --pad:3.5rem;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:min(1.25vw,2.2222vh)}
+body{
+  margin:0; background:#E2E8F0; font-family:var(--fu);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-height:100vh; color:var(--ink); -webkit-font-smoothing:antialiased;
+  word-break:keep-all;
+}
+section.slide{
+  width:min(100vw,177.7778vh); height:min(56.25vw,100vh);
+  position:relative; overflow:hidden; background:var(--bone);
+  padding:2.7rem var(--pad) 2rem; display:flex; flex-direction:column;
+  font-size:1rem; line-height:1.5; letter-spacing:-0.001em;
+}
+.slide.tint{background:var(--lilac)}
+
+.s-head{margin-bottom:1rem}
+.eyebrow{font-weight:700; font-size:0.7rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
+h2.title{font-family:var(--fd); font-weight:800; font-size:2rem; letter-spacing:-0.032em; line-height:1.15; margin:0.4rem 0 0}
+.lead{font-weight:300; font-size:1.02rem; line-height:1.5; margin:0.45rem 0 0; max-width:66ch}
+.lead b{font-weight:600; color:var(--violet)}
+
+.body{flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center}
+.grid{display:grid; gap:1rem}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1.05rem 1.15rem}
+.card.lil{background:var(--lilac)}
+.card h3{font-family:var(--fd); font-weight:800; font-size:1rem; letter-spacing:-0.02em; margin:0.4rem 0 0; line-height:1.25}
+.card p{font-size:0.84rem; line-height:1.5; color:var(--carbon); margin:0.45rem 0 0}
+.card ul{margin:0.45rem 0 0; padding:0; list-style:none}
+.card li{position:relative; padding:0.22rem 0 0.22rem 0.85rem; font-size:0.82rem; color:var(--carbon); line-height:1.42}
+.card li::before{content:""; position:absolute; left:0; top:0.62rem; width:0.28rem; height:0.28rem; border-radius:50%; background:var(--violet)}
+.card li b{font-weight:600; color:var(--ink)}
+.tag{display:inline-block; background:var(--lilac); color:var(--violet); font-weight:600; font-size:0.7rem; padding:0.16rem 0.62rem; border-radius:999px}
+.tag.gray{background:#F1F5F9; color:var(--slate)}
+.tag.r{background:#FEE2E2; color:var(--rose)}
+.tags{display:flex; gap:0.35rem; flex-wrap:wrap; margin-top:0.6rem}
+.num{font-family:var(--fd); font-weight:800; font-size:1.9rem; letter-spacing:-0.04em; line-height:1; color:var(--violet)}
+.unit{font-size:0.74rem; color:var(--slate); margin-top:0.28rem}
+
+table{width:100%; border-collapse:separate; border-spacing:0; background:var(--paper);
+  border:1px solid var(--peri); border-radius:1.25rem; overflow:hidden; font-size:0.82rem}
+th,td{text-align:left; padding:0.5rem 0.8rem; border-bottom:1px solid var(--lilac); vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-weight:700; font-size:0.66rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--slate); white-space:nowrap}
+td.g{color:var(--slate)}
+td b{font-weight:600}
+td.c{text-align:center}
+table.tight th, table.tight td{padding:0.4rem 0.75rem; font-size:0.77rem}
+table.dense th, table.dense td{padding:0.3rem 0.7rem; font-size:0.73rem}
+.sid{font-family:var(--fd); font-weight:800; font-size:0.74rem; color:var(--violet)}
+.yes{color:var(--violet); font-weight:600}
+.no{color:var(--lavender)}
+
+.s-foot{display:flex; justify-content:space-between; align-items:center;
+  font-size:0.68rem; letter-spacing:0.04em; color:var(--slate); padding-top:0.7rem}
+.s-foot .mark{font-family:var(--fd); font-weight:800; letter-spacing:-0.02em}
+
+.note{background:var(--lilac); border:1px solid var(--peri); border-radius:1.25rem;
+  padding:0.8rem 1.1rem; font-size:0.82rem; color:var(--carbon); margin-top:0.85rem}
+.note b{font-weight:600; color:var(--violet)}
+
+/* 표지 */
+.cover{justify-content:space-between; padding:3.4rem var(--pad) 3rem}
+.brand{display:flex; align-items:center; gap:0.6rem; font-family:var(--fd); font-weight:800; font-size:1.1rem; letter-spacing:-0.04em}
+.brand .mk{width:1.85rem; height:1.85rem; border-radius:50%; background:var(--violet); color:#FFFFFF;
+  display:grid; place-items:center; font-family:var(--fd); font-weight:800; font-size:0.85rem}
+.cov-mid{display:grid; grid-template-columns:1.35fr 1fr; gap:3.4rem; align-items:center}
+.cov-card{padding:1.5rem 1.6rem}
+.cov-rows{margin-top:0.9rem}
+.cov-rows .r{display:flex; justify-content:space-between; align-items:baseline;
+  padding:0.55rem 0; border-bottom:1px solid var(--lilac); font-size:0.88rem; color:var(--carbon)}
+.cov-rows .r:last-child{border-bottom:0}
+.cov-rows b{font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:-0.03em; color:var(--ink)}
+.cover h1{font-family:var(--fd); font-weight:800; font-size:3.5rem; letter-spacing:-0.04em; line-height:1.03; margin:0.9rem 0 0}
+.cover h1 em{font-style:normal; color:var(--violet)}
+.cover .sub{font-weight:300; font-size:1.25rem; margin-top:1rem}
+.cover .meta{display:flex; gap:2.4rem; align-items:flex-end}
+.cover .meta div{font-size:0.78rem; color:var(--slate)}
+.cover .meta b{display:block; font-family:var(--fd); font-weight:800; font-size:0.95rem; letter-spacing:-0.02em; color:var(--ink); margin-bottom:0.2rem}
+
+/* 단계 흐름 */
+.flow{display:flex; align-items:stretch; gap:0.55rem}
+.flow .step{flex:1; background:var(--paper); border:1px solid var(--peri); border-radius:1rem; padding:0.75rem 0.8rem}
+.flow .step .k{font-weight:700; font-size:0.62rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--violet)}
+.flow .step h4{font-family:var(--fd); font-weight:800; font-size:0.92rem; letter-spacing:-0.02em; margin:0.3rem 0 0}
+.flow .step p{font-size:0.76rem; color:var(--carbon); margin:0.3rem 0 0; line-height:1.42}
+.flow .step .scr{display:inline-block; margin-top:0.4rem; font-family:var(--fd); font-weight:800;
+  font-size:0.64rem; color:var(--violet); background:var(--lilac); border-radius:999px; padding:0.12rem 0.5rem}
+.flow .arw{align-self:center; color:var(--lavender); font-size:0.85rem; flex:none}
+
+/* 스윔레인 */
+.axis{display:grid; grid-template-columns:6.4rem 1fr; gap:0.5rem; margin-bottom:0.35rem}
+.axis .ticks{display:grid; grid-template-columns:repeat(5,1fr); gap:0.5rem; font-size:0.6rem; color:var(--lavender)}
+.axis .ticks span{border-left:1px solid var(--peri); padding-left:0.3rem}
+.lanes{display:flex; flex-direction:column; gap:0.45rem}
+.lane{display:grid; grid-template-columns:6.4rem 1fr; gap:0.5rem}
+.lane .lb{display:flex; flex-direction:column; align-items:flex-start; justify-content:center;
+  font-weight:600; font-size:0.76rem; color:var(--violet); background:var(--lilac);
+  border:1px solid var(--peri); border-radius:0.8rem; padding:0.4rem 0.55rem; line-height:1.3}
+.lane .lb em{font-style:normal; font-size:0.6rem; color:var(--slate); font-weight:400}
+.lane .steps{display:grid; grid-template-columns:repeat(5,1fr); gap:0.5rem}
+.lane .s{background:var(--paper); border:1px solid var(--peri); border-radius:0.8rem; padding:0.45rem 0.6rem;
+  font-size:0.72rem; color:var(--carbon); line-height:1.35}
+.lane .s b{display:block; font-size:0.76rem; color:var(--ink); font-weight:600; margin-bottom:0.12rem}
+.lane .s .scr{display:block; margin-top:0.25rem; font-family:var(--fd); font-weight:800; font-size:0.62rem; color:var(--violet)}
+.lane .s.hold{border-style:dashed; background:var(--bone); color:var(--lavender); display:flex; align-items:center}
+.lane .s.on{background:var(--lilac); border-color:var(--violet)}
+.lane .s.warn{border-color:var(--rose)}
+.lane .s.warn b{color:var(--rose)}
+
+/* 타임라인 */
+.tl{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.tl .seg{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:1rem 1.1rem}
+.tl .seg .t{font-family:var(--fd); font-weight:800; font-size:0.76rem; color:var(--violet); letter-spacing:0.02em}
+.tl .seg h3{font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:-0.02em; margin:0.35rem 0 0}
+.tl .seg ul{margin:0.5rem 0 0; padding:0; list-style:none}
+.tl .seg li{font-size:0.8rem; color:var(--carbon); padding:0.24rem 0; border-bottom:1px solid var(--lilac); display:flex; gap:0.45rem}
+.tl .seg li:last-child{border-bottom:0}
+.tl .seg li .who{color:var(--slate); font-size:0.7rem; width:4.4rem; flex:none}
+.tl .seg li .sid{margin-left:auto}
+
+/* 상태 전이도 */
+.dia{background:var(--paper); border:1px solid var(--peri); border-radius:1.25rem; padding:0.8rem; flex:1; min-height:0}
+.dia svg{width:100%; height:100%; display:block}
+
+
+/* 세일링스톤 브랜드 - 회사소개서 로고 체계 */
+.lgm{width:100%; height:100%; display:block}
+.brand .mk{background:transparent; color:var(--mint); width:2rem; height:2rem; padding:0}
+.cov-top{display:flex; align-items:center; justify-content:space-between}
+.cov-top .iwd{font-size:0.82rem; color:var(--slate); letter-spacing:-0.01em}
+.cov-corner{display:flex; align-items:center; gap:0.7rem; font-size:0.7rem; color:var(--lavender);
+  letter-spacing:0.08em; margin-top:0.9rem}
+.cov-corner b{font-weight:600; color:var(--slate); letter-spacing:0.06em}
+.cov-corner .bar{color:var(--peri)}
+.end-logo{display:flex; align-items:center; gap:0.6rem; margin-bottom:1.1rem;
+  font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:-0.04em}
+.end-logo .mk{width:1.9rem; height:1.9rem; color:var(--mint)}
+.s-foot .mark .lgm{width:0.78rem; height:0.78rem; display:inline-block; vertical-align:-0.1rem; margin-right:0.28rem}
+
+/* 맺음 */
+.end{justify-content:center}
+.end h2{font-family:var(--fd); font-weight:800; font-size:3rem; letter-spacing:-0.04em; line-height:1.08; margin:0}
+.end h2 em{font-style:normal; color:var(--violet)}
+.end p{font-weight:300; font-size:1.15rem; margin-top:1rem; max-width:52ch}
+.end .info{display:flex; gap:2.2rem; margin-top:2.2rem; font-size:0.82rem; color:var(--slate)}
+.end .info b{display:block; font-family:var(--fd); font-weight:800; font-size:0.92rem; color:var(--ink); letter-spacing:-0.02em; margin-bottom:0.15rem}
+</style>
+</head>
+<body>
+<section class="slide cover" data-title="표지">
+  <div class="cov-top">
+    <div class="brand"><span style="font-family:var(--fd); font-weight:800; letter-spacing:0.18em">SELLECT</span></div>
+    <span class="iwd">Simple · Sincere · Select</span>
+  </div>
+  <div class="cov-mid">
+    <div>
+      <div class="eyebrow">SELLECT · System Design</div>
+      <h1>구현된 시스템의<br><em>설계 레퍼런스</em></h1>
+      <p class="sub">아키텍처 · 데이터 · API · 핵심 설계 · 운영 기반을 개발자가 이어받을 수 있는 수준으로 정리했습니다.</p>
+    </div>
+    <div class="card cov-card">
+      <div class="eyebrow">문서 요약</div>
+      <div class="cov-rows">
+        <div class="r"><span>아키텍처</span><b>4컨테이너 · 3모드</b></div><div class="r"><span>데이터</span><b>엔티티 25종 · Flyway V39</b></div><div class="r"><span>핵심 설계</span><b>세션 세대 · SSE · 정책 엔진</b></div><div class="r"><span>기술 부채</span><b>정리 대상 9건</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="meta">
+    <div><b>팀 내부</b>공유 범위</div>
+    <div><b>v0.1 · 2026. 10</b>문서 버전</div>
+    <div><b>SELLECT 팀</b>작성</div>
+  </div>
+  <div class="cov-corner"><b>INTRO FIRST · NO SWIPE</b><span class="bar">|</span><span>© 2026 SELLECT</span></div>
+</section>
+
+<!-- 문서 개요 -->
+<section class="slide" data-title="문서 개요">
+  <div class="s-head">
+    <div class="eyebrow">문서 개요</div>
+    <h2 class="title">이 문서의 범위와 기준</h2>
+    <p class="lead">구현된 시스템을 <b>개발자가 바로 이어받을 수 있는 수준</b>으로 정리한 설계 레퍼런스입니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g4" style="margin-bottom:0.85rem">
+      <div class="card"><span class="tag">다루는 것</span><h3>시스템 전부</h3><ul><li>아키텍처 · 모듈 · 엔티티 25종</li><li>API 전체와 인증 · 세션 설계</li><li>실시간 SSE · 콘텐츠 정책 파이프라인</li><li>인프라 · 배포 · 기술 부채</li></ul></div>
+      <div class="card"><span class="tag">다루지 않는 것</span><h3>별도 문서</h3><ul><li>화면 상세(화면정의서 예정)</li><li>운영 절차(정책 · 운영 규칙집)</li><li>DTO 필드 상세(코드가 원본)</li></ul></div>
+      <div class="card"><span class="tag">기준</span><h3>2026-10-07</h3><ul><li>sellect-api main 68d9158</li><li>sellect-app main 88b542e</li><li>Spring Boot 3.5.6 · Java 21</li><li>Expo SDK 57 · RN 0.86 · React 19</li></ul></div>
+      <div class="card"><span class="tag">원본 위치</span><h3>코드가 진실</h3><ul><li>C:\project\sellect\sellect-api</li><li>C:\project\sellect\sellect-app</li><li>운영 문서 - api/docs/ 2종</li></ul></div>
+    </div>
+    <div class="note"><b>읽는 법</b> - 이 문서는 지도이고 코드가 지형입니다. 요청 · 응답 필드까지 필요하면 각 페이지에 적힌 클래스 · 파일 경로를 따라가 코드를 읽는 것이 정확합니다.</div>
+  </div>
+  <div class="s-foot"><span>백엔드 251소스 · 프론트 1.4만 줄 · 테스트 ~200</span><span class="mark">SELLECT · 2</span></div>
+</section>
+
+<!-- 시스템 아키텍처 -->
+<section class="slide" data-title="시스템 아키텍처">
+  <div class="s-head">
+    <div class="eyebrow">01. 전체 구조</div>
+    <h2 class="title">배포 구성과 요청 경로</h2>
+    <p class="lead">단일 VM 위의 <b>4컨테이너 구성</b>이며, 웹과 API가 같은 도메인이라 CORS가 구조적으로 없습니다.</p>
+  </div>
+  <div class="body">
+    <div class="flow" style="margin-bottom:0.9rem">
+      <div class="step"><div class="k">클라이언트</div><h4>Expo 3모드</h4><p>네이티브 앱 · 모바일 웹 · PC 웹(480px 컬럼, 관리자 1280px)을 한 코드로 제공합니다.</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">입구</div><h4>caddy</h4><p>HTTPS 종단, 정적 웹(/srv/web) + SPA 폴백, /api와 /actuator/health만 api로 프록시(SSE 무버퍼).</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">API</div><h4>api (Spring Boot)</h4><p>stateless JWT, 컨트롤러 24개. 스키마 변경은 Flyway만(ddl-auto validate).</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">저장</div><h4>postgres 18 · redis 7</h4><p>PG는 데이터 + 이미지(bytea), Redis는 토큰 회전 · rate limit · SSE 팬아웃.</p></div>
+    </div>
+    <table class="tight dense" style="font-size:0.72rem">
+      <tr><th>항목</th><th>값</th></tr>
+      <tr><td><b>프로덕션</b></td><td class="g">Oracle Cloud 도쿄 A1.Flex 4 OCPU/24GB, Ubuntu 24.04 aarch64, 공인 IP 161.33.151.184, 주소 https://161.33.151.184.sslip.io</td></tr>
+      <tr><td><b>배포</b></td><td class="g">main push → GitHub Actions → SSH rsync → VM. api는 CI 통과 후 deploy.sh(compose build · healthy 대기), 웹은 expo export 후 rsync</td></tr>
+      <tr><td><b>서버 환경변수</b></td><td class="g">/opt/sellect/.env - SITE_DOMAIN · DB_PASSWORD · JWT_SECRET · CHAT_REALTIME_SIGNING_SECRET · TEST_LOGIN_ENABLED</td></tr>
+      <tr><td><b>백업</b></td><td class="g">일일 pg_dump 14일 보관(KST 04:00) - 오프사이트 미설정(과제)</td></tr>
+    </table>
+  </div>
+  <div class="s-foot"><span>배포 상세 - sellect-api/docs/DEPLOY-ORACLE.md</span><span class="mark">SELLECT · 3</span></div>
+</section>
+
+<!-- 백엔드 구조 -->
+<section class="slide" data-title="백엔드 구조">
+  <div class="s-head">
+    <div class="eyebrow">01. 전체 구조</div>
+    <h2 class="title">패키지 구조와 핵심 서비스</h2>
+    <p class="lead">도메인 패키지 단위로 나뉘며, <b>서비스 25개가 책임을 1개씩</b> 가져 경계가 분명합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.69rem; line-height:1.32">
+      <tr><th>패키지</th><th>핵심 서비스</th><th>책임</th></tr>
+      <tr><td><b>auth</b></td><td class="g">AuthService · PassAuthService · RefreshTokenService · PasswordResetService</td><td class="g">가입(19세 · 동의) · 본인인증(CI 기준) · Redis RTR(14일, Lua 원자 회전) · 재설정(30분 토큰)</td></tr>
+      <tr><td><b>member</b></td><td class="g">MemberService · MemberActivityService</td><td class="g">프로필 CRUD · 리스트 · 상세 열람 통제 · 사진첩 · 스포트라이트 · 탈퇴, lastActiveAt 1분 스로틀</td></tr>
+      <tr><td><b>chat</b></td><td class="g">ChatService · ChatSseService · ChatRealtimeFanout</td><td class="g">개시(권한 · 한도 · advisory lock) · 전송(정책 · 3건 · 멱등) · SSE(TOCTOU 재검사, Redis 팬아웃)</td></tr>
+      <tr><td><b>appointment · review</b></td><td class="g">AppointmentService · ReviewService</td><td class="g">약속 생명주기 + 채팅 안내 / 후기(MET 자격 · 4단 마스킹 · 익명)</td></tr>
+      <tr><td><b>payment</b></td><td class="g">PaymentService</td><td class="g">상품 · 주문(멱등 키) · 승인 · 구독 이어붙임 · 해지(환불 아님)</td></tr>
+      <tr><td><b>safety</b></td><td class="g">SafetyService · SafetyPolicyService · SafetyAuditService · BlockedWordService</td><td class="g">차단(SSE 철회) · 신고 자동 정지(id 순 잠금) · 정책값 · 추가 전용 감사 로그 · BLOCK 마스킹</td></tr>
+      <tr><td><b>image</b></td><td class="g">ImageService</td><td class="g">업로드 검증(5MB · 2천만px) · 표시본 1280 · 블러본 · 접근 통제 · 귀속 · 심사</td></tr>
+      <tr><td><b>support 외</b></td><td class="g">MailService · NotificationService · Admin* 5종</td><td class="g">Resend 우선 SMTP 폴백(AES-GCM 시크릿) · 인앱 알림 · 운영 콘솔 백엔드</td></tr>
+    </table>
+    <div class="note" style="margin-top:0.7rem"><b>동시성 보조 장치</b> - ChatPairLock · PostgresChatInitiationLock(advisory lock), AppointmentMaintenanceJob(매시), DemoFreshnessJob(10분, 기본 OFF), MemberErasureStore(탈퇴 정리).</div>
+  </div>
+  <div class="s-foot"><span>컨트롤러 24 · 서비스 25 · @Entity 25 · 테스트 53클래스</span><span class="mark">SELLECT · 4</span></div>
+</section>
+
+<!-- 데이터 모델 전체 -->
+<section class="slide" data-title="데이터 모델 전체">
+  <div class="s-head">
+    <div class="eyebrow">02. 데이터</div>
+    <h2 class="title">엔티티 25종 전체 구성</h2>
+    <p class="lead">모든 관계를 <b>Long id 컬럼으로만 연결</b>하고(@ManyToOne 미사용), 정합은 DB FK와 서비스 계층이 보장합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.67rem; line-height:1.3">
+      <tr><th>영역</th><th>엔티티(테이블)</th><th>요점</th></tr>
+      <tr><td rowspan="2"><b>회원</b></td><td class="g">Member · MemberPhoto · ProfileVisit · LoginLog</td><td class="g">본인 식별(ci unique) · 사진첩 6장 · 방문 기록 · 접속 이력</td></tr>
+      <tr><td class="g">PhotoReveal</td><td class="g">블러 원본의 채팅방 단위 공개 승인(비가역)</td></tr>
+      <tr><td><b>채팅</b></td><td class="g">ChatRoom · ChatMessage</td><td class="g">읽음 커서 2종(시각 + 단조 증가 id) · 나가기(행 보존) · clientMessageId 멱등 · moderationKey 감사</td></tr>
+      <tr><td><b>약속 · 후기</b></td><td class="g">Appointment · Review · ReviewLike · ReviewReport</td><td class="g">PROPOSED→ACCEPTED→MET(양측 확인) · 후기 익명(authorId 응답 금지) · 후기 신고 분리</td></tr>
+      <tr><td><b>결제</b></td><td class="g">Product · PaymentOrder · PaymentEvent · Subscription</td><td class="g">priceKrw null = 판매 차단 · idempotencyKey unique · 웹훅 원문 보존 · 구독 이어붙임</td></tr>
+      <tr><td><b>이미지</b></td><td class="g">Image</td><td class="g">bytea 저장 · attachmentType 다형 귀속 · moderationStatus(PENDING/APPROVED/REJECTED) · detach 후 재사용 불가</td></tr>
+      <tr><td><b>안전</b></td><td class="g">Block · Report · SafetyAuditLog · BannedWord</td><td class="g">양방향 비노출 · 신고 사유 5종 · 추가 전용 로그(식별 텍스트 미저장) · BLOCK/MONITOR 이원</td></tr>
+      <tr><td><b>운영</b></td><td class="g">Notification · Notice · SplashMessage · Inquiry · AppSetting</td><td class="g">알림 7종 · 팝업 공지 · 타깃 문구 8종 · 문의 · 설정 키-값(promo · safety · smtp)</td></tr>
+    </table>
+    <div class="note" style="margin-top:0.7rem"><b>Member가 중심</b>입니다 - 식별 · 본인인증 · 프로필(필수 2 + 선택 13) · 과금(tier · subscribedUntil · initiationCredits 3) · 제재 · 민감정보 동의 · @Version 낙관적 잠금까지 한 엔티티가 보유하며, 상세 필드는 코드 Member.java가 원본입니다.</div>
+  </div>
+  <div class="s-foot"><span>스키마 변경은 Flyway V1~V39만 사용</span><span class="mark">SELLECT · 5</span></div>
+</section>
+
+<!-- 핵심 모델 규칙 -->
+<section class="slide" data-title="핵심 모델 규칙">
+  <div class="s-head">
+    <div class="eyebrow">02. 데이터</div>
+    <h2 class="title">모델에 박힌 불변 규칙</h2>
+    <p class="lead">문서보다 코드에 먼저 박혀 있는 규칙들이며, <b>수정 시 반드시 함께 바꿔야 하는 짝</b>을 표시합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.7rem">
+      <tr><th>규칙</th><th>구현 위치</th><th>주의</th></tr>
+      <tr><td><b>프로필 완료 = intro + region</b></td><td class="g">Member.isProfileComplete()</td><td class="g">미완료는 리스트 노출 · 열람 모두 불가</td></tr>
+      <tr><td><b>구독 판정 = subscribedUntil &gt; now</b></td><td class="g">Member.isSubscriber()</td><td class="g">tier는 뱃지용 - 혜택 기준 아님(정합 미확정 명시)</td></tr>
+      <tr><td><b>읽음 커서 역행 금지</b></td><td class="g">ChatRoom.markRead</td><td class="g">lastReadMessageId 단조 증가</td></tr>
+      <tr><td><b>나가기 후 복귀</b></td><td class="g">ChatRoom.leave/rejoin/isHiddenFor</td><td class="g">lastMessageAt을 나가기 시각 +1μs로 보정</td></tr>
+      <tr><td><b>약속 수락 권한</b></td><td class="g">Appointment.lastProposedBy</td><td class="g">마지막 제안자가 아닌 쪽만 수락 · 거절</td></tr>
+      <tr><td><b>이미지 1원본 1귀속</b></td><td class="g">Image 불변식</td><td class="g">detach 후 재사용 불가, 공지만 즉시 APPROVED</td></tr>
+      <tr><td><b>탈퇴 = 즉시 물리 삭제</b></td><td class="g">MemberErasureStore, V34~36</td><td class="g">Redis 실패 시 DB 삭제 중단(정합 보호)</td></tr>
+      <tr><td><b>개시권 음수 금지</b></td><td class="g">V31 제약 + ChatInitiationQuota</td><td class="g">병렬 개시는 advisory lock으로 직렬화</td></tr>
+    </table>
+    <div class="note" style="margin-top:0.7rem"><b>낙관적 잠금</b> - 프로필 PATCH는 profileVersion(@Version)으로 충돌을 409(PROFILE_VERSION_CONFLICT)로 돌려주고, 프론트는 "다른 곳에서 변경됐어요"로 안내합니다.</div>
+  </div>
+  <div class="s-foot"><span>규칙 변경 시 대응 테스트(한국어 서술형 메서드) 동반 수정</span><span class="mark">SELLECT · 6</span></div>
+</section>
+
+<!-- API - 인증과 회원 -->
+<section class="slide" data-title="API - 인증과 회원">
+  <div class="s-head">
+    <div class="eyebrow">03. API</div>
+    <h2 class="title">인증 · 회원 API</h2>
+    <p class="lead">인증 10종과 회원 14종이 기본 골격이며, <b>permitAll 경계와 rate limit</b>이 보안의 1차 방어선입니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1.05fr 1fr; gap:0.9rem">
+      <div>
+        <table class="tight dense" style="font-size:0.68rem">
+          <tr><th>묶음</th><th>엔드포인트</th></tr>
+          <tr><td><b>인증(permitAll)</b></td><td class="g">POST signup · login · refresh(RTR) · logout, pass/request · pass/verify(본인인증), password-reset 2종, test 2종(게이트)</td></tr>
+          <tr><td><b>내 프로필</b></td><td class="g">GET/PATCH members/me(낙관적 잠금 · clearFields), DELETE me(탈퇴), photo 3종 + photos 사진첩 4종</td></tr>
+          <tr><td><b>리스트 · 상세</b></td><td class="g">GET members?minAge&amp;maxAge&amp;region&amp;joinedDays(필터는 구독자만 적용) · GET members/{id}(방문 적립)</td></tr>
+          <tr><td><b>구독 혜택</b></td><td class="g">POST me/spotlight(일 1회 30분) · GET me/visitors(최근 30)</td></tr>
+          <tr><td><b>안전</b></td><td class="g">POST/DELETE {id}/block · POST {id}/report(사유 5종)</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">rate limit</span><h3>Redis 고정 윈도우</h3><p>signup IP 5/분 · login IP 10/분 + email 5/분 · refresh 30/분 · reset 요청 IP 5/10분 등, 초과는 429. 키는 pepper HMAC, Redis 장애 시 fail-open입니다.</p></div>
+        <div class="card lil"><span class="tag gray">주의</span><h3>테스트 로그인 게이트</h3><p>TEST_LOGIN_ENABLED가 true인 동안 시드 계정(admin 포함)이 비밀번호 없이 로그인됩니다. 정식 오픈 전 false 필수 - 출시 체크리스트 1번.</p></div>
+        <div class="card"><span class="tag">에러 포맷</span><h3>공통 3필드</h3><p>status · code · message - 예: 409 DUPLICATE_EMAIL, 409 PROFILE_VERSION_CONFLICT. 프론트는 code로만 분기합니다.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>SecurityConfig - /api/admin/**는 ROLE_ADMIN, 그 외 authenticated</span><span class="mark">SELLECT · 7</span></div>
+</section>
+
+<!-- API - 대화와 만남 -->
+<section class="slide" data-title="API - 대화와 만남">
+  <div class="s-head">
+    <div class="eyebrow">03. API</div>
+    <h2 class="title">채팅 · 약속 · 후기 API</h2>
+    <p class="lead">대화 개시가 <b>과금과 안전의 교차점</b>이라 가장 많은 규칙이 이 묶음에 모여 있습니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.69rem; margin-bottom:0.75rem">
+      <tr><th>묶음</th><th>엔드포인트</th><th>핵심 규칙</th></tr>
+      <tr><td><b>채팅</b></td><td class="g">GET chats · chats/{id} · unread-summary, POST chats(개시) · {id}/messages · {id}/read, DELETE {id}(나가기), POST {id}/photo-reveal</td><td class="g">개시 순서 - 기존 방 → 구독(일 15 · KST) → 개시권 → 프로모션 → <b>402</b>. 전송은 정책 검사 + 연속 3건 + clientMessageId 멱등</td></tr>
+      <tr><td><b>실시간</b></td><td class="g">GET /api/events(전역 SSE) · GET chats/{id}/events?afterMessageId=</td><td class="g">이벤트 - chat.message.created · chat.read.updated · chat.room.revoked · chat.changed</td></tr>
+      <tr><td><b>약속</b></td><td class="g">GET appointments/me · chats/{id}/appointment, POST 제안 · reschedule · accept · decline · met</td><td class="g">meetAt @Future · 진행 중 1건 · 변경 시 확인 초기화 · 자동 만료(매시, ACCEPTED 14일)</td></tr>
+      <tr><td><b>후기</b></td><td class="g">GET reviews · eligibility, POST reviews · {id}/like · {id}/report</td><td class="g">MET 참가자만 · 각자 1건 · 30~2000자 · 익명 · 공감 토글 · 신고는 1인 1회</td></tr>
+    </table>
+    <div class="note"><b>약속 안내 메시지는 서버가 생성</b>합니다 - 금칙어 · 연속 3건 제한을 받지 않는 시스템 메시지로 채팅방에 남고, 프론트는 패턴 매칭으로 중앙 정렬 카드로 렌더합니다.</div>
+  </div>
+  <div class="s-foot"><span>ChatService · AppointmentService · ReviewService</span><span class="mark">SELLECT · 8</span></div>
+</section>
+
+<!-- API - 결제와 운영 -->
+<section class="slide" data-title="API - 결제와 운영">
+  <div class="s-head">
+    <div class="eyebrow">03. API</div>
+    <h2 class="title">결제 · 이미지 · 관리자 API</h2>
+    <p class="lead">결제는 <b>멱등 키와 이벤트 원문 보존</b>이 뼈대이고, 관리자 API는 콘솔 9탭과 1:1로 대응합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.68rem; margin-bottom:0.75rem">
+      <tr><th>묶음</th><th>엔드포인트</th><th>비고</th></tr>
+      <tr><td><b>결제</b></td><td class="g">GET products, POST orders(idempotencyKey 필수) · orders/{id}/confirm(멱등), GET subscriptions/me, POST me/cancel</td><td class="g">PG는 Mock(항상 승인) - 실 PG + 웹훅 + 사용자 환불 API 미구현(§10.4 과제)</td></tr>
+      <tr><td><b>이미지</b></td><td class="g">POST images(base64 · PENDING), GET {id}/original · display(1280) · blurred · public(공지 전용)</td><td class="g">원본 접근 - 소유자 · 관리자 · 공개 승인 상대만. Cache-Control private no-store</td></tr>
+      <tr><td><b>알림 · 기타</b></td><td class="g">notifications 3종 · notices 2종 · splash-messages 2종 · inquiries 2종</td><td class="g">알림은 30초 폴링(푸시 미도입) · 공지는 로그인 필요</td></tr>
+      <tr><td><b>관리자</b></td><td class="g">admin 본체(통계 · 회원 · 심사 · 공지 · 정책) + analytics 8종 + chats 감사 4종 + funnel + payments 3종 + splash · support</td><td class="g">전부 ROLE_ADMIN - 클라이언트 가드는 없고 서버 인가에만 의존</td></tr>
+    </table>
+    <div class="grid g2">
+      <div class="card"><span class="tag">결제 전이</span><h3>주문 - 승인 - 구독</h3><p>주문 생성 → confirm(멱등) → Subscription 생성 · 기존 구독 뒤에 이어붙임. 해지는 autoRenew off일 뿐 환불이 아니며(§10.4), 환불은 관리자가 PG 성공 후 전이시킵니다.</p></div>
+      <div class="card"><span class="tag">시험 공백</span><h3>결제는 테스트 0</h3><p>결제 전체 · 본인인증 · 메일 · rate limit은 테스트가 없습니다. 실 PG 연동 작업에 테스트 신설을 반드시 포함해야 합니다.</p></div>
+    </div>
+  </div>
+  <div class="s-foot"><span>관리자 상세 기능은 소개서 '관리자 콘솔 9탭' 참조</span><span class="mark">SELLECT · 9</span></div>
+</section>
+
+<!-- 인증 · 세션 설계 -->
+<section class="slide" data-title="인증 · 세션 설계">
+  <div class="s-head">
+    <div class="eyebrow">04. 핵심 설계</div>
+    <h2 class="title">JWT · RTR · 세션 세대</h2>
+    <p class="lead">서버의 토큰 회전과 프론트의 <b>세션 세대 프로토콜</b>이 짝을 이뤄 계정 전환 오염을 막습니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1fr 1.05fr; gap:0.9rem">
+      <div>
+        <table class="tight dense" style="font-size:0.7rem">
+          <tr><th>서버 측</th><th>내용</th></tr>
+          <tr><td><b>액세스</b></td><td class="g">jjwt HMAC 30분(JWT_ACCESS_EXPIRY_SECONDS)</td></tr>
+          <tr><td><b>리프레시</b></td><td class="g">불투명 랜덤 14일, Redis RTR - Lua로 원자 회전, used 재사용 감지 시 family 전체 폐기</td></tr>
+          <tr><td><b>로그아웃</b></td><td class="g">토큰 family 폐기(204)</td></tr>
+          <tr><td><b>본인인증</b></td><td class="g">IdentityVerificationClient 인터페이스 - 현재 Mock(@Component, 프로파일 분기 없음) → 실연동 시 NICE/PASS 구현체 + Mock @Profile("local")</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">프론트 - 세션 세대</span><h3>늦은 응답의 오염 차단</h3><p>로그인 시도 전에 세대를 +1(beginSessionReplacement)하고, 모든 요청 · 응답 · 저장이 세대를 재검증합니다. 이전 계정의 늦은 응답은 CanceledError로 버려져 새 계정 캐시를 오염시키지 못합니다.</p></div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">401 복구</span><h3>single-flight 갱신</h3><p>같은 세대의 동시 401은 refresh 요청 하나를 공유(회전 상호 무효화 방지)하고, 실패 시 expireSession - 캐시 clear + 로그인 화면입니다.</p></div>
+        <div class="card"><span class="tag">저장소</span><h3>웹 localStorage · 네이티브 SecureStore</h3><p>저장 · 삭제는 직렬화 큐로 순서를 보장하고(삭제는 refresh 먼저), 한쪽 토큰만 남으면 복원 시 전체 폐기합니다.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>api.ts 인터셉터 4종 · token.ts 세대 관리</span><span class="mark">SELLECT · 10</span></div>
+</section>
+
+<!-- 실시간 SSE 설계 -->
+<section class="slide" data-title="실시간 SSE 설계">
+  <div class="s-head">
+    <div class="eyebrow">04. 핵심 설계</div>
+    <h2 class="title">SSE 파이프라인과 경합 방지</h2>
+    <p class="lead">Authorization 헤더 때문에 EventSource 대신 <b>fetch 스트림 SSE</b>를 쓰며, 다중 인스턴스까지 설계되어 있습니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="gap:0.9rem; margin-bottom:0.75rem">
+      <div>
+        <table class="tight dense" style="font-size:0.7rem">
+          <tr><th>구간</th><th>설계</th></tr>
+          <tr><td><b>서버 발행</b></td><td class="g">ChatRealtimeFanout - Redis Pub/Sub(sellect:{env}:chat-realtime:v1, HMAC 서명, 자기 echo 무시)로 다중 인스턴스 전파</td></tr>
+          <tr><td><b>연결 등록</b></td><td class="g">ChatSseService - 등록 직전 권한 TOCTOU 재검사, 차단 시 SSE 철회(chat.room.revoked)</td></tr>
+          <tr><td><b>프론트 파서</b></td><td class="g">WHATWG 준수 자체 파서 - 청크 경계 · CRLF · BOM 처리, EOF 미완 이벤트 폐기</td></tr>
+          <tr><td><b>재연결</b></td><td class="g">지수 백오프 최대 30초 + equal jitter, 15초 건강 연결은 attempt 리셋, 401은 1회 갱신 후 재시도</td></tr>
+          <tr><td><b>폴백</b></td><td class="g">chatRooms · unread 90초 폴링(SSE 단절 대비) · 알림 30초</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">경합 방지 3중</span><h3>REST와 SSE의 합류점</h3><p>① 캐시 쓰기 시점에 mergeRoomSnapshot(structuralSharing)으로 병합 ② afterMessageId 커서는 완전한 REST 스냅샷으로만 전진 ③ 롤백된 낙관적 메시지는 discarded 목록으로 부활 차단.</p></div>
+        <div class="card"><span class="tag">낙관적 전송</span><h3>모호 실패 복구</h3><p>응답 없음 · 502~504는 방을 재조회해 같은 clientMessageId 존재 여부로 성공 판별 - 없으면 롤백 + 입력 복원입니다.</p></div>
+      </div>
+    </div>
+    <div class="note"><b>Caddy 주의</b> - /api 프록시에 SSE 무버퍼 설정이 걸려 있습니다. 프록시 교체 시 flush 설정을 빠뜨리면 실시간이 통째로 죽습니다.</div>
+  </div>
+  <div class="s-foot"><span>sse.ts · use-foreground-sse(AppState active만 연결)</span><span class="mark">SELLECT · 11</span></div>
+</section>
+
+<!-- 콘텐츠 정책 설계 -->
+<section class="slide" data-title="콘텐츠 정책 설계">
+  <div class="s-head">
+    <div class="eyebrow">04. 핵심 설계</div>
+    <h2 class="title">콘텐츠 정책 파이프라인</h2>
+    <p class="lead">금전 매개 차단은 이 시스템의 <b>법적 생존 장치</b>라, 적용 순서와 우회 방지까지 코드로 고정되어 있습니다.</p>
+  </div>
+  <div class="body">
+    <div class="flow sm" style="margin-bottom:0.85rem">
+      <div class="step"><div class="k">1</div><h4>금전 거부</h4><p>키워드 20종 감지 시 저장 자체 거부 + 감사 로그(CONTENT_MONEY_BLOCKED).</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">2</div><h4>연락처 마스킹</h4><p>첫 메시지만 - 전화 · 이메일 · URL · SNS 아이디(자모 표기 포함)를 치환.</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">3</div><h4>BLOCK 마스킹</h4><p>관리자 정책어 일치 부분 치환(30초 캐시).</p></div>
+      <span class="arw">→</span>
+      <div class="step"><div class="k">4</div><h4>후기 추가 단계</h4><p>참여자 닉네임 마스킹 + 블라인드(원문 보존).</p></div>
+    </div>
+    <table class="tight dense" style="font-size:0.7rem">
+      <tr><th>장치</th><th>구현</th></tr>
+      <tr><td><b>적용 표면 4개</b></td><td class="g">소개글 · 채팅 · 후기 · 직업 직접입력 - SafetyAuditLog.Surface와 일치</td></tr>
+      <tr><td><b>우회 방지</b></td><td class="g">detectionKey - NFKD + 자모 통일 + 공백 · 기호 · 제로폭 제거 후 부분 일치, 안전 복합어(스폰지 · 출입금지 등) 예외</td></tr>
+      <tr><td><b>MONITOR</b></td><td class="g">전송 허용 + 플래그 - moderationKey(정규화 키)로 소급 검색, 관리자 감사 피드 5초 폴링</td></tr>
+      <tr><td><b>감사 로그</b></td><td class="g">추가 전용 · 별도 트랜잭션 · 식별 텍스트 필드를 설계상 두지 않음</td></tr>
+    </table>
+  </div>
+  <div class="s-foot"><span>ContentPolicy · BlockedWordService · ChatAuditService</span><span class="mark">SELLECT · 12</span></div>
+</section>
+
+<!-- 프론트 구조 -->
+<section class="slide" data-title="프론트 구조">
+  <div class="s-head">
+    <div class="eyebrow">04. 핵심 설계</div>
+    <h2 class="title">프론트 상태와 캐시 전략</h2>
+    <p class="lead">단일 QueryClient에 <b>staleTime 0 + 포커스 리프레시</b>가 기본이고, 실시간 데이터만 직접 쓰기를 허용합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="grid-template-columns:1.05fr 1fr; gap:0.9rem">
+      <div>
+        <table class="tight dense" style="font-size:0.69rem">
+          <tr><th>queryKey</th><th>전략</th></tr>
+          <tr><td><b>['myProfile']</b></td><td class="g">진입 분기에서 선주입, 저장 시 setQueryData 즉시 반영 - 전 화면 공유</td></tr>
+          <tr><td><b>['mainList', filters, isSubscriber]</b></td><td class="g">필터와 구독 여부가 키 - 권한 변화가 캐시를 자연 분리</td></tr>
+          <tr><td><b>['chatRoom', id]</b></td><td class="g">structuralSharing으로 REST/SSE 병합(경합 방지의 축)</td></tr>
+          <tr><td><b>['chatRooms'] · ['chatUnreadSummary']</b></td><td class="g">90초 폴링 폴백 + 읽음 시 캐시 직접 수정</td></tr>
+          <tr><td><b>['member', id, 구독]</b></td><td class="g">404(MEMBER_NOT_FOUND)는 재시도 안 함 - 탈퇴 · 차단 대응</td></tr>
+          <tr><td><b>관리자 키 26종</b></td><td class="g">payStats · chatStats 30초, auditFlagged 5초 폴링</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">권한 이중 방어</span><h3>서버 차단 + 클라이언트 redact</h3><p>유료 정보는 서버가 null로 내려보내는 게 1차이고, 프론트도 구독 아님이 확인되면 specLine · details · 상대 읽음 정보를 강제로 null 처리해 캐시 잔존까지 막습니다.</p></div>
+        <div class="card" style="margin-bottom:0.6rem"><span class="tag">진입 가드 4곳</span><h3>온보딩 강제 경로</h3><p>루트 분기 → (tabs) 레이아웃 재가드 → profile-edit 리다이렉트 - 딥링크로도 프로필 미완성 상태로는 리스트에 못 들어갑니다.</p></div>
+        <div class="card"><span class="tag">보호 이미지</span><h3>ProtectedImage</h3><p>경로 allowlist 검증 + Bearer 헤더 + cachePolicy none(권한 상실 사진 디스크 잔존 방지), 오류 시 1회만 토큰 갱신 재시도입니다.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>쿼리 전략 변경 시 세션 세대 · SSE 병합과 충돌 검토 필수</span><span class="mark">SELLECT · 13</span></div>
+</section>
+
+<!-- 설정과 마이그레이션 -->
+<section class="slide" data-title="설정과 마이그레이션">
+  <div class="s-head">
+    <div class="eyebrow">05. 운영 기반</div>
+    <h2 class="title">환경변수 · 상수 · Flyway</h2>
+    <p class="lead">협의 · 운영값이 어디 있는지 한 장으로 정리하며, <b>하드코딩 상수</b>는 변경 시 코드 수정이 필요합니다.</p>
+  </div>
+  <div class="body">
+    <div class="grid g2" style="gap:0.9rem">
+      <div>
+        <table class="tight dense" style="font-size:0.68rem">
+          <tr><th>환경변수(서버)</th><th>용도</th></tr>
+          <tr><td class="g">DB_URL · DB_USERNAME · DB_PASSWORD / REDIS_*</td><td class="g">저장소 접속</td></tr>
+          <tr><td class="g">JWT_SECRET</td><td class="g">토큰 + SettingsCryptor 키 유도 - <b>변경 시 SMTP 등 저장 시크릿 복호화 불가(재입력)</b></td></tr>
+          <tr><td class="g">CORS_ALLOWED_ORIGINS · APP_WEB_URL</td><td class="g">허용 출처 · 재설정 메일 링크</td></tr>
+          <tr><td class="g">TEST_LOGIN_ENABLED · CHAT_REALTIME_*</td><td class="g">테스트 게이트 · SSE 채널(환경별 분리 필수) · HMAC</td></tr>
+          <tr><td class="g">(웹) EXPO_PUBLIC_API_URL · EXPO_PUBLIC_TEST_LOGINS</td><td class="g">API 베이스 · 테스트 버튼 노출</td></tr>
+        </table>
+        <div class="note" style="margin:0.6rem 0 0; font-size:0.72rem">하드코딩 상수 - 리프레시 14일 · 개시 일 15 · 연속 3건 · 미접속 30일 · 리스트 50 · 사진첩 6 · 스포트라이트 30분 · MET 창 14일 · 안전 3/30/72 · 이미지 5MB/1280.</div>
+      </div>
+      <div>
+        <table class="tight dense" style="font-size:0.68rem">
+          <tr><th>Flyway 구간</th><th>내용</th></tr>
+          <tr><td class="g">V1~V7</td><td class="g">회원 · 채팅 · 선택 13종 · 구독 · 약속 골격</td></tr>
+          <tr><td class="g">V8~V14</td><td class="g">등급 5단(정합 미해결 명시) · 관리자 · 결제 4테이블 · 개시권 · 후기 · 설정</td></tr>
+          <tr><td class="g">V15~V25</td><td class="g">블러 · 차단/신고 · 사진첩 · 나가기 · 알림 · SSE 커서 + 멱등</td></tr>
+          <tr><td class="g">V26~V32</td><td class="g">보안 집중 - 이미지 접근통제 · 민감정보 동의 · 감사 키 · 후기 신고</td></tr>
+          <tr><td class="g">V33~V39</td><td class="g">탈퇴 물리 삭제 체계 · 안전 정책 · 감사 로그 · 프로필 셋업(팀원)</td></tr>
+        </table>
+        <div class="note" style="margin:0.6rem 0 0; font-size:0.72rem">스키마는 ddl-auto validate - 마이그레이션 없는 엔티티 변경은 기동 실패로 즉시 드러납니다.</div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>application.yml · db/migration/*.sql 기준</span><span class="mark">SELLECT · 14</span></div>
+</section>
+
+<!-- 기술 부채 -->
+<section class="slide" data-title="기술 부채">
+  <div class="s-head">
+    <div class="eyebrow">05. 운영 기반</div>
+    <h2 class="title">알려진 부채와 정리 대상</h2>
+    <p class="lead">치명도는 낮지만 <b>방치하면 사고가 되는 항목</b>을 명시해, 다음 작업자의 지뢰를 제거합니다.</p>
+  </div>
+  <div class="body">
+    <table class="tight dense" style="font-size:0.7rem">
+      <tr><th>구분</th><th>항목</th><th>처리 방향</th></tr>
+      <tr><td rowspan="3"><b>보안 게이트</b></td><td class="g">TEST_LOGIN_ENABLED 기본 true + permitAll - admin 시드 무비밀번호 로그인</td><td class="g">오픈 전 false + 웹 TEST_LOGINS=0</td></tr>
+      <tr><td class="g">Mock 본인인증 · Mock PG가 무조건 @Component(프로파일 분기 없음)</td><td class="g">실연동 시 Mock @Profile("local")</td></tr>
+      <tr><td class="g">admin.tsx 클라이언트 role 가드 없음(서버 인가 의존)</td><td class="g">동작엔 문제 없음 - UX 차원 가드 추가 검토</td></tr>
+      <tr><td rowspan="3"><b>이전 잔재</b></td><td class="g">render.yaml · vercel.json · .env.example Koyeb 예시 · ci.yml onrender URL</td><td class="g">일괄 삭제</td></tr>
+      <tr><td class="g">api.ts 60초 타임아웃("Render 콜드스타트" 주석)</td><td class="g">Oracle 기준으로 하향 + 주석 갱신</td></tr>
+      <tr><td class="g">EXPO_PUBLIC_TEST_ADMIN_PW - .env에 평문, 코드 미참조</td><td class="g">변수 제거</td></tr>
+      <tr><td rowspan="3"><b>미확정</b></td><td class="g">MemberTier 5단 vs 단일 SKU 정합(코드 주석 명시)</td><td class="g">마케팅 문서 안건 4 - 뱃지 유지 권고</td></tr>
+      <tr><td class="g">"오늘" 밴드 경계(현재 24시간 롤링)</td><td class="g">안건 6 - 롤링 유지 권고</td></tr>
+      <tr><td class="g">이미지 bytea 저장(스토리지 없음 · 파생본 캐시 없음)</td><td class="g">트래픽 증가 시 Object Storage + 캐시 검토</td></tr>
+    </table>
+  </div>
+  <div class="s-foot"><span>출처 - 핸드오프 '불확실 · 주의' + 코드 주석</span><span class="mark">SELLECT · 15</span></div>
+</section>
+
+<section class="slide end" data-title="맺음">
+  <div class="end-logo"><span style="font-family:var(--fd); font-weight:800; letter-spacing:0.18em">SELLECT</span></div>
+  <div class="eyebrow">맺음</div>
+  <h2>코드가 지형이고<br><em>이 문서는 지도입니다</em></h2>
+  <p>상세 필드와 동작은 각 페이지의 클래스 · 파일 경로를 따라 코드에서 확인합니다. 규칙 변경은 대응 테스트와 함께 움직입니다.</p>
+  <div class="info">
+    <div><b>SELLECT</b>소개글로 시작하는 만남</div>
+    <div><b>문서</b>솔루션 설계서 v0.1</div>
+    <div><b>작성</b>2026. 10</div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -6,6 +6,8 @@
     "specs--lsv-tms-user-flow",
     "specs--lsv-tms-solution-design",
     "sellect--sellect-solution-overview",
-    "sellect--sellect-marketing-strategy"
+    "sellect--sellect-marketing-strategy",
+    "sellect--sellect-system-design",
+    "sellect--sellect-policy-operations"
   ]
 }
