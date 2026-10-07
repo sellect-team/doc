@@ -4,6 +4,8 @@
     "proposals--lsv-tms-proposal",
     "specs--lsv-tms-screen-spec",
     "specs--lsv-tms-user-flow",
-    "specs--lsv-tms-solution-design"
+    "specs--lsv-tms-solution-design",
+    "sellect--sellect-solution-overview",
+    "sellect--sellect-marketing-strategy"
   ]
 }
