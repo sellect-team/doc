@@ -187,42 +187,22 @@
       card.querySelectorAll(".pgchip").forEach((b) => {
         b.onclick = (e) => { e.stopPropagation(); open(parseInt(b.dataset.p, 10)); };
       });
-      card.querySelector("[data-pptx]").onclick = async (e) => {
-        e.stopPropagation();
-        const head = await fetch(d.pptx, { method: "HEAD" }).catch(() => null);
-        if (head && head.ok) {
-          const a = document.createElement("a");
-          a.href = d.pptx;
-          a.download = `${d.title} v${d.version}.pptx`;
-          a.click();
-        } else {
-          alert("PPT 파일이 아직 준비되지 않았습니다.");
-        }
-      };
-      card.querySelector("[data-html]").onclick = async (e) => {
-        e.stopPropagation();
-        const res = await fetch(d.html).catch(() => null);
-        if (!res || !res.ok) { alert("HTML 파일을 찾을 수 없습니다."); return; }
-        const url = URL.createObjectURL(await res.blob());
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${d.title} v${d.version}.html`;
-        a.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-      };
-      card.querySelector("[data-pdf]").onclick = async (e) => {
-        e.stopPropagation();
-        // CI에서 생성된 PDF가 있으면 다운로드, 없으면(로컬) 뷰어에서 인쇄 안내
-        const head = await fetch(d.pdf, { method: "HEAD" }).catch(() => null);
-        if (head && head.ok) {
-          const a = document.createElement("a");
-          a.href = d.pdf;
-          a.download = `${d.title} v${d.version}.pdf`;
-          a.click();
-        } else if (confirm("아직 PDF가 준비되지 않았습니다.\n뷰어에서 인쇄(PDF 저장)로 여시겠습니까?")) {
-          location.href = `viewer.html?doc=${encodeURIComponent(d.id)}&print=1`;
-        }
-      };
+      // 내려받기: 페이지 선택 창 (assets/pick.js). PDF가 아직 없으면(로컬) 뷰어 인쇄로 안내한다.
+      for (const [sel, fmt] of [["[data-pptx]", "pptx"], ["[data-html]", "html"], ["[data-pdf]", "pdf"]]) {
+        card.querySelector(sel).onclick = async (e) => {
+          e.stopPropagation();
+          if (fmt === "pdf") {
+            const head = await fetch(d.pdf, { method: "HEAD" }).catch(() => null);
+            if (!head || !head.ok) {
+              if (confirm("아직 PDF가 준비되지 않았습니다.\n뷰어에서 인쇄(PDF 저장)로 여시겠습니까?")) {
+                location.href = `viewer.html?doc=${encodeURIComponent(d.id)}&print=1`;
+              }
+              return;
+            }
+          }
+          DocPick.open(d, fmt);
+        };
+      }
       if (editMode) bindDrag(card, d);
       grid.appendChild(card);
     }

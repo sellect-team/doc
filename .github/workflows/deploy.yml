@@ -49,6 +49,11 @@ jobs:
           node scripts/check-docs.mjs
           CHECK_STRICT=1 node scripts/check-docs.mjs --tenant docs-sovereigns
 
+      - name: 페이지 미리보기 썸네일 (페이지 선택 내려받기용)
+        run: |
+          node scripts/thumbs.mjs
+          node scripts/thumbs.mjs --tenant docs-sovereigns
+
       - name: PDF 생성
         run: |
           node scripts/make-pdfs.mjs

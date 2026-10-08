@@ -188,41 +188,20 @@
     if (e.key === "End") { e.preventDefault(); goto(total - 1); }
   });
 
-  // ── PPT 다운로드: 도형·텍스트 상자로 된 편집 가능한 PPTX ──
-  $("pptxBtn").onclick = async () => {
-    const head = await fetch(doc.pptx, { method: "HEAD" }).catch(() => null);
-    if (!head || !head.ok) { alert("PPT 파일이 아직 준비되지 않았습니다."); return; }
-    const a = document.createElement("a");
-    a.href = doc.pptx;
-    a.download = `${doc.title} v${doc.version}.pptx`;
-    a.click();
-  };
-
-  // ── HTML 다운로드: 이미지가 내장된 단일 파일 ──
-  $("htmlBtn").onclick = async () => {
-    const res = await fetch(doc.html).catch(() => null);
-    if (!res || !res.ok) { alert("HTML 파일을 찾을 수 없습니다. 빌드를 다시 실행하세요."); return; }
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${doc.title} v${doc.version}.html`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  };
-
-  // ── PDF: CI 생성본이 있으면 다운로드, 없으면 브라우저 인쇄 ──
-  $("pdfBtn").onclick = async () => {
-    const head = await fetch(doc.pdf, { method: "HEAD" }).catch(() => null);
-    if (head && head.ok && !viewingOld) {
-      const a = document.createElement("a");
-      a.href = doc.pdf;
-      a.download = `${doc.title} v${doc.version}.pdf`;
-      a.click();
-    } else {
-      frame.contentWindow.postMessage({ __viewer: true, t: "print" }, "*");
+  // ── 내려받기: 페이지 선택 창 (assets/pick.js) ──
+  // 이전 버전을 보는 중이면 선택 없이 예전 동작(최신 파일 내려받기 · PDF는 인쇄)으로 간다.
+  window.__printFallback = () => frame.contentWindow.postMessage({ __viewer: true, t: "print" }, "*");
+  function download(fmt) {
+    if (viewingOld) {
+      if (fmt === "pdf") window.__printFallback();
+      else DocPick.fallback(doc, fmt);
+      return;
     }
-  };
+    DocPick.open(doc, fmt, { page: cur });
+  }
+  $("pptxBtn").onclick = () => download("pptx");
+  $("htmlBtn").onclick = () => download("html");
+  $("pdfBtn").onclick = () => download("pdf");
 
   loadInto(doc.file, null);
 })();
