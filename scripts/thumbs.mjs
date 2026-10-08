@@ -34,15 +34,26 @@ for (const doc of docs) {
   await page.goto(pathToFileURL(path.join(SITE, doc.file)).href, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
   // 지연 로딩 이미지는 숨긴 상태에서 받아오지 않으므로 전부 즉시 로딩으로 바꾼다
-  await page.evaluate(() => document.querySelectorAll("img[loading='lazy']").forEach((i) => (i.loading = "eager")));
+  // decoding=async인 큰 이미지는 받아진 뒤에도 디코드가 끝나기 전에 흰 화면으로 찍히므로 동기 디코드로 바꾼다
+  await page.evaluate(() => document.querySelectorAll("img").forEach((i) => { i.loading = "eager"; i.decoding = "sync"; }));
   const n = await page.evaluate(() => document.querySelectorAll("section.slide").length);
 
   for (let i = 0; i < n; i++) {
-    await page.evaluate(async (k) => {
+    await page.evaluate((k) => {
       document.querySelectorAll("section.slide").forEach((s, j) => (s.style.display = j === k ? "" : "none"));
       window.scrollTo(0, 0);
-      const imgs = [...document.querySelectorAll("section.slide")[k].querySelectorAll("img")];
-      await Promise.all(imgs.map((im) => (im.complete ? Promise.resolve() : im.decode().catch(() => {}))));
+    }, i);
+    // 그 장의 이미지가 전부 실제로 받아져(naturalWidth>0) 그려질 때까지 기다린다.
+    // decode()만 믿으면 지연 로딩 이미지가 아직 안 온 상태에서 빈 화면이 찍힌다.
+    await page.waitForFunction((k) => {
+      const sec = document.querySelectorAll("section.slide")[k];
+      return [...sec.querySelectorAll("img")].every((im) => im.complete && im.naturalWidth > 0);
+    }, i, { timeout: 20000 }).catch(() => console.warn(`  ! ${doc.id} ${i + 1}p 이미지 대기 시간 초과`));
+    // 받아진 뒤 디코드까지 끝내고 두 프레임 그린 다음 찍는다
+    await page.evaluate(async (k) => {
+      const sec = document.querySelectorAll("section.slide")[k];
+      await Promise.all([...sec.querySelectorAll("img")].map((im) => im.decode().catch(() => {})));
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     }, i);
     await page.screenshot({ path: path.join(out, `p${String(i + 1).padStart(2, "0")}.jpg`), type: "jpeg", quality: QUALITY });
   }
