@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>KSD 차세대시스템 2단계 데이터플랫폼 제안서</title>
+  <meta name="doc-version" content="0.1">
+  <meta name="doc-description" content="한국예탁결제원 차세대시스템 2단계 구축 - 데이터플랫폼 부문(세일링스톤 수행 범위) 제안서 초안 - ETL 적재·데이터 검증·통계 이관·Self BI·AI 분석, LG CNS 컨소시엄 제출용">
+  <style>
+    @font-face { font-family: "SUIT"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-Regular.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "SUIT ExtraBold"; src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT-ExtraBold.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap; }
+
+    :root {
+      --f:  "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      --fx: "SUIT ExtraBold", "SUIT", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      --s900: #0F172A; --s800: #1E293B; --s700: #334155; --s600: #475569; --s500: #64748B;
+      --s400: #94A3B8; --s300: #CBD5E1; --s200: #E2E8F0; --s100: #F1F5F9; --s50: #F8FAFC;
+      --t800: #115E59; --t700: #0F766E; --t600: #0D9488; --t400: #2DD4BF; --t100: #CCFBF1; --t50: #F0FDFA;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-synthesis: none; -webkit-font-synthesis: none; }
+    b, strong { font-family: var(--fx); font-weight: 400; }
+    h1, h2, h3, h4 { font-weight: 400; }
+    html { font-size: min(1.25vw, 2.2222vh); }  /* 16:9 고정 캔버스 */
+    body { font-family: var(--f); background: #fff; color: var(--s900);
+           display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+    .slide { width: min(100vw, 177.7778vh); height: min(56.25vw, 100vh);
+             overflow: hidden; position: relative; flex-shrink: 0; background: #fff;
+             padding: 1.6rem 2.6rem 0.9rem; display: flex; flex-direction: column; }
+
+    /* ── 공통 골격 ── */
+    .s-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.8rem; }
+    .s-head h2 { font-size: 1.9rem; font-family: var(--fx); letter-spacing: -0.02em; color: var(--s900); }
+    .s-head h2 em { color: var(--t600); font-style: normal; }
+    .bullet { display: inline-block; width: 0.55rem; height: 0.55rem;
+              background: var(--t400); margin-right: 0.75rem; vertical-align: middle; }
+    .s-right { font-size: 0.95rem; color: var(--s400); letter-spacing: 0.04em; white-space: nowrap; }
+    .s-band { margin: 0 -2.6rem; background: var(--s50);
+              border-top: 1px solid var(--s200); border-bottom: 1px solid var(--s200);
+              padding: 0.75rem 2.6rem; }
+    .s-band p { font-size: 1.08rem; line-height: 1.55; color: var(--s600); }
+    .s-band strong { color: var(--t600); font-family: var(--fx); }
+    .s-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+              font-size: 0.78rem; color: var(--s400); margin-top: 0.7rem; }
+    .s-foot .src { grid-column: 1; font-size: 0.72rem; color: var(--s400); }
+    .s-foot .pg { grid-column: 2; }
+    .s-foot .mark { grid-column: 3; justify-self: end; letter-spacing: 0.14em; }
+    .content { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 1.1rem; padding-top: 1rem; }
+    .fill { flex: 1; min-height: 0; }
+    .i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6;
+         stroke-linecap: round; stroke-linejoin: round; display: inline-block; vertical-align: -0.12em; }
+    .stripe { background: var(--s900); color: #E2E8F0; border-radius: 0.7rem;
+              padding: 0.7rem 1.3rem; font-size: 0.98rem; display: flex; align-items: center; gap: 0.8rem; line-height: 1.5; }
+    .stripe b { color: var(--t400); }
+    .stripe .sicon { color: var(--t400); display: flex; align-items: center; font-size: 1.15rem; flex-shrink: 0; }
+    .note { font-size: 0.82rem; color: var(--s500); line-height: 1.5; }
+    .note b { color: var(--s700); }
+
+    /* ── 카드 ── */
+    .cards { display: grid; gap: 1.1rem 2.6rem; grid-auto-rows: 1fr; }
+    .cards.tight { gap: 1.1rem 1.3rem; }
+    .c2 { grid-template-columns: repeat(2, 1fr); }
+    .c3 { grid-template-columns: repeat(3, 1fr); }
+    .c4 { grid-template-columns: repeat(4, 1fr); }
+    .card { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem;
+            padding: 1rem 1.1rem 0.95rem; display: flex; flex-direction: column;
+            box-shadow: 0 1px 2px rgba(15,23,42,0.04); position: relative; overflow: hidden; }
+    .card.white { background: #fff; }
+    .accent { position: absolute; top: 0; left: 0; right: 0; height: 0.18rem;
+              background: var(--t400); border-radius: 0.9rem 0.9rem 0 0; }
+    .card .no { font-size: 0.74rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+    .card .ico { font-size: 1.7rem; line-height: 1; color: var(--t600); margin-bottom: 0.55rem; }
+    .card .ico .i { stroke-width: 1.3; }
+    .card h3 { font-size: 1.18rem; font-family: var(--fx); color: var(--s900); margin-bottom: 0.4rem; letter-spacing: -0.01em; line-height: 1.3; }
+    .card p { font-size: 0.93rem; line-height: 1.55; color: var(--s500); }
+    .card ul { list-style: none; margin-top: 0.45rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .card li { font-size: 0.9rem; color: var(--s500); line-height: 1.45; padding-left: 1rem; position: relative; }
+    .card li i { position: absolute; left: 0; top: 0.55rem; width: 0.32rem; height: 0.32rem; border-radius: 50%; background: var(--t400); }
+    .card li b { color: var(--s800); }
+    .card .fix { margin-top: auto; padding: 0.5rem 0.75rem; background: var(--t50); border: 1px solid var(--t100);
+                 border-radius: 0.6rem; font-size: 0.86rem; color: var(--t700); line-height: 1.45; }
+    .card .fix b { color: var(--t800); }
+    .card .fix.gray { background: #fff; border-color: var(--s200); color: var(--s600); }
+    .card .fix.gray b { color: var(--s900); }
+
+    /* ── 표 ── */
+    .rt-wrap { border: 1px solid var(--s200); border-radius: 0.9rem; overflow: hidden; background: #fff; }
+    .rt { width: 100%; border-collapse: collapse; }
+    .rt th { background: var(--s50); border-bottom: 1px solid var(--s200); font-family: var(--fx); font-weight: 400;
+             font-size: 0.84rem; color: var(--s500); text-align: left; padding: 0.5rem 0.8rem; white-space: nowrap; }
+    .rt td { border-bottom: 1px solid var(--s100); padding: 0.48rem 0.8rem; font-size: 0.88rem; color: var(--s600);
+             vertical-align: middle; line-height: 1.45; }
+    .rt tr:last-child td { border-bottom: none; }
+    .rt td.k { font-family: var(--fx); color: var(--s900); white-space: nowrap; }
+    .rt td.k small { display: block; font-family: var(--f); font-size: 0.76rem; color: var(--s400); }
+    .rt td b { color: var(--t700); }
+    .rt td.c { text-align: center; }
+    .rt.dense th { padding: 0.4rem 0.7rem; font-size: 0.8rem; }
+    .rt.dense td { padding: 0.33rem 0.7rem; font-size: 0.82rem; line-height: 1.38; }
+    .rt.dense td.k small { font-size: 0.72rem; }
+    .rt.roomy td { padding: 0.52rem 0.8rem; }
+    .rt tr.hl td { background: var(--t50); }
+    .rt tr.dim td { color: var(--s400); }
+    .tag { display: inline-block; font-size: 0.74rem; font-family: var(--fx); padding: 0.14rem 0.55rem; border-radius: 99rem;
+           border: 1px solid var(--t400); color: var(--t700); background: var(--t50); white-space: nowrap; }
+    .tag.gray { border-color: var(--s300); color: var(--s500); background: var(--s50); }
+    .tag.rose { border-color: #FECDD3; color: #BE123C; background: #FFF1F2; }
+    .dot { display: inline-block; width: 0.62rem; height: 0.62rem; border-radius: 50%; background: var(--t600); vertical-align: middle; }
+    .dot.half { background: #fff; border: 2px solid var(--t600); }
+    .dot.off { background: var(--s200); }
+
+    /* ── 2단 ── */
+    .two { display: flex; gap: 2.6rem; align-items: stretch; }
+    .two > * { flex: 1; min-width: 0; min-height: 0; }
+    .two.w64 > :first-child { flex: 1.5; }
+    .col { display: flex; flex-direction: column; gap: 0.8rem; min-height: 0; }
+    .h4 { font-family: var(--fx); font-size: 1rem; color: var(--s900); display: flex; align-items: center; gap: 0.5rem; }
+    .h4 .i { color: var(--t600); }
+    .krow { display: flex; gap: 0.85rem; align-items: flex-start; background: var(--s50); border: 1px solid var(--s200);
+            border-radius: 0.8rem; padding: 0.7rem 0.95rem; }
+    .krow .kico { width: 2.1rem; height: 2.1rem; border-radius: 0.6rem; background: var(--t50); border: 1px solid var(--t100);
+                  color: var(--t700); display: flex; align-items: center; justify-content: center; font-size: 1.05rem; flex-shrink: 0; }
+    .krow h4 { font-size: 1rem; font-family: var(--fx); color: var(--s900); line-height: 1.3; }
+    .krow p { font-size: 0.88rem; line-height: 1.5; color: var(--s500); margin-top: 0.15rem; }
+    .krows { display: flex; flex-direction: column; gap: 0.7rem; }
+
+    /* ── 수치 스트립 ── */
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.3rem; }
+    .kpi { background: #fff; border: 1px solid var(--s200); border-radius: 0.8rem; padding: 0.75rem 0.95rem; }
+    .kpi .v { font-size: 1.75rem; font-family: var(--fx); color: var(--t600); letter-spacing: -0.03em; line-height: 1.1; }
+    .kpi .v small { font-size: 0.9rem; color: var(--s500); margin-left: 0.2rem; font-family: var(--f); }
+    .kpi .k { font-size: 0.86rem; font-family: var(--fx); color: var(--s900); margin-top: 0.3rem; }
+    .kpi p { font-size: 0.78rem; color: var(--s500); line-height: 1.4; margin-top: 0.15rem; }
+
+    /* ── 아키텍처 ── */
+    .arch { display: flex; flex-direction: column; gap: 0.4rem; height: 100%; justify-content: space-between; }
+    .lrow { display: grid; grid-template-columns: 7.2rem 1fr; gap: 0.8rem; align-items: stretch; }
+    .lname { background: var(--s900); color: #fff; border-radius: 0.6rem; display: flex; flex-direction: column;
+             justify-content: center; padding: 0.45rem 0.7rem; font-family: var(--fx); font-size: 0.86rem; line-height: 1.25; }
+    .lname small { font-family: var(--f); font-size: 0.68rem; color: var(--s300); margin-top: 0.1rem; }
+    .lname.t { background: var(--t700); }
+    .lname.g { background: var(--s500); }
+    .nodes { display: grid; gap: 0.5rem; }
+    .n5 { grid-template-columns: repeat(5, 1fr); }
+    .n4 { grid-template-columns: repeat(4, 1fr); }
+    .n3 { grid-template-columns: repeat(3, 1fr); }
+    .node { border: 1px solid var(--s200); background: var(--s50); border-radius: 0.6rem; padding: 0.42rem 0.6rem;
+            font-size: 0.84rem; font-family: var(--fx); color: var(--s900); text-align: center; line-height: 1.3;
+            display: flex; flex-direction: column; justify-content: center; }
+    .node small { display: block; font-family: var(--f); font-size: 0.72rem; color: var(--s500); margin-top: 0.1rem; }
+    .node.tt { background: var(--t50); border-color: var(--t100); color: var(--t800); }
+    .node.tt small { color: var(--t700); }
+    .node.ext { background: #fff; border-style: dashed; color: var(--s500); }
+    .node.ours { border-color: var(--t400); background: #fff; }
+    .arr { text-align: center; color: var(--s400); font-size: 0.8rem; line-height: 1; }
+    .vband { border: 1px dashed var(--t400); background: var(--t50); border-radius: 0.6rem; padding: 0.35rem 0.8rem;
+             font-size: 0.8rem; color: var(--t800); display: flex; justify-content: space-between; align-items: center; }
+    .vband b { color: var(--t800); }
+
+    /* ── 흐름 ── */
+    .flow { display: flex; align-items: stretch; gap: 0.5rem; }
+    .step { flex: 1; min-width: 0; background: #fff; border: 1px solid var(--s200); border-radius: 0.7rem; padding: 0.6rem 0.75rem;
+            display: flex; flex-direction: column; }
+    .step .sn { font-size: 0.72rem; font-family: var(--fx); color: var(--t600); letter-spacing: 0.06em; }
+    .step b { display: block; font-size: 0.95rem; color: var(--s900); margin: 0.15rem 0 0.25rem; line-height: 1.3; }
+    .step p { font-size: 0.82rem; color: var(--s500); line-height: 1.45; }
+    .step.hl { background: var(--t50); border-color: var(--t400); }
+    .farr { align-self: center; color: var(--s300); font-size: 1rem; flex: none; }
+
+    /* ── 일정 ── */
+    .gantt { display: flex; flex-direction: column; gap: 0.35rem; }
+    .gh { display: grid; grid-template-columns: 10rem repeat(29, 1fr); gap: 1px; font-size: 0.62rem; color: var(--s400); font-family: var(--fx); text-align: center; }
+    .gh span:first-child { text-align: left; font-size: 0.74rem; }
+    .grow { display: grid; grid-template-columns: 10rem repeat(29, 1fr); gap: 1px; align-items: center; }
+    .grow .gl { font-size: 0.86rem; font-family: var(--fx); color: var(--s900); padding-right: 0.5rem; line-height: 1.25; }
+    .grow .gl small { display: block; font-size: 0.72rem; color: var(--s400); font-family: var(--f); }
+    .grow i { height: 1.9rem; background: var(--s100); display: block; }
+    .grow i.on { background: var(--t600); }
+    .grow i.soft { background: var(--t100); }
+    .grow i.dk { background: var(--s700); }
+    .ms { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .ms span { font-size: 0.78rem; color: var(--s600); background: var(--s50); border: 1px solid var(--s200); border-radius: 99rem; padding: 0.22rem 0.7rem; }
+    .ms span b { color: var(--t700); margin-right: 0.3rem; }
+
+    /* ── 조직 ── */
+    .orgs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem 1.3rem; }
+    .org { background: var(--s50); border: 1px solid var(--s200); border-radius: 0.9rem; padding: 0.85rem 0.95rem; display: flex; flex-direction: column; }
+    .org .oh { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; padding-bottom: 0.5rem; border-bottom: 1px solid var(--s200); margin-bottom: 0.55rem; }
+    .org .oh b { white-space: nowrap; }
+    .org .oic { width: 2rem; height: 2rem; border-radius: 0.55rem; background: var(--t50); border: 1px solid var(--t100); color: var(--t700);
+                flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .org b { font-size: 1rem; font-family: var(--fx); color: var(--s900); }
+    .org .cnt { margin-left: auto; font-size: 0.74rem; color: var(--t700); font-family: var(--fx); white-space: nowrap; }
+    .org ul { list-style: none; display: flex; flex-direction: column; gap: 0.32rem; }
+    .org li { font-size: 0.86rem; color: var(--s500); line-height: 1.45; padding-left: 0.9rem; position: relative; }
+    .org li i { position: absolute; left: 0; top: 0.52rem; width: 0.3rem; height: 0.3rem; border-radius: 50%; background: var(--t400); }
+
+    /* ── 회사 정보 표 ── */
+    .kv { width: 100%; border-collapse: collapse; }
+    .kv th { width: 9rem; text-align: left; font-family: var(--fx); font-weight: 400; font-size: 0.86rem; color: var(--s500);
+             background: var(--s50); padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--s200); }
+    .kv td { font-size: 0.92rem; color: var(--s800); padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--s100); }
+    .kv tr:last-child th, .kv tr:last-child td { border-bottom: none; }
+
+    /* ── 다크 슬라이드 (표지·맺음) ── */
+    .dark { background:
+              linear-gradient(rgba(148,163,184,0.055) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(148,163,184,0.055) 1px, transparent 1px),
+              var(--s900);
+            background-size: 3.4rem 3.4rem, 3.4rem 3.4rem, auto;
+            color: #fff; justify-content: center; align-items: flex-start; padding: 2.2rem 2.8rem; }
+    .dark .glow { position: absolute; right: -12rem; top: 50%; transform: translateY(-50%); width: 46rem; height: 46rem; border-radius: 50%;
+                  background: radial-gradient(circle, rgba(45,212,191,0.11) 0%, rgba(45,212,191,0.035) 45%, transparent 72%); }
+    .dark .logo { position: absolute; right: 5.5rem; top: 50%; transform: translateY(-50%); width: 14rem; z-index: 0; }
+    .dark .top { position: absolute; top: 1.9rem; left: 2.8rem; right: 2.8rem; display: flex; justify-content: space-between; align-items: center; }
+    .dark .top .pillbadge { border: 1px solid var(--t400); color: var(--t400); font-size: 0.8rem; letter-spacing: 0.18em; padding: 0.5rem 1.5rem; border-radius: 99rem; }
+    .dark .top .iwd { color: var(--t400); font-size: 0.95rem; letter-spacing: 0.03em; font-family: var(--fx); }
+    .dark h1 { font-size: 3.2rem; font-family: var(--fx); letter-spacing: -0.03em; line-height: 1.16; position: relative; z-index: 1; }
+    .dark h1 em { color: var(--t400); font-style: normal; }
+    .dark .sub { font-size: 1.15rem; color: var(--s400); margin-top: 1.2rem; line-height: 1.65; position: relative; z-index: 1; }
+    .dark .entag { margin-top: 1.5rem; color: var(--t400); font-size: 0.92rem; letter-spacing: 0.22em; font-family: var(--fx); }
+    .dark .pills { display: flex; gap: 0.6rem; margin-top: 1.7rem; flex-wrap: wrap; position: relative; z-index: 1; }
+    .dark .pill { border: 1px solid var(--s700); background: rgba(30,41,59,0.7); color: var(--s300); font-size: 0.9rem; padding: 0.42rem 1rem; border-radius: 99rem; }
+    .dark .pill b { color: var(--t400); margin-right: 0.35rem; }
+    .dark .corner { position: absolute; left: 2.8rem; bottom: 1.5rem; right: 2.8rem; display: flex; gap: 0.9rem; align-items: center; font-size: 0.82rem; letter-spacing: 0.16em; }
+    .dark .corner .ai { color: var(--t400); font-family: var(--fx); }
+    .dark .corner .div { color: var(--s600); }
+    .dark .corner .cp { color: var(--s500); }
+    .dark .notice { margin-top: 1.6rem; display: inline-flex; align-items: center; gap: 0.6rem; border: 1px solid var(--s700); border-radius: 0.6rem;
+                    background: rgba(30,41,59,0.7); padding: 0.55rem 1rem; font-size: 0.86rem; color: var(--s400); position: relative; z-index: 1; }
+    .dark .notice .i { color: var(--t400); }
+    .dark .contact { margin-top: 1.6rem; display: flex; gap: 2.2rem; position: relative; z-index: 1; }
+    .dark .contact div { border-left: 2px solid var(--t400); padding-left: 0.9rem; }
+    .dark .contact small { display: block; font-size: 0.78rem; color: var(--s500); letter-spacing: 0.1em; }
+    .dark .contact b { display: block; font-size: 1rem; color: #fff; margin-top: 0.2rem; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. 표지 -->
+  <section class="slide dark" data-title="표지">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
+    <div class="top">
+      <span class="pillbadge">KSD 차세대 2단계 · 데이터플랫폼 부문</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>데이터가 통계가 되는 길을,<br><em>적재부터 검증까지 한 팀이 책임집니다.</em></h1>
+    <p class="sub">한국예탁결제원 차세대시스템(2단계) 구축 SI 사업 - 데이터플랫폼 부문 제안서 (세일링스톤 수행 범위)<br>
+      <b style="color:#fff">LG CNS 컨소시엄 제출용</b> · 세일링스톤 작성 · 2026. 10</p>
+    <div class="pills">
+      <span class="pill"><b>01</b>ETL 적재 표준화</span>
+      <span class="pill"><b>02</b>레이어별 데이터 검증</span>
+      <span class="pill"><b>03</b>통계 · 보고서 이관</span>
+      <span class="pill"><b>04</b>Self BI · AI 분석</span>
+    </div>
+    <div class="notice"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      초안 v0.1 - 범위는 2026-10-22 LG CNS 회신 기준이며, 수치 · 일정 · 투입은 컨소시엄 협의로 확정합니다.</div>
+    <div class="corner">
+      <span class="ai">DATA · PLATFORM · ANALYTICS</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
+    </div>
+  </section>
+
+  <!-- 2. 제안 요지 -->
+  <section class="slide" data-title="제안 요지">
+    <header class="s-head">
+      <h2><span class="bullet"></span>제안 요지 - <em>세일링스톤이 맡는 것과 약속하는 것</em></h2>
+      <span class="s-right">00 · Summary</span>
+    </header>
+    <div class="s-band"><p>데이터플랫폼 과제 중 <strong>데이터를 모으고(ETL), 맞는지 확인하고(검증), 쓰게 만드는(통계 · Self BI · AI)</strong> 일을 세일링스톤이 수행합니다. 비즈메타 · 데이터 카탈로그와 DQ 솔루션은 별도 업체 영역입니다.</p></div>
+    <div class="content">
+      <div class="two w64 fill">
+        <div class="rt-wrap">
+          <table class="rt roomy">
+            <tr><th style="width:24%">요구사항 ID</th><th>명칭</th><th style="width:19%">수행 형태</th></tr>
+            <tr><td class="k">SFR-BTS-001</td><td>데이터플랫폼 기반 구축 - BI포털 도입, 통계 이관, 데이터 연계</td><td><span class="tag">단독 수행</span></td></tr>
+            <tr><td class="k">SFR-BTS-002</td><td>보고서 분석환경 - 다운로드 · 공유 · 발송(단독), 비즈메타 연계 서비스(협업)</td><td><span class="tag gray">일부 수행</span></td></tr>
+            <tr><td class="k">SFR-BTS-003</td><td>데이터 활용 서비스 - 정형보고서 재구축, 사용자 주도 분석환경</td><td><span class="tag">단독 수행</span></td></tr>
+            <tr><td class="k">SFR-BTS-005</td><td>데이터 연계 서비스 - SEIBro 연계용 가공 데이터 생성 · 송신 (ETL 포함)</td><td><span class="tag">단독 수행</span></td></tr>
+            <tr><td class="k">ARC-030</td><td>데이터 매핑 설계 및 적재 - 정기 · 초기 적재 ETL, 스케줄, 성능, 검증</td><td><span class="tag">단독 수행</span></td></tr>
+            <tr><td class="k">ARC-032</td><td>Self BI 도입 - 보고서 활용 방안, 활성화, 관리 체계</td><td><span class="tag">단독 수행</span></td></tr>
+            <tr><td class="k">ARC-033</td><td>Self BI 도입(AI) - 자연어 질의 AI 분석 환경</td><td><span class="tag">단독 수행</span></td></tr>
+            <tr><td class="k">ARC-034</td><td>데이터 검증 방안 수립 - ODS → DW → DM 검증 체계, 변경 인지 프로세스</td><td><span class="tag">단독 수행</span></td></tr>
+            <tr class="dim"><td class="k">제외</td><td>SFR-BTS-004 DQ 솔루션 기반 검증 서비스 · ARC-031 데이터 자산관리 시스템 · SFR-BTS-002 2.4 비즈메타 웹 구축</td><td><span class="tag gray">별도 업체</span></td></tr>
+          </table>
+        </div>
+        <div class="col">
+          <div class="h4"><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>네 가지 약속</div>
+          <div class="krows">
+            <div class="krow"><span class="kico">1</span><span><h4>적재는 정의서에서 생성합니다</h4><p>매핑 정의서 하나로 프로그램 · 스케줄 · 검증 규칙을 함께 만들어 변경에 강한 구조를 유지합니다.</p></span></div>
+            <div class="krow"><span class="kico">2</span><span><h4>검증은 레이어마다 통과시킵니다</h4><p>ODS → DW → DM → SEIBro 매 단계에 건수 · 값 · RI · 코드 검증 게이트를 두고 결과를 화면으로 남깁니다.</p></span></div>
+            <div class="krow"><span class="kico">3</span><span><h4>통계는 분석단계에 재식별해 확정합니다</h4><p>As-is 기준 수량(화면 44 · 보고서 62 · SEIBro 222 등)을 분석단계말 협의로 확정한 뒤 개발합니다.</p></span></div>
+            <div class="krow"><span class="kico">4</span><span><h4>활용은 Self BI와 AI로 넓힙니다</h4><p>Tableau 기반 Self BI와 On-Premise LLM 기반 aisight로 IT 의존 없는 분석 환경을 제공합니다.</p></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">범위 근거: 제안요청서 Ⅴ-2 요구사항 목록(세일링스톤 업무 범위 수정본, 2026-10-22) · LG CNS 회신(2026-10-21)</span><span class="pg">- 2 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 3. 사업 이해 -->
+  <section class="slide" data-title="사업 이해">
+    <header class="s-head">
+      <h2><span class="bullet"></span>사업 이해 - <em>2단계에서 데이터플랫폼이 풀어야 할 문제</em></h2>
+      <span class="s-right">01 · Understanding</span>
+    </header>
+    <div class="s-band"><p>차세대 2단계는 기간계 · 대국민 · 데이터플랫폼 · 인프라를 870일 안에 함께 세우는 사업입니다. 데이터플랫폼은 그중 <strong>정보계의 신뢰 회복과 데이터 활용 범위 확대</strong>를 맡는 과제입니다.</p></div>
+    <div class="content">
+      <div class="kpis">
+        <div class="kpi"><div class="v">3,164.5<small>억 원</small></div><div class="k">사업 예산 (VAT 포함)</div><p>일반경쟁입찰 후 협상에 의한 계약</p></div>
+        <div class="kpi"><div class="v">870<small>일</small></div><div class="k">사업 기간 (계약일 기준)</div><p>안정화 4개월 포함, 2029년 상반기 개통 목표</p></div>
+        <div class="kpi"><div class="v">489<small>개</small></div><div class="k">확정 요구사항</div><p>주요 추진과제 145개, BPR/ISMP 컨설팅 반영</p></div>
+        <div class="kpi"><div class="v">10.4<small>%</small></div><div class="k">현재 활용 가능한 기간계 데이터</div><p>정형 보고서 위주로 실시간 분석 대응 한계</p></div>
+      </div>
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">문제 01 · 신뢰</div>
+          <h3>정보계와 기간계의 숫자가 다릅니다</h3>
+          <p>정보계 데이터 정합성 신뢰도가 낮아 통계 산출이 기간계 화면에 의존합니다. 데이터 검증 서비스로 기간계 ↔ 정보계 ↔ SEIBro 정합성을 상시 유지해야 합니다.</p>
+          <ul>
+            <li><i></i>기간계 기반 통계자료 산출 의존도 심화 (Ⅲ-4 추진배경)</li>
+            <li><i></i>데이터 변동분 상시 감지 · 검증으로 시스템 간 정합성 유지 (추진내용)</li>
+            <li><i></i>이행단계별 검증과 결과 조회 화면, 변경 인지 프로세스 (ARC-034)</li>
+          </ul>
+          <div class="fix"><b>우리의 대응</b> 레이어별 검증 게이트와 변경 인지 프로세스 (ARC-034, 13~14장)</div></div>
+        <div class="card"><div class="no">문제 02 · 범위</div>
+          <h3>쓸 수 있는 데이터가 10.4%뿐입니다</h3>
+          <p>기간계 통계 화면 44개, 정보계 보고서 62개, SEIBro 연계 222건, 외부기관 84건, 반복 작업의뢰 53건을 데이터플랫폼으로 옮겨 직접 조회하게 만들어야 합니다.</p>
+          <ul>
+            <li><i></i>통계 보고서 137건 - 정형 98건 산출, 비정형 39건 중 반복분 정형화 (SFR-BTS-003)</li>
+            <li><i></i>ERP · 자금운용 · 사채관리회사 · LEI-K · 전자주총 · 1단계 시스템 연계 (SFR-BTS-001)</li>
+            <li><i></i>수량은 As-is 기준, 분석단계에 재식별 후 확정 (제안요청서 명시)</li>
+          </ul>
+          <div class="fix gray"><b>우리의 대응</b> 매핑 정의서 기반 ETL 표준과 통계 이관 절차 (ARC-030 · SFR-BTS-001/003, 10~16장)</div></div>
+        <div class="card"><div class="no">문제 03 · 의존</div>
+          <h3>현업이 IT 없이는 데이터를 못 씁니다</h3>
+          <p>시스템 노후화와 낮은 가시성으로 데이터 처리가 IT 조직에 몰리고 리드타임이 늘어납니다. 현업 주도 분석 환경과 AI 질의 환경이 목표입니다.</p>
+          <ul>
+            <li><i></i>IT 조직 도움 없이 데이터 분석 · 활용 업무를 주도적으로 수행 (추진목표)</li>
+            <li><i></i>Drag &amp; Drop Self BI, 구독 · 공유 · 권한 (ARC-032)</li>
+            <li><i></i>자연어 질의 AI Agent, On-Premise LLM, 답변 일관성 통제 (ARC-033)</li>
+          </ul>
+          <div class="fix gray"><b>우리의 대응</b> Tableau Self BI와 aisight AI 분석 (ARC-032/033, 18~20장)</div></div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">출처: 제안요청서 Ⅰ. 사업개요, Ⅲ-4 데이터플랫폼 시스템 구축 (2026. 09)</span><span class="pg">- 3 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 4. 현황 진단 -->
+  <section class="slide" data-title="현황 진단">
+    <header class="s-head">
+      <h2><span class="bullet"></span>현황 진단 - <em>무엇을 옮기고, 무엇을 새로 만드는가</em></h2>
+      <span class="s-right">01 · As-is</span>
+    </header>
+    <div class="s-band"><p>현행 정보계는 ODS-DW-DM을 순차로 거치는 구조라 항목 추가와 로직 변경의 리드타임이 깁니다. <strong>구조를 바꾸되 통계의 산출 기준은 끊김 없이 승계</strong>하는 것이 이번 과제의 핵심입니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="col">
+          <div class="h4"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>현행 정보계의 제약 (제안요청서 Ⅱ. 운영현황)</div>
+          <div class="krows">
+            <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span><h4>순차 적재 구조의 리드타임</h4><p>ODS → DW → DM을 모두 거쳐야 항목 하나가 추가됩니다. 신규 요건의 개발 리드타임 과다가 공식 진단입니다.</p></span></div>
+            <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span><h4>노후 기술 스택과 서버</h4><p>JDK 1.7 등 노후 스택과 Oracle Solaris 서버(EOS 경과)로 실시간 분석 수요 대응이 어렵습니다. 정보계는 어플라이언스로 교체됩니다.</p></span></div>
+            <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span><h4>기간계 의존 통계와 반복 작업의뢰</h4><p>같은 통계 요청이 4회 이상 반복되는 작업의뢰가 53건입니다. 정합성 불신이 수작업 의존으로 이어지는 구조입니다.</p></span></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="h4"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>데이터플랫폼으로 옮길 자산 (As-is 기준, 분석단계 재식별)</div>
+          <div class="rt-wrap">
+            <table class="rt">
+              <tr><th>대상</th><th style="width:16%">수량</th><th>처리 방식</th></tr>
+              <tr><td class="k">기간계 통계 화면</td><td class="c"><b>44</b>개</td><td>화면별 적재 방식(실시간 · 배치 · 혼합) 분석 후 이관</td></tr>
+              <tr><td class="k">정보계 실사용 보고서</td><td class="c"><b>62</b>개</td><td>통계 데이터 이관 + 정형보고서 재구축</td></tr>
+              <tr><td class="k">SEIBro 연계 데이터</td><td class="c"><b>222</b>건</td><td>'26년 콘텐츠 개편 기준으로 SEIBro가 식별, 플랫폼이 반영</td></tr>
+              <tr><td class="k">외부기관 수신 데이터</td><td class="c"><b>84</b>건</td><td>SEIBro 직접 수신분을 플랫폼이 직접 수신</td></tr>
+              <tr><td class="k">반복 산출 작업의뢰 통계</td><td class="c"><b>53</b>건</td><td>작업의뢰 없이 직접 조회 (ITMS 분석으로 추가 식별)</td></tr>
+              <tr><td class="k">통계 보고서</td><td class="c"><b>137</b>건</td><td>정형 98건 산출 기능 + 비정형 39건 중 반복분 정형화</td></tr>
+            </table>
+          </div>
+          <p class="note"><b>승계 원칙</b> 매핑 설계와 검증 규칙은 현행 표준용어 · 도메인 · 코드와 품질지표(DQI)를 그대로 참조해 산출 기준의 연속성을 유지합니다.</p>
+        </div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="v">4,613<small>개</small></div><div class="k">기간계 테이블</div><p>대국민 1,450개 · 주제영역 24 + 10개</p></div>
+        <div class="kpi"><div class="v">10,002<small>개</small></div><div class="k">표준용어</div><p>표준도메인 622개 · 표준코드 4,339개</p></div>
+        <div class="kpi"><div class="v">5<small>종</small></div><div class="k">데이터 품질지표 (DQI)</div><p>완전성 · 유효성 · 정확성 · 유일성 · 일관성</p></div>
+        <div class="kpi"><div class="v">ODS → DW → DM</div><div class="k">현행 정보계 순차 구조</div><p>JDK 1.7 · Solaris EOS, 어플라이언스로 교체 예정</p></div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">출처: 제안요청서 Ⅱ-3 IT아키텍처 현황, Ⅱ 데이터 아키텍처 현황, SFR-BTS-001/003 세부내용</span><span class="pg">- 4 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 5. 요구사항 대응표 -->
+  <section class="slide" data-title="요구사항 대응표">
+    <header class="s-head">
+      <h2><span class="bullet"></span>요구사항 대응표 - <em>8개 요구사항, 산출물, 본 제안서 위치</em></h2>
+      <span class="s-right">01 · Compliance</span>
+    </header>
+    <div class="s-band"><p>제안요청서 조견표 양식에 맞춰 <strong>요구사항 ID별로 수행 형태 · 핵심 과업 · 산출물 · 기술 위치</strong>를 정리했습니다. LG CNS 통합 제안서에 조견표 항목으로 그대로 옮길 수 있습니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt dense">
+          <tr><th style="width:11%">ID</th><th style="width:20%">요구사항</th><th>핵심 과업 (제안요청서 세부내용 기준)</th><th style="width:21%">산출물</th><th style="width:7%">장</th></tr>
+          <tr><td class="k">SFR-BTS-001</td><td>데이터플랫폼 기반 구축</td><td>BI포털 솔루션 도입(운영 2식 · DR 1식 · 개발 1식) · 통계 화면 44개 · 보고서 62개 · SEIBro 222건 · 외부 84건 · 반복 통계 53건 이관 · ERP · 자금운용 · 사채관리회사 · LEI-K · 전자주총 · 증권대행 · 외화증권 · 인사정보 연계 · UI/UX · 도움말</td><td>단계별 산출물, 연계 정의서, UI/UX 가이드</td><td class="c">15 · 16 · 17</td></tr>
+          <tr><td class="k">SFR-BTS-002<small>일부</small></td><td>보고서 분석환경 구축</td><td>통계 · 보고서 다운로드(대용량 안정성) · 공유(대상 · 범위 · 기간) · UMS 발송과 재발송 · 비즈메타 연계 서비스 개발과 DW/DM · Self-BI · 대시보드 개발(협업). 비즈메타 웹 구축은 별도 업체</td><td>단계별 산출물</td><td class="c">17</td></tr>
+          <tr><td class="k">SFR-BTS-003</td><td>데이터 활용 서비스 개발</td><td>사용자 주도 분석환경(선택 · 조합 · 가공) · 증권예탁통계 보고서 62종 · 통계 보고서 137건 중 정형 98건 산출 · 비정형 39건 중 반복분 정형화 · 산출 기준 현행화 · BI 솔루션 커스터마이징</td><td>단계별 산출물</td><td class="c">16</td></tr>
+          <tr><td class="k">SFR-BTS-005</td><td>데이터 연계 서비스 개발</td><td>ODS 원천과 SEIBro 콘텐츠 간 산출로직 매핑 · SEIBro 표출용 DW/DM과 연계 데이터 생성 · FTP · ESB · XDA 방식 송신 연계</td><td>단계별 산출물, 연계 매핑 정의서</td><td class="c">15</td></tr>
+          <tr class="hl"><td class="k">ARC-030</td><td>데이터 매핑 설계 및 적재</td><td>정기 적재 프로그램 · 스케줄(선후행 · 병렬화) · 완료 목표시간 정의와 성능 개선 · 정합성 검증 시나리오 · 초기 적재 대상 · 기간 선정 · 이행 전략 · 결과 리포트</td><td>정기 적재 매핑 정의서 · 스케줄 정의서 · 검증 방안서</td><td class="c">10 · 11 · 12</td></tr>
+          <tr><td class="k">ARC-032</td><td>Self BI 도입</td><td>Self BI 적용 대상 식별 · 신규 보고서 도출 · 활성화(교육 · 변화관리) · 관리 체계(R&amp;R · 생애주기) · 정기 보고서 자동 생성 · 솔루션 기능 요건 충족</td><td>BI 보고서 정의서 · 설치 계획서 · 결과서 · 매뉴얼</td><td class="c">18</td></tr>
+          <tr><td class="k">ARC-033</td><td>Self BI 도입(AI)</td><td>자연어 질의 AI Agent · 답변 일관성 통제 · 용어 정규화 · 대시보드 컨텍스트 · On-Premise LLM · 로그 추적 · 감사 · 행 · 열 권한 · 운영지표 · 환각 지점 식별 · AI 친화 메타데이터</td><td>BI 보고서 정의서 · 설치 계획서 · 결과서 · 매뉴얼</td><td class="c">19 · 20</td></tr>
+          <tr class="hl"><td class="k">ARC-034</td><td>데이터 검증 방안 수립</td><td>이행단계별(ODS → DW → DM) 건수 · 값 · RI · 코드 검증과 결과 조회 화면 · 기간계 변경 유형별 인지 · 반영 프로세스 · SEIBro 불일치 협의 절차</td><td>데이터 검증 계획서 · 검증 결과서</td><td class="c">13 · 14</td></tr>
+        </table>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">제외 범위(SFR-BTS-004 · ARC-031 · SFR-BTS-002 2.4)와 협업 접점은 6장 참조</span><span class="pg">- 5 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 6. 수행 범위 경계 -->
+  <section class="slide" data-title="범위 경계와 협업 접점">
+    <header class="s-head">
+      <h2><span class="bullet"></span>범위 경계와 협업 접점 - <em>네 주체가 만나는 다섯 지점</em></h2>
+      <span class="s-right">01 · Boundary</span>
+    </header>
+    <div class="s-band"><p>데이터플랫폼은 LG CNS(저장소 · 공통기반 · 이행), 세일링스톤(적재 · 검증 · 활용), 비즈메타 · 카탈로그 업체, DQ 솔루션이 함께 만듭니다. <strong>접점을 인터페이스 명세로 먼저 고정</strong>해 분석단계에 Grey Zone을 없앱니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="rt-wrap">
+          <table class="rt">
+            <tr><th>영역</th><th style="width:22%">LG CNS</th><th style="width:22%">세일링스톤</th><th style="width:26%">별도 업체</th></tr>
+            <tr><td class="k">데이터 저장소 설계 <small>ARC-029</small></td><td>ODS · DW · DM 레이어 설계 주관</td><td>매핑 관점 검토 · 적재 설계 반영</td><td>-</td></tr>
+            <tr class="hl"><td class="k">ETL 적재 <small>ARC-030 · SFR-BTS-005</small></td><td>ETL 도구 구매(운영 · 개발 · DR 3식)</td><td><b>설계 · 개발 · 스케줄 · 성능 · 검증</b></td><td>-</td></tr>
+            <tr class="hl"><td class="k">데이터 검증 <small>ARC-034</small></td><td>이행 데이터 품질관리(이행 과제)</td><td><b>플랫폼 검증 체계 · 조회 화면 · 변경 프로세스</b></td><td>DQ 솔루션 기반 SEIBro 변동분 검증 서비스 (SFR-BTS-004)</td></tr>
+            <tr><td class="k">비즈메타 · 카탈로그 <small>ARC-031 · SFR-BTS-002 2.4</small></td><td>-</td><td>BI 솔루션에서 비즈메타 서비스 연계 구현 (2.3)</td><td><b>비즈메타 체계 · 카탈로그 · 통합검색</b></td></tr>
+            <tr><td class="k">통계 · Self BI · AI <small>SFR-BTS-001/003 · ARC-032/033</small></td><td>공통 서비스(SSO · 형상 · DRM) 제공</td><td><b>BI포털 · 보고서 · Self BI · AI Agent</b></td><td>-</td></tr>
+          </table>
+        </div>
+        <div class="col">
+          <div class="h4"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M2 12h3"/><path d="M19 12h3"/></svg>인터페이스 접점 5개 - 분석단계에 명세 확정</div>
+          <div class="rt-wrap">
+            <table class="rt">
+              <tr><th style="width:8%">#</th><th>접점</th><th>세일링스톤이 주는 것 / 받는 것</th></tr>
+              <tr><td class="c">1</td><td class="k">저장소 ↔ 적재</td><td>ERD · 테이블 정의 수령 → 매핑 정의서 · 적재 결과 제공</td></tr>
+              <tr><td class="c">2</td><td class="k">적재 ↔ 카탈로그</td><td>적재 메타(테이블 · 컬럼 · 스케줄 · 계보) 제공 → 통합검색 API 수신</td></tr>
+              <tr><td class="c">3</td><td class="k">검증 ↔ DQ 솔루션</td><td>검증 결과 · 변경 이력 API 제공 → DQ 비교 결과 수신, 화면 연계</td></tr>
+              <tr><td class="c">4</td><td class="k">플랫폼 ↔ SEIBro</td><td>가공 데이터 송신(FTP · ESB · XDA) → 콘텐츠 개편 대상 목록 수신</td></tr>
+              <tr><td class="c">5</td><td class="k">BI ↔ 공통 기반</td><td>SSO · DRM · UMS · 형상관리 연동 규격 수신 → 적용 결과 보고</td></tr>
+            </table>
+          </div>
+          <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+            <span><b>확인 필요</b> LG CNS 회신의 "데이터 검증 부분"이 ARC-034에 한정되는지, SFR-BTS-004(DQ 솔루션 기반 검증 서비스)까지 포함하는지 제출 전 서면 확인합니다.</span></div>
+          <p class="note"><b>명세 산출물</b> 접점별 데이터 항목 · 주기 · 방식 · 담당은 분석단계 '인터페이스 정의서'로 제출하고, 변경은 LG CNS 변경관리 절차로만 반영합니다.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">근거: 세일링스톤 업무 범위 수정본(2026-10-22) · LG CNS 선천웅 책임 회신(2026-10-21) "ETL 부분 및 데이터 검증 부분도 세일링스톤에서 담당"</span><span class="pg">- 6 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 7. 추진 전략 -->
+  <section class="slide" data-title="추진 전략 4축">
+    <header class="s-head">
+      <h2><span class="bullet"></span>추진 전략 - <em>변경을 전제로 설계하는 네 가지 축</em></h2>
+      <span class="s-right">02 · Strategy</span>
+    </header>
+    <div class="s-band"><p>870일 동안 기간계 설계는 계속 바뀌고, SEIBro 콘텐츠도 개편됩니다. 그래서 <strong>한 번 잘 만드는 전략이 아니라 바뀌어도 다시 맞출 수 있는 전략</strong>으로 접근합니다.</p></div>
+    <div class="content">
+      <div class="cards c4 tight fill">
+        <div class="card"><span class="accent"></span><div class="no">AXIS 01 · 적재</div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M4 4h16v4H4z"/><path d="M4 10h16v4H4z"/><path d="M4 16h16v4H4z"/></svg></div>
+          <h3>매핑 정의서가 곧 프로그램</h3>
+          <p>원천 · 대상 · 변환 규칙 · 적재 주기 · 검증 규칙을 정의서 한 벌에 담고, 표준 템플릿으로 ETL 프로그램과 스케줄을 생성합니다.</p>
+          <ul>
+            <li><i></i>적재 유형 T1~T5별 표준 템플릿 (10장)</li>
+            <li><i></i>정의서가 곧 제출 산출물 - 문서와 코드 불일치 없음</li>
+            <li><i></i>도구 중립 설계, ETL 도구 확정 후 1개월 내 생성 체계 정렬</li>
+          </ul>
+          <div class="fix"><b>효과</b> 변경 시 정의서만 고치면 프로그램 · 검증이 함께 바뀝니다</div></div>
+        <div class="card"><div class="no">AXIS 02 · 검증</div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+          <h3>레이어마다 검증 게이트</h3>
+          <p>ODS · DW · DM · SEIBro 송신 직전에 건수 · 합계 · 값 · RI · 코드 검증을 두고, 통과하지 못한 적재는 다음 레이어로 넘기지 않습니다.</p>
+          <ul>
+            <li><i></i>검증 게이트 A~D × 검증 유형 8종 매트릭스 (13장)</li>
+            <li><i></i>실패 시 하위 적재 자동 보류, 결과 조회 화면에 기록</li>
+            <li><i></i>검증 계획서 · 결과서를 단계별 산출물로 제출</li>
+          </ul>
+          <div class="fix gray"><b>효과</b> 불일치가 SEIBro에 도달하기 전에 플랫폼 안에서 멈춥니다</div></div>
+        <div class="card"><div class="no">AXIS 03 · 운영</div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
+          <h3>변경 인지 프로세스 내장</h3>
+          <p>기간계 스키마 · 코드 · 업무규칙 · 소급 정정 등 변경 유형별로 인지 방법과 조치 절차를 정해 두고 운영 단계까지 그대로 이관합니다.</p>
+          <ul>
+            <li><i></i>변경 유형 5종별 자동 인지 방법 (14장)</li>
+            <li><i></i>SEIBro 불일치 4단계 협의 절차, 결정 사항 기록</li>
+            <li><i></i>LG CNS 변경관리와 주간 동기화, 운영 이관 문서에 포함</li>
+          </ul>
+          <div class="fix gray"><b>효과</b> 변경을 사후에 발견하는 대신 적재 전에 감지합니다</div></div>
+        <div class="card"><div class="no">AXIS 04 · 활용</div>
+          <div class="ico"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></div>
+          <h3>셀프서비스와 AI로 확장</h3>
+          <p>통계 이관으로 끝내지 않고 Tableau Self BI와 aisight AI Agent를 같은 DW/DM 위에 올려 현업이 묻고 바로 답을 얻게 합니다.</p>
+          <ul>
+            <li><i></i>Tableau Self BI + 교육 · 챔피언 · 관리 체계 (18장)</li>
+            <li><i></i>aisight 스킬 · 지식 그래프로 답변 일관성 확보 (19 · 20장)</li>
+            <li><i></i>반복 작업의뢰 53건의 감소를 효과 지표로 측정</li>
+          </ul>
+          <div class="fix gray"><b>효과</b> 반복 작업의뢰가 셀프 조회로 바뀝니다</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>
+        <span>네 축은 하나의 메타데이터(매핑 정의서 · 검증 규칙 · 지표 정의)를 공유합니다. <b>적재 · 검증 · 활용이 같은 정의를 보기 때문에</b> 숫자가 어긋나지 않습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="pg">- 7 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 8. 최신 기준 -->
+  <section class="slide" data-title="2026 구축 기준 4가지">
+    <header class="s-head">
+      <h2><span class="bullet"></span>최신 기준 - <em>2026년 데이터플랫폼 구축이 지키는 네 가지</em></h2>
+      <span class="s-right">02 · Benchmark</span>
+    </header>
+    <div class="s-band"><p>금융권 데이터플랫폼의 기준은 "적재가 끝났다"에서 <strong>"적재된 데이터가 맞고, 제때 왔고, 어디서 왔는지 설명된다"</strong>로 옮겨 왔습니다. 본 제안의 설계 원칙은 이 기준을 따릅니다.</p></div>
+    <div class="content">
+      <div class="cards c2 fill">
+        <div class="card"><span class="accent"></span><div class="no">01 · 관측 가능성 (Data Observability)</div>
+          <h3>작업 상태와 건수만 보는 모니터링은 조용한 오류를 놓칩니다</h3>
+          <p>실행 성공 여부 · 건수 · 로그 확인만으로는 변환 오류와 점진적 지연을 잡지 못한다는 것이 2026년 업계의 공통 진단입니다. 본 제안은 건수에 더해 값 분포 · 신선도(도착 시각) · 계보 · 스키마 변경을 함께 관측합니다.</p>
+          <div class="fix"><b>적용</b> 13장 검증 매트릭스에 신선도 · 분포 · 스키마 항목 포함, 완료 목표시간을 지표로 측정</div></div>
+        <div class="card"><div class="no">02 · 검증의 자동화와 규칙 분리</div>
+          <h3>검증 규칙은 엔진과 분리된 정의로 관리합니다</h3>
+          <p>Great Expectations · Soda · dbt tests 같은 검증 엔진은 실행 수단이고, 규칙 자체는 팀 간에 주고받을 수 있는 정의(데이터 계약)로 두는 방식이 자리 잡았습니다. 규칙을 정의서로 관리하면 도구가 바뀌어도 검증이 남습니다.</p>
+          <div class="fix gray"><b>적용</b> 매핑 정의서에 검증 규칙 열을 두고 SQL 기반 검증 잡으로 생성 (10 · 13장)</div></div>
+        <div class="card"><div class="no">03 · 증분 적재와 개방형 저장 형식</div>
+          <h3>전체 재적재 대신 변경분, 폐쇄형 대신 개방형</h3>
+          <p>변경분만 적재하는 증분 방식이 자원 효율의 기본이 됐고, 분석 저장소는 Apache Iceberg 같은 개방형 테이블 형식으로 수렴 중입니다(2026년 1월 설문, 응답 252명 중 58%가 업무 분석에 사용). DW는 Oracle 전용 어플라이언스로 확정이므로 ODS 변경분 적재와 샌드박스 영역에서 개방형 형식 호환을 확보합니다.</p>
+          <div class="fix gray"><b>적용</b> 기간계 스냅샷 기반 변경분 식별, Staging 전일자 변경분 추출 (10 · 11장)</div></div>
+        <div class="card"><div class="no">04 · AI 친화 메타데이터</div>
+          <h3>AI가 읽을 수 있는 용어 · 규칙 · 카탈로그</h3>
+          <p>자연어 질의 AI의 정확도는 모델이 아니라 업무 용어 사전 · 지표 산식 · 접근 권한을 기계가 읽는 형태로 갖췄는지에 달려 있습니다. 제안요청서 ARC-033도 AI 친화형 메타데이터 관리 체계 제시를 요구합니다.</p>
+          <div class="fix gray"><b>적용</b> aisight 스킬 레지스트리와 지식 그래프에 비즈메타(별도 업체) 용어를 연계 (19 · 20장)</div></div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">참고: Acceldata 데이터 관측 가능성 가이드(2026.01) · datacontract.com 도구 비교(2026) · IBM ETL 모범 사례(2026.08) · Ryft Apache Iceberg 설문(2026.01, n=252) - 제출본에 참고문헌 목록 첨부</span><span class="pg">- 8 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 9. 목표 아키텍처 -->
+  <section class="slide" data-title="목표 아키텍처">
+    <header class="s-head">
+      <h2><span class="bullet"></span>목표 아키텍처 - <em>원천에서 서비스까지, 검증이 가로지르는 구조</em></h2>
+      <span class="s-right">02 · Architecture</span>
+    </header>
+    <div class="s-band"><p>저장소 레이어(ARC-029)는 제안요청서가 정한 구조를 따릅니다. 세일링스톤은 <strong>레이어 사이를 잇는 적재(ETL)와 레이어마다의 검증, 그리고 맨 위의 활용 서비스</strong>를 맡습니다.</p></div>
+    <div class="content">
+      <div class="arch fill">
+        <div class="lrow"><div class="lname t">활용 서비스<small>세일링스톤</small></div>
+          <div class="nodes n5">
+            <div class="node ours">BI 포털<small>통계 조회 · 다운로드 · 공유 · UMS 발송</small></div>
+            <div class="node ours">정형보고서<small>증권예탁통계 62종 · 통계 98건</small></div>
+            <div class="node ours">Self BI (Tableau)<small>Drag &amp; Drop · 구독 · 권한</small></div>
+            <div class="node ours">AI Agent (aisight)<small>자연어 질의 · On-Prem LLM</small></div>
+            <div class="node ext">비즈메타 · 카탈로그<small>별도 업체 · 통합검색 연계</small></div>
+          </div></div>
+        <div class="vband"><span><b>검증 게이트 D</b> 송신 전 SEIBro 가공 데이터 대사 · 보고서 수치 대사</span><span>ARC-034 · SFR-BTS-005</span></div>
+        <div class="lrow"><div class="lname">DM<small>고밀도 집계</small></div>
+          <div class="nodes n4">
+            <div class="node">업무도메인별 DM<small>장시간 조회 사전 집계</small></div>
+            <div class="node">전사 통합 DM<small>다수 도메인 통합 한정</small></div>
+            <div class="node tt">SEIBro 연계용 가공 데이터<small>FTP · ESB · XDA 송신</small></div>
+            <div class="node">부서별 샌드박스<small>비정기 통계 · 조회 SQL</small></div>
+          </div></div>
+        <div class="vband"><span><b>검증 게이트 C</b> DW → DM 집계 합계 · 건수 · 기준일 대사</span><span>ARC-030 정기 적재 검증</span></div>
+        <div class="lrow"><div class="lname">DW<small>가공 · 집계</small></div>
+          <div class="nodes n3">
+            <div class="node">업무도메인별 DW<small>마스터 이력 · 일별 스냅샷</small></div>
+            <div class="node">전사 통합 DW<small>통합 마스터 · 통합 거래</small></div>
+            <div class="node tt">SEIBro 제공용 일마감 데이터<small>완료 목표시간 관리</small></div>
+          </div></div>
+        <div class="vband"><span><b>검증 게이트 B</b> ODS → DW 건수 · 값 · RI · 코드 검증</span><span>Oracle 전용 어플라이언스 (운영 부산 · DR+개발 서울)</span></div>
+        <div class="lrow"><div class="lname">ODS<small>누적 · 외부정보</small></div>
+          <div class="nodes n3">
+            <div class="node">기간계 ODS<small>DR 스토리지 일 1회 스냅샷 mount</small></div>
+            <div class="node">Staging<small>대국민 · 사내계 · 증권대행 · 외화증권 전일자 변경분</small></div>
+            <div class="node">외부정보<small>대외 GW 수신 84건 · 파일 업로드</small></div>
+          </div></div>
+        <div class="vband"><span><b>검증 게이트 A</b> 원천 대비 수집 건수 · 신선도 · 스키마 변경 감지</span><span>ARC-034 변경 인지</span></div>
+        <div class="lrow"><div class="lname g">원천<small>수집 대상</small></div>
+          <div class="nodes n5">
+            <div class="node ext">기간계 e-SAFE</div><div class="node ext">대국민 · SEIBro</div><div class="node ext">사내계 ERP · 자금운용 · 인사</div><div class="node ext">1단계 증권대행 · 외화증권</div><div class="node ext">외부기관 · LEI-K · 전자주총</div>
+          </div></div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">레이어 정의 출처: 제안요청서 ARC-029 데이터플랫폼 데이터 저장소 설계 및 구축, ECR-019 데이터플랫폼 DW 업무용 시스템 요구사항</span><span class="pg">- 9 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 10. ETL 설계 표준 -->
+  <section class="slide" data-title="ETL 설계 표준">
+    <header class="s-head">
+      <h2><span class="bullet"></span>ETL 설계 표준 - <em>정의서에서 프로그램 · 스케줄 · 검증을 생성</em></h2>
+      <span class="s-right">03 · ARC-030</span>
+    </header>
+    <div class="s-band"><p>적재 프로그램을 사람이 하나씩 짜면 수백 개 테이블의 변경을 따라갈 수 없습니다. <strong>적재 유형을 먼저 분류하고 유형별 표준 템플릿으로 생성</strong>해 품질을 균일하게 유지합니다.</p></div>
+    <div class="content">
+      <div class="two w64 fill">
+        <div class="col">
+          <div class="h4"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>적재 유형 분류 - 원천 수집 방식이 유형을 정합니다</div>
+          <div class="rt-wrap">
+            <table class="rt">
+              <tr><th style="width:17%">유형</th><th style="width:27%">원천 · 방식</th><th>표준 템플릿의 처리</th><th style="width:19%">검증 규칙(기본)</th></tr>
+              <tr><td class="k">T1 스냅샷 변경분</td><td>기간계 ODS (일 1회 스냅샷 mount)</td><td>전일 스냅샷과 키 · 해시 비교로 신규 · 변경 · 삭제 식별 후 이력 누적</td><td>건수 대사 · 변경량 임계치</td></tr>
+              <tr><td class="k">T2 전일자 변경분</td><td>대국민 · 사내계 · 1단계 시스템 (Staging)</td><td>변경일시 기준 추출 → Staging → ODS 반영, 지연 도착분 재처리</td><td>건수 · 신선도 · RI</td></tr>
+              <tr><td class="k">T3 파일 · 외부정보</td><td>대외 GW 수신 84건, 업로드 파일</td><td>파일 규격 검사 → 테이블 적재 → 수신 이력 관리</td><td>레이아웃 · 건수 · 코드</td></tr>
+              <tr><td class="k">T4 가공 · 집계</td><td>ODS → DW → DM</td><td>산출 로직을 SQL 단위로 정의, 재실행 가능하게(멱등) 구성</td><td>합계 · 값 · 기준일</td></tr>
+              <tr><td class="k">T5 연계 송신</td><td>DM → SEIBro · 업무시스템</td><td>FTP · ESB · XDA 어댑터 분리, 송신 전 대사 · 송신 결과 수신</td><td>송신 건수 · 응답 확인</td></tr>
+            </table>
+          </div>
+          <p class="note"><b>도구 중립</b> ETL 도구는 발주처 구매 품목(운영 · 개발 · DR 3식)으로 확정되며, 템플릿과 정의서는 도구에 종속되지 않게 설계해 도구 확정 후 1개월 안에 생성 체계를 맞춥니다.</p>
+        </div>
+        <div class="col">
+          <div class="h4"><svg class="i" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>생성 흐름</div>
+          <div class="flow" style="flex-direction:column">
+            <div class="step hl"><span class="sn">STEP 1</span><b>매핑 정의서 작성</b><p>원천 · 대상 · 변환 · 주기 · 선후행 · 검증 규칙 · 담당 - 테이블 단위 한 행</p></div>
+            <div class="step"><span class="sn">STEP 2</span><b>템플릿 선택과 생성</b><p>유형(T1~T5)에 맞는 표준 템플릿으로 프로그램 골격 · 스케줄 · 검증 SQL 생성</p></div>
+            <div class="step"><span class="sn">STEP 3</span><b>리뷰와 테스트</b><p>생성물은 반드시 개발자 리뷰 · 단위 테스트 통과 후 형상관리에 등록</p></div>
+            <div class="step"><span class="sn">STEP 4</span><b>정의서 = 산출물</b><p>정의서가 곧 '데이터 정기 적재 매핑 정의서'로 제출되어 문서와 코드가 어긋나지 않음</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+        <span>ARC-029의 <b>수기 가공 불가 원칙</b>에 따라 샌드박스 외 모든 레이어는 ETL 작업으로만 가공됩니다. 정의서에 없는 적재는 존재하지 않고, 정의서가 바뀌지 않은 데이터는 바뀌지 않습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="src">대응 요구사항: ARC-030 정기 적재 매핑 설계 · 프로그램 개발 · 테스트, ARC-029 데이터 수기 가공 불가 원칙(ETL 작업에 의해서만 가공)</span><span class="pg">- 10 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 11. 정기 적재 운영 -->
+  <section class="slide" data-title="정기 적재 · 스케줄 · 성능">
+    <header class="s-head">
+      <h2><span class="bullet"></span>정기 적재 운영 - <em>완료 목표시간을 정하고, 재고, 줄입니다</em></h2>
+      <span class="s-right">03 · ARC-030</span>
+    </header>
+    <div class="s-band"><p>정기 적재의 품질은 "끝났는가"가 아니라 <strong>"약속한 시각 안에 검증까지 끝났는가"</strong>입니다. 스케줄은 선후행 관계와 병렬 처리를 설계해 완료 목표시간을 지킵니다.</p></div>
+    <div class="content">
+      <div class="cards c3 fill">
+        <div class="card"><span class="accent"></span><div class="no">SCHEDULE</div>
+          <h3>선후행 그래프 기반 스케줄</h3>
+          <ul>
+            <li><i></i>테이블 간 선후행 관계를 정의서에서 추출해 <b>의존 그래프(DAG)</b>로 생성합니다</li>
+            <li><i></i>의존이 없는 작업은 병렬 실행, 병렬도는 어플라이언스 자원 측정값으로 조정합니다</li>
+            <li><i></i>기간계 스냅샷 mount 완료 → ODS → DW → DM → SEIBro 송신 순으로 배치 윈도우를 배정합니다</li>
+            <li><i></i>실패 작업은 <b>지점 재시작(restart)</b>, 하위 작업은 자동 보류됩니다</li>
+            <li><i></i>배치 윈도우 예: 02:00 스냅샷 확인 → ODS → DW → DM → 06:30 SEIBro 송신 (시각은 설계단계 확정)</li>
+            <li><i></i>스케줄 변경도 정의서 개정으로만 반영하고, 수동 실행은 승인 기록을 남깁니다</li>
+          </ul>
+          <div class="fix gray"><b>산출물</b> 데이터 정기 적재 스케줄 정의서</div></div>
+        <div class="card"><div class="no">TARGET TIME</div>
+          <h3>완료 목표시간 정의와 측정</h3>
+          <ul>
+            <li><i></i>SEIBro 제공용 일마감 데이터, 통계 보고서 조회 가능 시각 등 <b>서비스별 완료 목표시간</b>을 설계단계에 확정합니다</li>
+            <li><i></i>작업별 소요시간 · 대기시간 · 처리 건수를 매일 기록해 추세를 봅니다</li>
+            <li><i></i>목표 대비 80%를 넘는 작업은 성능 개선 후보로 자동 분류합니다</li>
+            <li><i></i>초기 적재 · 정기 적재 모두 <b>측정 → 개선 → 재측정</b> 기록을 남깁니다</li>
+            <li><i></i>목표시간 예: SEIBro 일마감 데이터 06:30, 통계 보고서 조회 가능 07:00 (안)</li>
+            <li><i></i>월간 성능 보고서로 추세와 개선 효과를 LG CNS PMO에 보고합니다</li>
+          </ul>
+          <div class="fix gray"><b>산출물</b> 성능 측정 · 개선 결과서 (단계별 산출물)</div></div>
+        <div class="card"><div class="no">TUNING</div>
+          <h3>성능 개선 수단 - 어플라이언스 활용</h3>
+          <ul>
+            <li><i></i>대용량 집계는 DB 내부 처리(ELT)로 전환해 네트워크 이동을 줄입니다</li>
+            <li><i></i>파티션 단위 적재 · 교체, 병렬 DML, 통계정보 갱신을 템플릿에 기본 포함합니다</li>
+            <li><i></i>Oracle RAC · ASM 환경의 병렬도와 자원 그룹을 배치 윈도우별로 분리합니다</li>
+            <li><i></i>DM은 <b>고밀도 집계가 필요한 경우로 한정</b>해 불필요한 적재 자체를 줄입니다 (ARC-029 원칙)</li>
+            <li><i></i>병렬도 · 파티션 전략은 리허설 측정값으로 조정하고 결과를 튜닝 가이드에 남깁니다</li>
+            <li><i></i>운영(부산) · DR(서울) 간 Data Guard 동기화 부하를 배치 윈도우 설계에 반영합니다</li>
+          </ul>
+          <div class="fix gray"><b>산출물</b> 튜닝 가이드 (운영 이관 문서)</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <span>정기 적재 결과의 <b>완전성 · 무결성 검증 시나리오</b>는 11장의 스케줄 안에 검증 작업으로 포함되어, 검증 없이 완료로 기록되는 적재는 없습니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="src">대응 요구사항: ARC-030 정기 적재 스케줄 설계 · 개발, 완료 목표 시간 정의, 성능 측정 및 개선, 정합성 검증 및 관리 방안</span><span class="pg">- 11 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 12. 초기 적재 · 이행 -->
+  <section class="slide" data-title="초기 적재 · 이행">
+    <header class="s-head">
+      <h2><span class="bullet"></span>초기 적재와 이행 - <em>범위를 정하고, 리허설로 시간을 줄입니다</em></h2>
+      <span class="s-right">03 · ARC-030</span>
+    </header>
+    <div class="s-band"><p>초기 적재는 과거 데이터를 한 번에 옮기는 일이라 <strong>대상과 기간을 먼저 정하고, 리허설을 반복해 완료 시간과 검증 결과를 수치로 확보</strong>한 뒤 본 실행합니다. 데이터 이행 과제(Ⅲ-5)의 Cut-Over 일정과 정렬합니다.</p></div>
+    <div class="content">
+      <div class="flow">
+        <div class="step hl"><span class="sn">1 · 대상 선정</span><b>테이블 · 기간 범위 확정</b><p>통계 산출에 필요한 과거 기간을 업무별로 정의, 개인정보 컬럼 제외 원칙 적용</p></div>
+        <span class="farr">›</span>
+        <div class="step"><span class="sn">2 · 매핑 · 개발</span><b>초기 적재 매핑 · 프로그램</b><p>정기 적재 템플릿을 재사용하되 대량 처리용 파티션 · 병렬 옵션 적용</p></div>
+        <span class="farr">›</span>
+        <div class="step"><span class="sn">3 · 단계 정의</span><b>단계별 적재 범위 · 순서</b><p>마스터 → 이력 → 거래 → 집계 순, 단계마다 검증 시나리오 배정</p></div>
+        <span class="farr">›</span>
+        <div class="step"><span class="sn">4 · 리허설</span><b>반복 실행과 시간 단축</b><p>통합테스트 환경에서 최소 3회, 회차마다 소요시간 · 오류 유형 · 조치 기록</p></div>
+        <span class="farr">›</span>
+        <div class="step"><span class="sn">5 · 본 실행</span><b>초기 적재 · 검증 · 리포트</b><p>완료 목표시간 내 실행, 완전성 · 무결성 검증 후 초기 적재 결과 리포트 제출</p></div>
+      </div>
+      <div class="two fill">
+        <div class="rt-wrap">
+          <table class="rt">
+            <tr><th>리허설 회차</th><th>목적</th><th>통과 기준(안)</th></tr>
+            <tr><td class="k">1차</td><td>적재 프로그램 전수 실행, 오류 유형 수집</td><td>치명 오류 0건, 전 테이블 적재 완료</td></tr>
+            <tr><td class="k">2차</td><td>병렬도 · 순서 조정으로 소요시간 단축</td><td>1차 대비 소요시간 단축, 검증 시나리오 전수 통과</td></tr>
+            <tr><td class="k">3차 (최종)</td><td>본 실행과 동일 조건 · 동일 절차 · 동일 인력</td><td>완료 목표시간 내 종료, 정합성 검증 100% 통과</td></tr>
+            <tr><td class="k">되돌림 훈련</td><td>단계 실패를 가정하고 체크포인트에서 복구</td><td>되돌림 시간 창 안에 복구 완료, 절차서 갱신</td></tr>
+            <tr class="hl"><td class="k">본 실행</td><td>Cut-Over 창 안에서 초기 적재 · 검증 · 리포트</td><td>3차 리허설과 동일 결과, 초기 적재 결과 리포트 제출</td></tr>
+          </table>
+        </div>
+        <div class="col">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span><h4>장애 대응과 되돌림</h4><p>단계별 체크포인트에서 실패 시 해당 단계만 재실행합니다. 되돌림 기준과 실행 가능 시간 창을 Cut-Over 계획에 명시합니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span><h4>이행 과제와의 정렬</h4><p>LG CNS 데이터 이행 일정(전환 리허설 · Cut-Over)에 초기 적재 회차를 맞추고, 기간계 전환 후 첫 정기 적재까지를 하나의 시나리오로 리허설합니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span><h4>결과 리포트</h4><p>테이블별 건수 · 합계 · 검증 결과 · 소요시간 · 예외 처리 내역을 담은 초기 적재 결과 리포트를 제출합니다.</p></span></div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">대응 요구사항: ARC-030 초기 적재 프로그램 설계 · 개발 · 이행, 이행 전략 수립, 완전성 · 무결성 검증, 초기 적재 결과 리포트</span><span class="pg">- 12 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 13. 데이터 검증 체계 -->
+  <section class="slide" data-title="데이터 검증 체계">
+    <header class="s-head">
+      <h2><span class="bullet"></span>데이터 검증 체계 - <em>레이어 × 검증 유형 매트릭스</em></h2>
+      <span class="s-right">03 · ARC-034</span>
+    </header>
+    <div class="s-band"><p>검증은 별도 프로젝트가 아니라 <strong>모든 적재 작업 뒤에 붙는 표준 단계</strong>입니다. 레이어마다 어떤 유형을 어떤 기준으로 검사하는지 매트릭스로 고정하고, 결과를 화면에서 조회합니다.</p></div>
+    <div class="content">
+      <div class="two w64 fill">
+        <div class="rt-wrap">
+          <table class="rt dense">
+            <tr><th>검증 유형</th><th class="c" style="width:12%">A 원천→ODS</th><th class="c" style="width:12%">B ODS→DW</th><th class="c" style="width:12%">C DW→DM</th><th class="c" style="width:13%">D 송신 · 보고서</th><th style="width:27%">기준 · 방법</th></tr>
+            <tr><td class="k">건수 (완전성)</td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td>원천 대비 적재 건수 일치, 변경량 임계치 초과 시 알림</td></tr>
+            <tr><td class="k">합계 · 값 (정확성)</td><td class="c"><span class="dot half"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td>금액 · 수량 컬럼 합계 대사, 표본 행 값 비교</td></tr>
+            <tr><td class="k">참조 무결성 (RI)</td><td class="c"><span class="dot off"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot half"></span></td><td>마스터 미존재 키 0건, 고아 레코드 검출</td></tr>
+            <tr><td class="k">코드 유효성</td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot half"></span></td><td class="c"><span class="dot off"></span></td><td>표준코드 4,339개 사전 대조, 미정의 코드 검출</td></tr>
+            <tr><td class="k">유일성 · 중복</td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot half"></span></td><td class="c"><span class="dot off"></span></td><td>키 중복 0건, 이력 테이블 기간 중첩 검출</td></tr>
+            <tr><td class="k">신선도 · 스키마</td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot half"></span></td><td class="c"><span class="dot off"></span></td><td class="c"><span class="dot"></span></td><td>도착 시각 목표 대비 지연, 컬럼 추가 · 삭제 · 타입 변경 감지</td></tr>
+            <tr><td class="k">값 분포 · 추이</td><td class="c"><span class="dot half"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot half"></span></td><td>주요 컬럼 분포 · 합계의 30일 이동 평균 대비 급변(드리프트) 감지</td></tr>
+            <tr><td class="k">개인정보 미적재</td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td class="c"><span class="dot"></span></td><td>개인정보 식별 컬럼 적재 여부 점검 (ARC-029 공통사항, 스냅샷 예외 관리)</td></tr>
+            <tr><td class="k">SEIBro 대사</td><td class="c"><span class="dot off"></span></td><td class="c"><span class="dot off"></span></td><td class="c"><span class="dot off"></span></td><td class="c"><span class="dot"></span></td><td>송신 데이터와 SEIBro 표출 데이터 비교, 불일치 시 협의 절차(14장)</td></tr>
+          </table>
+        </div>
+        <div class="col">
+          <div class="h4"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>검증 결과 조회 화면 (개발 대상)</div>
+          <div class="card white" style="flex:1">
+            <ul style="margin-top:0">
+              <li><i></i><b>일자 · 레이어 · 테이블별 결과</b> - 통과 · 경고 · 실패와 기준값 · 측정값</li>
+              <li><i></i><b>추세</b> - 건수 · 합계 · 소요시간의 30일 추이, 임계치 이탈 표시</li>
+              <li><i></i><b>원인 추적</b> - 실패 항목에서 해당 적재 작업 · 매핑 정의서 · 원천으로 이동</li>
+              <li><i></i><b>조치 이력</b> - 담당자 · 조치 내용 · 재검증 결과 기록</li>
+              <li><i></i><b>권한</b> - 업무도메인 데이터 오너십 계정 체계와 동일하게 적용</li>
+              <li><i></i><b>연계</b> - DQ 솔루션 · SEIBro 관리자 모니터링에 결과 API 제공</li>
+            </ul>
+          </div>
+          <div class="rt-wrap">
+            <table class="rt dense">
+              <tr><th style="width:18%">판정</th><th style="width:34%">기준 (예시, 설계단계 확정)</th><th>조치</th></tr>
+              <tr><td class="k"><span class="tag">통과</span></td><td>모든 필수 검증 일치</td><td>다음 레이어 적재 진행, 결과 기록</td></tr>
+              <tr><td class="k"><span class="tag gray">경고</span></td><td>변경량 · 분포가 임계치 이내 이탈</td><td>적재는 진행, 담당자 알림 · 당일 원인 확인</td></tr>
+              <tr><td class="k"><span class="tag rose">실패</span></td><td>건수 · 합계 · RI · 코드 불일치</td><td>하위 적재 보류 · 송신 차단, 조치 후 재검증</td></tr>
+            </table>
+          </div>
+          <div class="note"><b>범례</b> <span class="dot"></span> 필수 &nbsp; <span class="dot half"></span> 선택(테이블 특성에 따라) &nbsp; <span class="dot off"></span> 해당 없음 &nbsp;|&nbsp; <b>산출물</b> 데이터플랫폼 데이터 검증 계획서 · 검증 결과서</div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">대응 요구사항: ARC-034 이행단계별(ODS → DW → DM) 건수 · 값 · RI · 코드 검증 및 결과 조회 화면, ARC-033 데이터 프로파일링 · 업무규칙 기반 품질 점검</span><span class="pg">- 13 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 14. 변경 인지 프로세스 -->
+  <section class="slide" data-title="변경 인지 · 반영 프로세스">
+    <header class="s-head">
+      <h2><span class="bullet"></span>변경 인지와 반영 - <em>기간계가 바뀌면 플랫폼이 먼저 압니다</em></h2>
+      <span class="s-right">03 · ARC-034</span>
+    </header>
+    <div class="s-band"><p>정합성 문제의 대부분은 데이터가 아니라 <strong>알려지지 않은 변경</strong>에서 시작합니다. 변경 유형별로 인지 방법과 조치 절차를 정해 두고, SEIBro 불일치는 정해진 순서로 협의합니다.</p></div>
+    <div class="content">
+      <div class="two w64 fill">
+        <div class="rt-wrap">
+          <table class="rt">
+            <tr><th style="width:21%">변경 유형</th><th style="width:30%">인지 방법 (자동)</th><th>조치 절차</th></tr>
+            <tr><td class="k">스키마 변경<small>컬럼 추가 · 삭제 · 타입</small></td><td>스냅샷 메타 비교(게이트 A), 적재 전 차단</td><td>영향 테이블 자동 목록화 → 매핑 정의서 개정 → 재생성 · 테스트 → 적재 재개</td></tr>
+            <tr><td class="k">코드 · 기준정보 변경</td><td>표준코드 사전 대조, 미정의 코드 검출</td><td>표준 담당 부서 확인 → 코드 매핑 갱신 → 과거 데이터 소급 여부 결정</td></tr>
+            <tr><td class="k">업무규칙 · 산출 기준 변경</td><td>합계 · 분포 급변 감지, 보고서 수치 대사 실패</td><td>업무 담당자 확인 → 산출 로직 버전 관리 → 적용 시점 명시 후 재산출</td></tr>
+            <tr><td class="k">소급 정정 · 지연 마감</td><td>과거 기준일 데이터 변경량 감지</td><td>정정 범위 식별 → 영향 집계 재처리 → SEIBro 재송신 · 공지</td></tr>
+            <tr><td class="k">신규 서비스 · 테이블</td><td>기간계 설계 변경 통보(LG CNS 변경관리) 연계</td><td>수집 대상 평가 → 레이어 설계 반영(ARC-029 협의) → 매핑 추가</td></tr>
+            <tr><td class="k">원천 지연 · 결측<small>스냅샷 미생성 · 파일 미수신</small></td><td>신선도 검증(게이트 A) 도착 시각 초과</td><td>재수신 요청 → 지연 적재 → 영향 보고서 지연 공지 → 원인 기록</td></tr>
+            <tr><td class="k">SEIBro 콘텐츠 개편<small>대상 추가 · 삭제</small></td><td>접점 4 대상 목록 변경 통보, 송신 대사 불일치</td><td>가공 로직 매핑 갱신 → 송신 대상 반영 → 대사 규칙 갱신 → 재대사</td></tr>
+          </table>
+        </div>
+        <div class="col">
+          <div class="h4"><svg class="i" viewBox="0 0 24 24"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>SEIBro 불일치 협의 절차</div>
+          <div class="flow" style="flex-direction:column">
+            <div class="step"><span class="sn">1 · 감지</span><b>송신 전 대사 실패 또는 SEIBro 모니터링 불일치</b><p>검증 결과 화면에 자동 등록, 담당자 알림</p></div>
+            <div class="step"><span class="sn">2 · 원인 분석</span><b>플랫폼 측 1차 분석 (당일)</b><p>원천 변경 · 적재 오류 · 산출 로직 · SEIBro 측 가공 중 원인 구분</p></div>
+            <div class="step hl"><span class="sn">3 · 협의</span><b>SEIBro 업무 담당자 · 데이터관리부서 협의</b><p>조치 방안과 기준 확정, 결정 사항은 검증 결과서에 기록</p></div>
+            <div class="step"><span class="sn">4 · 조치 · 재검증</span><b>정정 적재 · 재송신 · 재대사</b><p>동일 유형 재발 방지를 위해 검증 규칙 또는 매핑 정의서 갱신</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">대응 요구사항: ARC-034 기간계 데이터 · 업무 변경 시 변경 유형별 인지 및 반영 프로세스, SEIBro 간 불일치 시 원인분석 · 정합성 검증 · 조치 방안 수립 · 적용</span><span class="pg">- 14 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 15. 데이터 연계 서비스 -->
+  <section class="slide" data-title="데이터 연계 서비스">
+    <header class="s-head">
+      <h2><span class="bullet"></span>데이터 연계 서비스 - <em>받는 연계 8종, 주는 연계 3방식</em></h2>
+      <span class="s-right">04 · SFR-BTS-001 / 005</span>
+    </header>
+    <div class="s-band"><p>데이터플랫폼은 수집도 하고 공급도 합니다. <strong>수신 연계는 원천별 수집 유형에, 송신 연계는 SEIBro 지정 인터페이스(FTP · ESB · XDA)에</strong> 맞춰 어댑터를 분리해 구현합니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="col">
+          <div class="h4"><svg class="i" viewBox="0 0 24 24"><polyline points="7 13 12 18 17 13"/><line x1="12" y1="6" x2="12" y2="18"/></svg>수신 연계 (SFR-BTS-001 데이터 연계 기능 구축)</div>
+          <div class="rt-wrap">
+            <table class="rt">
+              <tr><th>원천</th><th style="width:22%">수집 유형</th><th>비고</th></tr>
+              <tr><td class="k">사내계 ERP · 자금운용시스템</td><td>T2 전일자 변경분</td><td>자금운용은 퀵윈 과제 일정과 정렬</td></tr>
+              <tr><td class="k">대국민 사채관리회사 · LEI-K · 전자주총(전자투표)</td><td>T2 전일자 변경분</td><td>대국민 통합 플랫폼 신규 구축분 포함</td></tr>
+              <tr><td class="k">증권대행 · 외화증권투자지원 (1단계 독립시스템)</td><td>T2 전일자 변경분</td><td>1단계 데이터 적재 기능 승계</td></tr>
+              <tr><td class="k">외부기관 제공자료 (SEIBro 직접 수신분)</td><td>T3 파일 · API</td><td>As-is 84건, '26년 콘텐츠 개편 기준 재식별</td></tr>
+              <tr><td class="k">CEO 보고용 인사정보</td><td>T2 (주기 협의)</td><td>연계 주기는 분석단계 협의 후 확정</td></tr>
+              <tr><td class="k">기간계 e-SAFE</td><td>T1 스냅샷 변경분</td><td>DR 스토리지 일 1회 스냅샷 mount (ARC-029)</td></tr>
+            </table>
+          </div>
+          <p class="note"><b>미연동 외부데이터 연동 방안</b> 수신 경로를 대외 GW 파일 · Open API · 수기 업로드 3가지로 표준화하고, 신규 외부데이터는 수집 요건 정의서 1장 작성으로 추가되게 합니다.</p>
+        </div>
+        <div class="col">
+          <div class="h4"><svg class="i" viewBox="0 0 24 24"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="18" x2="12" y2="6"/></svg>송신 연계 (SFR-BTS-005 SEIBro 연계 기능 구축)</div>
+          <div class="cards c3 tight">
+            <div class="card white"><div class="no">FTP</div><h3>파일 송신</h3><p>일마감 가공 데이터 묶음, 송신 후 건수 응답 파일 대사</p></div>
+            <div class="card white"><div class="no">ESB</div><h3>서비스 연계</h3><p>표준 전문 규격 준수, 송수신 로그 통합로그관리 연계</p></div>
+            <div class="card white"><div class="no">XDA</div><h3>데이터 전송</h3><p>대용량 테이블 단위 전송, 전송 전후 건수 · 합계 대사</p></div>
+          </div>
+          <div class="krows">
+            <div class="krow"><span class="kico">1</span><span><h4>산출로직 매핑 관계 정의</h4><p>ODS 원천 데이터와 SEIBro 콘텐츠 간 연관 · 산출 로직을 매핑 정의서로 문서화해 SEIBro 콘텐츠 데이터맵과 상호 참조합니다.</p></span></div>
+            <div class="krow"><span class="kico">2</span><span><h4>SEIBro 표출용 DW/DM 생성</h4><p>SEIBro 서비스 표출에 필요한 가공 데이터를 DM에 생성하고, 송신 직전 게이트 D에서 대사합니다.</p></span></div>
+            <div class="krow"><span class="kico">3</span><span><h4>타 업무시스템 제공 서비스</h4><p>플랫폼 가공 데이터를 업무시스템에 제공하는 조회 API · 파일 서비스를 같은 어댑터 구조로 제공합니다.</p></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">대응 요구사항: SFR-BTS-001 통계자료 작성을 위한 데이터 연계 기능 구축, SFR-BTS-005 SEIBro 연계 기능 구축 (FTP · ESB · XDA), SFR-SBS-002 데이터플랫폼 → SEIBro 배치 연계</span><span class="pg">- 15 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 16. 통계 · 보고서 이관 -->
+  <section class="slide" data-title="통계 · 보고서 이관">
+    <header class="s-head">
+      <h2><span class="bullet"></span>통계 · 보고서 이관 - <em>재식별 → 정형화 → 산출 기준 현행화</em></h2>
+      <span class="s-right">04 · SFR-BTS-001 / 003</span>
+    </header>
+    <div class="s-band"><p>As-is 수량은 출발점일 뿐입니다. <strong>분석단계에 실제 사용 여부와 중복을 가려 대상을 확정</strong>하고, 반복 작성되는 비정형 보고서는 정형보고서로 바꿔 작업의뢰 없이 조회하게 만듭니다.</p></div>
+    <div class="content">
+      <div class="flow">
+        <div class="step hl"><span class="sn">분석단계 1~2개월</span><b>대상 재식별</b><p>화면 44 · 보고서 62 · 통계 137 · 작업의뢰 53 · SEIBro 222 · 외부 84 - 사용 이력 · 중복 · 폐기 여부 조사</p></div>
+        <span class="farr">›</span>
+        <div class="step"><span class="sn">분석단계말</span><b>범위 확정 협의</b><p>신규 기간계 · 대국민 구축에 따른 개발 범위(보고서 · Self-BI · 대시보드 · AI · DW · DM)를 상호 협의로 확정</p></div>
+        <span class="farr">›</span>
+        <div class="step"><span class="sn">설계단계</span><b>산출 기준 현행화</b><p>증권예탁통계 산출 기준을 최초 구축 시점 기준으로 현행화, 보고서별 산식 · 기준일 · 분류 체계 정의서 작성</p></div>
+        <span class="farr">›</span>
+        <div class="step"><span class="sn">구축단계</span><b>정형화 · 개발</b><p>정형 98건 산출 기능, 비정형 39건 중 반복 보도 · 보고자료 정형보고서화, BI 솔루션 커스터마이징 포함</p></div>
+        <span class="farr">›</span>
+        <div class="step"><span class="sn">테스트</span><b>병행 대사</b><p>As-is 산출값과 플랫폼 산출값을 기간 단위로 대사, 차이는 산출 기준 변경으로 설명될 때만 승인</p></div>
+      </div>
+      <div class="cards c3 fill">
+        <div class="card"><div class="no">발행등록 · 유통등록</div><h3>업무영역별 통계보고서</h3><p>발행등록, 유통등록, 결제 및 증권파이낸싱, 권리관리 등 유관 업무영역의 통계보고서를 도메인별 DW/DM 위에 재구축합니다. 데이터 오너십 계정 체계에 따라 열람 권한을 분리합니다.</p>
+          <ul><li><i></i>증권예탁통계 산출용 보고서 62종 포함 (SFR-BTS-003)</li><li><i></i>기간계 · SEIBro가 생성하던 데이터 정보를 플랫폼에서 생성 · 제공</li><li><i></i>보고서별 산식 · 기준일 · 분류 체계를 정의서로 남겨 검증 규칙과 공유</li></ul>
+          <div class="fix gray"><b>산출물</b> 보고서 정의서 · 산출 기준 정의서 · 병행 대사 결과</div></div>
+        <div class="card"><div class="no">사용자 주도 분석</div><h3>선택 · 조합 · 가공 환경</h3><p>통합검색(데이터 자산관리시스템 검색 활용) 또는 통계 조회 결과에서 데이터를 골라 한 화면에서 조합하고, 행 · 열 · 필터 · 정렬 · 집계 기준을 사용자가 설정합니다. 항목 추가 · 제외 · 재배치를 지원합니다.</p>
+          <ul><li><i></i>조합 결과는 저장 · 공유 · 다운로드와 Self BI 데이터셋으로 연결</li><li><i></i>데이터 오너십 계정 범위 안의 데이터만 선택 가능</li><li><i></i>조회 · 가공 이력은 통합로그관리에 기록</li></ul>
+          <div class="fix gray"><b>산출물</b> 화면 설계서 · 사용자 매뉴얼</div></div>
+        <div class="card"><div class="no">반복 작업의뢰 53건</div><h3>작업의뢰 없는 직접 조회</h3><p>'25~'26년 ITMS 작업의뢰 중 동일 요청 4회 이상 건을 추가 식별해 정형보고서 또는 Self BI 데이터셋으로 제공합니다. 전환 후 작업의뢰 건수 감소를 효과 지표로 측정합니다.</p>
+          <ul><li><i></i>작업의뢰 분석 결과를 분석단계 대상 재식별에 반영</li><li><i></i>요청 빈도 · 소요시간이 큰 건부터 우선 전환</li><li><i></i>전환 후 잔여 작업의뢰는 월 단위로 추적해 추가 전환 대상 도출</li></ul>
+          <div class="fix gray"><b>효과 지표</b> 작업의뢰 건수 · 처리 리드타임 (전환 전후 비교)</div></div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">대응 요구사항: SFR-BTS-001 통계자료 작성을 위한 데이터 이관 구축, SFR-BTS-003 사용자 주도의 통계 데이터 분석환경 · 정형보고서 구축, SFR-BTS-002 데이터 통합검색(자산관리시스템 검색 활용)</span><span class="pg">- 16 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 17. BI 포털 · 보고서 분석환경 -->
+  <section class="slide" data-title="BI 포털 · 보고서 분석환경">
+    <header class="s-head">
+      <h2><span class="bullet"></span>BI 포털과 보고서 분석환경 - <em>조회 · 다운로드 · 공유 · 발송을 한 곳에서</em></h2>
+      <span class="s-right">04 · SFR-BTS-001 / 002</span>
+    </header>
+    <div class="s-band"><p>BI 포털 솔루션은 운영 이중화 2식 · DR 1식 · 개발 1식으로 도입하고, <strong>공통 서비스(SSO · 형상관리 · DRM · UMS)는 LG CNS 표준 개발 환경을 그대로 적용</strong>해 별도 체계를 만들지 않습니다.</p></div>
+    <div class="content">
+      <div class="cards c4 tight fill">
+        <div class="card"><span class="accent"></span><div class="no">2.1 단독</div>
+          <h3>통계 · 보고서 다운로드</h3>
+          <ul><li><i></i>조회기간 설정 후 통계 데이터 다운로드</li><li><i></i>대용량은 비동기 생성 · 완료 알림 · 분할 파일로 안정성 확보</li><li><i></i>보고서 파일 형식(PDF · Excel) 다운로드, DRM 적용</li><li><i></i>다운로드 이력(사용자 · 건수 · 시각) 기록</li><li><i></i>대용량 기준(건수 · 용량)은 분석단계에 확정</li></ul>
+          <div class="fix gray"><b>검증 포인트</b> 다운로드 건수 = 조회 건수 대사</div></div>
+        <div class="card"><div class="no">2.2 단독</div>
+          <h3>보고서 공유 · 발송</h3>
+          <ul><li><i></i>공유 대상자 · 범위 · 열람 가능 기간 설정</li><li><i></i>UMS 연계로 보도 · 보고 · 공시 · 요청자료 발송</li><li><i></i>발송 실패 사유 확인과 재발송, 발송 이력 조회</li><li><i></i>열람 기간 만료 시 공유 링크 자동 차단</li><li><i></i>발송 유형별 템플릿(제목 · 첨부 · 본문) 관리</li></ul>
+          <div class="fix gray"><b>검증 포인트</b> 발송 요청 건수 = UMS 수신 건수</div></div>
+        <div class="card"><div class="no">2.3 협업</div>
+          <h3>비즈메타 연계 서비스</h3>
+          <ul><li><i></i>BI 솔루션 안에서 비즈메타 용어 · 산출 기준 표출</li><li><i></i>DW · DM · VIEW · Self-BI · 대시보드 개발</li><li><i></i>AI 솔루션 기반 AI 서비스 기능 제공 (19장)</li><li><i></i>비즈메타 항목 ↔ 보고서 항목 매핑 조회</li><li><i></i>신규 기간계 · 대국민 구축분은 분석단계말 범위 확정</li></ul>
+          <div class="fix gray"><b>경계</b> 비즈메타 시스템 웹 구축(2.4)은 별도 업체</div></div>
+        <div class="card"><div class="no">공통 · UI/UX</div>
+          <h3>포털 공통과 도움말</h3>
+          <ul><li><i></i>SSO(AD 연동) · 형상관리 · DRM · 내외부 연계 표준 적용</li><li><i></i>UI/UX 전문가 가이드와 화면별 도움말 기능</li><li><i></i>메뉴 폴더 3단계 이상 계층, 그룹별 접근 권한</li><li><i></i>데이터 통합검색은 데이터 자산관리시스템 검색 활용</li><li><i></i>웹 표준 · 접근성 가이드와 화면 표준 준수</li></ul>
+          <div class="fix gray"><b>검증 포인트</b> 권한 밖 폴더 · 데이터 노출 0건 (권한 테스트)</div></div>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+        <span>포털의 모든 조회 · 다운로드 · 발송 행위는 <b>통합로그관리로 기록</b>되어 누가 어떤 데이터를 언제 받았는지 추적됩니다. 개인정보 컬럼은 저장소 단계에서 적재하지 않는 원칙을 그대로 따릅니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="src">대응 요구사항: SFR-BTS-001 BI포털 솔루션 도입 · 사용자 중심 UI/UX, SFR-BTS-002 다운로드 · 공유 및 발송 · 데이터플랫폼 서비스 기능 개발, ARC-032 접근제어 · SSO · 메뉴 계층</span><span class="pg">- 17 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 18. Self BI -->
+  <section class="slide" data-title="Self BI 도입">
+    <header class="s-head">
+      <h2><span class="bullet"></span>Self BI 도입 - <em>Tableau 기반, 도입보다 정착을 설계합니다</em></h2>
+      <span class="s-right">04 · ARC-032</span>
+    </header>
+    <div class="s-band"><p>Self BI는 솔루션 설치로 끝나지 않습니다. <strong>적용 대상 식별 → 데이터 자산(View · DM) 정의 → 교육과 챔피언 → 관리 체계</strong>까지를 하나의 과업으로 수행합니다. x86(Linux) 구동 요건(ECR-005)에 맞습니다.</p></div>
+    <div class="content">
+      <div class="two w64 fill">
+        <div class="rt-wrap">
+          <table class="rt">
+            <tr><th style="width:26%">솔루션 기능 요건 (ARC-032)</th><th>대응</th></tr>
+            <tr><td class="k">Drag &amp; Drop · 시각화 즉시 전환</td><td>Tableau 표준 기능, 분석 경험이 없는 사용자용 표준 템플릿 제공</td></tr>
+            <tr><td class="k">DBMS 연동 · 원본 무변경 실시간 분석</td><td>Oracle · MSSQL · PostgreSQL 기본 커넥터, 라이브 연결과 추출 병행 기준 수립</td></tr>
+            <tr><td class="k">Drill · Pivot · 시계열 · 예측</td><td>Drill-Up/Down/Through, 추세선 · 예측 기능, 조건부 집합 · 그룹핑</td></tr>
+            <tr><td class="k">보고 · 공유 · 구독 · 댓글</td><td>PDF · Excel · PPT · 이미지 내보내기, 구독 메일, 대시보드 댓글</td></tr>
+            <tr><td class="k">접근제어 · SSO · 메뉴 3단계</td><td>그룹별 폴더 권한, 행 수준 보안(RLS), AD/SSO 연동, 접근 가능 폴더만 노출</td></tr>
+            <tr><td class="k">교육 · 교육 자료</td><td>사용자 · 관리자 과정 분리, Tableau Blueprint 기준 교육 체계 (아래)</td></tr>
+            <tr><td class="k">보고서 생애주기 관리</td><td>등록 · 승인 · 폐기 워크플로우, 미사용 보고서 자동 식별, 버전 이력</td></tr>
+            <tr><td class="k">View · DM 데이터 자산</td><td>통계 보고서용 표준 View/DM 정의, 데이터 오너십 계정으로 접근</td></tr>
+            <tr><td class="k">성능 · 운영</td><td>추출 스케줄 · 캐시 정책, 사이트 · 권한 · 스케줄 · 성능 운영 매뉴얼</td></tr>
+          </table>
+        </div>
+        <div class="col">
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span><h4>적용 대상 식별과 자산 정의</h4><p>현행 보고서 중 Self BI 전환 대상, 신규 보고서, 부서 인터뷰 기반 추가 요건을 도출하고 통계 보고서 생성용 View · DM을 정의합니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></span><span><h4>활성화 - 교육 · 챔피언 · 변화관리</h4><p>데이터 담당자 · 현업 분석가 · 서버 운영자 과정과 사내 챔피언 육성, 표준 템플릿 · 가이드, 정기 커뮤니티로 교육 후 활용이 이어지게 합니다. (TA 레퍼런스: SK하이닉스 · 한화생명)</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span><h4>관리 체계 - R&amp;R과 생애주기</h4><p>IT · 현업 협업 R&amp;R, 보고서 등록 · 승인 · 폐기 생애주기, 정기 보고서 자동 생성 · 다양한 포맷 출력 기능을 관리 프로그램으로 개발합니다.</p></span></div>
+          <div class="krow"><span class="kico"><svg class="i" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span><h4>교육 체계 - Tableau Blueprint 5개 프로그램</h4><p>데이터 기반 조직 체험(전 임직원 · 리더) · 데이터 준비(데이터 담당자) · 기초 중급 분석(현업 분석가) · Server Admin(운영자) · 데이터 문화 확산(챔피언 · 관리자)을 단계별로 운영합니다.</p></span></div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">대응 요구사항: ARC-032 Self BI 적용을 위한 보고서 활용 방안 · 활성화 방안 · 관리 체계 · 솔루션 기능 정의, ECR-005 데이터 플랫폼 DW 및 Self BI x86(Linux) 구동</span><span class="pg">- 18 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 19. Self BI (AI) -->
+  <section class="slide" data-title="Self BI (AI) · aisight 대응">
+    <header class="s-head">
+      <h2><span class="bullet"></span>Self BI (AI) - <em>요구사항과 aisight 구현의 1:1 대응</em></h2>
+      <span class="s-right">04 · ARC-033</span>
+    </header>
+    <div class="s-band"><p>ARC-033은 "자연어로 묻고 일관된 답을 얻는 환경"을 요구합니다. 세일링스톤 자체 솔루션 <strong>aisight(Ops · Work Space)는 이 요건을 구조로 충족</strong>하며, 금융 · 제조 고객사 구축으로 검증됐습니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt dense">
+          <tr><th style="width:27%">요구사항 (ARC-033 세부내용)</th><th>aisight 구현</th><th style="width:22%">검증 방법</th></tr>
+          <tr><td class="k">자연어 질의 대화형 AI Agent, SQL 없이 즉시 분석</td><td>Work Space Agent가 질의 → 개체명 인식 → 의도 · 스킬 선정 → 스킬 실행 → 결과 통합 5단계로 처리, 표 · 차트 · Excel(.xlsx) · 이미지(.png) 제공</td><td>시나리오 질의 세트 정확도 측정</td></tr>
+          <tr class="hl"><td class="k">답변 일관성 보장, 비결정적 변동 통제</td><td><b>스킬 레지스트리</b>에 사전 검증된 KPI 산식 · 표준 SQL · 함수 호출을 등록하고 LLM은 스킬을 고르기만 합니다. 같은 질의는 같은 경로로 답합니다</td><td>동일 질의 반복 실행 일치율</td></tr>
+          <tr><td class="k">용어 표준화 ('지난주', '한국법인' 정규화)</td><td><b>지식 그래프</b>가 분석 기준 · 지표 · 조건을 표준 노드로 분류하고 비즈메타 용어 사전과 연계, 모호하면 되묻습니다</td><td>용어 사전 커버리지</td></tr>
+          <tr><td class="k">데이터 프로파일링 · 업무규칙 기반 품질 점검</td><td>형식 · 범위 · 유일성 · 완전성 · 일관성 · RI 검증 규칙을 13장 검증 체계와 공유, 검증 통과 데이터만 답변 근거로 사용</td><td>검증 결과서 연동 확인</td></tr>
+          <tr><td class="k">대시보드 컨텍스트 자동 인식</td><td>Tableau Extension으로 보고 있는 화면의 법인 · 기간 · 지표를 Agent에 전달, 범용 웹 모듈로도 이식</td><td>컨텍스트 질의 시연</td></tr>
+          <tr><td class="k">On-Premise LLM 아키텍처</td><td>Ops Model Hub가 사내 GPU(B300 · H200) 위 sLLM과 외부 API를 보안 · 난이도 기준으로 라우팅, 폐쇄망 단독 구성 지원</td><td>망 분리 환경 설치 확인</td></tr>
+          <tr><td class="k">질의 · 답변 · API 로그 추적 · 감사, 행 · 열 권한</td><td>Audit Logs가 자연어 질의부터 최종 SQL까지 전 워크플로우 기록, 인사 DB 연동 권한 그룹과 민감 데이터 마스킹</td><td>감사 로그 추출 · 권한 테스트</td></tr>
+          <tr><td class="k">운영지표 · 환각 지점 식별 · Function Calling 등록</td><td>Perf. Monitor로 토큰 · 인식률 · 접속률 시각화, 단계별 로그에서 실패 지점 표시, 자연어 · Excel 일괄로 스킬(함수) 등록</td><td>운영 대시보드 확인</td></tr>
+          <tr><td class="k">AI 친화형 메타데이터 관리 체계 제시</td><td>업무 용어 · 업무규칙 · 데이터 카탈로그를 스킬 · 지식 그래프 · Wiki로 구조화하는 체계안을 설계단계에 제출</td><td>체계안 문서 검토</td></tr>
+          <tr><td class="k">산출물 - 설치 계획서 · 결과서 · 매뉴얼</td><td>BI 보고서 정의서, 설치 계획서 · 설치 결과서, 사용자 · 운영자 매뉴얼을 단계별 산출물로 제출하고 운영 교육 수행</td><td>산출물 검수</td></tr>
+        </table>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">근거: aisight 솔루션 소개서 v1.7 (아키텍처 · Ops · 스킬 · 지식 그래프 · Tableau Extension), 구축 사례 - 통신 유통사 실적 셀프조회(구축 완료), 글로벌 제조사 D2C BI Agent(본구축 진행)</span><span class="pg">- 19 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 20. AI 신뢰 구조 -->
+  <section class="slide" data-title="AI 신뢰 구조 · On-Prem LLM">
+    <header class="s-head">
+      <h2><span class="bullet"></span>AI 신뢰 구조 - <em>검증은 지식 그래프가, 분석은 AI가</em></h2>
+      <span class="s-right">04 · ARC-033</span>
+    </header>
+    <div class="s-band"><p>금융 통계에서 AI의 "그럴듯하지만 틀린 숫자"는 허용되지 않습니다. aisight는 <strong>질문이 분석 가능한지 검증된 지식으로 먼저 확인하고, 검증된 데이터 경로로만 답</strong>하도록 설계되어 있습니다.</p></div>
+    <div class="content">
+      <div class="flow">
+        <div class="step"><span class="sn">1 · 질의</span><b>자연어 입력</b><p>"지난달 발행등록 건수가 왜 늘었어?"</p></div>
+        <span class="farr">›</span>
+        <div class="step hl"><span class="sn">2 · 검증</span><b>지식 그래프 확인</b><p>분석 기준 · 지표 · 조건을 표준 노드로 특정, 조합 가능 여부 확인, 모호하면 되묻기</p></div>
+        <span class="farr">›</span>
+        <div class="step hl"><span class="sn">3 · 스킬</span><b>스킬 선택 · 실행</b><p>사전 등록된 KPI 산식 · 표준 SQL · 함수 호출만 실행, 읽기 전용 샌드박스</p></div>
+        <span class="farr">›</span>
+        <div class="step"><span class="sn">4 · 근거</span><b>결과 통합 · 출처 표기</b><p>검증 통과 데이터와 Wiki 문서 근거를 함께 제시, SQL 로그 저장</p></div>
+        <span class="farr">›</span>
+        <div class="step"><span class="sn">5 · 운영</span><b>Ops 관제 · 보정</b><p>실패 질의 · 환각 지점을 케이스로 등록, 채점 · 보정으로 정확도 축적</p></div>
+      </div>
+      <div class="two fill">
+        <div class="card"><div class="no">ON-PREMISE LLM 구성 (ECR-006 AI 서버)</div>
+          <h3>B300 8-Way 운영 2식 · H200 1식 위의 폐쇄망 구성</h3>
+          <ul>
+            <li><i></i><b>sLLM(오픈웨이트)</b>을 사내 GPU에 배치하고 Model Hub가 질의 난이도 · 보안 등급으로 모델을 선택합니다</li>
+            <li><i></i>기간계 AI와 데이터플랫폼 AI의 자원 분리 요구는 없으므로 <b>자원 그룹 · 우선순위</b>로 격리합니다</li>
+            <li><i></i>GPU · CPU · 메모리 · 디스크 점유율 실시간 시각화, LLM · 서버 컴포넌트 GUI 제어, 정기 점검 시 임시 접속 제한</li>
+            <li><i></i>프롬프트 가드레일 · 민감 데이터 마스킹 · 악성 프롬프트 차단을 LLM 호출 앞단에 둡니다</li>
+          </ul>
+          <div class="fix"><b>선결 확인</b> 도입 모델의 라이선스 · 양자화 제한과 GPU 할당은 착수 1개월 내 LG CNS 인프라 파트와 확정합니다</div></div>
+        <div class="card"><div class="no">정확도 운영 체계</div>
+          <h3>케이스 등록 → 채점 → 보정의 반복</h3>
+          <ul>
+            <li><i></i>예상 밖 질문은 <b>케이스</b>로 등록하고 확정된 답안으로 채점합니다. 모델 재학습이 아니라 채점 · 보정으로 정확도를 올립니다</li>
+            <li><i></i>그래프나 분석 규칙이 바뀌면 영향받는 케이스만 자동 재채점합니다</li>
+            <li><i></i>답변 인식률 · 토큰 사용량 · 오류 질문을 운영 대시보드로 보고, 품질 담당자가 보정 화면에서 직접 고칩니다</li>
+            <li><i></i>통계 보고서 수치와 AI 답변 수치는 같은 DM · 같은 산식을 쓰므로 <b>두 숫자가 다를 수 없는 구조</b>입니다</li>
+          </ul>
+          <div class="fix gray"><b>약속</b> 설계단계에 질의 시나리오 세트와 정확도 측정 기준을 합의하고 통합테스트에서 측정값을 보고합니다</div></div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">대응 요구사항: ARC-033 AI 분석 정확성 보장 · 보안 및 시스템관리 · AI 운영관리 · 환각 최소화 방안, ECR-006 AI 서버 요구사항 (B300 8Way 2식, H200 1식)</span><span class="pg">- 20 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 21. 추진 일정 -->
+  <section class="slide" data-title="추진 일정">
+    <header class="s-head">
+      <h2><span class="bullet"></span>추진 일정(안) - <em>870일 안의 데이터플랫폼 트랙</em></h2>
+      <span class="s-right">05 · Schedule</span>
+    </header>
+    <div class="s-band"><p>데이터플랫폼 트랙은 기간계 설계와 나란히 가되, <strong>분석단계말 범위 확정 · 리허설 3회 · 안정화 4개월</strong>을 고정 마일스톤으로 둡니다. 월 단위 배분은 LG CNS 마스터 일정에 맞춰 착수 시 조정합니다.</p></div>
+    <div class="content">
+      <div class="gantt fill">
+        <div class="gh"><span>단계 (월)</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span></div>
+        <div class="grow"><span class="gl">분석<small>대상 재식별 · 범위 확정</small></span><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="grow"><span class="gl">설계<small>매핑 정의서 · 검증 계획서</small></span><i></i><i></i><i></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="grow"><span class="gl">ETL · 검증 구축<small>정기 적재 · 게이트 A~D</small></span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="soft"></i><i class="soft"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="grow"><span class="gl">통계 · BI · AI 구축<small>보고서 · Self BI · Agent</small></span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="soft"></i><i class="soft"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="grow"><span class="gl">통합테스트<small>병행 대사 · 초기 적재 1~2차</small></span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="grow"><span class="gl">이행 · 전환<small>리허설 3차 · 초기 적재 본 실행</small></span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="dk"></i><i class="dk"></i><i></i><i></i><i></i><i></i></div>
+        <div class="grow"><span class="gl">안정화 4개월<small>운영 이관 · 변경 프로세스 정착</small></span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="soft"></i><i class="soft"></i><i class="soft"></i><i class="soft"></i></div>
+        <div class="ms">
+          <span><b>M4</b> 범위 확정 협의 (분석단계말)</span>
+          <span><b>M9</b> 매핑 정의서 · 검증 계획서 1차 제출</span>
+          <span><b>M12</b> ETL 도구 · DW 어플라이언스 환경 확보 후 생성 체계 정렬</span>
+          <span><b>M19</b> 정기 적재 전수 가동 (개발 환경)</span>
+          <span><b>M23</b> 리허설 2차 · 검증 결과서</span>
+          <span><b>M25</b> Cut-Over · 초기 적재 결과 리포트</span>
+          <span><b>M29</b> 안정화 종료 · 운영 이관</span>
+        </div>
+      </div>
+      <div class="cards c4 tight">
+        <div class="card white"><div class="no">분석 · 설계 산출물</div><p>대상 재식별 결과서 · 범위 확정 협의서 · 데이터 정기 적재 매핑 정의서 · 스케줄 정의서 · 데이터플랫폼 데이터 검증 계획서 · AI 친화 메타데이터 체계안</p></div>
+        <div class="card white"><div class="no">구축 산출물</div><p>적재 프로그램 · 검증 잡 · 검증 결과 조회 화면 · BI 보고서 정의서 · 설치 계획서 · 설치 결과서 · 연계 매핑 정의서</p></div>
+        <div class="card white"><div class="no">테스트 · 이행 산출물</div><p>병행 대사 결과 · 리허설 회차별 기록 · 성능 측정 · 개선 결과서 · 초기 적재 결과 리포트 · 데이터플랫폼 데이터 검증 결과서</p></div>
+        <div class="card white"><div class="no">안정화 · 이관 산출물</div><p>사용자 매뉴얼 · 운영자 매뉴얼 · 튜닝 가이드 · 변경 인지 프로세스 운영 지침 · 교육 자료 · 운영 이관 확인서</p></div>
+      </div>
+      <p class="note">월 수는 870일을 29개월로 환산한 안이며, 진한 칸은 주 활동 · 옅은 칸은 선행 준비 또는 지원 활동입니다. 보고 체계(주간 · 월간 · 단계별)는 LG CNS PMO 기준을 따릅니다.</p>
+    </div>
+    <footer class="s-foot"><span class="src">근거: 제안요청서 사업기간(계약일로부터 약 870일), 안정화 기간(전환 완료 후 4개월), SFR-BTS-002 데이터플랫폼 분석단계말 범위 확정 조건</span><span class="pg">- 21 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 22. 수행 조직 -->
+  <section class="slide" data-title="수행 조직 · 역할">
+    <header class="s-head">
+      <h2><span class="bullet"></span>수행 조직과 역할 - <em>적재 · 검증 · 활용을 한 파트가 끝까지</em></h2>
+      <span class="s-right">05 · Team</span>
+    </header>
+    <div class="s-band"><p>세일링스톤 데이터플랫폼 파트는 LG CNS 데이터플랫폼 PL 산하에서 수행하며, <strong>영업과 수행이 분리되지 않고 설계한 사람이 구축과 안정화까지 책임</strong>집니다. 투입 공수와 인원은 컨소시엄 협의로 확정합니다.</p></div>
+    <div class="content">
+      <div class="orgs fill">
+        <div class="org"><div class="oh"><span class="oic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></span><b>파트 리더 (PL)</b><span class="cnt">협의</span></div>
+          <ul><li><i></i>LG CNS PMO · 데이터플랫폼 PL과 일정 · 범위 · Grey Zone 조정</li><li><i></i>요구사항 추적표 · 조견표 관리</li><li><i></i>비즈메타 · DQ · SEIBro 접점 협의 주관</li><li><i></i>주간 · 월간 · 단계별 보고 작성, 리스크 관리</li><li><i></i>산출물 검수 대응과 품질 점검 참여</li></ul></div>
+        <div class="org"><div class="oh"><span class="oic"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span><b>데이터 엔지니어링</b><span class="cnt">ARC-030 · SFR-BTS-005</span></div>
+          <ul><li><i></i>매핑 정의서 · 템플릿 · 생성 체계</li><li><i></i>정기 · 초기 적재, 스케줄, 성능</li><li><i></i>수신 · 송신 연계 어댑터</li><li><i></i>성능 측정 · 튜닝 가이드, 리허설 실행</li><li><i></i>ETL 도구 · 어플라이언스 환경 정렬</li></ul></div>
+        <div class="org"><div class="oh"><span class="oic"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></span><b>데이터 검증</b><span class="cnt">ARC-034</span></div>
+          <ul><li><i></i>검증 매트릭스 · 규칙 · 결과 화면</li><li><i></i>변경 인지 프로세스 운영</li><li><i></i>검증 계획서 · 결과서, 리허설 검증</li><li><i></i>SEIBro 불일치 협의 절차 운영</li><li><i></i>DQ 솔루션 · SEIBro 모니터링 API 연계</li></ul></div>
+        <div class="org"><div class="oh"><span class="oic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span><b>BI · AI</b><span class="cnt">SFR-BTS-001/002/003 · ARC-032/033</span></div>
+          <ul><li><i></i>BI 포털 · 정형보고서 · 통계 이관</li><li><i></i>Tableau Self BI 구축 · 교육 · 관리 체계</li><li><i></i>aisight 구축 · 스킬 · 지식 그래프 · 운영</li><li><i></i>교육 · 챔피언 · 변화관리 프로그램</li><li><i></i>UI/UX 가이드 · 도움말 · 사용자 매뉴얼</li></ul></div>
+      </div>
+      <div class="cards c3 tight">
+        <div class="card white"><div class="no">본사 지원</div><h3>연구소(R&amp;D) · 품질</h3><p>aisight 코어 모듈 · 생성 템플릿 지원, 솔루션 QA, Tableau Expertise Service(공식 자격 전문가)</p></div>
+        <div class="card white"><div class="no">근무 원칙</div><h3>사업장 상주 · 보안 준수</h3><p>발주처 사업장 상주, 개발용 기기 신고 · 보안 요구사항은 LG CNS 수행사 기준과 동일 적용</p></div>
+        <div class="card white"><div class="no">제출 시 보완</div><h3>핵심인력 이력</h3><p>PL · 파트별 리더의 경력 · 자격 · 목표 투입공수(M/M)는 LG CNS 양식(Ⅰ-5 투입인력 및 이력사항)으로 별도 제출</p></div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">참고: 제안요청서 Ⅵ 제안서 작성 요령 - 수행조직 및 업무분장, 투입인력 및 이력사항 / PMR Grey Zone 조정은 수행사 사업관리조직 주관</span><span class="pg">- 22 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 23. 리스크 · 품질 -->
+  <section class="slide" data-title="리스크 · 품질 관리">
+    <header class="s-head">
+      <h2><span class="bullet"></span>리스크와 품질 관리 - <em>일곱 가지를 미리 적어 둡니다</em></h2>
+      <span class="s-right">05 · Risk</span>
+    </header>
+    <div class="s-band"><p>장기 사업의 리스크는 대부분 <strong>범위 변동 · 외부 의존 · 성능</strong> 세 갈래입니다. 각 항목에 인지 시점과 대응을 정해 두고, 품질은 단계별 산출물 검토와 검증 결과서로 증명합니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt">
+          <tr><th style="width:5%">#</th><th style="width:24%">리스크</th><th style="width:30%">영향</th><th>대응</th></tr>
+          <tr><td class="c">1</td><td class="k">As-is 수량 기준 범위 변동<small>화면 44 · 보고서 62 · SEIBro 222 · 외부 84</small></td><td>재식별 결과에 따라 개발 물량이 늘거나 줄어 일정 · 투입이 흔들림</td><td>분석단계말 범위 확정 협의를 마일스톤으로 고정, 변경은 요구사항 추적표 · 변경관리 절차로만 반영</td></tr>
+          <tr><td class="c">2</td><td class="k">기간계 설계 변경의 지속<small>대응개발 · 서비스 분류 재정립</small></td><td>매핑 · 적재 프로그램의 반복 수정</td><td>정의서 기반 재생성 체계(10장), 변경 인지 프로세스(14장), LG CNS 변경관리와 주간 동기화</td></tr>
+          <tr><td class="c">3</td><td class="k">SEIBro 콘텐츠 개편 의존<small>'26년 증권데이터부 개편 기준</small></td><td>연계 대상 확정 지연 시 가공 데이터 설계 지연</td><td>인터페이스 접점 4(SEIBro) 명세를 분석단계에 우선 합의, 미확정분은 가정 명시 후 설계 진행</td></tr>
+          <tr><td class="c">4</td><td class="k">완료 목표시간 미달</td><td>SEIBro 제공 · 통계 조회 지연</td><td>설계단계 목표시간 확정, 월 단위 성능 측정 · 개선 기록, 어플라이언스 내부 처리(ELT) 전환</td></tr>
+          <tr><td class="c">5</td><td class="k">별도 업체 솔루션 연계 지연<small>비즈메타 · 카탈로그 · DQ</small></td><td>통합검색 · 검증 결과 연계 기능 테스트 지연</td><td>접점 2 · 3 인터페이스 명세 선행 확정, 연계 전까지 목(Mock) API로 개발 · 테스트 진행</td></tr>
+          <tr><td class="c">6</td><td class="k">개인정보 적재 금지 원칙과 스냅샷 예외</td><td>DW가 개인정보처리시스템으로 분류될 가능성</td><td>설계단계에 컬럼 단위 개인정보 식별 · 미적재 설계, 안전성 확보조치 기준 부합 검토를 LG CNS 보안 파트와 공동 수행</td></tr>
+          <tr><td class="c">7</td><td class="k">On-Premise LLM 모델 · 양자화 제한</td><td>AI 답변 품질 · 응답 시간 저하</td><td>착수 1개월 내 모델 후보 검증(PoC), 스킬 기반 구조로 모델 교체 시에도 답변 경로 유지</td></tr>
+        </table>
+      </div>
+      <div class="stripe"><span class="sicon"><svg class="i" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+        <span><b>품질 증명 방식</b> 단계별 산출물 검토(설계서 · 정의서) + 검증 결과서(건수 · 값 · RI · 코드) + 병행 대사 결과 - 세 가지를 LG CNS 품질관리 체계의 점검 항목으로 등록합니다.</span></div>
+    </div>
+    <footer class="s-foot"><span class="src">참고: 제안요청서 PMR 요구사항관리 · Grey Zone 조정, ARC-029 데이터 저장소 공통사항(개인정보 컬럼 미적재), ECR-006 SLM 양자화 제한 확인 사항</span><span class="pg">- 23 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 24. 회사 일반현황 -->
+  <section class="slide" data-title="제안업체 일반현황">
+    <header class="s-head">
+      <h2><span class="bullet"></span>제안업체 일반현황 - <em>컨소시엄사 세일링스톤</em></h2>
+      <span class="s-right">06 · Company (Ⅱ-1)</span>
+    </header>
+    <div class="s-band"><p>세일링스톤은 데이터 분석(BI)과 AI에 관련된 기술의 토탈 솔루션을 제공하는 전문 IT 기업입니다. <strong>엔터프라이즈 BI 포털 · 데이터 파이프라인 · AI 에이전트 구축</strong>을 주력으로 합니다.</p></div>
+    <div class="content">
+      <div class="two fill">
+        <div class="rt-wrap">
+          <table class="kv">
+            <tr><th>회사명</th><td>세일링스톤 주식회사 (SAILINGSTONE Co., Ltd.)</td></tr>
+            <tr><th>주소</th><td>서울특별시 강서구 마곡중앙5로 22, 9층 South</td></tr>
+            <tr><th>대표자</th><td>강동석, 김봉군</td></tr>
+            <tr><th>설립년도</th><td>2019년 4월</td></tr>
+            <tr><th>자본금</th><td>5천만 원</td></tr>
+            <tr><th>매출액</th><td>93억 원 (2025년 12월 기준)</td></tr>
+            <tr><th>임직원 수</th><td>82명 (2026년 9월 기준) - BI · AI 구축 전문 엔지니어 중심</td></tr>
+            <tr><th>주요 사업</th><td>AI 통합 BI 아키텍처(aisight) · 데이터 레이크하우스 · 데이터 파이프라인 · Tableau 데이터 시각화 · AI 신뢰성 · 거버넌스(aisight Ops)</td></tr>
+            <tr><th>평가 · 인증</th><td>기술신용평가 A-/T4, 신용등급 BB, 벤처기업 확인, AI 기반 지능형 분석 플랫폼 특허 출원, Salesforce Consulting Partner</td></tr>
+            <tr><th>해당 분야 종사 기간</th><td>법인 설립 7년, 리더십 그룹 협업 10년 이상</td></tr>
+            <tr><th>주요 고객</th><td>삼성전자 · 삼성SDS · 삼성증권 · LG전자 · LG CNS · SKT · SK하이닉스 · 한화생명 · 신라호텔 · GS칼텍스</td></tr>
+            <tr><th>홈페이지</th><td>www.sailingstone.io</td></tr>
+          </table>
+        </div>
+        <div class="col">
+          <div class="kpis" style="grid-template-columns:repeat(2,1fr)">
+            <div class="kpi"><div class="v">3.8<small>배</small></div><div class="k">3개년 매출 성장</div><p>2022년 20억 원 → 2025년 93억 원</p></div>
+            <div class="kpi"><div class="v">70<small>%+</small></div><div class="k">주요 고객 장기계약 매출 비중</div><p>단일 대기업 고객 기준 최대 52건 연속 수행</p></div>
+            <div class="kpi"><div class="v">82<small>명</small></div><div class="k">전문가 중심 인력</div><p>Solution · AI · DE · DATA 4대 Delivery 축</p></div>
+            <div class="kpi"><div class="v">A-<small>/T4</small></div><div class="k">기술신용평가 등급</div><p>객관적 기술 경쟁력 · 재무 안정성 검증</p></div>
+          </div>
+          <div class="card white"><div class="no">제출 시 보완 (LG CNS 템플릿 Ⅱ-3 자본금 및 매출액)</div>
+            <p>최근 3개년(2023~2025) 총자산 · 자기자본 · 유동부채 · 유동자산 · 당기순이익 · 매출액과 자기자본비율 · 유동비율을 재무제표 기준으로 기재합니다. 본 초안에는 공개 자료 수치만 담았습니다.</p></div>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">출처: 세일링스톤 회사소개서 v3.5 (2026. 10) / LG CNS 컨소시엄사 템플릿 Ⅱ-1 일반현황 및 연혁 항목 기준</span><span class="pg">- 24 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 25. 조직 · 인력 -->
+  <section class="slide" data-title="조직 · 인력 현황">
+    <header class="s-head">
+      <h2><span class="bullet"></span>조직 · 인력 현황 - <em>데이터와 AI를 연결하는 원팀 구조</em></h2>
+      <span class="s-right">06 · Company (Ⅱ-2)</span>
+    </header>
+    <div class="s-band"><p>연구소의 코어 기술이 현장 솔루션으로 바로 전달되고, <strong>AI와 데이터 전문가가 한 프로젝트 안에서 결합</strong>하는 조직입니다. 본 사업의 적재 · 검증 · 활용 파트는 DE · DATA · AI · Solution 축에서 차출합니다.</p></div>
+    <div class="content">
+      <div class="arch fill" style="justify-content:flex-start; gap:0.8rem">
+        <div class="nodes n3" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="node ext">Marketing &amp; Education<small>고객 기술지원 · Self-BI 교육 · Tableau Expertise Service</small></div>
+          <div class="node tt">CEO (강동석 · 김봉군)<small>경영 · 영업 · 품질 총괄</small></div>
+          <div class="node ext">연구소 (R&amp;D)<small>솔루션 코어 모듈 · 품질관리(QA) · 기술 방향성</small></div>
+        </div>
+        <div class="arr">▾</div>
+        <div class="nodes n4">
+          <div class="node ours">Solution<small>솔루션 적용 · 포털 커스터마이징 · 현장 구축 · 유지보수</small></div>
+          <div class="node ours">AI<small>AI Agent 개발 · GEN SQL · LLM Ops · RAG</small></div>
+          <div class="node ours">DE (Data Engineering)<small>데이터 모델링 · 표준화 · CDW 구축 · 대규모 파이프라인</small></div>
+          <div class="node ours">DATA<small>BI 대시보드 구축 · BI 컨설팅 · AI 분석 활용 지원</small></div>
+        </div>
+        <div class="cards c3 tight" style="margin-top:0.4rem">
+          <div class="card"><span class="accent"></span><div class="no">본 사업 투입 축</div><h3>DE + DATA + AI + Solution</h3><p>ETL · 검증은 DE, 통계 · Self BI는 DATA, AI Agent는 AI, BI 포털 · 운영 이관은 Solution 축이 맡고 PL이 통합합니다.</p></div>
+          <div class="card"><div class="no">인력 구성</div><h3>BI · AI 특급 · 고급 전문 인력</h3><p>전체 인력 중 BI · AI 구축 전문 엔지니어 비중이 압도적인 정예 구조이며, 공식 자격 Tableau 전문가가 교육 · TA를 수행합니다.</p></div>
+          <div class="card"><div class="no">협업 방식</div><h3>노이즈 없는 원팀</h3><p>기획 · 솔루션 · 데이터 · 분석 · UI/UX · 영업 리더 그룹이 10년 이상 함께 일해 의사결정 경로가 짧고, 컨소시엄 내 조정 응답이 빠릅니다.</p></div>
+        </div>
+        <div class="rt-wrap" style="margin-top:0.4rem">
+          <table class="rt dense">
+            <tr><th style="width:22%">컨소시엄 협업 체계</th><th>운영 방식</th><th style="width:30%">세일링스톤 창구</th></tr>
+            <tr><td class="k">보고 · 지휘</td><td>LG CNS 데이터플랫폼 PL → 세일링스톤 PL → 파트 리더 순으로 일원화, 주간 · 월간 · 단계별 보고는 PMO 양식 준수</td><td>파트 리더 (PL)</td></tr>
+            <tr><td class="k">변경 · 이슈</td><td>요구사항 추적표와 변경관리 절차 공유, 인터페이스 접점 5개의 상태를 주간 회의에서 점검</td><td>PL · 데이터 엔지니어링 리더</td></tr>
+            <tr><td class="k">품질 · 보안</td><td>LG CNS 품질관리 점검 항목에 검증 결과서 등록, 보안 요구사항 · 개발 기기 신고는 수행사 기준과 동일 적용</td><td>데이터 검증 리더 · 본사 QA</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <footer class="s-foot"><span class="src">출처: 세일링스톤 회사소개서 v3.5 - 조직 및 인력 구성 / 제출 시 조직도 이미지와 직급별 인원표(LG CNS 템플릿 Ⅱ-2)로 보완</span><span class="pg">- 25 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 26. 유사사업 수행실적 -->
+  <section class="slide" data-title="유사사업 수행실적">
+    <header class="s-head">
+      <h2><span class="bullet"></span>유사사업 수행실적 - <em>데이터 마트 설계부터 포털 · AI까지 같은 순서로</em></h2>
+      <span class="s-right">06 · Company (Ⅱ-4)</span>
+    </header>
+    <div class="s-band"><p>도메인은 달라도 <strong>데이터 마트 설계 → 대시보드 · 포털 구축 → 권한 설계 → 운영 · 단계 확장</strong>의 같은 순서로 수행해 왔습니다. 금융 · 공공 실적은 평가 기준(5년 이내)에 맞춰 제출본에서 계약 정보로 보강합니다.</p></div>
+    <div class="content">
+      <div class="rt-wrap fill">
+        <table class="rt dense">
+          <tr><th style="width:5%">No.</th><th style="width:30%">용역명</th><th style="width:15%">발주처</th><th>본 사업 관련성</th><th style="width:16%">사업기간 · 계약금액</th></tr>
+          <tr><td class="c">1</td><td class="k">Tableau 포털 구축</td><td>LG CNS</td><td>전사 표준 템플릿 · 권한 거버넌스를 갖춘 Tableau 포털 - 컨소시엄 대표사와의 협업 실적</td><td class="c">제출본 기재</td></tr>
+          <tr><td class="c">2</td><td class="k">Tableau TA (기술 지원)</td><td>한화생명</td><td>금융기관 Tableau 운영 · 활용 정착 지원, Self BI 활성화 모델</td><td class="c">제출본 기재</td></tr>
+          <tr><td class="c">3</td><td class="k">태블로 대시보드 개선</td><td>삼성증권</td><td>금융투자업 실적 대시보드 개선, 지표 표준화</td><td class="c">제출본 기재</td></tr>
+          <tr><td class="c">4</td><td class="k">5G 모니터링센터 개발</td><td>SKT</td><td>실시간 품질 · 장애 지표와 임계치 알람, 관제 대형화면 - 대용량 운영 데이터 적재 · 모니터링</td><td class="c">제출본 기재</td></tr>
+          <tr><td class="c">5</td><td class="k">DX HR DataLab · DS HR 분석플랫폼 (4차 진행)</td><td>삼성전자</td><td>마트 설계 → 포털 → 부서 · 권한별 열람 제한(RLS)까지 포함한 데이터 플랫폼 구축</td><td class="c">제출본 기재</td></tr>
+          <tr><td class="c">6</td><td class="k">DS 데이터품질(D.Q) 표준화 시스템 (예정)</td><td>삼성전자</td><td>데이터 품질 지표 표준화와 모니터링 - 본 사업 검증 체계와 동일 접근</td><td class="c">제출본 기재</td></tr>
+          <tr><td class="c">7</td><td class="k">실적 셀프조회 · AI 에이전트 (구축 완료 · 파일럿)</td><td>국내 통신 유통사</td><td>자연어 실적 조회 · 사내문서 챗봇 · 외부 시스템 연동 - ARC-033 유형</td><td class="c">제출본 기재</td></tr>
+          <tr><td class="c">8</td><td class="k">D2C 채널 BI Agent (PoC 4개월 → 본구축)</td><td>글로벌 제조사</td><td>GenSQL · 자동 차트 · 문서 생성, 해외 법인 확산 - AI Ops 운영 체계</td><td class="c">제출본 기재</td></tr>
+          <tr><td class="c">9</td><td class="k">Tableau TA · BI 구축</td><td>SK하이닉스 · 삼성SDS · 신라호텔</td><td>공식 자격 전문가 기술 지원, 전사 BI 플랫폼 구축 · 교육</td><td class="c">제출본 기재</td></tr>
+          <tr><td class="c">10</td><td class="k">HR Index 대시보드 · AI Insight Agent · 대시보드 개발</td><td>LG전자 · GS칼텍스</td><td>표준 지표 포털과 자연어 질의 에이전트 단계 도입, 현장 KPI 보드</td><td class="c">제출본 기재</td></tr>
+        </table>
+      </div>
+      <p class="note"><b>기재 원칙</b> 사업기간 · 계약금액 · 증빙(계약서 · 실적증명)은 공개 자료에 없어 비워 두었으며, 제출본에서 경영지원 확인을 거쳐 기재합니다. 고객사명 노출 범위는 각 사 계약 조건을 확인한 뒤 확정합니다.</p>
+    </div>
+    <footer class="s-foot"><span class="src">출처: 세일링스톤 회사소개서 v3.5 - 프로젝트 레퍼런스 · 도메인별 분석 레퍼런스 · 구축 사례 A/B/C / LG CNS 템플릿 Ⅱ-4 유사사업 수행실적 양식</span><span class="pg">- 26 -</span><span class="mark">SAILINGSTONE</span></footer>
+  </section>
+
+  <!-- 27. 맺음 -->
+  <section class="slide dark" data-title="맺음">
+    <div class="glow" data-bleed></div>
+    <img class="logo" src="../solutions/assets/aisight-marketing/logo.png" alt="로고">
+    <div class="top">
+      <span class="pillbadge">KSD 차세대 2단계 · 데이터플랫폼 부문</span>
+      <span class="iwd">Intelligence with Data</span>
+    </div>
+    <h1>숫자가 맞는 플랫폼이<br><em>쓰이는 플랫폼이 됩니다.</em></h1>
+    <p class="sub">적재는 정의서에서 생성하고, 검증은 레이어마다 통과시키고, 활용은 Self BI와 AI로 넓힙니다.<br>
+      제출 전 확정할 사항 - SFR-BTS-004 범위 해석 · 투입 공수 · 3개년 재무 · 실적 계약 정보 · 핵심인력 이력</p>
+    <div class="contact">
+      <div><small>PROJECT</small><b>KSD 차세대시스템(2단계) 구축 SI - 데이터플랫폼</b></div>
+      <div><small>CONSORTIUM</small><b>LG CNS (대표사) · 세일링스톤</b></div>
+      <div><small>CONTACT</small><b>세일링스톤 · www.sailingstone.io</b></div>
+    </div>
+    <div class="entag">MAKE DATA SMARTER, MAKE DECISIONS FASTER.</div>
+    <div class="corner">
+      <span class="ai">DATA · PLATFORM · ANALYTICS</span><span class="div">|</span><span class="cp">© 2026 SAILINGSTONE</span>
+    </div>
+  </section>
+
+</body>
+</html>
